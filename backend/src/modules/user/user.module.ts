@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserRepository } from 'src/database/repositories/user.repository';
 import { User, UserSchema } from 'src/database/documents/user';
+import { JWTService } from 'src/utils/jwt/jwt.service';
 
 import { UserControllerV1 } from './user.controller.v1';
 import { UserService } from './user.service';
@@ -12,8 +13,10 @@ import { UserService } from './user.service';
 	],
 	controllers: [UserControllerV1],
 	providers: [
+        JWTService,
 		UserService,
-		UserRepository
+		UserRepository,
+        Logger
 	],
     exports: [
         UserService
