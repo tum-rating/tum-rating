@@ -23,7 +23,7 @@ export class UserService {
         // if(!user)
         //     throw {code: GenericErrorCodes.not_found};
 
-        return User;
+        return user;
     }
 
     public async getUserByEmail(email: string) {
