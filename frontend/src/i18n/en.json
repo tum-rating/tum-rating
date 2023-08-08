@@ -1,0 +1,13 @@
+{
+    "welcomeMessage": "Welcome to Tum-rating, {{type}} with",
+    "login": "Login",
+    "register": "Register",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "invalidEmail": "Invalid email",
+    "passwordRequirements": "Password should include at least 6 characters",
+    "acceptTerms": "I accept terms and conditions",
+    "alreadyHaveAccount": "Already have an account? Login",
+    "dontHaveAccount": "Don't have an account? Register"
+}
