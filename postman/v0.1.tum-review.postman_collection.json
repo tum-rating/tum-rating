@@ -1,0 +1,141 @@
+{
+	"info": {
+		"_postman_id": "6789e485-ad7a-45d4-bbbd-90cd91ad4edb",
+		"name": "tum-review",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9000137"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "signin",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "siginup",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "getMe",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer fyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjAsInN1YiI6IjY0ZDJhZTFjNTQzOWU2NDg4MThiZDFjMSIsImV4cCI6MTY5MTYxNTE5OH0.sDx2rr_O4ElacvcDaoj_vi48-_ASKSaVB4pWiBQluiw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/v1/users/me",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "courses",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "review",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjAsInN1YiI6IjY0ZDJhZTFjNTQzOWU2NDg4MThiZDFjMSIsImV4cCI6MTY5MTY3NTI2Mn0.ryWizLS4wo_7BoKwexjlUpWhzl6tYWwphKs_NdkbsU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"course\": \"course 1\",\n    \"professor\": \"professor 1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/reviews/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"reviews",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "addReview",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getReviewById",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
