@@ -7,8 +7,10 @@ import {
     type MRT_Virtualizer,
 } from 'mantine-react-table';
 import { makeData, type Course } from './makeData';
+import {useNavigate} from "react-router-dom";
 
 const ClassesTable = () => {
+    const navigate = useNavigate();
     const columns = useMemo<MRT_ColumnDef<Course>[]>(
         () => [
             {
@@ -45,7 +47,7 @@ const ClassesTable = () => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            setData(makeData(10_000));
+            setData(makeData(1000));
             setIsLoading(false);
         }
     }, []);
@@ -62,7 +64,15 @@ const ClassesTable = () => {
         enableColumnVirtualization: true,
         enablePagination: false,
         enableRowVirtualization: true,
-        mantineTableContainerProps: { sx: { maxHeight: '400px' } },
+        mantineTableContainerProps: { sx: { width: "100vw",height: "80vh" } },
+        mantineTableBodyRowProps: ({ row }) => ({
+            onClick: (event) => {
+                navigate(`/${row.id}`)
+            },
+            sx: {
+                cursor: 'pointer', //you might want to change the cursor too when adding an onClick
+            },
+        }),
         onSortingChange: setSorting,
         state: { isLoading, sorting },
         rowVirtualizerInstanceRef, //optional
@@ -73,8 +83,8 @@ const ClassesTable = () => {
         enablePagination: false,
         enableSorting: false,
         mantineTableProps: {
-            highlightOnHover: false,
-            withColumnBorders: true,
+            highlightOnHover: true,
+            withColumnBorders: false,
         },
     });
 

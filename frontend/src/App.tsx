@@ -17,8 +17,17 @@ function App() {
         >
             <MantineProvider
                 theme={{
+                    globalStyles: () => ({
+                        body: {
+                            height: "100vh",
+                        },
+                        root: {
+                            height: "100%"
+                        }
+                    }),
                     colorScheme
                 }}
+
                 withGlobalStyles
                 withNormalizeCSS
             >

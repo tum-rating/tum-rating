@@ -11,6 +11,7 @@ import {
     Header,
     Modal,
     rem,
+    Center,
     ScrollArea,
     useMantineColorScheme,
 } from "@mantine/core";
@@ -18,7 +19,7 @@ import {useDisclosure} from "@mantine/hooks";
 import {IconMoonStars, IconSun} from "@tabler/icons-react";
 import {useTranslation} from "react-i18next";
 import {AuthenticationModal} from "../components/AuthenticationModal";
-import {useUser} from "../auth/useUser.tsx";
+import {useUser} from "../auth/useUser";
 import {UserButton} from "../components/UserButton";
 
 const useStyles = createStyles((theme) => ({
@@ -99,7 +100,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
     };
 
     return (
-        <Box pb={120} h={"100%"}>
+        <Box h={"100%"}>
             <Header height={60} px="md">
                 <Group position="apart" sx={{height: "100%"}}>
                     <h3>Tum-rating</h3>
@@ -155,7 +156,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                     </Group>
                 </ScrollArea>
             </Drawer>
-            <Box>{children}</Box>
+            <Center pb={25} h={"100%"}>{children}</Center>
         </Box>
     );
 };
