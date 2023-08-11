@@ -1,3 +1,4 @@
+import {PropsWithChildren, useState} from "react";
 import {
     ActionIcon,
     Box,
@@ -12,17 +13,13 @@ import {
     rem,
     ScrollArea,
     useMantineColorScheme,
-} from '@mantine/core';
-
-import {useDisclosure} from '@mantine/hooks';
-import {
-    IconMoonStars,
-    IconSun,
-} from '@tabler/icons-react';
-import {PropsWithChildren, useState} from "react";
-import {LanguageSwitcher} from "../components/LanguageSwitcher/LanguageSwitcher.tsx";
+} from "@mantine/core";
+import {useDisclosure} from "@mantine/hooks";
+import {IconMoonStars, IconSun} from "@tabler/icons-react";
 import {useTranslation} from "react-i18next";
 import {AuthenticationModal} from "../components/AuthenticationModal";
+import {useUser} from "../auth/useUser.tsx";
+import {UserButton} from "../components/UserButton";
 
 const useStyles = createStyles((theme) => ({
     link: {
@@ -60,83 +57,81 @@ const useStyles = createStyles((theme) => ({
         '&:active': theme.activeStyles,
     },
 
-    dropdownFooter: {
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-        margin: `calc(${theme.spacing.md} * -1)`,
-        marginTop: theme.spacing.sm,
-        padding: `${theme.spacing.md} calc(${theme.spacing.md} * 2)`,
-        paddingBottom: theme.spacing.xl,
-        borderTop: `${rem(1)} solid ${
-            theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]
-        }`,
-    },
 
     hiddenMobile: {
-        [theme.fn.smallerThan('sm')]: {
+        [theme.fn.smallerThan('xs')]: {
             display: 'none',
         },
     },
 
     hiddenDesktop: {
-        [theme.fn.largerThan('sm')]: {
+        [theme.fn.largerThan('xs')]: {
             display: 'none',
         },
     },
     authModal: {
-        ".mantine-Modal-header":{
+        ".mantine-Modal-header": {
             position: "absolute",
-            right:0
+            right: 0
         }
     }
 }));
 
-
 export const MainLayout = ({children}: PropsWithChildren) => {
-    const [drawerOpened, {toggle: toggleDrawer, close: closeDrawer}] = useDisclosure(false);
-    const [modalType, setModalType] = useState<'login' | 'register'>('login');
-    const [opened, {open, close}] = useDisclosure(false);
+    const {user} = useUser();
     const {classes, theme} = useStyles();
     const {colorScheme, toggleColorScheme} = useMantineColorScheme();
     const dark = colorScheme === "dark";
+    const {t} = useTranslation();
+
+    const [drawerOpened, {toggle: toggleDrawer, close: closeDrawer}] = useDisclosure(false);
+    const [modalType, setModalType] = useState<"login" | "register">("login");
+    const [opened, {open, close}] = useDisclosure(false);
+
     const openLoginModal = () => {
-        setModalType('login');
+        setModalType("login");
         open();
     };
 
     const openRegisterModal = () => {
-        setModalType('register');
+        setModalType("register");
         open();
     };
-    const {t} = useTranslation();
+
     return (
         <Box pb={120} h={"100%"}>
             <Header height={60} px="md">
-                <Group position="apart" sx={{height: '100%'}}>
+                <Group position="apart" sx={{height: "100%"}}>
                     <h3>Tum-rating</h3>
-                    <ActionIcon
-                        variant="outline"
-                        color={dark ? "yellow" : "blue"}
-                        onClick={() => toggleColorScheme()}
-                        title="Toggle color scheme"
-                    >
-                        {dark ? (
-                            <IconSun size="1.1rem"/>
-                        ) : (
-                            <IconMoonStars size="1.1rem"/>
+                    <Group>
+                        {user ? null : (
+                            <>
+                                <Button compact onClick={openLoginModal} variant="default">
+                                    {t("login")}
+                                </Button>
+                                <Button compact onClick={openRegisterModal}>{t("register")}</Button>
+                                <Modal className={classes.authModal} opened={opened} onClose={close}>
+                                    <AuthenticationModal defaultType={modalType}/>
+                                </Modal>
+                            </>
                         )}
-                    </ActionIcon>
-                    <LanguageSwitcher/>
-                    <Group className={classes.hiddenMobile}>
-                        <Button onClick={openLoginModal} variant="default">
-                            {t('login')}
-                        </Button>
-                        <Button onClick={openRegisterModal}>{t('register')}</Button>
-                        <Modal className={classes.authModal} opened={opened} onClose={close} >
-                            <AuthenticationModal defaultType={modalType} />
-                        </Modal>
+                        <Group className={classes.hiddenMobile}>
+                            {user ? <UserButton {...user.user} /> : null}
+                            <ActionIcon
+                                variant="outline"
+                                color={dark ? "yellow" : "blue"}
+                                onClick={() => toggleColorScheme()}
+                                title="Toggle color scheme"
+                            >
+                                {dark ? <IconSun size="1.1rem"/> : <IconMoonStars size="1.1rem"/>}
+                            </ActionIcon>
+                        </Group>
                     </Group>
-
-                    <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop}/>
+                    <Burger
+                        opened={drawerOpened}
+                        onClick={toggleDrawer}
+                        className={classes.hiddenDesktop}
+                    />
                 </Group>
             </Header>
 
@@ -150,19 +145,17 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                 zIndex={1000000}
             >
                 <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
-                    <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'}/>
+                    <Divider my="sm" color={theme.colorScheme === "dark" ? "dark.5" : "gray.1"}/>
                     <a href="#" className={classes.link}>
                         Home
                     </a>
                     <Group position="center" grow pb="xl" px="md">
-                        <Button variant="default">{t('login')}</Button>
-                        <Button>{t('register')}</Button>
+                        <Button variant="default">{t("login")}</Button>
+                        <Button>{t("register")}</Button>
                     </Group>
                 </ScrollArea>
             </Drawer>
-            <Box>
-                {children}
-            </Box>
+            <Box>{children}</Box>
         </Box>
-    )
+    );
 };

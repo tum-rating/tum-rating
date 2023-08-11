@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { upperFirst } from '@mantine/hooks';
-import { useForm } from '@mantine/form';
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {upperFirst} from '@mantine/hooks';
+import {useForm} from '@mantine/form';
 import {
     Anchor,
     Button,
@@ -14,29 +14,50 @@ import {
     Text,
     TextInput,
 } from '@mantine/core';
+import {useSignIn} from "../../auth/useSignIn.tsx";
+import {useSignUp} from "../../auth/useSignUp.tsx";
 
 type AuthenticationModalProps = {
     defaultType: 'login' | 'register';
 } & PaperProps;
 
-const AuthenticationModal = ({ defaultType, ...props }: AuthenticationModalProps) => {
+const AuthenticationModal = ({defaultType, ...props}: AuthenticationModalProps) => {
     const [type, setType] = useState(defaultType);
-
+    const signIn = useSignIn();
     const form = useForm({
         initialValues: {
             email: '',
-            name: '',
+            username: '',
             password: '',
             terms: true,
         },
         validate: {
             email: (val: string) => (/^\S+@\S+$/.test(val) ? null : 'invalidEmail'),
-            password: (val: string) =>
-                val.length <= 6 ? 'passwordRequirements' : null,
         },
     });
+    const onSignIn = (form) => {
+        const {email, password} = form;
+        if (typeof email === 'string' && typeof password === 'string') {
+            signIn({
+                email,
+                password
+            });
+        }
+    }
+    const signUp = useSignUp();
 
-    const { t } = useTranslation();
+    const onSignUp = (form) => {
+        const {email, password, username} = form;
+        if (typeof email === 'string' && typeof password === 'string' && typeof username === 'string') {
+            signUp({
+                username,
+                email,
+                password
+            });
+        }
+    }
+
+    const {t} = useTranslation();
 
     return (
         <Paper radius="md" p="xl" {...props}>
@@ -44,21 +65,25 @@ const AuthenticationModal = ({ defaultType, ...props }: AuthenticationModalProps
                 {t(type)}
             </Text>
             <Text size="lg" weight={500} mb={20}>
-                {t('welcomeMessage', { type: t(upperFirst(type)) })}
+                {t('welcomeMessage', {type: t(upperFirst(type))})}
             </Text>
             <form
-                onSubmit={form.onSubmit(() => {
-                    // Handle form submission here
+                onSubmit={form.onSubmit((e) => {
+                    if (type === "register") {
+                        onSignUp(e)
+                    } else {
+                        onSignIn(e)
+                    }
                 })}
             >
                 <Stack>
                     {type === 'register' && (
                         <TextInput
-                            label={t('name')}
-                            placeholder={t('name')}
-                            value={form.values.name}
+                            label={t('username')}
+                            placeholder={t('username')}
+                            value={form.values.username}
                             onChange={(event) =>
-                                form.setFieldValue('name', event.currentTarget.value)
+                                form.setFieldValue('username', event.currentTarget.value)
                             }
                             radius="md"
                         />
@@ -120,4 +145,4 @@ const AuthenticationModal = ({ defaultType, ...props }: AuthenticationModalProps
     );
 };
 
-export { AuthenticationModal };
+export {AuthenticationModal};

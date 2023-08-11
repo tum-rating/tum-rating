@@ -1,7 +1,9 @@
 import {ColorScheme, ColorSchemeProvider, MantineProvider} from "@mantine/core";
 import {RoutesApp} from "./routes";
 import {useState} from "react";
-
+import {Notifications} from "@mantine/notifications";
+import {QueryClientProvider} from "@tanstack/react-query";
+import {queryClient} from "./react-query/client.ts";
 
 
 function App() {
@@ -20,7 +22,10 @@ function App() {
                 withGlobalStyles
                 withNormalizeCSS
             >
-                <RoutesApp/>
+                <QueryClientProvider client={queryClient}>
+                    <Notifications/>
+                    <RoutesApp/>
+                </QueryClientProvider>
             </MantineProvider>
         </ColorSchemeProvider>
     );

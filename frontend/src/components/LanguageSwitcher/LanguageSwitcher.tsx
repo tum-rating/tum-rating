@@ -1,17 +1,16 @@
-
-import { useTranslation } from 'react-i18next';
-import {createStyles, rem, Menu, Image, UnstyledButton} from "@mantine/core";
+import {useTranslation} from 'react-i18next';
+import {createStyles, Image, Menu, rem, UnstyledButton} from "@mantine/core";
 import {useEffect, useState} from "react";
 import {IconChevronDown} from "@tabler/icons-react";
 
 
 const data = [
-    { label: 'English', code: "gb",image:`https://flagcdn.com/16x12/gb.png` },
-    { label: 'Deutsch', code: "de",image:`https://flagcdn.com/16x12/de.png` },
-    { label: 'Polski', code: "pl",image:`https://flagcdn.com/16x12/pl.png` },
+    {label: 'English', code: "en-GB", image: `https://flagcdn.com/16x12/gb.png`},
+    {label: 'Deutsch', code: "de-DE", image: `https://flagcdn.com/16x12/de.png`},
+    {label: 'Polski', code: "pl-PL", image: `https://flagcdn.com/16x12/pl.png`},
 ];
 
-const useStyles = createStyles((theme, { opened }: { opened: boolean }) => ({
+const useStyles = createStyles((theme, {opened}: { opened: boolean }) => ({
     control: {
         width: rem(200),
         display: 'flex',
@@ -48,23 +47,27 @@ const useStyles = createStyles((theme, { opened }: { opened: boolean }) => ({
 
 
 function LanguageSwitcher() {
-    const { i18n } = useTranslation();
+    const {i18n} = useTranslation();
     const defaultLanguage = i18n.language;
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
     };
-
-    useEffect(()=>{
-        setSelected(data.find(x=>x.code === defaultLanguage))
-    },[defaultLanguage])
+    useEffect(() => {
+        const language = data.find(x=>x.code === defaultLanguage)
+        if(language){
+            setSelected(language)
+        }else{
+            setSelected(data[0])
+        }
+    }, [defaultLanguage])
 
     const [opened, setOpened] = useState(false);
-    const { classes } = useStyles({ opened });
-    const [selected,setSelected ] = useState({});
-
+    const {classes} = useStyles({opened});
+    const [selected, setSelected] = useState({});
+    console.log(selected)
     const items = data.map((item) => (
         <Menu.Item
-            icon={<Image src={item.image} />}
+            icon={<Image src={item.image}/>}
             onClick={() => {
                 changeLanguage(item.code)
             }}
@@ -82,9 +85,9 @@ function LanguageSwitcher() {
             withinPortal
         >
             <Menu.Target>
-                <UnstyledButton  className={classes.control}>
-                        <span className={classes.label}>{selected.label}</span>
-                    <IconChevronDown size="1rem" className={classes.icon} stroke={1.5} />
+                <UnstyledButton className={classes.control}>
+                    <span className={classes.label}>{selected.label}</span>
+                    <IconChevronDown size="1rem" className={classes.icon} stroke={1.5}/>
                 </UnstyledButton>
             </Menu.Target>
             <Menu.Dropdown>{items}</Menu.Dropdown>
@@ -93,4 +96,4 @@ function LanguageSwitcher() {
     );
 }
 
-export  {LanguageSwitcher};
+export {LanguageSwitcher};
