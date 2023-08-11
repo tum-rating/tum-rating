@@ -10,7 +10,6 @@ import { AuthControllerV1 } from './auth.controller.v1';
 import { AuthService } from './auth.service';
 import { UserModule } from 'src/modules/user/user.module';
 // import { MailerModule } from '../mailer/mailer.module';
-// import { GoogleAuthenticationService } from './google.authentication.service';
 
 @Module({
 	imports: [

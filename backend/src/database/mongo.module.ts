@@ -7,13 +7,11 @@ import { MongooseModule } from '@nestjs/mongoose';
         MongooseModule.forRootAsync({
             inject: [ConfigService],
             useFactory: async (configService: ConfigService) => {
-
-                console.log('mongo url: ', 'mongodb://' + configService.getOrThrow('mongo.username') + ':' + configService.getOrThrow('mongo.password') + '@' + configService.getOrThrow('mongo.host') + ':' + configService.getOrThrow('mongo.port') + '/' + configService.getOrThrow('mongo.dbName'))
-
                 return {
-                    uri: 'mongodb://' + configService.getOrThrow('mongo.username') + ':' + configService.getOrThrow('mongo.password') + '@' + configService.getOrThrow('mongo.host') + ':' + configService.getOrThrow('mongo.port'),// + '/' + configService.getOrThrow('mongo.dbName'),
+                    uri: 'mongodb://' + configService.getOrThrow('mongo.username') + ':' + configService.getOrThrow('mongo.password') + '@' + configService.getOrThrow('mongo.host') + ':' + configService.getOrThrow('mongo.port') + '/',// + configService.getOrThrow('mongo.dbName'),
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
+                    
                 };
             }
         }),

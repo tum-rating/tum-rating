@@ -16,7 +16,7 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 
 import { UserService } from './user.service';
 
-@Controller('api/v1/user')
+@Controller('api/v1/users')
 export class UserControllerV1 {
     constructor (
         private readonly _userService: UserService,

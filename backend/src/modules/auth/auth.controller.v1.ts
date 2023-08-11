@@ -41,18 +41,15 @@ export class AuthControllerV1 {
     }
 
     @Post('/signup')
-    @UsePipes(new JoiObjectSchemaPipe(SignUpRequestSchema))
-    public async signUpLocal(@Body() body: SignUpRequestDto) {
+    public async signUpLocal(@Body(new JoiObjectSchemaPipe(SignUpRequestSchema)) body: SignUpRequestDto) {
         this._logger.log('Signup request received with user email %o', body.email);
 
         const passwordSalt = await this._authenticationService.getSalt();
 
         const passwordHash = await this._authenticationService.getHash(body.password, passwordSalt);
 
-        let createdUserId: string;
-
         try {
-            const createdUserId = await this._userService.createUser({
+            const createdUser = await this._userService.createUser({
                 email: body.email,
                 username: body.username,
                 passwordHash,
@@ -77,7 +74,7 @@ export class AuthControllerV1 {
             this._logger.log(
                 'Signup local request completed user created with email %s, id %s', 
                 body.email,
-                createdUserId
+                createdUser
             );
         }
         catch(error) {
@@ -109,8 +106,7 @@ export class AuthControllerV1 {
 
     @Post('/signin')
     @HttpCode(HttpStatus.OK)
-    @UsePipes(new JoiObjectSchemaPipe(SignInRequestSchema))
-    public async signin(@Body() body: SignInRequestDto) {
+    public async signin(@Body(new JoiObjectSchemaPipe(SignInRequestSchema)) body: SignInRequestDto) {
       
         this._logger.log('Signin request received for user with email %s', body.email);
 
