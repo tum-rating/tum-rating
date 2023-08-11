@@ -4,6 +4,7 @@ services:
     image: mongo:7.0.0-rc10
     ports:
     - "27017:27017"
+    # command: --wiredTigerCacheSizeGB 0.25 --replSet s0 
     environment:
       MONGO_INITDB_ROOT_USERNAME: root-user
       MONGO_INITDB_ROOT_PASSWORD: root-password

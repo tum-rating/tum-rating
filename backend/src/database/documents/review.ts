@@ -1,46 +1,50 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 
-import { Professor } from './professor';
-import { Subject } from './subject';
 import { User } from './user';
 
 @Schema()
 export class UserReview {
     @Prop({required: true, type: MongooseSchema.Types.ObjectId, ref: User.name })
-    user: MongooseSchema.Types.ObjectId;
+    userId: MongooseSchema.Types.ObjectId;
 
-    @Prop({required: true, type: Number})
-    howInterestingReview: Number;
+    @Prop({required: true, type: Number, min: 0, max: 100})
+    howInterestingRating: number;
     
-    @Prop({required: true, type: Number})
-    howHardReview: Number;
+    @Prop({required: true, type: Number, min: 0, max: 100})
+    howEasyRating: number;
 
     @Prop({type: String})
-    comment: String;
+    comment: string;
+
+    @Prop({required: true, type: Date, default: new Date()})
+    createdAt: Date;
 }
 
 export const UserReviewSchema = SchemaFactory.createForClass(UserReview);
 
 @Schema()
 export class Review {
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: Professor.name })
-    professor: MongooseSchema.Types.ObjectId;
+    @Prop({ required: true, type: String})
+    professor: string;
 
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: Subject.name })
-    subject: MongooseSchema.Types.ObjectId;
+    @Prop({ required: true, type: String})
+    course: string;
 
-    @Prop({type: Number, defafault: 0})
-    howInterestingAverage: Number;
+    @Prop({required: true, type: Date, default: new Date()})
+    createdAt: Date;
 
-    @Prop({type: Number, defafault: 0})
-    howInterestingReviewsNumber: Number
+    @Prop({required: true, type: Date, default: new Date()})
+    updatedAt: Date;
+
+    @Prop({type: Number, default: 0, min: 0, max: 100})
+    howInterestingRatingAverage: number;
     
-    @Prop({type: Number, defafault: 0})
-    howHardAverage: Number;
+    @Prop({type: Number, default: 0, min: 0, max: 100})
+    howEasyRatingAverage: number;
 
-    @Prop({type: Number, defafault: 0})
-    howHardReviewsNumber: Number;
+    @Prop({type: Number, default: 0})
+    votesNumber: number;
 
     @Prop({type: [UserReviewSchema], default: []})
     reviews: UserReview[];
@@ -49,3 +53,7 @@ export class Review {
 export type ReviewDocument = Review & Document;
 
 export const ReviewSchema = SchemaFactory.createForClass(Review);
+
+ReviewSchema.index({professor: 1});
+ReviewSchema.index({course: 1});
+ReviewSchema.index({course: 1, professor: 1}, {unique: true});
