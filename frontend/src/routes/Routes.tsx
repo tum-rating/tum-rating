@@ -4,7 +4,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { getPath, Paths } from "./paths.ts";
-import { Home } from "../pages";
+import {Course, Home} from "../pages";
 import { Suspense } from "react";
 import {MainLayout} from "../layouts";
 
@@ -18,6 +18,7 @@ const RoutesApp = () => {
           </MainLayout>
       ),
       children: [
+
         {
           path: "/",
           element: (
@@ -26,6 +27,15 @@ const RoutesApp = () => {
               </Suspense>
           ),
         },
+          {
+              path: getPath(Paths[":id"]),
+              element: (
+                    <Suspense fallback={"Loading..."}>
+                        <Course/>
+                    </Suspense>
+
+              )
+          }
       ],
     },
   ];

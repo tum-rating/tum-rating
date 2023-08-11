@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {upperFirst} from '@mantine/hooks';
 import {useForm} from '@mantine/form';
@@ -14,8 +14,8 @@ import {
     Text,
     TextInput,
 } from '@mantine/core';
-import {useSignIn} from "../../auth/useSignIn.tsx";
-import {useSignUp} from "../../auth/useSignUp.tsx";
+import {useSignIn} from "../../auth/useSignIn";
+import {useSignUp} from "../../auth/useSignUp";
 
 type AuthenticationModalProps = {
     defaultType: 'login' | 'register';
