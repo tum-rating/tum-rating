@@ -1,9 +1,15 @@
 import * as Joi from 'joi';
+import { ApiProperty } from '@nestjs/swagger';
 
-export interface AddUserReviewRequestDto {
-    howInterestingRating: number,
-    howEasyRating: number,
-    comment: string,
+export class AddUserReviewRequestDto {
+    @ApiProperty()
+    howInterestingRating: number;
+    
+    @ApiProperty()
+    howEasyRating: number;
+
+    @ApiProperty()
+    comment: string;
 }
 
 export const AddUserReviewRequestSchema = Joi.object<AddUserReviewRequestDto>({

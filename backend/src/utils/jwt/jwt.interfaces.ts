@@ -5,6 +5,11 @@ export enum TokenType {
     recovery
 }
 
+export enum UserRole {
+    user = 0,
+    admin
+}
+
 export interface IsJWTValidInterface<Payload> {
     isValid: boolean,
     payload: Payload

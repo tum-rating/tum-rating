@@ -3,10 +3,13 @@ import {
     Controller,
     Post,
     HttpStatus,
-    UsePipes,
     UnauthorizedException,
     HttpCode
 } from '@nestjs/common';
+import {
+    ApiResponse,
+    ApiTags,
+} from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { Logger, Injectable } from '@nestjs/common';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
@@ -19,8 +22,10 @@ import { AuthService } from './auth.service';
 
 import { SignUpRequestDto, SignUpRequestSchema } from './dto/SignUpRequest.dto';
 import { SignInRequestDto, SignInRequestSchema } from './dto/SignInRequest.dto';
+import { SignInResponseDto } from './dto/SignInResponse.dto';
 // import { ActivateEmailRequestDto, ActivateEmailRequestSchema } from './dto/ActivateEmailRequest.dto';
 
+@ApiTags('auth')
 @Controller('api/v1/auth')
 export class AuthControllerV1 {
     // private readonly _logger: LoggerInterface
@@ -41,7 +46,7 @@ export class AuthControllerV1 {
     }
 
     @Post('/signup')
-    public async signUpLocal(@Body(new JoiObjectSchemaPipe(SignUpRequestSchema)) body: SignUpRequestDto) {
+    public async signUpLocal(@Body() body: SignUpRequestDto) {
         this._logger.log('Signup request received with user email %o', body.email);
 
         const passwordSalt = await this._authenticationService.getSalt();
@@ -106,7 +111,11 @@ export class AuthControllerV1 {
 
     @Post('/signin')
     @HttpCode(HttpStatus.OK)
-    public async signin(@Body(new JoiObjectSchemaPipe(SignInRequestSchema)) body: SignInRequestDto) {
+    @ApiResponse({
+        status: 200,
+        type: SignInResponseDto
+    })
+    public async signin(@Body(new JoiObjectSchemaPipe(SignInRequestSchema)) body: SignInRequestDto): Promise<SignInResponseDto> {
       
         this._logger.log('Signin request received for user with email %s', body.email);
 
