@@ -31,6 +31,12 @@ export class Review {
     @Prop({ required: true, type: String})
     course: string;
 
+    @Prop({ required: true, type: String})
+    courseId: string;
+
+    @Prop({ required: true, type: String})
+    courseNumber: string;
+
     @Prop({required: true, type: Date, default: new Date()})
     createdAt: Date;
 

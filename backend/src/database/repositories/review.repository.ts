@@ -2,6 +2,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ClientSession, Model } from 'mongoose';
 import { Review, ReviewDocument, UserReview } from 'src/database/documents/Review';
 import { BaseRepository } from './base.repository';
+import * as mongoose from 'mongoose';
 
 export class ReviewRepository extends BaseRepository<Review> {
     constructor(
@@ -28,24 +29,43 @@ export class ReviewRepository extends BaseRepository<Review> {
         reviewId: string,
         session?: ClientSession
     ) {
-        const review = await this._reviewModel.findById(reviewId);
+        return this._reviewModel.findByIdAndUpdate(reviewId, {
+            $push: {reviews: userReview}
+        })
+    }
 
-        review.reviews.push(userReview as UserReview);
-
-        if (review.votesNumber === 0) {
-            review.howInterestingRatingAverage = userReview.howInterestingRating;
-            review.howEasyRatingAverage = userReview.howEasyRating;
-        } else {
-            review.howInterestingRatingAverage = 
-                Math.round((review.howInterestingRatingAverage * review.votesNumber + userReview.howInterestingRating) / (review.votesNumber + 1));
-            review.howEasyRatingAverage = 
-                Math.round(((review.howEasyRatingAverage * review.votesNumber + userReview.howEasyRating) / (review.votesNumber + 1))); 
-        }
-
-        review.votesNumber++;
-
-        review.updatedAt = new Date();
-
-        return review.save({session});
+    public async updateReviewStats(
+        reviewId: string,
+    ) {
+        return this._reviewModel.aggregate([
+            {
+                $match: {_id: new mongoose.Types.ObjectId(reviewId)}
+            },
+            {
+                $project: {
+                    _id: 1,
+                    reviews: 1,
+                    howInteresingAvg: { $trunc: { $avg: '$reviews.howInterestingRating' } },
+                    howEasyAvg: { $trunc: { $avg: '$reviews.howEasyRating' } },
+                    votesNumber: { $size: '$reviews'}
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    howInterestingRatingAverage: '$howInteresingAvg',
+                    howEasyRatingAverage: '$howEasyAvg',
+                    votesNumber: '$votesNumber'
+                }
+            },
+            {
+                $merge: { 
+                    into: 'reviews',
+                    on: '_id',
+                    whenMatched: 'merge',
+                    whenNotMatched: 'fail'
+                }
+            }
+        ]).exec();
     }
 }
