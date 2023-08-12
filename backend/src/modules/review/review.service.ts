@@ -36,8 +36,6 @@ export class ReviewService {
         userReview: Pick<UserReview, 'userId' | 'howEasyRating' | 'howInterestingRating' | 'comment'>,
         reviewId: string
     ) {
-        console.log('addUserReview service', userReview, 'reviewId: ', reviewId);
-
         // aggregate might be a better approach here but possibly slower
         await this._reviewUserUniqueRepository.create({
             userId: userReview.userId,
