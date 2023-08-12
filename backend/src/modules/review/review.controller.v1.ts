@@ -1,4 +1,4 @@
-import { Controller, Logger, UseGuards, Get, Post, Headers, Body, Param, ConflictException } from '@nestjs/common';
+import { Controller, Logger, UseGuards, Get, Post, Headers, Body, Param, ConflictException, InternalServerErrorException } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
@@ -10,6 +10,7 @@ import { CreateReviewRequestDto, CreateReviewRequestSchema } from './dto/CreateR
 import { AddUserReviewRequestDto, AddUserReviewRequestSchema } from './dto/AddUserReviewRequest.dto';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
+import { AddReviewError } from 'src/utils/errors/errors';
 
 @Controller('/api/v1/reviews')
 export class ReviewControllerV1 {
@@ -52,12 +53,9 @@ export class ReviewControllerV1 {
         @Headers(USER_ID) userId: string,
         @Body(new JoiObjectSchemaPipe(CreateReviewRequestSchema)) body: CreateReviewRequestDto 
     ) {
-        this._logger.log('Create review request received for %s, %s', body.course, body.professor);
+        this._logger.log(`Create review request received for ${body.course}, ${body.professor}`);
 
-        const createdReview = await this._reviewService.createReview({
-            course: body.course,
-            professor: body.professor
-        });
+        const createdReview = await this._reviewService.createReview(body);
 
         this._logger.log(`Successfuly created review for course ${body.course}, professor ${body.professor} with id ${createdReview.id}`);
 
@@ -75,29 +73,42 @@ export class ReviewControllerV1 {
         @Body(new JoiObjectSchemaPipe(AddUserReviewRequestSchema)) body: AddUserReviewRequestDto,
     ) {
         this._logger.log(`Add review user: ${userId} to review ${reviewId}`);
-        let createdReview: Review;
 
         if (userId != queryUserId) {
             this._logger.warn('User id from jwt does not match one in query param')
         }
 
+        const userReview = {
+            ...body,
+            userId: (userId as unknown as ObjectId)
+        }
+
         try {
-            createdReview = await this._reviewService.addUserReview({
-                ...body,
-                userId: (userId as unknown as ObjectId)
-            }, reviewId);
+            await this._reviewService.addUserReview(userReview, reviewId);
         } catch(error: any) {
             if(error.code == ERROR_MONGO_DUPLICATE_CODE) {
                 this._logger.debug(`User ${userId} has already submitted a review for ${reviewId}`)
                 throw new ConflictException('User has already submitted a review, use patch method to update');
             }
+
+            if(error instanceof AddReviewError) {
+                this._logger.warn(`Add review error, reverting unique user review, user: ${userId} review: ${reviewId}`)
+                await this._reviewService.deleteReviewUserUnique(userId, reviewId);
+                throw new InternalServerErrorException();
+            }
             
-            this._logger.error('User add review error', error);
-            throw error;
+            this._logger.error(`User add review error ${error}`);
+            throw new InternalServerErrorException();
         }
+
+        this._reviewService.updateReviewStats(reviewId)
+            .then(() => this._logger.debug(`Review stats updated for ${reviewId}`))
+            .catch(() => this._logger.warn(`Review stats update failed for ${reviewId}`));
 
         this._logger.log(`Successfully added review user: ${userId} to review: ${reviewId}`);
 
-        return createdReview;
+        return {
+            userReview
+        }
     }
 }

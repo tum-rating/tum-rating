@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { ObjectId } from 'mongoose';
 
 import { ReviewRepository } from 'src/database/repositories/review.repository';
-import { Review, ReviewSchema, UserReview } from 'src/database/documents/review';
+import { Review, UserReview } from 'src/database/documents/review';
 import { ReviewuserUniqueRepository } from 'src/database/repositories/reviewUserUnique';
+import { AddReviewError } from 'src/utils/errors/errors';
 
-import { ObjectId } from 'mongoose';
 
 @Injectable()
 export class ReviewService {
@@ -35,15 +36,25 @@ export class ReviewService {
         userReview: Pick<UserReview, 'userId' | 'howEasyRating' | 'howInterestingRating' | 'comment'>,
         reviewId: string
     ) {
-        console.log('addUserReview service', userReview, 'reviewId: ', reviewId);
-
+        // aggregate might be a better approach here but possibly slower
         await this._reviewUserUniqueRepository.create({
             userId: userReview.userId,
             reviewId: reviewId as unknown as ObjectId,
         });
 
-        const result  = await this._reviewRepository.addUserReview(userReview, reviewId);
-        return result;
+        try {
+            await this._reviewRepository.addUserReview(userReview, reviewId);
+        } catch (error) {
+            throw new AddReviewError(error);
+        }
+    }
+
+    public async deleteReviewUserUnique(userId: string, reviewId: string) {
+        return this._reviewUserUniqueRepository.deleteOneByUserIdAndReviewId(userId, reviewId);
+    }
+
+    public async updateReviewStats(reviewId: string) {
+        return this._reviewRepository.updateReviewStats(reviewId);
     }
 
     public async updateReview(id: string, review: Partial<Review>) {

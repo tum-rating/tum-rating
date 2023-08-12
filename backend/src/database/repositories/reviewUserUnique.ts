@@ -19,4 +19,8 @@ export class ReviewuserUniqueRepository extends BaseRepository<ReviewUserUnique>
             review: reviewId
         }).session(session);
     }
+
+    public async deleteOneByUserIdAndReviewId(userId: string, reviewId: string) {
+        return this._reviewUserUnique.deleteOne({userId, reviewId});
+    }
 }
