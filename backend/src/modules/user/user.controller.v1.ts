@@ -6,16 +6,22 @@ import {
     Logger,
     Patch, 
     NotImplementedException,
+    UnauthorizedException,
     UseGuards
 } from '@nestjs/common';
-
-import { UnauthorizedException } from '@nestjs/common';
+import {
+    ApiBearerAuth,
+    ApiResponse,
+    ApiTags,
+} from '@nestjs/swagger';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 
 import { UserService } from './user.service';
+import { UserResponseDto } from './dto/UserResponse.dto';
 
+@ApiTags('users')
 @Controller('api/v1/users')
 export class UserControllerV1 {
     constructor (
@@ -27,9 +33,14 @@ export class UserControllerV1 {
 
     @Get('/me')
     @UseGuards(AuthGuard)
+    @ApiBearerAuth()
+    @ApiResponse({
+        status: 200,
+        type: UserResponseDto
+    })
     public async getMe(
         @Headers(USER_ID) userId: string,
-    ) {
+    ): Promise<UserResponseDto> {
         this._logger.log('Get me request received from user %s', userId);
 
         const user = await this._userService.getUser(userId);

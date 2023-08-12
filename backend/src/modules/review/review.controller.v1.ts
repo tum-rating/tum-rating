@@ -1,5 +1,9 @@
 import { Controller, Logger, UseGuards, Get, Post, Headers, Body, Param, ConflictException, InternalServerErrorException } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
+import {
+    ApiBearerAuth,
+    ApiTags,
+} from '@nestjs/swagger';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
 import { AuthGuard } from 'src/common/guards/auth.guard';
@@ -12,6 +16,7 @@ import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
 import { AddReviewError } from 'src/utils/errors/errors';
 
+@ApiTags('reviews')
 @Controller('/api/v1/reviews')
 export class ReviewControllerV1 {
     constructor (
@@ -47,6 +52,7 @@ export class ReviewControllerV1 {
         return review
     }
 
+    @ApiBearerAuth()
     @Post()
     @UseGuards(AuthGuard)
     public async createReview(
@@ -64,6 +70,7 @@ export class ReviewControllerV1 {
         }
     }
 
+    @ApiBearerAuth('asd')
     @Post('/:review_id/user/:user_id')
     @UseGuards(AuthGuard)
     public async addReview(
