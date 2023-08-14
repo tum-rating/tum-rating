@@ -14,6 +14,7 @@ import {
     ApiResponse,
     ApiTags,
 } from '@nestjs/swagger';
+import { PinoLogger } from 'nestjs-pino';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
 import { AuthGuard } from 'src/common/guards/auth.guard';
@@ -26,9 +27,9 @@ import { UserResponseDto } from './dto/UserResponse.dto';
 export class UserControllerV1 {
     constructor (
         private readonly _userService: UserService,
-        private readonly _logger: Logger,
+        private readonly _logger: PinoLogger,
     ) {
-        this._logger = new Logger(UserControllerV1.name);
+        this._logger.setContext(UserControllerV1.name);
     }
 
     @Get('/me')
@@ -41,7 +42,7 @@ export class UserControllerV1 {
     public async getMe(
         @Headers(USER_ID) userId: string,
     ): Promise<UserResponseDto> {
-        this._logger.log('Get me request received from user %s', userId);
+        this._logger.info('Get me request received from user %s', userId);
 
         const user = await this._userService.getUser(userId);
 
@@ -50,7 +51,7 @@ export class UserControllerV1 {
             throw new UnauthorizedException();
         }
 
-        this._logger.log('Get me request completed from user %s', userId);
+        this._logger.info('Get me request completed from user %s', userId);
 
         return {
             id: user.id,

@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { PinoLogger } from 'nestjs-pino';
 
 import { UserRepository } from 'src/database/repositories/user.repository';
-import { User, UserSchema } from 'src/database/documents/user';
-
-import { CreateUserDto } from './dto/createuser.dto';
+import { User } from 'src/database/documents/user';
 
 @Injectable()
 export class UserService {
     constructor (
+        private readonly _logger: PinoLogger,
         private readonly _userRepository: UserRepository,
     ) {
+        this._logger.setContext(UserService.name);
     }
 
     public async createUser(user: User) {
@@ -19,7 +20,6 @@ export class UserService {
 
     public async getUser(id: string) {
         const user = await this._userRepository.findOneById(id);
-
         // if(!user)
         //     throw {code: GenericErrorCodes.not_found};
 

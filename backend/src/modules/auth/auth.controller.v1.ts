@@ -11,7 +11,7 @@ import {
     ApiTags,
 } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { Logger, Injectable } from '@nestjs/common';
+import { PinoLogger } from 'nestjs-pino';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { UserService } from 'src/modules/user/user.service';
 import { JWTService } from 'src/utils/jwt/jwt.service';
@@ -33,7 +33,7 @@ export class AuthControllerV1 {
 
     constructor (
         // private readonly _loggerService: LoggerService,
-        private readonly _logger: Logger,
+        private readonly _logger: PinoLogger,
         private readonly _userService: UserService,
         private readonly _authenticationService: AuthService,
         private readonly _jwtService: JWTService,
@@ -42,12 +42,12 @@ export class AuthControllerV1 {
     ) {
         // this._logger = this._loggerService.getLoggerWithLabel(AuthenticationControllerV1.name);
         // this._webappBaseUrl = this._configService.get('webapp.url')
-        this._logger = new Logger(AuthControllerV1.name);
+        this._logger.setContext(AuthControllerV1.name);
     }
 
     @Post('/signup')
     public async signUpLocal(@Body() body: SignUpRequestDto) {
-        this._logger.log('Signup request received with user email %o', body.email);
+        this._logger.info('Signup request received with user email %o', body.email);
 
         const passwordSalt = await this._authenticationService.getSalt();
 
@@ -76,7 +76,7 @@ export class AuthControllerV1 {
             //     `Activate your account with link: ${activationLink}`
             // );
 
-            this._logger.log(
+            this._logger.info(
                 'Signup local request completed user created with email %s, id %s', 
                 body.email,
                 createdUser
@@ -117,7 +117,7 @@ export class AuthControllerV1 {
     })
     public async signin(@Body(new JoiObjectSchemaPipe(SignInRequestSchema)) body: SignInRequestDto): Promise<SignInResponseDto> {
       
-        this._logger.log('Signin request received for user with email %s', body.email);
+        this._logger.info('Signin request received for user with email %s', body.email);
 
         const databaseUser = await this._userService.getUserByEmail(body.email);
 
@@ -135,7 +135,7 @@ export class AuthControllerV1 {
 
         const token = await this._jwtService.signJWTAccess(databaseUser.id);
 
-        this._logger.log('Signin request completed user with email %s', body.email);
+        this._logger.info('Signin request completed user with email %s', body.email);
 
         return {
             user: {

@@ -4,6 +4,7 @@ import {
     ApiBearerAuth,
     ApiTags,
 } from '@nestjs/swagger';
+import { PinoLogger } from 'nestjs-pino';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
 import { AuthGuard } from 'src/common/guards/auth.guard';
@@ -21,18 +22,18 @@ import { AddReviewError } from 'src/utils/errors/errors';
 export class ReviewControllerV1 {
     constructor (
         private readonly _reviewService: ReviewService,
-        private readonly _logger: Logger,
+        private readonly _logger: PinoLogger,
     ) {
-        this._logger = new Logger(ReviewControllerV1.name);
+        this._logger.setContext(ReviewControllerV1.name);
     }
 
     @Get()
     public async getReviews() {
-        this._logger.log('Get all reviews requested');
+        this._logger.info('Get all reviews requested');
 
         const reviews = await this._reviewService.getReviewsOverview();
 
-        this._logger.log('Successfuly retrieved all reviews');
+        this._logger.info('Successfuly retrieved all reviews');
 
         return {
            reviews: reviews
@@ -43,11 +44,11 @@ export class ReviewControllerV1 {
     public async getReviewById(
         @Param('id') id: string
     ) {
-        this._logger.log('Get review with id: ', id);
+        this._logger.info('Get review with id: ', id);
 
         const review = await this._reviewService.getReviewById(id);
 
-        this._logger.log(`Successfuly retrieved with id: ${review.id}`);
+        this._logger.info('Successfuly retrieved with id: %s', review.id);
 
         return review
     }
@@ -59,11 +60,11 @@ export class ReviewControllerV1 {
         @Headers(USER_ID) userId: string,
         @Body(new JoiObjectSchemaPipe(CreateReviewRequestSchema)) body: CreateReviewRequestDto 
     ) {
-        this._logger.log(`Create review request received for ${body.course}, ${body.professor}`);
+        this._logger.info('Create review request received for %s, %s', body.course, body.professor);
 
         const createdReview = await this._reviewService.createReview(body);
 
-        this._logger.log(`Successfuly created review for course ${body.course}, professor ${body.professor} with id ${createdReview.id}`);
+        this._logger.info('Successfuly created review for course %s, %s', body.course, body.professor);
 
         return {
             id: createdReview.id
@@ -79,7 +80,7 @@ export class ReviewControllerV1 {
         @Param('review_id') reviewId: string,
         @Body(new JoiObjectSchemaPipe(AddUserReviewRequestSchema)) body: AddUserReviewRequestDto,
     ) {
-        this._logger.log(`Add review user: ${userId} to review ${reviewId}`);
+        this._logger.info('Add review user: %s to review %s', userId, reviewId);
 
         if (userId != queryUserId) {
             this._logger.warn('User id from jwt does not match one in query param')
@@ -94,25 +95,25 @@ export class ReviewControllerV1 {
             await this._reviewService.addUserReview(userReview, reviewId);
         } catch(error: any) {
             if(error.code == ERROR_MONGO_DUPLICATE_CODE) {
-                this._logger.debug(`User ${userId} has already submitted a review for ${reviewId}`)
+                this._logger.debug('User %s has already submitted a review for %s', userId, reviewId)
                 throw new ConflictException('User has already submitted a review, use patch method to update');
             }
 
             if(error instanceof AddReviewError) {
-                this._logger.warn(`Add review error, reverting unique user review, user: ${userId} review: ${reviewId}`)
+                this._logger.warn('Add review error, reverting unique user review, user: %s review: %s', userId, reviewId)
                 await this._reviewService.deleteReviewUserUnique(userId, reviewId);
                 throw new InternalServerErrorException();
             }
             
-            this._logger.error(`User add review error ${error}`);
+            this._logger.error('User add review error', error);
             throw new InternalServerErrorException();
         }
 
         this._reviewService.updateReviewStats(reviewId)
-            .then(() => this._logger.debug(`Review stats updated for ${reviewId}`))
-            .catch(() => this._logger.warn(`Review stats update failed for ${reviewId}`));
+            .then(() => this._logger.debug('Review stats updated for %s', reviewId))
+            .catch(() => this._logger.warn('Review stats update failed for %s', reviewId));
 
-        this._logger.log(`Successfully added review user: ${userId} to review: ${reviewId}`);
+        this._logger.info('Successfully added review user: %s to review: %s', userId, reviewId);
 
         return {
             userReview
