@@ -3,6 +3,7 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
 
 import { ConfigModule } from 'src/config/config.module';
+import { MailerModule } from 'src/modules/mailer/mailer.module';
 import { MongoModule } from 'src/database/mongo.module';
 import { LoggerModule } from 'src/utils/logger/logger.module';
 
@@ -14,6 +15,7 @@ import { ReviewModule } from './modules/review/review.module';
 @Module({
     imports: [
         ConfigModule,
+        MailerModule,
         MongoModule,
         LoggerModule,
         

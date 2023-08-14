@@ -14,4 +14,17 @@ export class UserRepository extends BaseRepository<User> {
     public getByEmail(email: string) {
         return this._userModel.findOne({email}).exec();
     }
+
+    public activateEmail(id: string) {
+        return this._userModel.findByIdAndUpdate(id, {
+            isEmailActivated: true
+        });
+    }
+
+    public updatePassword(id: string, newPasswordHash: string, newPasswordSalt: string) {
+        return this._userModel.findByIdAndUpdate(id, {
+            passwordHash: newPasswordHash,
+            passwordSalt: newPasswordSalt
+        });
+    }
 }
