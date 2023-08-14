@@ -14,6 +14,9 @@ export class User {
 
     @Prop({ required: true })
     passwordSalt: string;
+
+    @Prop({required: true, default: false})
+    isEmailActivated: boolean;
 }
 
 export type UserDocument = User & Document;

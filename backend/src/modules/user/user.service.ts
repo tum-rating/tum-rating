@@ -4,6 +4,8 @@ import { PinoLogger } from 'nestjs-pino';
 import { UserRepository } from 'src/database/repositories/user.repository';
 import { User } from 'src/database/documents/user';
 
+import { CreateUserDto } from './dto/CreateUser.dto';
+
 @Injectable()
 export class UserService {
     constructor (
@@ -13,9 +15,9 @@ export class UserService {
         this._logger.setContext(UserService.name);
     }
 
-    public async createUser(user: User) {
+    public async createUser(user: CreateUserDto) {
 
-        return this._userRepository.create(user);
+        return this._userRepository.create(user as User);
     }
 
     public async getUser(id: string) {
@@ -36,5 +38,13 @@ export class UserService {
 
     public async deleteUser(id: string) {
         return this._userRepository.deleteOneById(id);
+    }
+
+    public async activateEmail(id: string) {
+        return this._userRepository.activateEmail(id);
+    }
+
+    public async updatePassword(id: string, newPasswordHash: string, newPasswordSalt: string) {
+        return this._userRepository.updatePassword(id, newPasswordHash, newPasswordSalt);
     }
 }

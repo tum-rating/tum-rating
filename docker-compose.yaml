@@ -10,3 +10,6 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root-password
   mailer:
     image: maildev/maildev
+    ports:
+    - "1025:1025"
+    - "1080:1080"

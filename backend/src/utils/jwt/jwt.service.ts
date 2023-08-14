@@ -27,6 +27,10 @@ export class JWTService {
         return this._signJWT(userId, TokenType.activation, '1d');
     }
 
+    public async signJWTRecovery(userId: string) {
+        return this._signJWT(userId, TokenType.recovery, '1d');
+    }
+
     public async verifyJWTActivate(token: string) {
         return this._verifyJWT(token, TokenType.activation);
     }
