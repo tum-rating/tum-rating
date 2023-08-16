@@ -26,7 +26,6 @@ export class MailerService {
         });
 
         this._sender = this._configService.getOrThrow('mailer.sender')
-        console.log('mailer sender', this._sender);
     }
 
     public async send(to: MailRecipient[], subject: string, text: string) {
