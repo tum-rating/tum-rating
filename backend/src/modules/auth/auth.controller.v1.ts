@@ -72,7 +72,7 @@ export class AuthControllerV1 {
 
             const activationToken = await this._jwtService.signJWTActivate(createdUser.id);
 
-            await this._mailerService.sendEmailActivationEmail(
+            const response = await this._mailerService.sendEmailActivationEmail(
                 [{email: body.email, name: body.username}],
                 activationToken
             )
@@ -80,7 +80,7 @@ export class AuthControllerV1 {
             this._logger.info(
                 'Signup local request completed user created with email %s, id %s', 
                 body.email,
-                createdUser
+                createdUser.id
             );
         }
         catch(error) {
@@ -112,7 +112,13 @@ export class AuthControllerV1 {
 
         const databaseUser = await this._userService.getUserByEmail(body.email);
 
+
         if(!databaseUser) {
+            this._logger.warn('Sign in request fail, user email is not activated for %s', body.email);
+            throw new UnauthorizedException();
+        }
+
+        if(!databaseUser.isEmailActivated) {
             this._logger.warn('Sign in request fail, user does not exsit for %s', body.email);
             const activationToken = await this._jwtService.signJWTActivate(databaseUser.id);
 
@@ -122,11 +128,6 @@ export class AuthControllerV1 {
             );
 
             // dont reveal email confirmation with specific message
-            throw new UnauthorizedException();
-        }
-
-        if(!databaseUser.isEmailActivated) {
-            this._logger.warn('Sign in request fail, user email is not activated for %s', body.email);
             throw new UnauthorizedException();
         }
 
@@ -193,7 +194,7 @@ export class AuthControllerV1 {
         }
         
         if(body.token && body.password) {
-            const {isValid, payload} = await this._jwtService.verifyJWTActivate(body.token);
+            const {isValid, payload} = await this._jwtService.verifyJWTRecovery(body.token);
 
             if(!isValid)
                 throw new UnauthorizedException();

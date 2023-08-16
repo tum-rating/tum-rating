@@ -35,6 +35,10 @@ export class JWTService {
         return this._verifyJWT(token, TokenType.activation);
     }
 
+    public async verifyJWTRecovery(token: string) {
+        return this._verifyJWT(token, TokenType.recovery);
+    }
+
     private async _signJWT(userId: string, tokenType: TokenType, expiration: string) {
         const token = await new SignJWT({tokenType})
             .setProtectedHeader({alg: 'HS256'})
