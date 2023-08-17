@@ -1,1 +1,1 @@
-export {TableOfContentsFloating} from './TableOfContent';
+export { TableOfContentsFloating } from './TableOfContent';

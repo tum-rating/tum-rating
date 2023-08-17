@@ -5,15 +5,18 @@ const apiVersion = '/v1';
 const baseApiUrl = baseDomain + api + apiVersion;
 
 const auth = {
-    auth: baseApiUrl + '/auth',
-    get signup() {
-        return this.auth + '/signup'
-    },
-    get signin() {
-        return this.auth + '/signin'
-    },
+  auth: baseApiUrl + '/auth',
+  get signup() {
+    return this.auth + '/signup';
+  },
+  get signin() {
+    return this.auth + '/signin';
+  },
+  get activate() {
+    return this.auth + '/activate';
+  },
 };
 
 export const endpoints = {
-    ...auth
-}
+  ...auth,
+};

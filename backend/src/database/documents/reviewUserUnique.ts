@@ -6,15 +6,20 @@ import { Review } from './review';
 
 @Schema()
 export class ReviewUserUnique {
-    @Prop({required: true, type: MongooseSchema.Types.ObjectId, ref: User.name })
-    userId: MongooseSchema.Types.ObjectId;
+  @Prop({ required: true, type: MongooseSchema.Types.ObjectId, ref: User.name })
+  userId: MongooseSchema.Types.ObjectId;
 
-    @Prop({required: true, type: MongooseSchema.Types.ObjectId, ref: Review.name })
-    reviewId: MongooseSchema.Types.ObjectId;
+  @Prop({
+    required: true,
+    type: MongooseSchema.Types.ObjectId,
+    ref: Review.name,
+  })
+  reviewId: MongooseSchema.Types.ObjectId;
 }
 
 export type ReviewUserUniqueDocument = ReviewUserUnique & Document;
 
-export const ReviewUserUniqueSchema = SchemaFactory.createForClass(ReviewUserUnique);
+export const ReviewUserUniqueSchema =
+  SchemaFactory.createForClass(ReviewUserUnique);
 
-ReviewUserUniqueSchema.index({userId: 1, reviewId: 1}, {unique: true});
+ReviewUserUniqueSchema.index({ userId: 1, reviewId: 1 }, { unique: true });

@@ -4,10 +4,10 @@ import { Course, CourseDocument } from 'src/database/documents/course';
 import { BaseRepository } from './base.repository';
 
 export class CourseRepository extends BaseRepository<Course> {
-    constructor(
-        @InjectModel(Course.name)
-        private readonly _CourseModel: Model<CourseDocument>,
-    ) {
-        super(_CourseModel);
-    }
+  constructor(
+    @InjectModel(Course.name)
+    private readonly _CourseModel: Model<CourseDocument>,
+  ) {
+    super(_CourseModel);
+  }
 }

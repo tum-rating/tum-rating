@@ -1,1 +1,1 @@
-export {OverallScore} from './OverallScore';
+export { OverallScore } from './OverallScore';

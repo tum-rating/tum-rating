@@ -2,18 +2,18 @@ import * as Joi from 'joi';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AddUserReviewRequestDto {
-    @ApiProperty()
-    howInterestingRating: number;
-    
-    @ApiProperty()
-    howEasyRating: number;
+  @ApiProperty()
+  howInterestingRating: number;
 
-    @ApiProperty()
-    comment: string;
+  @ApiProperty()
+  howEasyRating: number;
+
+  @ApiProperty()
+  comment: string;
 }
 
 export const AddUserReviewRequestSchema = Joi.object<AddUserReviewRequestDto>({
-    howInterestingRating: Joi.number().required().min(0).max(100),
-    howEasyRating:  Joi.number().required().min(0).max(100),
-    comment: Joi.string()
+  howInterestingRating: Joi.number().required().min(0).max(100),
+  howEasyRating: Joi.number().required().min(0).max(100),
+  comment: Joi.string(),
 });

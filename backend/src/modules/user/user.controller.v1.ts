@@ -1,19 +1,15 @@
-import { 
-    Controller,
-    Delete,
-    Get,
-    Headers,
-    Logger,
-    Patch, 
-    NotImplementedException,
-    UnauthorizedException,
-    UseGuards
-} from '@nestjs/common';
 import {
-    ApiBearerAuth,
-    ApiResponse,
-    ApiTags,
-} from '@nestjs/swagger';
+  Controller,
+  Delete,
+  Get,
+  Headers,
+  Logger,
+  Patch,
+  NotImplementedException,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
@@ -25,59 +21,58 @@ import { UserResponseDto } from './dto/UserResponse.dto';
 @ApiTags('users')
 @Controller('api/v1/users')
 export class UserControllerV1 {
-    constructor (
-        private readonly _userService: UserService,
-        private readonly _logger: PinoLogger,
-    ) {
-        this._logger.setContext(UserControllerV1.name);
+  constructor(
+    private readonly _userService: UserService,
+    private readonly _logger: PinoLogger,
+  ) {
+    this._logger.setContext(UserControllerV1.name);
+  }
+
+  @Get('/me')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    type: UserResponseDto,
+  })
+  public async getMe(
+    @Headers(USER_ID) userId: string,
+  ): Promise<UserResponseDto> {
+    this._logger.info('Get me request received from user %s', userId);
+
+    const user = await this._userService.getUser(userId);
+
+    if (!user) {
+      this._logger.error('Get me request failed, not found user %s', userId);
+      throw new UnauthorizedException();
     }
 
-    @Get('/me')
-    @UseGuards(AuthGuard)
-    @ApiBearerAuth()
-    @ApiResponse({
-        status: 200,
-        type: UserResponseDto
-    })
-    public async getMe(
-        @Headers(USER_ID) userId: string,
-    ): Promise<UserResponseDto> {
-        this._logger.info('Get me request received from user %s', userId);
+    this._logger.info('Get me request completed from user %s', userId);
 
-        const user = await this._userService.getUser(userId);
+    return {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+    };
+  }
 
-        if(!user) {
-            this._logger.error('Get me request failed, not found user %s', userId);
-            throw new UnauthorizedException();
-        }
+  @Patch('/me')
+  public async patchMe() {
+    throw new NotImplementedException();
+  }
 
-        this._logger.info('Get me request completed from user %s', userId);
+  @Get()
+  public async getUsers() {
+    throw new NotImplementedException();
+  }
 
-        return {
-            id: user.id,
-            email: user.email,
-            username: user.username
-        };
-    }
+  @Get(':id')
+  public async getUser() {
+    throw new NotImplementedException();
+  }
 
-    @Patch('/me')
-    public async patchMe() {
-        throw new NotImplementedException();
-    }
-
-    @Get()
-    public async getUsers() {
-        throw new NotImplementedException();
-    }
-
-    @Get(':id')
-    public async getUser() {
-        throw new NotImplementedException();
-    }
-
-    @Delete(':id')
-    public async deleteUser()
-    {
-        throw new NotImplementedException();
-    }
+  @Delete(':id')
+  public async deleteUser() {
+    throw new NotImplementedException();
+  }
 }
