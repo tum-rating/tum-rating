@@ -1,4 +1,4 @@
-export interface RatingProps{
-    initialScore: number;
-    readonly?: boolean;
+export interface RatingProps {
+  initialScore: number;
+  readonly?: boolean;
 }

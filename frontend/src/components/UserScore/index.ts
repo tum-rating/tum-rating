@@ -1,1 +1,1 @@
-export {UserScore} from './UserScore';
+export { UserScore } from './UserScore';

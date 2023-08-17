@@ -11,23 +11,20 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { ReviewModule } from './modules/review/review.module';
 
-
 @Module({
-    imports: [
-        ConfigModule,
-        MailerModule,
-        MongoModule,
-        LoggerModule,
-        
-        AuthModule,
-        UserModule,
-        ReviewModule
-    ]
+  imports: [
+    ConfigModule,
+    MailerModule,
+    MongoModule,
+    LoggerModule,
+
+    AuthModule,
+    UserModule,
+    ReviewModule,
+  ],
 })
 export class AppModule implements NestModule {
-    configure(consumer: MiddlewareConsumer) {
-        consumer
-          .apply(LoggerMiddleware)
-          .forRoutes('*');
-    }
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
 }

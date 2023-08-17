@@ -10,19 +10,19 @@ import SignUpConfig from './signup.config';
 import WebappConfig from './webapp.config';
 
 @Module({
-    imports: [
-        NestConfigModule.forRoot({
-            isGlobal: true,
-            load: [
-                AppConfig,
-                GoogleAuthConfig,
-                JWTConfig,
-                MailerConfig,
-                MongoConfig,
-                SignUpConfig,
-                WebappConfig,
-            ],
-        }),
-    ],
+  imports: [
+    NestConfigModule.forRoot({
+      isGlobal: true,
+      load: [
+        AppConfig,
+        GoogleAuthConfig,
+        JWTConfig,
+        MailerConfig,
+        MongoConfig,
+        SignUpConfig,
+        WebappConfig,
+      ],
+    }),
+  ],
 })
 export class ConfigModule {}

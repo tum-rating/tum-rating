@@ -3,20 +3,20 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class User {
-    @Prop({ required: true, unique: true, message: 'username must be unique' })
-    username: string;
+  @Prop({ required: true, unique: true, message: 'username must be unique' })
+  username: string;
 
-    @Prop({ required: true, unique: true, message: 'Email must be unique' })
-    email: string;
+  @Prop({ required: true, unique: true, message: 'Email must be unique' })
+  email: string;
 
-    @Prop({ required: true })
-    passwordHash: string;
+  @Prop({ required: true })
+  passwordHash: string;
 
-    @Prop({ required: true })
-    passwordSalt: string;
+  @Prop({ required: true })
+  passwordSalt: string;
 
-    @Prop({required: true, default: false})
-    isEmailActivated: boolean;
+  @Prop({ required: true, default: false })
+  isEmailActivated: boolean;
 }
 
 export type UserDocument = User & Document;

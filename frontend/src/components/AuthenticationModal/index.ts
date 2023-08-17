@@ -1,1 +1,0 @@
-export {AuthenticationModal} from "./AuthenticationModal.tsx"

@@ -8,16 +8,9 @@ import { UserModule } from 'src/modules/user/user.module';
 import { MailerModule } from 'src/modules/mailer/mailer.module';
 
 @Module({
-	imports: [
-		UserModule,
-		MailerModule
-	],
-	controllers: [AuthControllerV1],
-	providers: [
-		AuthService,
-        JWTService,
-        Logger
-	],
-	exports: [AuthService]
+  imports: [UserModule, MailerModule],
+  controllers: [AuthControllerV1],
+  providers: [AuthService, JWTService, Logger],
+  exports: [AuthService],
 })
 export class AuthModule {}
