@@ -46,7 +46,7 @@ const ClassesTable = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setData(makeData(1000));
+      setData(makeData(10000));
       setIsLoading(false);
     }
   }, []);
