@@ -182,8 +182,8 @@ export class AuthControllerV1 {
           const user = await this._userService.getUserByEmail(body.email);
 
           if(!user) {
-              this._logger.warn('Email reqested for recovery is not in codebase %s', body.email);
-              return;
+            this._logger.warn('Email reqested for recovery is not in codebase %s', body.email);
+            return;
           }
 
           const recoveryTokoen = await this._jwtService.signJWTRecovery(user.id);
@@ -197,7 +197,7 @@ export class AuthControllerV1 {
           const {isValid, payload} = await this._jwtService.verifyJWTRecovery(body.token);
 
           if(!isValid)
-              throw new UnauthorizedException();
+            throw new UnauthorizedException();
 
           this._logger.info('Password recovery request for user %s', payload.sub);
 
