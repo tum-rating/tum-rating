@@ -2,7 +2,6 @@ import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
-import { SignUpRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignUpRequest.dto';
 import { PasswordRecoveryRequestDto } from 'src/modules/auth/dto/PasswordRecovery.dto';
 import { SignInRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SigninRequest.dto';
 import { authUrl } from '@tum-rating/backend/test/utils';
