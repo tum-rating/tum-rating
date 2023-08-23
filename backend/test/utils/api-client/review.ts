@@ -6,6 +6,7 @@ import { Review } from '@tum-rating/backend/src/database/documents/Review';
 
 import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNumberOfLenght';
 import { signInRequestMock } from './user';
+import { AddUserReviewRequestDto } from 'src/modules/review/dto/AddUserReviewRequest.dto';
 
 export const reviewUrl = baseUrlV1 + '/reviews';
 
@@ -30,4 +31,25 @@ export const createCourseReviewMockRequest = async (token: string, review?: Part
 export const getCourseReviewById = async (id: string) => {
     const review = await axios.get(reviewUrl + '/' + id);
     return review.data as Review;
+}
+
+export const addUserReviewMockRequest = async (token: string, reviewId: string, userId: string, userReview?: Partial<AddUserReviewRequestDto>) => {
+    const requestBody: AddUserReviewRequestDto = {
+        howInterestingRating: faker.number.int({min: 0, max: 100}),
+        howEasyRating: faker.number.int({min: 0, max: 100}),
+        comment: faker.word.words(faker.number.int({min: 2, max: 100})),
+        semester: 'SS 2023',
+        ...userReview
+    };
+
+    const addUserReviewResponse = await axios.post(`${reviewUrl}/${reviewId}/user/${userId}`, 
+        requestBody,
+        {headers: {
+            Authorization: 'Bearer ' + token
+        }}
+    );
+
+    return {
+        userReview: requestBody
+    }
 }

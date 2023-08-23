@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
 import { connectMongo, signInRequestMock } from '@tum-rating/backend/test/utils';
-import { reviewUrl } from '@tum-rating/backend/test/utils/api-client/review';
+import { addUserReviewMockRequest, reviewUrl } from '@tum-rating/backend/test/utils/api-client/review';
 import { createCourseReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
 import { AddUserReviewRequestDto } from 'src/modules/review/dto/AddUserReviewRequest.dto';
 
@@ -32,10 +32,104 @@ describe('Add User Review', () => {
             .post('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .send(requestBody)
-            .expect(201)
-            // .expect((response: supertest.Response) => {
-            //     expect(response.body).toHaveProperty('reviews');
-            //     expect(response.body.reviews.length >= 1).toBe(true);
-            // });
+            .expect(201);
+    });
+
+    it('should fail if user review is already present', async () => {
+        const signInResponse = await signInRequestMock();
+
+        const createdReview = await createCourseReviewMockRequest(signInResponse.token);
+        
+        const requestBody: AddUserReviewRequestDto = {
+            howInterestingRating: 50,
+            howEasyRating: 75,
+            comment: faker.word.words(),
+            semester: createdReview.offeredInSemesters[0]
+        };
+
+        await supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
+            .post('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send(requestBody)
+            .expect(201);
+
+        return supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
+            .post('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send(requestBody)
+            .expect(409);
+    });
+
+    it('should fail if user review is already present', async () => {
+        const signInResponse = await signInRequestMock();
+
+        const createdReview = await createCourseReviewMockRequest(signInResponse.token);
+        
+        const requestBody: AddUserReviewRequestDto = {
+            howInterestingRating: 50,
+            howEasyRating: 75,
+            comment: faker.word.words(),
+            semester: createdReview.offeredInSemesters[0]
+        };
+
+        await supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
+            .post('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send(requestBody)
+            .expect(201);
+
+        return supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
+            .post('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send(requestBody)
+            .expect(409);
+    });
+
+    it('should fail if user review semester is not matching review one', async () => {
+        const signInResponse = await signInRequestMock();
+
+        const createdReview = await createCourseReviewMockRequest(signInResponse.token);
+        
+        const requestBody: AddUserReviewRequestDto = {
+            howInterestingRating: 50,
+            howEasyRating: 75,
+            comment: faker.word.words(),
+            semester: 'not matching'
+        };
+
+        return supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
+            .post('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send(requestBody)
+            .expect(404);
+    });
+
+    it('should correctly update ratings after added user reviews', async () => {
+        const signInResponse = await signInRequestMock();
+        const signInResponse2 = await signInRequestMock();
+
+        const createdReview = await createCourseReviewMockRequest(signInResponse.token);
+
+        await addUserReviewMockRequest(signInResponse.token, createdReview.id, signInResponse.user.id, {
+            howInterestingRating: 20,
+            howEasyRating: 30
+        });
+
+        await addUserReviewMockRequest(signInResponse2.token, createdReview.id, signInResponse2.user.id, {
+            howInterestingRating: 40,
+            howEasyRating: 60
+        });
+
+        return supertest(reviewUrl + '/' + createdReview.id)
+            .get('/')
+            .expect(200)
+            .expect((response: supertest.Response) => {
+                expect(response.body).toHaveProperty('_id');
+                expect(response.body).toHaveProperty('reviews');
+                expect(response.body.reviews.length).toBe(2);
+                expect(response.body.howInterestingRatingAverage).toBe(30);
+                expect(response.body.howEasyRatingAverage).toBe(45);
+                expect(response.body.votesNumber).toBe(2);
+            });
     });
 });
