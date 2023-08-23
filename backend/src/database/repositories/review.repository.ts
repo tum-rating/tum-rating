@@ -24,6 +24,25 @@ export class ReviewRepository extends BaseRepository<Review> {
     return this._reviewModel.find().select('-reviews -__v');
   }
 
+  public async getReviewsByQuery(pageNumber: number, pageSize: number, search?: string) {
+    // rage base pagination - think how to combine with text search, for now good enough
+    // let query = {_id: {$gt: pageId}}
+
+    let query = {};
+
+    if(search) {
+      query['$text'] = {$search: search}
+    }
+
+    console.log('query: ', query);
+
+    return this._reviewModel.find(query)
+      .sort({course: 1})
+      .select('-reviews -__v')
+      .skip(pageNumber * pageSize)
+      .limit(pageSize);
+  }
+
   public async getById(id: string) {
     return this._reviewModel.findById(id).select('-__v');
   }

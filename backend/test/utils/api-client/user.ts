@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { SignUpRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignUpRequest.dto';
+import { SignInRequestDto } from 'src/modules/auth/dto/SignInRequest.dto';
 import { ActivateUserEmailRequestDto } from 'src/modules/auth/dto/ActivateUserEmail.dto';
 import { baseUrlV1 } from './config';
 
@@ -28,4 +29,23 @@ export const signUpRequestMock = async (request?: Partial<SignUpRequestDto>) => 
     await activateUserEmailDB(mockRequest.email);
 
     return mockRequest;
+}
+
+export const signInRequestMock = async (request?: Partial<SignUpRequestDto>) => {
+    const signUpResponse = await signUpRequestMock(request);
+
+    const signInRequest:SignInRequestDto = {
+        email: signUpResponse.email,
+        password: signUpResponse.password
+    };
+
+    const singInResponse = await axios.post(authUrl + '/signin', signInRequest);
+
+    return {
+        user: {
+            ...signUpResponse,
+            id: singInResponse.data.user.id
+        },
+        token: singInResponse.data.token
+    };
 }
