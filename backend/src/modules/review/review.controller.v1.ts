@@ -9,6 +9,7 @@ import {
   ConflictException,
   InternalServerErrorException,
   Query,
+  NotFoundException,
 } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
 import { ApiBearerAuth, ApiTags, ApiQuery } from '@nestjs/swagger';
@@ -29,7 +30,7 @@ import {
 } from './dto/AddUserReviewRequest.dto';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
-import { AddReviewError } from 'src/utils/errors/errors';
+import { AddUserReviewError, AddUserReviewNotFoundError } from 'src/utils/errors/errors';
 
 @ApiTags('reviews')
 @Controller('/api/v1/reviews')
@@ -104,7 +105,7 @@ export class ReviewControllerV1 {
     };
   }
 
-  @ApiBearerAuth('asd')
+  @ApiBearerAuth()
   @Post('/:review_id/user/:user_id')
   @UseGuards(AuthGuard)
   public async addReview(
@@ -139,7 +140,17 @@ export class ReviewControllerV1 {
         );
       }
 
-      if (error instanceof AddReviewError) {
+      if (error instanceof AddUserReviewNotFoundError) {
+        this._logger.warn(
+          'Review not found, reverting unique user review, user: %s review: %s',
+          userId,
+          reviewId,
+        );
+        await this._reviewService.deleteReviewUserUnique(userId, reviewId);
+        throw new NotFoundException('review not found');
+      }
+
+      if (error instanceof AddUserReviewError) {
         this._logger.warn(
           'Add review error, reverting unique user review, user: %s review: %s',
           userId,

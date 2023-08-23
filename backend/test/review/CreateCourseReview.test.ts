@@ -24,6 +24,7 @@ describe('Create Course Review', () => {
             courseNumber: fakeNumberOfLenght(8),
             course: faker.word.words(faker.number.int({min: 2, max: 10})),
             professor: faker.word.words(2),
+            offeredInSemesters: ['SS 2023', 'WS 2023']
         };
     
         return supertest(reviewUrl)

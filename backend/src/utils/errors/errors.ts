@@ -5,9 +5,16 @@ export class DuplicateError extends Error {
   }
 }
 
-export class AddReviewError extends Error {
+export class AddUserReviewError extends Error {
   constructor(message) {
     super(message);
-    this.name = 'Add review error';
+    this.name = 'Add user review error';
+  }
+}
+
+export class AddUserReviewNotFoundError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'Add user review not found error';
   }
 }

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { baseUrlV1 } from './config';
 import { CreateReviewRequestDto } from 'src/modules/review/dto/CreateReviewRequest.dto';
+import { Review } from '@tum-rating/backend/src/database/documents/Review';
 
 import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNumberOfLenght';
 import { signInRequestMock } from './user';
@@ -14,6 +15,7 @@ export const createCourseReviewMockRequest = async (token: string, review?: Part
         courseNumber: fakeNumberOfLenght(8),
         course: faker.word.words(faker.number.int({min: 2, max: 10})),
         professor: faker.word.words(2),
+        offeredInSemesters: ['SS 2023', 'WS 2023'],
         ...review
     };
 
@@ -24,3 +26,8 @@ export const createCourseReviewMockRequest = async (token: string, review?: Part
         ...requestBody
     }
 };
+
+export const getCourseReviewById = async (id: string) => {
+    const review = await axios.get(reviewUrl + '/' + id);
+    return review.data as Review;
+}

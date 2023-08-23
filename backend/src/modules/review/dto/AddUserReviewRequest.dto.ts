@@ -10,10 +10,14 @@ export class AddUserReviewRequestDto {
 
   @ApiProperty()
   comment: string;
+
+  @ApiProperty()
+  semester: string;
 }
 
 export const AddUserReviewRequestSchema = Joi.object<AddUserReviewRequestDto>({
   howInterestingRating: Joi.number().required().min(0).max(100),
   howEasyRating: Joi.number().required().min(0).max(100),
   comment: Joi.string(),
+  semester: Joi.string(),
 });

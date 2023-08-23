@@ -13,6 +13,9 @@ export class CreateReviewRequestDto {
 
   @ApiProperty()
   course: string;
+
+  @ApiProperty()
+  offeredInSemesters: string[];
 }
 
 export const CreateReviewRequestSchema = Joi.object<CreateReviewRequestDto>({
@@ -20,4 +23,5 @@ export const CreateReviewRequestSchema = Joi.object<CreateReviewRequestDto>({
   courseNumber: Joi.string().required(),
   professor: Joi.string().required(),
   course: Joi.string().required(),
+  offeredInSemesters: Joi.array().items(Joi.string()).min(1),
 });
