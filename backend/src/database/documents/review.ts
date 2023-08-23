@@ -37,6 +37,9 @@ export class Review {
   @Prop({ required: true, type: String })
   courseNumber: string;
 
+  @Prop({ required: true, type: [String]})
+  offeredInSemesters: string[];
+
   @Prop({ required: true, type: Date, default: new Date() })
   createdAt: Date;
 
@@ -60,6 +63,6 @@ export type ReviewDocument = Review & Document;
 
 export const ReviewSchema = SchemaFactory.createForClass(Review);
 
-ReviewSchema.index({ professor: 1 });
+ReviewSchema.index({ course: 'text', professor: 'text' });
 ReviewSchema.index({ course: 1 });
 ReviewSchema.index({ course: 1, professor: 1 }, { unique: true });

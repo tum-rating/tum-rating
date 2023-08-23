@@ -1,6 +1,5 @@
 import {
   Controller,
-  Logger,
   UseGuards,
   Get,
   Post,
@@ -9,14 +8,15 @@ import {
   Param,
   ConflictException,
   InternalServerErrorException,
+  Query,
 } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiQuery } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
 import { AuthGuard } from 'src/common/guards/auth.guard';
-import { Review } from 'src/database/documents/Review';
+import { OptionalIntPipe } from 'src/common/pipes/OptionalInt.pipe';
 
 import { ReviewService } from './review.service';
 import {
@@ -42,16 +42,28 @@ export class ReviewControllerV1 {
   }
 
   @Get()
-  public async getReviews() {
-    this._logger.info('Get all reviews requested');
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: String,
+  })
+  public async getReviews(
+    @Query('page-number', new JoiObjectSchemaPipe(OptionalIntPipe)) pageNumber: number = 0,
+    @Query('page-size', new JoiObjectSchemaPipe(OptionalIntPipe)) pageSize: number = 100,
+    @Query('search') search?: string,
+  ) {
+    this._logger.info('Get reviews requested with pageNumber %s, pageSize %d and search %s', pageNumber, pageSize, search);
 
-    const reviews = await this._reviewService.getReviewsOverview();
+    const paginetedResults = await this._reviewService.getReviewsOverviewPaginated(pageNumber, pageSize, search);
 
-    this._logger.info('Successfuly retrieved all reviews');
+    this._logger.info('Successfuly retrieved reviews with count %d', paginetedResults.reviews.length);
 
-    return {
-      reviews: reviews,
-    };
+    return paginetedResults;
   }
 
   @Get('/:id')

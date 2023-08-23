@@ -17,10 +17,13 @@ export class ReviewService {
     return this._reviewRepository.create(review as Review);
   }
 
-  public async getReviewsOverview() {
-    const review = await this._reviewRepository.findAllOverview();
+  public async getReviewsOverviewPaginated(pageNumber: number, pageSize: number, search?: string) {
+    const results = await this._reviewRepository.getReviewsByQuery(pageNumber, pageSize, search);
 
-    return review;
+    return {
+      reviews: results,
+      nextPageNumber: pageNumber + 1,
+    };
   }
 
   public async getReviewById(id: string) {

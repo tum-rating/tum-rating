@@ -42,7 +42,7 @@ describe('User SignUp', () => {
     });
 
     it('should fail signup with if email already exists', async () => {
-        const mockRequest: SignUpRequestDto = {
+        let mockRequest: SignUpRequestDto = {
             email: faker.internet.email({provider: 'tum.de'}),
             username: faker.internet.userName(),
             password: faker.internet.password(),
@@ -52,6 +52,8 @@ describe('User SignUp', () => {
             .post('/')
             .send(mockRequest)
             .expect(201);
+
+        mockRequest.username = faker.internet.userName();
 
         return supertest(authUrl + '/signup')
             .post('/')
