@@ -34,8 +34,6 @@ export class ReviewRepository extends BaseRepository<Review> {
       query['$text'] = {$search: search}
     }
 
-    console.log('query: ', query);
-
     return this._reviewModel.find(query)
       .sort({course: 1})
       .select('-reviews -__v')
@@ -50,12 +48,12 @@ export class ReviewRepository extends BaseRepository<Review> {
   public async addUserReview(
     userReview: Pick<
       UserReview,
-      'userId' | 'howEasyRating' | 'howInterestingRating' | 'comment'
+      'userId' | 'howEasyRating' | 'howInterestingRating' | 'comment' | 'semester'
     >,
     reviewId: string,
     session?: ClientSession,
   ) {
-    return this._reviewModel.findByIdAndUpdate(reviewId, {
+    return this._reviewModel.findOneAndUpdate({_id: reviewId, offeredInSemesters: userReview.semester}, {
       $push: { reviews: userReview },
     });
   }

@@ -4,7 +4,7 @@ import { ObjectId } from 'mongoose';
 import { ReviewRepository } from 'src/database/repositories/review.repository';
 import { Review, UserReview } from 'src/database/documents/review';
 import { ReviewuserUniqueRepository } from 'src/database/repositories/reviewUserUnique';
-import { AddReviewError } from 'src/utils/errors/errors';
+import { AddUserReviewError, AddUserReviewNotFoundError } from 'src/utils/errors/errors';
 
 @Injectable()
 export class ReviewService {
@@ -35,7 +35,7 @@ export class ReviewService {
   public async addUserReview(
     userReview: Pick<
       UserReview,
-      'userId' | 'howEasyRating' | 'howInterestingRating' | 'comment'
+      'userId' | 'howEasyRating' | 'howInterestingRating' | 'comment' | 'semester'
     >,
     reviewId: string,
   ) {
@@ -46,9 +46,15 @@ export class ReviewService {
     });
 
     try {
-      await this._reviewRepository.addUserReview(userReview, reviewId);
+      const result = await this._reviewRepository.addUserReview(userReview, reviewId);
+      if(!result) {
+        throw new AddUserReviewNotFoundError('review not found');
+      }
     } catch (error) {
-      throw new AddReviewError(error);
+      if (error instanceof AddUserReviewNotFoundError) {
+        throw error;
+      }
+      throw new AddUserReviewError(error);
     }
   }
 

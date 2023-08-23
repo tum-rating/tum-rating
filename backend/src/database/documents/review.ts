@@ -17,6 +17,9 @@ export class UserReview {
   @Prop({ type: String })
   comment: string;
 
+  @Prop({type: String, required: true})
+  semester: string;
+
   @Prop({ required: true, type: Date, default: new Date() })
   createdAt: Date;
 }
