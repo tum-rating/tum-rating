@@ -1,93 +1,136 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  MantineReactTable,
-  useMantineReactTable,
-  type MRT_ColumnDef,
-  type MRT_SortingState,
-  type MRT_Virtualizer,
-} from 'mantine-react-table';
-import { makeData, type Course } from './makeData';
-import { useNavigate } from 'react-router-dom';
+import {Review, useReviews} from "../../reviews/useReviews";
+import {DataTable, DataTableSortStatus} from "mantine-datatable";
+import {useEffect, useState} from "react";
+import {sortBy} from "./utils";
+import {Box, createStyles, Rating, TextInput} from "@mantine/core";
+import {useNavigate} from "react-router-dom";
+import {getPath, Paths} from "../../routes/paths";
+import {IconSearch} from "@tabler/icons-react";
+import {useDebouncedValue} from "@mantine/hooks";
+
+const useStyles = createStyles((theme) => ({
+    tableContainer: {
+        padding: 50,
+        [theme.fn.smallerThan('xs')]: {
+            padding: 5,
+        },
+        background: theme.colorScheme === 'dark' ? theme.fn.gradient({
+            from: 'black',
+            to: '#00609F',
+            deg: 20
+        }) : theme.fn.gradient({from: '#00609F', to: 'white', deg: 20})
+    },
+    table: {
+        background: theme.colorScheme === 'dark' ? '#1A1B1E' : '#fff',
+        opacity: ".95"
+    }
+}))
 
 const ClassesTable = () => {
-  const navigate = useNavigate();
-  const columns = useMemo<MRT_ColumnDef<Course>[]>(
-    () => [
-      {
-        accessorKey: 'course',
-        header: 'course',
-        size: 150,
-      },
-      {
-        accessorKey: 'professor',
-        header: 'Professor',
-        size: 150,
-      },
-      {
-        accessorKey: 'howEasyRating',
-        header: 'ease',
-        size: 150,
-      },
-      {
-        accessorKey: 'howInterestingRating',
-        header: 'interest',
-        size: 300,
-      },
-    ],
-    [],
-  );
+    const navigate = useNavigate()
+    const {reviews, isLoading} = useReviews()
+    const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({columnAccessor: 'course', direction: 'asc'});
+    const [records, setRecords] = useState(reviews);
+    const [query, setQuery] = useState('');
+    const [debouncedQuery] = useDebouncedValue(query, 300);
+    const {classes} = useStyles()
 
-  //optionally access the underlying virtualizer instance
-  const rowVirtualizerInstanceRef = useRef<MRT_Virtualizer<HTMLDivElement, HTMLTableRowElement>>(null);
+    useEffect(() => {
+        setRecords(reviews);
+    }, [reviews]);
 
-  const [data, setData] = useState<Course[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [sorting, setSorting] = useState<MRT_SortingState>([]);
+    useEffect(() => {
+        const data = sortBy(reviews, sortStatus.columnAccessor) as Review[];
+        setRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
+    }, [sortStatus]);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setData(makeData(10000));
-      setIsLoading(false);
+    const handleRowClick = (record: Review) => {
+        const dynamicPath = getPath(Paths.courseDetail).replace(':id', record._id);
+        navigate(dynamicPath);
     }
-  }, []);
 
-  useEffect(() => {
-    //scroll to the top of the table when the sorting changes
-    rowVirtualizerInstanceRef.current?.scrollToIndex(0);
-  }, [sorting]);
+    useEffect(() => {
+        setRecords(
+            reviews.filter(({course}) => {
+                return !(debouncedQuery !== '' && !course.toLowerCase().includes(debouncedQuery.trim().toLowerCase()));
 
-  const table = useMantineReactTable({
-    columns,
-    data, //10,000 rows
-    enableBottomToolbar: false,
-    enableColumnVirtualization: true,
-    enablePagination: false,
-    enableRowVirtualization: true,
-    mantineTableContainerProps: { sx: { width: '100vw', height: '80vh' } },
-    mantineTableBodyRowProps: ({ row }) => ({
-      onClick: () => {
-        navigate(`/${row.id}`);
-      },
-      sx: {
-        cursor: 'pointer', //you might want to change the cursor too when adding an onClick
-      },
-    }),
-    onSortingChange: setSorting,
-    state: { isLoading, sorting },
-    rowVirtualizerInstanceRef, //optional
-    rowVirtualizerProps: { overscan: 5 }, //optionally customize the row virtualizer
-    columnVirtualizerProps: { overscan: 2 }, //optionally customize the column virtualizer
-    enableColumnActions: false,
-    enableColumnFilters: false,
-    enablePagination: false,
-    enableSorting: false,
-    mantineTableProps: {
-      highlightOnHover: true,
-      withColumnBorders: false,
-    },
-  });
+            })
+        );
+    }, [debouncedQuery]);
 
-  return <MantineReactTable table={table} />;
+    const ratingRender = (score: number) => {
+        return (
+            <>
+                <Rating
+                    value={score}
+                    fractions={2}
+                    readOnly
+                    onChange={() => {
+                        return false
+                    }}
+                />
+            </>
+
+        )
+    }
+
+    return (
+        <Box className={classes.tableContainer} w={'100vw'} h={'calc(100vh - 60px)'}>
+            <DataTable
+                className={classes.table}
+                withBorder
+                highlightOnHover
+                style={{
+                    minWidth: '100%',
+                    minHeight: '100%',
+                    borderRadius: '4px'
+                }}
+                columns={[
+                    {
+                        accessor: 'index',
+                        title: '#',
+                        textAlignment: 'right',
+                        width: 40,
+                        render: (record) => records.indexOf(record) + 1,
+                    },
+                    {
+                        accessor: 'course', sortable: true,
+                        filter: (
+                            <TextInput
+                                label="Courses"
+                                description="Search by course name"
+                                placeholder="Search by course name"
+                                icon={<IconSearch size={16}/>}
+                                value={query}
+                                onChange={(e) => setQuery(e.currentTarget.value)}
+                            />
+                        ),
+                        filtering: query !== '',
+                    },
+                    {accessor: 'professor', sortable: true},
+                    {accessor: 'courseId', sortable: true},
+                    {
+                        accessor: 'howInterestingRatingAverage',
+                        title: 'How interesting',
+                        sortable: true,
+                        render: ({howInterestingRatingAverage}) => ratingRender(howInterestingRatingAverage)
+                    },
+                    {
+                        accessor: 'howEasyRatingAverage',
+                        title: 'How easy',
+                        sortable: true,
+                        render: ({howEasyRatingAverage}) => ratingRender(howEasyRatingAverage)
+                    }
+                ]}
+                onRowClick={handleRowClick}
+                records={records}
+                fetching={isLoading}
+                sortStatus={sortStatus}
+                onSortStatusChange={setSortStatus}
+                loaderSize="xs"
+            />
+        </Box>
+    );
 };
 
-export { ClassesTable };
+export {ClassesTable};

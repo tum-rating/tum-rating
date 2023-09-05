@@ -1,168 +1,191 @@
-import { PropsWithChildren } from 'react';
+import {PropsWithChildren} from 'react';
 import {
-  ActionIcon,
-  Anchor,
-  Box,
-  Burger,
-  Button,
-  Center,
-  createStyles,
-  Divider,
-  Drawer,
-  Group,
-  Header,
-  rem,
-  ScrollArea,
-  useMantineColorScheme,
+    ActionIcon,
+    Box,
+    Burger,
+    Button,
+    Center,
+    createStyles,
+    Divider,
+    Drawer,
+    Group,
+    Header,
+    Image,
+    rem,
+    ScrollArea, TextInput,
+    useMantineColorScheme,
 } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { IconMoonStars, IconSun } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
-import { useUser } from '../auth/useUser';
-import { UserButton } from '../components/UserButton';
-import { openSignInModal, openSignUpModal } from '../components/Modals';
+import {useDisclosure} from '@mantine/hooks';
+import {IconLogout, IconMoonStars, IconPlus, IconSun,IconSearch} from '@tabler/icons-react';
+import {useTranslation} from 'react-i18next';
+import {useUser} from '../auth/useUser';
+import {UserButton} from '../components/UserButton';
+import {openSignInModal, openSignUpModal} from '../components/Modals';
+import logo from "../assets/img/logo.png"
+import {useNavigate} from "react-router-dom";
+import {openAddCourseModal} from "../components/Modals/AddCourseModal";
+import AnimatedBackground from "../assets/img/AnimatedBackground";
+import {useSignOut} from "../auth/useSignOut";
+import { useSpotlight } from '@mantine/spotlight';
 
 const useStyles = createStyles((theme) => ({
-  link: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '100%',
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    textDecoration: 'none',
-    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-    fontWeight: 500,
-    fontSize: theme.fontSizes.sm,
+    link: {
+        display: 'flex',
+        alignItems: 'center',
+        height: '100%',
+        paddingLeft: theme.spacing.md,
+        paddingRight: theme.spacing.md,
+        textDecoration: 'none',
+        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+        fontWeight: 500,
+        fontSize: theme.fontSizes.sm,
 
-    [theme.fn.smallerThan('sm')]: {
-      height: rem(42),
-      display: 'flex',
-      alignItems: 'center',
-      width: '100%',
+        [theme.fn.smallerThan('sm')]: {
+            height: rem(42),
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+        },
+
+        ...theme.fn.hover({
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+        }),
     },
 
-    ...theme.fn.hover({
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-    }),
-  },
+    subLink: {
+        width: '100%',
+        padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+        borderRadius: theme.radius.md,
 
-  subLink: {
-    width: '100%',
-    padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-    borderRadius: theme.radius.md,
+        ...theme.fn.hover({
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+        }),
 
-    ...theme.fn.hover({
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-    }),
-
-    '&:active': theme.activeStyles,
-  },
-
-  hiddenMobile: {
-    [theme.fn.smallerThan('xs')]: {
-      display: 'none',
+        '&:active': theme.activeStyles,
     },
-  },
 
-  hiddenDesktop: {
-    [theme.fn.largerThan('xs')]: {
-      display: 'none',
+    hiddenMobile: {
+        [theme.fn.smallerThan('xs')]: {
+            display: 'none',
+        },
     },
-  },
-  authModal: {
-    '.mantine-Modal-header': {
-      position: 'absolute',
-      right: 0,
-    },
-  },
-  logo: {
-    position: 'relative',
-    fontSize: '20px',
-    textDecoration: 'none',
-    letterSpacing: '.2px',
-    display: 'flex',
-    alignItems: 'flex-end',
-    lineHeight: 0.8,
 
-    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-    '&:after': {
-      content: "'🇩🇪'",
-      display: 'block',
-      position: 'absolute',
-      top: '1px',
-      right: '10px',
-      fontSize: '19px',
+    hiddenDesktop: {
+        [theme.fn.largerThan('xs')]: {
+            display: 'none',
+        },
     },
-  },
+    authModal: {
+        '.mantine-Modal-header': {
+            position: 'absolute',
+            right: 0,
+        },
+    },
 }));
 
-export const MainLayout = ({ children }: PropsWithChildren) => {
-  const { user } = useUser();
-  const { classes, theme } = useStyles();
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-  const dark = colorScheme === 'dark';
-  const { t } = useTranslation();
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
+export const MainLayout = ({children}: PropsWithChildren) => {
+    const {user} = useUser();
+    const {classes, theme} = useStyles();
+    const {colorScheme, toggleColorScheme} = useMantineColorScheme();
+    const spotlight = useSpotlight();
+    const dark = colorScheme === 'dark';
+    const {t} = useTranslation();
+    const [drawerOpened, {toggle: toggleDrawer, close: closeDrawer}] = useDisclosure(false);
+    const navigate = useNavigate()
+    const signOut = useSignOut();
+    return (
+        <Box sx={{overflow: 'hidden', height: '100%'}}>
+            <Header height={60} px="md">
+                <Group position="apart" fw={600} sx={{height: '100%'}}>
+                    <ActionIcon w={150} onClick={() => navigate("/")}>
+                        <Image fit="contain" src={logo} alt="Random image"/>
+                    </ActionIcon>
 
-  return (
-    <Box h={'100%'}>
-      <Header height={60} px="md">
-        <Group position="apart" fw={600} sx={{ height: '100%' }}>
-          <Anchor underline={false} href="/" className={classes.logo}>
-            <svg width="60" height="27" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 73 38">
-              <path d="M28 0v31h8V0h37v38h-7V7h-8v31h-7V7h-8v31H21V7h-7v31H7V7H0V0h28z" fill="currentColor"></path>
-            </svg>
-            ratIng
-          </Anchor>
-          <Group>
-            {user ? null : (
-              <>
-                <Button compact onClick={openSignInModal} variant="default">
-                  {t('login')}
-                </Button>
-                <Button compact onClick={openSignUpModal}>
-                  {t('register')}
-                </Button>
-              </>
-            )}
-            <Group className={classes.hiddenMobile}>
-              {user ? <UserButton {...user.user} /> : null}
-              <ActionIcon
-                variant="outline"
-                color={dark ? 'yellow' : 'blue'}
-                onClick={() => toggleColorScheme()}
-                title="Toggle color scheme"
-              >
-                {dark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
-              </ActionIcon>
-            </Group>
-          </Group>
-          <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
-        </Group>
-      </Header>
-      <Drawer
-        opened={drawerOpened}
-        onClose={closeDrawer}
-        size="100%"
-        padding="md"
-        title="Navigation"
-        className={classes.hiddenDesktop}
-        zIndex={1000000}
-      >
-        <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
-          <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
-          <a href="#" className={classes.link}>
-            Home
-          </a>
-          <Group position="center" grow pb="xl" px="md">
-            <Button variant="default">{t('login')}</Button>
-            <Button>{t('register')}</Button>
-          </Group>
-        </ScrollArea>
-      </Drawer>
-      <Center pb={25} h={'100%'}>
-        {children}
-      </Center>
-    </Box>
-  );
+                    <TextInput type='search'
+                               onClick={(e)=>{
+                                   e.preventDefault()
+                                   spotlight.openSpotlight()
+                               }}
+                               icon={<IconSearch size={18}/>}
+                    >
+                    </TextInput>
+                    <Group>
+                        <Group className={classes.hiddenMobile}>
+                            {user ? null : (
+                                <>
+                                    <Button compact onClick={openSignInModal} variant="default">
+                                        {t('login')}
+                                    </Button>
+                                    <Button compact onClick={openSignUpModal}>
+                                        {t('register')}
+                                    </Button>
+                                </>
+                            )}
+                            {user ? (
+                                <>
+                                    <Button onClick={openAddCourseModal} leftIcon={<IconPlus/>}>Add
+                                        course</Button>
+                                    <UserButton {...user.user} />
+                                </>
+                            ) : null}
+                            <ActionIcon
+                                variant="outline"
+                                color={dark ? 'yellow' : 'blue'}
+                                onClick={() => toggleColorScheme()}
+                                title="Toggle color scheme"
+                            >
+                                {dark ? <IconSun size="1.1rem"/> : <IconMoonStars size="1.1rem"/>}
+                            </ActionIcon>
+                        </Group>
+                    </Group>
+                    <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop}/>
+                </Group>
+            </Header>
+            <Drawer
+                opened={drawerOpened}
+                onClose={closeDrawer}
+                size="100%"
+                padding="md"
+                className={classes.hiddenDesktop}
+                zIndex={1000000}
+            >
+                <a href="/" className={classes.link}>
+                    Home
+                </a>
+                <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'}/>
+                {user ? (
+                    <Button leftIcon={<IconLogout size={14}/>} onClick={() => {
+                        signOut();
+                        closeDrawer()
+                    }} variant="default">
+                        Logout
+                    </Button>
+                ) : (
+                    <>
+                        <Group position="center" grow pb="xl" px="md">
+                            <Button onClick={() => {
+                                openSignInModal();
+                                closeDrawer()
+                            }}
+                                    variant="default">
+                                {t('login')}
+                            </Button>
+                            <Button onClick={() => {
+                                openSignUpModal();
+                                closeDrawer()
+                            }}>
+                                {t('register')}
+                            </Button>
+                        </Group>
+                    </>
+                )}
+
+            </Drawer>
+            <Box w={'100%'} h={'100%'}
+                 sx={{position: 'relative', overflow: 'hidden', display: 'flex', paddingBottom: '60px'}}>
+                <AnimatedBackground/>
+                {children}
+            </Box>
+        </Box>
+    );
 };

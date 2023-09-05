@@ -1,6 +1,6 @@
 import { ActionIcon, Avatar, createStyles, Group, Menu, Text, UnstyledButtonProps } from '@mantine/core';
 import { IconLogout } from '@tabler/icons-react';
-import { useSignOut } from '../../auth/useSignOut.tsx';
+import { useSignOut } from '../../auth/useSignOut';
 
 interface UserButtonProps extends UnstyledButtonProps {
   username: string;

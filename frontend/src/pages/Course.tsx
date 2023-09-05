@@ -1,110 +1,203 @@
-import { Anchor, Badge, Stack, Text } from '@mantine/core';
-import { OverallScore } from '../components/OverallScore';
-import { Comment } from '../components/Comment';
-import { AddReview } from '../components/AddReview';
+import {
+    Anchor,
+    Box,
+    Breadcrumbs,
+    Button,
+    createStyles,
+    Divider,
+    Flex,
+    keyframes,
+    LoadingOverlay,
+    Skeleton,
+    Stack,
+    Text,
+    Title
+} from '@mantine/core';
+import {useNavigate, useParams} from "react-router-dom";
+import {useDetailReview} from "../reviews/useReview";
+import {useAutoAnimate} from "@formkit/auto-animate/react";
+import {OverallScore} from "../components/OverallScore";
+import {Comment} from "../components/Comment";
+import {openAddUserReviewModal} from "../components/Modals/AddUserReview";
+import {useUser} from "../auth/useUser";
+import {useEffect, useState} from "react";
 
-const tempData = {
-  courseId: 950669976,
-  courseNumber: {
-    dotIndex: 0,
-    databaseValue: '0000002679',
-    courseNumber: '0000002679',
-  },
-  courseTitleTranslations: {
-    de: 'Hochfrequenzschaltungen',
-    en: 'High-Frequency Circuits',
-  },
-  mainLecturers: [
-    {
-      name: 'Josef Knapp',
-      businessCardLink: 'https://campus.tum.de/tumonline/ee/rest/brm.pm.bc/identities/B062A57A7990848D',
+
+const fadeIn = keyframes({
+    '0%': {
+        filter: 'opacity(0)',
     },
-  ],
-  otherLecturers: [
-    {
-      name: 'Uwe Siart',
-      businessCardLink: 'https://campus.tum.de/tumonline/ee/rest/brm.pm.bc/identities/816C665E43B04109',
+    '100%': {
+        filter: 'opacity(1)',
+    }
+})
+
+const useStyles = createStyles((theme) => ({
+    courseContainer: {
+        padding: ' 30px 60px 30px 60px',
+        alignItems: 'center',
+        position: 'relative',
+        borderLeft: '0.0625rem solid #e9ecef',
+        borderRight: '0.0625rem solid #e9ecef',
+        borderColor: theme.colorScheme === 'dark' ? '#2C2E33' : '#e9ecef',
+        background: theme.colorScheme === 'dark' ? '#1A1B1E' : theme.white,
+        height: '100%',
+        overflowY: 'auto',
+        boxSizing: 'border-box',
+        width: '630px',
+        [theme.fn.smallerThan('sm')]: {
+            padding: '12px 0 24px 0',
+            width: "100%"
+        },
     },
-    {
-      name: 'Josef Knapp',
-      businessCardLink: 'https://campus.tum.de/tumonline/ee/rest/brm.pm.bc/identities/B062A57A7990848D',
+
+
+    datesContainer: {
+        [theme.fn.smallerThan('sm')]: {
+            flexDirection: 'column',
+            ".dot": {
+                display: 'none'
+            }
+        },
     },
-  ],
+
+    opacity: {
+        position: 'absolute',
+        inset: 0,
+        opacity: .88,
+        background: theme.colorScheme === 'dark' ? theme.black : theme.white,
+    },
+    courseHeading: {
+        width: '100%',
+        maxWidth: '780px',
+        gap: 0,
+        marginBottom: '20px'
+    },
+    courseRating: {
+        width: '100%',
+        maxWidth: '780px',
+        flexGrow: 1
+    }
+}))
+
+
+const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true
 };
 
-const courseInterestComments = [
-  {
-    postedAt: '2023-08-10',
-    body: 'I found this course very interesting and engaging.',
-    author: {
-      name: 'Alice',
-      image: '',
-    },
-  },
-  {
-    postedAt: '2023-08-11',
-    body: 'The course content was quite boring, to be honest.',
-    author: {
-      name: 'Bob',
-      image: '',
-    },
-  },
-  {
-    postedAt: '2023-08-12',
-    body: 'This course was moderately interesting, with some engaging parts.',
-    author: {
-      name: 'Charlie',
-      image: '',
-    },
-  },
-  {
-    postedAt: '2023-08-13',
-    body: 'I found the course material very intriguing and worth the time.',
-    author: {
-      name: 'David',
-      image: '',
-    },
-  },
-];
+export const Course = () => {
+    const {id} = useParams()
+    const [autoAnimateParent] = useAutoAnimate();
+    const {classes} = useStyles()
+    const {user} = useUser()
+    const {review, status} = useDetailReview(id)
+    const navigate = useNavigate()
+    const [userReview, setUserReview] = useState<any>(null)
+    useEffect(() => {
+        if (review) {
+            const myReview = review.reviews.find(review => review.userId === user?.user.id)
+            setUserReview(myReview)
+        }
 
-export const Course = (data) => {
-  //TODO: get data from backend
-  data = tempData;
-  return (
-    <Stack pt="xl">
-      <Stack justify="flex-end">
-        <Text size={45}>
-          {data.courseTitleTranslations.en}
-          <Badge>{data.courseNumber.databaseValue}</Badge>
-        </Text>
-        <Text>
-          Main Professor:
-          {data.mainLecturers.map((professor) => {
-            return (
-              <Anchor href={professor.businessCardLink} target="_blank">
-                {professor.name}
-              </Anchor>
-            );
-          })}
-        </Text>
-        <Text>
-          Other Professors:
-          {data.otherLecturers.map((professor) => {
-            return (
-              <Anchor href={professor.businessCardLink} target="_blank">
-                {professor.name}
-              </Anchor>
-            );
-          })}
-        </Text>
-      </Stack>
-      <AddReview />
-      <Stack w={'100%'} p={0}>
-        <OverallScore score={2} numberOfReviews={12} howInteresting={3} howEasy={4} />
-        {courseInterestComments.map((comment) => {
-          return <Comment {...comment} />;
-        })}
-      </Stack>
-    </Stack>
-  );
+    }, [review])
+    if (!id) return 'error'
+    if (!review) return (
+        <Stack sx={{animation: `${fadeIn} 0.1s ease-in-out`}} className={classes.courseContainer}>
+            <LoadingOverlay w='100%' visible={!review} overlayBlur={2}/>
+        </Stack>
+    )
+
+    const {
+        professor,
+        course,
+        courseNumber,
+        createdAt,
+        updatedAt,
+        howInterestingRatingAverage,
+        howEasyRatingAverage,
+        votesNumber,
+        reviews: reviewComments,
+        _id
+    } = review
+
+
+    const userComment = reviewComments.find(comment => comment.userId === user.user.id);
+    const otherComments = reviewComments.filter(comment => comment.userId !== user.user.id);
+
+    return (
+        <Stack className={classes.courseContainer}>
+            <Box w='100%'>
+                <Stack className={classes.courseHeading}>
+                    <Breadcrumbs mb='md' w='100%'>
+                        <Anchor fz='xs' href={"/"} onClick={(e) => {
+                            e.preventDefault()
+                            navigate(-1)
+                        }} key={'home'}>
+                            Home
+                        </Anchor>
+                        <Anchor fz='xs' w={400} href="#" key={courseNumber}>
+                            <Text truncate m={0} p={0}>
+                                {course}
+                            </Text>
+                        </Anchor>
+                    </Breadcrumbs>
+                    <Title order={1}>
+                        {status === "loading" ? (
+                            <Skeleton visible={true} width={200} height={30}/>
+                        ) : (
+                            <>{course}</>
+                        )}
+                    </Title>
+                    <Flex className={classes.datesContainer} gap={10} mb='xs'>
+                        <Text size="xs" color="dimmed">
+                            created:
+                            <Text ml={5} component='span'
+                                  c='black'>{new Date(createdAt).toLocaleString("en-US", options as any)}</Text>
+                        </Text>
+                        <Text size="xs" color="dimmed" className='dot'>
+                            •
+                        </Text>
+                        <Text size="xs" color="dimmed">
+                            last updated:
+                            <Text ml={5} component='span'
+                                  c='black'>{new Date(updatedAt).toLocaleString("en-US", options as any)}</Text>
+                        </Text>
+                    </Flex>
+                    <Divider color='blue' size="xl" mb='xs'/>
+                    <Text fz='xs'>
+                        Main Professor:
+                        <Anchor fz='md' fw={600} ml={6} target="_blank">
+                            {professor}
+                        </Anchor>
+                    </Text>
+                    <Text fz='xs'>
+                        Course Number:
+                        <Anchor fz='md' fw={600} ml={6} target="_blank">
+                            {courseNumber}
+                        </Anchor>
+                    </Text>
+                </Stack>
+                <Stack className={classes.courseRating}>
+                    <OverallScore numberOfReviews={votesNumber} howInteresting={howInterestingRatingAverage}
+                                  howEasy={howEasyRatingAverage}/>
+                    <Stack ref={autoAnimateParent}>
+                        {userReview ?
+                            <Button color='green' onClick={() => openAddUserReviewModal(_id, userReview)}>Edit your
+                                review</Button> :
+                            <Button onClick={() => openAddUserReviewModal(_id)}>Add review</Button>}
+                        {!reviewComments.length && <Text>No comments yet</Text>}
+                        {userComment && <Comment key={userComment._id} {...userComment} />}
+                        {otherComments.map((comment) => {
+                            return <Comment key={comment._id} {...comment} />;
+                        })}
+                    </Stack>
+                </Stack>
+            </Box>
+        </Stack>
+    );
 };
