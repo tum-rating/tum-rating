@@ -3,12 +3,13 @@ import { useEffect } from 'react';
 import { QUERY_KEY } from '../constants/queryKeys';
 import { ResponseError } from '../utils/Errors/ResponseError';
 import * as userLocalStorage from './user.localstore';
+import {endpoints} from "../api";
 
 async function getUser(user: User | null | undefined): Promise<User | null> {
   if (!user) return null;
-  const response = await fetch(`localhost:3000/api/users/${user.user.id}`, {
+  const response = await fetch(endpoints.user, {
     headers: {
-      Authorization: `Bearer ${user.accessToken}`,
+      Authorization: `Bearer ${user.token}`,
     },
   });
   if (!response.ok) throw new ResponseError('Failed on get user request', response);
@@ -17,7 +18,7 @@ async function getUser(user: User | null | undefined): Promise<User | null> {
 }
 
 export interface User {
-  accessToken: string;
+  token: string;
   user: {
     username: string;
     email: string;
@@ -42,7 +43,9 @@ export function useUser(): IUseUser {
 
   useEffect(() => {
     if (!user) userLocalStorage.removeUser();
-    else userLocalStorage.saveUser(user);
+    else {
+      userLocalStorage.saveUser(user)
+    }
   }, [user]);
 
   return {

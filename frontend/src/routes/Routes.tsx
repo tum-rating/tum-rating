@@ -5,10 +5,14 @@ import {Suspense} from 'react';
 import {MainLayout} from '../layouts';
 import {ModalsProvider} from '@mantine/modals';
 import {SignInModal, SignUpModal} from '../components/Modals';
+import {AddCourseModal} from "../components/Modals/AddCourseModal";
+import {AddUserReviewModal} from "../components/Modals/AddUserReview";
 
 const modals = {
     signIn: SignInModal,
     signUp: SignUpModal,
+    addCourse: AddCourseModal,
+    addUserReview: AddUserReviewModal,
 };
 declare module '@mantine/modals' {
     export interface MantineModalsOverride {
@@ -17,7 +21,6 @@ declare module '@mantine/modals' {
 }
 
 const RoutesApp = () => {
-    console.log(123);
     const routes = [
         {
             path: '/',
@@ -43,18 +46,18 @@ const RoutesApp = () => {
                     ),
                 },
                 {
-                    path: getPath(Paths[':id']),
-                    element: (
-                        <Suspense fallback={'Loading...'}>
-                            <Course/>
-                        </Suspense>
-                    ),
-                },
-                {
                     path: getPath(Paths.activate),
                     element: (
                         <Suspense fallback={'Loading...'}>
                             <Activation/>
+                        </Suspense>
+                    ),
+                },
+                {
+                    path: getPath(Paths.courseDetail),
+                    element: (
+                        <Suspense fallback={'Loading...'}>
+                            <Course/>
                         </Suspense>
                     ),
                 },
