@@ -6,7 +6,7 @@ const baseUrl =
 const queryParams =
     "$filter=courseNormKey-eq=LVEAB;orgId-eq=1;termId-eq=198&$orderBy=title=ascnf";
 const pageSize = 20;
-const totalPages = 3;
+const totalPages = 100;
 
 const fetchPage = async (page) => {
     console.log(`Fetching page ${page}...`);
@@ -34,6 +34,14 @@ const fetchAllPages = async () => {
 };
 
 fetchAllPages().then((courses) => {
+    // console.log('course', JSON.stringify(courses))
+    // fs.writeFile("course.json", JSON.stringify(courses), "utf8", (writeErr) => {
+    //     if (writeErr) {
+    //         console.error("Error writing JSON to file:", writeErr);
+    //     } else {
+    //         console.log("JSON data saved to output.json");
+    //     }
+    // });
     const summaries = courses.map((course) => {
         const courseId = course.content.cpCourseDto.id;
         const courseTitleTranslations =

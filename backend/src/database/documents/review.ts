@@ -31,6 +31,9 @@ export class Review {
   @Prop({ required: true, type: String })
   professor: string;
 
+  @Prop({ type: [String] })
+  otherLecturers: string[];
+
   @Prop({ required: true, type: String })
   course: string;
 

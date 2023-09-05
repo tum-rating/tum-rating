@@ -12,6 +12,9 @@ export class CreateReviewRequestDto {
   professor: string;
 
   @ApiProperty()
+  otherLecturers?: string[]
+
+  @ApiProperty()
   course: string;
 
   @ApiProperty()
@@ -20,8 +23,9 @@ export class CreateReviewRequestDto {
 
 export const CreateReviewRequestSchema = Joi.object<CreateReviewRequestDto>({
   courseId: Joi.string().required(),
-  courseNumber: Joi.string().required(),
+  courseNumber:Joi.string().required(),
   professor: Joi.string().required(),
+  otherLecturers: Joi.array().items(Joi.string()),
   course: Joi.string().required(),
-  offeredInSemesters: Joi.array().items(Joi.string()).min(1),
+  offeredInSemesters: Joi.array().items(Joi.string()).min(1).required(),
 });
