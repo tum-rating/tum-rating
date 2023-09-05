@@ -34,14 +34,6 @@ const fetchAllPages = async () => {
 };
 
 fetchAllPages().then((courses) => {
-    // console.log('course', JSON.stringify(courses))
-    // fs.writeFile("course.json", JSON.stringify(courses), "utf8", (writeErr) => {
-    //     if (writeErr) {
-    //         console.error("Error writing JSON to file:", writeErr);
-    //     } else {
-    //         console.log("JSON data saved to output.json");
-    //     }
-    // });
     const summaries = courses.map((course) => {
         const courseId = course.content.cpCourseDto.id;
         const courseTitleTranslations =
