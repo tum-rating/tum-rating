@@ -9,7 +9,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
@@ -28,13 +28,20 @@ export class UserControllerV1 {
     this._logger.setContext(UserControllerV1.name);
   }
 
-  @Get('/me')
-  @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     type: UserResponseDto,
   })
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'user-id',
+    required: false,
+    description:
+        '(Leave empty. It will be extracted from JWT token)',
+  })
+  @UseGuards(AuthGuard)
+  @Get('/me')
   public async getMe(
     @Headers(USER_ID) userId: string,
   ): Promise<UserResponseDto> {

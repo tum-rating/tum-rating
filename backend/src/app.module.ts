@@ -10,6 +10,7 @@ import { LoggerModule } from 'src/utils/logger/logger.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { ReviewModule } from './modules/review/review.module';
+import { ReviewProposalModule } from './modules/review-proposal/reviewProposal.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ReviewModule } from './modules/review/review.module';
     AuthModule,
     UserModule,
     ReviewModule,
+    ReviewProposalModule
   ],
 })
 export class AppModule implements NestModule {

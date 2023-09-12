@@ -1,6 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
+export enum UserRole {
+  user = 0,
+  admin,
+}
+
 @Schema()
 export class User {
   @Prop({ required: true, unique: true, message: 'username must be unique' })
@@ -17,6 +22,9 @@ export class User {
 
   @Prop({ required: true, default: false })
   isEmailActivated: boolean;
+
+  @Prop({ required: true, enum: UserRole, default: UserRole.user})
+  role: UserRole;
 }
 
 export type UserDocument = User & Document;

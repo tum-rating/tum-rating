@@ -28,6 +28,7 @@ import { SignInRequestDto, SignInRequestSchema } from './dto/SignInRequest.dto';
 import { SignInResponseDto } from './dto/SignInResponse.dto';
 import { ActivateUserEmailRequestDto, ActivateUserEmailRequestSchema } from './dto/ActivateUserEmail.dto';
 import { PasswordRecoveryRequestDto, PasswordRecoveryRequestSchema } from './dto/PasswordRecovery.dto';
+import { UserRole } from 'src/database/documents/user';
 
 @ApiTags('auth')
 @Controller('api/v1/auth')
@@ -112,7 +113,6 @@ export class AuthControllerV1 {
 
       const databaseUser = await this._userService.getUserByEmail(body.email);
 
-
       if(!databaseUser) {
           this._logger.warn('Sign in request fail, user email is not activated for %s', body.email);
           throw new UnauthorizedException();
@@ -138,15 +138,19 @@ export class AuthControllerV1 {
           throw new UnauthorizedException();
       }
 
-      const token = await this._jwtService.signJWTAccess(databaseUser.id);
+      const token = await this._jwtService.signJWTAccess(databaseUser.id, databaseUser.role);
 
       this._logger.info('Signin request completed user with email %s', body.email);
+
+      // add this value only for admin users
+      const userRoleInfo = databaseUser.role === UserRole.admin ? {role: UserRole[databaseUser.role]} : {};
 
       return {
           user: {
               id: databaseUser.id,
               email: databaseUser.email,
-              username: databaseUser.username
+              username: databaseUser.username,
+              ...userRoleInfo
           },
           token
       };
