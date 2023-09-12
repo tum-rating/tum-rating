@@ -14,7 +14,7 @@ async function bootstrap() {
 
   app.enableCors();
 
-  if (configService.get('app.env') === 'development') {
+  if (configService.getOrThrow('app.env') === 'development') {
     initOpenApi(app);
     loggerServivce.info('Swagger initialized on localhost:%s/api', configService.getOrThrow('app.port'));
   }

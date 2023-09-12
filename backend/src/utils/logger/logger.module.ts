@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
-import pretty from 'pino-pretty';
 
 @Module({
   imports: [
@@ -11,11 +10,13 @@ import pretty from 'pino-pretty';
       useFactory: async (config: ConfigService) => {
         const env = config.getOrThrow('app.env');
 
-        if (env === 'development')
+        if (env === 'development') {
+          const pretty = await import('pino-pretty');
+
           return {
             pinoHttp: {
               level: 'trace',
-              stream: pretty({
+              stream: pretty.default({
                 colorize: true,
                 sync: true,
                 translateTime: 'SYS:standard',
@@ -24,6 +25,7 @@ import pretty from 'pino-pretty';
               }),
             },
           };
+        }
         // TODO add production logger config
         return {};
       },

@@ -1,7 +1,7 @@
 import { Module, Logger } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ReviewRepository } from 'src/database/repositories/review.repository';
-import { Review, ReviewSchema } from 'src/database/documents/Review';
+import { Review, ReviewSchema } from 'src/database/documents/review';
 import { JWTService } from 'src/utils/jwt/jwt.service';
 import {
   ReviewUserUnique,

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ReviewProposalRepository } from 'src/database/repositories/reviewProposal.repository';
 import { ReviewProposal } from 'src/database/documents/reviewProposal';
 import { ReviewRepository } from 'src/database/repositories/review.repository';
-import { Review } from 'src/database/documents/Review';
+import { Review } from 'src/database/documents/review';
 import { NotFoundError } from 'src/utils/errors/errors';
 
 @Injectable()
