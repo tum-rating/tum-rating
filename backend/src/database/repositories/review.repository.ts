@@ -4,7 +4,7 @@ import {
   Review,
   ReviewDocument,
   UserReview,
-} from 'src/database/documents/Review';
+} from 'src/database/documents/review';
 import { BaseRepository } from './base.repository';
 import * as mongoose from 'mongoose';
 
