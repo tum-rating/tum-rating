@@ -5,6 +5,13 @@ export class DuplicateError extends Error {
   }
 }
 
+export class NotFoundError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'Not found error';
+  }
+}
+
 export class AddUserReviewError extends Error {
   constructor(message) {
     super(message);

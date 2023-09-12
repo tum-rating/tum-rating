@@ -4,7 +4,7 @@ import { ObjectId } from 'mongoose';
 import { ReviewRepository } from 'src/database/repositories/review.repository';
 import { Review, UserReview } from 'src/database/documents/review';
 import { ReviewuserUniqueRepository } from 'src/database/repositories/reviewUserUnique';
-import { AddUserReviewError, AddUserReviewNotFoundError } from 'src/utils/errors/errors';
+import { AddUserReviewError, AddUserReviewNotFoundError, NotFoundError } from 'src/utils/errors/errors';
 
 @Injectable()
 export class ReviewService {
@@ -73,7 +73,19 @@ export class ReviewService {
     return this._reviewRepository.updateOneById(id, review);
   }
 
+  public async putUserReview(reviewId: string, userId: string, putUserReview: Omit<UserReview, 'createdAt'>) {
+    const updateResult = await this._reviewRepository.putUserReview(userId, reviewId, putUserReview as UserReview);
+
+    if(updateResult === null) throw new NotFoundError('user review not found');
+
+    return updateResult;
+  }
+
   public async deleteReview(id: string) {
     return this._reviewRepository.deleteOneById(id);
+  }
+
+  public async findReviewUserUnique(userId: string, reviewId: string) {
+    return this._reviewUserUniqueRepository.getOneByUserIdAndReviewId(userId, reviewId);
   }
 }

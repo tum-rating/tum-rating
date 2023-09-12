@@ -4,7 +4,8 @@ import { SignUpRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignU
 import { SignInRequestDto } from 'src/modules/auth/dto/SignInRequest.dto';
 import { baseUrlV1 } from './config';
 
-import { activateUserEmail as activateUserEmailDB } from '@tum-rating/backend/test/utils/db-client/user';
+import { activateUserEmail as activateUserEmailDB, changeUserRole as changeUserRoleDB } from '@tum-rating/backend/test/utils/db-client/user';
+import { UserRole } from 'src/database/documents/user';
 
 export const authUrl = baseUrlV1 + '/auth';
 
@@ -38,13 +39,34 @@ export const signInRequestMock = async (request?: Partial<SignUpRequestDto>) => 
         password: signUpResponse.password
     };
 
-    const singInResponse = await axios.post(authUrl + '/signin', signInRequest);
+    const signInResponse = await axios.post(authUrl + '/signin', signInRequest);
 
     return {
         user: {
             ...signUpResponse,
-            id: singInResponse.data.user.id
+            id: signInResponse.data.user.id
         },
-        token: singInResponse.data.token
+        token: signInResponse.data.token
+    };
+}
+
+export const signInAdminRequestMock = async (request?: Partial<SignUpRequestDto>) => {
+    const signInResponse = await signInRequestMock(request);
+
+    await changeUserRoleDB(signInResponse.user.id, UserRole.admin);
+
+    const signInRequest: SignInRequestDto = {
+        email: signInResponse.user.email,
+        password: signInResponse.user.password
+    };
+
+    const signInResponse2 = await axios.post(authUrl + '/signin', signInRequest);
+
+    return {
+        user: {
+            ...signInResponse2.data,
+            id: signInResponse2.data.user.id
+        },
+        token: signInResponse2.data.token
     };
 }

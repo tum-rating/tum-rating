@@ -1,12 +1,12 @@
 import axios from 'axios';
 import fs from 'fs';
 
-const token = '';
+const adminToken = '';
 const backendEndpoint = 'http://localhost:3000/api/v1/reviews';
 const inputFile = 'output.json';
 
 (async () => {
-    if(!token){
+    if(!adminToken){
         console.error('token is missing');
         return;
     }
@@ -34,7 +34,7 @@ const inputFile = 'output.json';
         try {
             await axios.post(backendEndpoint, parsedCourseForApi, {
                 headers: {
-                    Authorization: 'Bearer ' + token
+                    Authorization: 'Bearer ' + adminToken
                 }
             });
         } catch(error) {

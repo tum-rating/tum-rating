@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { SignJWT, jwtVerify, JWTPayload } from 'jose';
+import { SignJWT, jwtVerify } from 'jose';
 
-import { TokenType } from './jwt.interfaces';
+import { JWTSignOptions, TokenType, UserRole } from './jwt.interfaces';
 
 @Injectable()
 export class JWTService {
@@ -15,8 +15,8 @@ export class JWTService {
         this._jwtSecret = new TextEncoder().encode(jwtSecretString);
     }
 
-    public async signJWTAccess(userId: string) {
-        return this._signJWT(userId, TokenType.access, '1d');
+    public async signJWTAccess(userId: string, userRole = UserRole.user) {
+        return this._signJWT(userId, TokenType.access, {userRole});
     }
 
     public async verifyJWTAccess(token: string) {
@@ -24,11 +24,11 @@ export class JWTService {
     }
 
     public async signJWTActivate(userId: string) {
-        return this._signJWT(userId, TokenType.activation, '1d');
+        return this._signJWT(userId, TokenType.activation);
     }
 
     public async signJWTRecovery(userId: string) {
-        return this._signJWT(userId, TokenType.recovery, '1d');
+        return this._signJWT(userId, TokenType.recovery);
     }
 
     public async verifyJWTActivate(token: string) {
@@ -39,11 +39,20 @@ export class JWTService {
         return this._verifyJWT(token, TokenType.recovery);
     }
 
-    private async _signJWT(userId: string, tokenType: TokenType, expiration: string) {
-        const token = await new SignJWT({tokenType})
+    private async _signJWT(userId: string, tokenType: TokenType, options?: Partial<JWTSignOptions>) {
+        const defaultJWTSignOptions:JWTSignOptions = {
+            expiration: '1d',
+            userRole: UserRole.user,
+            ...options
+        };
+
+        const token = await new SignJWT({
+            tokenType, 
+            userRole: defaultJWTSignOptions.userRole
+        })
             .setProtectedHeader({alg: 'HS256'})
             .setSubject(userId)
-            .setExpirationTime(expiration)
+            .setExpirationTime(defaultJWTSignOptions.expiration)
             .sign(this._jwtSecret);
         
         return token;
@@ -54,6 +63,9 @@ export class JWTService {
             const {payload, protectedHeader} = await jwtVerify(token, this._jwtSecret);
 
             if(payload.tokenType !== tokenType)
+                return {isValid: false, payload: null};
+            
+            if(payload.userRole === undefined)
                 return {isValid: false, payload: null};
 
             return {isValid: true, payload};

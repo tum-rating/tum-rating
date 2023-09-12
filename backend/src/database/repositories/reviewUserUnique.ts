@@ -1,5 +1,5 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { ClientSession, Model, Schema as MongooseSchema } from 'mongoose';
+import { Model, Schema as MongooseSchema } from 'mongoose';
 
 import {
   ReviewUserUnique,
@@ -19,14 +19,12 @@ export class ReviewuserUniqueRepository extends BaseRepository<ReviewUserUnique>
   public async getOneByUserIdAndReviewId(
     userId: string,
     reviewId: string,
-    session?: ClientSession,
   ) {
     return this._reviewUserUnique
       .findOne({
-        user: userId,
-        review: reviewId,
+        userId,
+        reviewId,
       })
-      .session(session);
   }
 
   public async deleteOneByUserIdAndReviewId(userId: string, reviewId: string) {

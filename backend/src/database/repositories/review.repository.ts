@@ -69,9 +69,9 @@ export class ReviewRepository extends BaseRepository<Review> {
             _id: 1,
             reviews: 1,
             howInteresingAvg: {
-              $trunc: { $avg: '$reviews.howInterestingRating' },
+              $trunc: [ { $avg: '$reviews.howInterestingRating' }, 2 ],
             },
-            howEasyAvg: { $trunc: { $avg: '$reviews.howEasyRating' } },
+            howEasyAvg: { $trunc: [ { $avg: '$reviews.howEasyRating' }, 2 ]},
             votesNumber: { $size: '$reviews' },
           },
         },
@@ -93,5 +93,15 @@ export class ReviewRepository extends BaseRepository<Review> {
         },
       ])
       .exec();
+  }
+
+  public async putUserReview(userId: string, reviewId: string, putUserReview: UserReview) {
+    return this._reviewModel.findOneAndUpdate({
+      _id: reviewId,
+      offeredInSemesters: putUserReview.semester,
+      'reviews.userId': userId
+    }, {
+      $set: {'reviews.$': putUserReview}
+    });
   }
 }

@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
-import { connectMongo, signInRequestMock } from '@tum-rating/backend/test/utils';
+import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
 import { addUserReviewMockRequest, reviewUrl } from '@tum-rating/backend/test/utils/api-client/review';
 import { createCourseReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
 import { AddUserReviewRequestDto } from 'src/modules/review/dto/AddUserReviewRequest.dto';
@@ -19,11 +19,13 @@ describe('Add User Review', () => {
     it('should add user review', async () => {
         const signInResponse = await signInRequestMock();
 
-        const createdReview = await createCourseReviewMockRequest(signInResponse.token);
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
         
         const requestBody: AddUserReviewRequestDto = {
-            howInterestingRating: 50,
-            howEasyRating: 75,
+            howInterestingRating: 3,
+            howEasyRating: 4,
             comment: faker.word.words(),
             semester: createdReview.offeredInSemesters[0]
         };
@@ -38,11 +40,13 @@ describe('Add User Review', () => {
     it('should fail if user review is already present', async () => {
         const signInResponse = await signInRequestMock();
 
-        const createdReview = await createCourseReviewMockRequest(signInResponse.token);
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
         
         const requestBody: AddUserReviewRequestDto = {
-            howInterestingRating: 50,
-            howEasyRating: 75,
+            howInterestingRating: 3,
+            howEasyRating: 4,
             comment: faker.word.words(),
             semester: createdReview.offeredInSemesters[0]
         };
@@ -63,11 +67,13 @@ describe('Add User Review', () => {
     it('should fail if user review is already present', async () => {
         const signInResponse = await signInRequestMock();
 
-        const createdReview = await createCourseReviewMockRequest(signInResponse.token);
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
         
         const requestBody: AddUserReviewRequestDto = {
-            howInterestingRating: 50,
-            howEasyRating: 75,
+            howInterestingRating: 3,
+            howEasyRating: 4,
             comment: faker.word.words(),
             semester: createdReview.offeredInSemesters[0]
         };
@@ -88,11 +94,13 @@ describe('Add User Review', () => {
     it('should fail if user review semester is not matching review one', async () => {
         const signInResponse = await signInRequestMock();
 
-        const createdReview = await createCourseReviewMockRequest(signInResponse.token);
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
         
         const requestBody: AddUserReviewRequestDto = {
-            howInterestingRating: 50,
-            howEasyRating: 75,
+            howInterestingRating: 3,
+            howEasyRating: 4,
             comment: faker.word.words(),
             semester: 'not matching'
         };
@@ -108,16 +116,18 @@ describe('Add User Review', () => {
         const signInResponse = await signInRequestMock();
         const signInResponse2 = await signInRequestMock();
 
-        const createdReview = await createCourseReviewMockRequest(signInResponse.token);
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
 
         await addUserReviewMockRequest(signInResponse.token, createdReview.id, signInResponse.user.id, {
-            howInterestingRating: 20,
-            howEasyRating: 30
+            howInterestingRating: 3,
+            howEasyRating: 4
         });
 
         await addUserReviewMockRequest(signInResponse2.token, createdReview.id, signInResponse2.user.id, {
-            howInterestingRating: 40,
-            howEasyRating: 60
+            howInterestingRating: 2,
+            howEasyRating: 5
         });
 
         return supertest(reviewUrl + '/' + createdReview.id)
@@ -127,8 +137,8 @@ describe('Add User Review', () => {
                 expect(response.body).toHaveProperty('_id');
                 expect(response.body).toHaveProperty('reviews');
                 expect(response.body.reviews.length).toBe(2);
-                expect(response.body.howInterestingRatingAverage).toBe(30);
-                expect(response.body.howEasyRatingAverage).toBe(45);
+                expect(response.body.howInterestingRatingAverage).toBe(2.5);
+                expect(response.body.howEasyRatingAverage).toBe(4.5);
                 expect(response.body.votesNumber).toBe(2);
             });
     });

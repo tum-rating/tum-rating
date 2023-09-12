@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
-import { connectMongo, signInRequestMock } from '@tum-rating/backend/test/utils';
+import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
 import { reviewUrl } from '@tum-rating/backend/test/utils/api-client/review';
 import { createCourseReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
 import { deleteReviewsWithCourseTitle } from '@tum-rating/backend/test/utils/db-client/review';
@@ -17,7 +17,7 @@ afterAll(async () => {
 
 describe('Get Course Review', () => {
     it('should get course review', async () => {
-        const signInResponse = await signInRequestMock();
+        const signInResponse = await signInAdminRequestMock();
 
         const createdReview = await createCourseReviewMockRequest(signInResponse.token);
     
@@ -30,7 +30,7 @@ describe('Get Course Review', () => {
             });
     });
     it('should get course review by id', async () => {
-        const signInResponse = await signInRequestMock();
+        const signInResponse = await signInAdminRequestMock();
 
         const createdReview = await createCourseReviewMockRequest(signInResponse.token);
     
@@ -47,7 +47,7 @@ describe('Get Course Review', () => {
             });
     });
     it('should search course by its title', async () => {
-        const signInResponse = await signInRequestMock();
+        const signInResponse = await signInAdminRequestMock();
 
         const createdReview = await createCourseReviewMockRequest(signInResponse.token, {
             course: faker.string.uuid()
@@ -64,7 +64,7 @@ describe('Get Course Review', () => {
     });
 
     it('should search course by its title part', async () => {
-        const signInResponse = await signInRequestMock();
+        const signInResponse = await signInAdminRequestMock();
 
         const createdReview = await createCourseReviewMockRequest(signInResponse.token, {
             course: faker.string.uuid()
@@ -81,7 +81,7 @@ describe('Get Course Review', () => {
     });
 
     it('should search course by professor', async () => {
-        const signInResponse = await signInRequestMock();
+        const signInResponse = await signInAdminRequestMock();
 
         const createdReview = await createCourseReviewMockRequest(signInResponse.token, {
             professor: faker.string.uuid()
@@ -112,7 +112,7 @@ describe('Get Course Review', () => {
             deleteReviewsWithCourseTitle(title3),
         ]);
 
-        const signInResponse = await signInRequestMock();
+        const signInResponse = await signInAdminRequestMock();
 
         const createdReview1 = await createCourseReviewMockRequest(signInResponse.token, {
             course: title1
@@ -144,7 +144,7 @@ describe('Get Course Review', () => {
 
         await Promise.all(titles.map(title => deleteReviewsWithCourseTitle(title)));
 
-        const signInResponse = await signInRequestMock();
+        const signInResponse = await signInAdminRequestMock();
 
         const createdReviews = await Promise.all(titles.map(title => createCourseReviewMockRequest(
             signInResponse.token, {

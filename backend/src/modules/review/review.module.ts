@@ -27,6 +27,9 @@ import { ReviewService } from './review.service';
     ReviewuserUniqueRepository,
     Logger,
   ],
-  exports: [ReviewService],
+  exports: [
+    ReviewService,
+    ReviewRepository
+  ],
 })
 export class ReviewModule {}

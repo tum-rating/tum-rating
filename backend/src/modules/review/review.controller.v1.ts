@@ -10,12 +10,15 @@ import {
   InternalServerErrorException,
   Query,
   NotFoundException,
+  ForbiddenException,
+  Put,
 } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
-import { ApiBearerAuth, ApiTags, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
+import { AdminGuard } from 'src/common/guards/admin.guard';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { OptionalIntPipe } from 'src/common/pipes/OptionalInt.pipe';
 
@@ -28,9 +31,13 @@ import {
   AddUserReviewRequestDto,
   AddUserReviewRequestSchema,
 } from './dto/AddUserReviewRequest.dto';
+import {
+  PutUserReviewRequestDto,
+  PutUserReviewRequestSchema
+} from './dto/PutUserReviewRequest.dto'
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
-import { AddUserReviewError, AddUserReviewNotFoundError } from 'src/utils/errors/errors';
+import { AddUserReviewError, AddUserReviewNotFoundError, NotFoundError } from 'src/utils/errors/errors';
 
 @ApiTags('reviews')
 @Controller('/api/v1/reviews')
@@ -49,9 +56,14 @@ export class ReviewControllerV1 {
     type: String
   })
   @ApiQuery({
-    name: 'page',
+    name: 'page-number',
     required: false,
-    type: String,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'page-size',
+    required: false,
+    type: Number,
   })
   public async getReviews(
     @Query('page-number', new JoiObjectSchemaPipe(OptionalIntPipe)) pageNumber: number = 0,
@@ -79,8 +91,14 @@ export class ReviewControllerV1 {
   }
 
   @ApiBearerAuth()
+  @ApiParam({
+    name: 'user-id',
+    required: false,
+    description:
+        '(Leave empty. It will be extracted from JWT token)',
+  })
   @Post()
-  @UseGuards(AuthGuard)
+  @UseGuards(AdminGuard) //TODO align test with admin guard
   public async createReview(
     @Headers(USER_ID) userId: string,
     @Body(new JoiObjectSchemaPipe(CreateReviewRequestSchema))
@@ -106,9 +124,16 @@ export class ReviewControllerV1 {
   }
 
   @ApiBearerAuth()
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'user-id',
+    required: false,
+    description:
+        '(Leave empty. It will be extracted from JWT token)',
+  })
   @Post('/:review_id/user/:user_id')
   @UseGuards(AuthGuard)
-  public async addReview(
+  public async addUserReview(
     @Headers(USER_ID) userId: string,
     @Param('user_id') queryUserId: string,
     @Param('review_id') reviewId: string,
@@ -119,6 +144,7 @@ export class ReviewControllerV1 {
 
     if (userId != queryUserId) {
       this._logger.warn('User id from jwt does not match one in query param');
+      throw new ForbiddenException();
     }
 
     const userReview = {
@@ -136,7 +162,7 @@ export class ReviewControllerV1 {
           reviewId,
         );
         throw new ConflictException(
-          'User has already submitted a review, use patch method to update',
+          'User has already submitted a review, use put method to update',
         );
       }
 
@@ -173,6 +199,77 @@ export class ReviewControllerV1 {
 
     this._logger.info(
       'Successfully added review user: %s to review: %s',
+      userId,
+      reviewId,
+    );
+
+    return {
+      userReview,
+    };
+  }
+
+  @ApiBearerAuth()
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'user-id',
+    required: false,
+    description:
+        '(Leave empty. It will be extracted from JWT token)',
+  })
+  @Put('/:review_id/user/:user_id')
+  @UseGuards(AuthGuard)
+  public async putUserReview(
+    @Headers(USER_ID) userId: string,
+    @Param('user_id') queryUserId: string,
+    @Param('review_id') reviewId: string,
+    @Body(new JoiObjectSchemaPipe(PutUserReviewRequestSchema))
+    body: PutUserReviewRequestDto,
+  ) {
+    this._logger.info('Patch review user: %s to review %s', userId, reviewId);
+
+    if (userId != queryUserId) {
+      this._logger.warn('User id from jwt does not match one in query param');
+      throw new ForbiddenException();
+    }
+
+    const reviewUserUnique = await this._reviewService.findReviewUserUnique(userId, reviewId);
+
+    if(!reviewUserUnique) {
+      this._logger.debug('Relation user %s review %s unique does not exist', userId, reviewId);
+      throw new NotFoundException();
+    }
+
+    const userReview = {
+      ...body,
+      userId: userId as unknown as ObjectId,
+    };
+
+    try {
+      await this._reviewService.putUserReview(reviewId, userId, userReview);
+    } catch (error: any) {
+      if (error instanceof NotFoundError) {
+        this._logger.warn(
+          'Review not found, user: %s review: %s, semester %s',
+          userId,
+          reviewId,
+          userReview.semester
+        );
+        throw new NotFoundException('review not found');
+      }
+
+      this._logger.error('User put review error %s', error);
+      throw new InternalServerErrorException();
+    }
+
+    this._reviewService
+      .updateReviewStats(reviewId)
+      .then(() => this._logger.debug('Review stats updated for %s', reviewId))
+      .catch(() =>
+        this._logger.warn('Review stats update failed for %s', reviewId),
+      );
+
+    this._logger.info(
+      'Successfully put review user: %s to review: %s',
       userId,
       reviewId,
     );
