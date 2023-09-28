@@ -1,16 +1,14 @@
-import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
-import { endpoints } from '../api';
+import { endpoints } from '@/api';
 
-async function recovery({ email, token, password }) {
+async function recovery({ email }: RecoveryBody) {
     const response = await fetch(endpoints.recovery, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, token, password }),
+        body: JSON.stringify({ email }),
     });
 
     if (!response.ok) {
@@ -20,27 +18,29 @@ async function recovery({ email, token, password }) {
     return true;
 }
 
-export function useRecovery() {
-    const navigate = useNavigate();
-    const recoveryMutation = useMutation(recovery, {
-        onSuccess: () => {
-            notifications.show({
-                title: 'Success',
-                message: 'Password recovery successful!',
-                color: 'green',
-                icon: <IconCheck />,
-            });
-            navigate('/');
-        },
-        onError: () => {
-            notifications.show({
-                title: 'Error',
-                message: 'Ops.. Password recovery failed. Try again!',
-                color: 'red',
-                icon: <IconX />,
-            });
-        },
-    });
+interface RecoveryBody {
+    email: string;
+}
 
-    return recoveryMutation.mutate;
+export function useRecovery() {
+    return (recoveryBody: RecoveryBody) =>
+        recovery(recoveryBody).then((status) => {
+            if (status) {
+                notifications.show({
+                    title: 'Success',
+                    message: 'Recovery successful!',
+                    color: 'green',
+                    icon: <IconCheck />,
+                });
+                return true;
+            } else {
+                notifications.show({
+                    title: 'Error',
+                    message: 'Ops.. Error on recovery. Try again!',
+                    color: 'red',
+                    icon: <IconX />,
+                });
+                return false;
+            }
+        });
 }

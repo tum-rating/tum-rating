@@ -1,38 +1,35 @@
-import {createBrowserRouter, Outlet, RouterProvider} from 'react-router-dom';
-import {getPath, Paths} from './paths';
-import {Activation, Course, Home, PageNotFound} from '../pages';
-import {Suspense} from 'react';
-import {MainLayout} from '../layouts';
-import {ModalsProvider} from '@mantine/modals';
-import {SignInModal, SignUpModal} from '../components/Modals';
-import {AddCourseModal} from "../components/Modals/AddCourseModal";
-import {AddUserReviewModal} from "../components/Modals/AddUserReview";
+import { Suspense } from 'react';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { ModalsProvider } from '@mantine/modals';
+
+import { getPath, Paths } from './paths';
+import { Activation, Course, Home, PageNotFound } from '@/pages';
+import { MainLayout } from '@/layouts';
+import { SpotlightModal } from '@/components/Modals/SpotlightModal';
+import { SignInModal, SignUpModal } from '@/components/Modals';
+import { AddCourseModal } from '@/components/Modals/AddCourseModal';
+import { AddUserReviewModal } from '@/components/Modals/AddUserReview';
 
 const modals = {
     signIn: SignInModal,
     signUp: SignUpModal,
     addCourse: AddCourseModal,
     addUserReview: AddUserReviewModal,
+    spotlight: SpotlightModal,
 };
-declare module '@mantine/modals' {
-    export interface MantineModalsOverride {
-        modals: typeof modals;
-    }
-}
-
 const RoutesApp = () => {
     const routes = [
         {
             path: '/',
             errorElement: (
                 <MainLayout>
-                    <PageNotFound/>
+                    <PageNotFound />
                 </MainLayout>
             ),
             element: (
                 <ModalsProvider modals={modals}>
                     <MainLayout>
-                        <Outlet/>
+                        <Outlet />
                     </MainLayout>
                 </ModalsProvider>
             ),
@@ -41,7 +38,7 @@ const RoutesApp = () => {
                     path: '/',
                     element: (
                         <Suspense fallback={'Loading...'}>
-                            <Home/>
+                            <Home />
                         </Suspense>
                     ),
                 },
@@ -49,7 +46,7 @@ const RoutesApp = () => {
                     path: getPath(Paths.activate),
                     element: (
                         <Suspense fallback={'Loading...'}>
-                            <Activation/>
+                            <Activation />
                         </Suspense>
                     ),
                 },
@@ -57,7 +54,7 @@ const RoutesApp = () => {
                     path: getPath(Paths.courseDetail),
                     element: (
                         <Suspense fallback={'Loading...'}>
-                            <Course/>
+                            <Course />
                         </Suspense>
                     ),
                 },
@@ -67,9 +64,9 @@ const RoutesApp = () => {
 
     return (
         <Suspense>
-            <RouterProvider router={createBrowserRouter(routes)}/>
+            <RouterProvider router={createBrowserRouter(routes)} />
         </Suspense>
     );
 };
 
-export {RoutesApp};
+export { RoutesApp };

@@ -1,6 +1,6 @@
-import {Badge} from "@mantine/core";
+import { Badge } from '@mantine/core';
 
-export const HowInterestingBadge = ({score}:{score:number}) => {
+export const HowInterestingBadge = ({ score }: { score: number }) => {
     let message = '';
     if (score === 0) message = 'No reviews yet';
     else if (score > 0 && score < 2) {
@@ -10,7 +10,5 @@ export const HowInterestingBadge = ({score}:{score:number}) => {
     } else if (score >= 4 && score <= 5) {
         message = 'Interesting';
     }
-    return (
-        <Badge color={message === 'Boring' ? 'red' : message === 'Moderate' ? 'yellow' : 'green'}>{message}</Badge>
-    );
+    return <Badge color={message === 'Boring' ? 'red' : message === 'Moderate' ? 'yellow' : 'green'}>{message}</Badge>;
 };

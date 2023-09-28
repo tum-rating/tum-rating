@@ -1,136 +1,77 @@
-import {Review, useReviews} from "../../reviews/useReviews";
-import {DataTable, DataTableSortStatus} from "mantine-datatable";
-import {useEffect, useState} from "react";
-import {sortBy} from "./utils";
-import {Box, createStyles, Rating, TextInput} from "@mantine/core";
-import {useNavigate} from "react-router-dom";
-import {getPath, Paths} from "../../routes/paths";
-import {IconSearch} from "@tabler/icons-react";
-import {useDebouncedValue} from "@mantine/hooks";
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useResizeObserver, useWindowScroll } from '@mantine/hooks';
+import { Box, createStyles } from '@mantine/core';
+import { DataTable } from 'mantine-datatable';
+
+import { usePaginatedReviews } from '@/reviews/usePaginatedReviews';
+import { Review } from '@/reviews/types';
+import { BottomTableLoader } from '../Loaders/BottomTableLoader';
+import { columns } from './Columns';
 
 const useStyles = createStyles((theme) => ({
     tableContainer: {
-        padding: 50,
+        position: 'relative',
+        overflowX: 'hidden',
+        width: '100%',
+        background: 'transparent',
+        paddingBottom: theme.spacing.xl,
+        zIndex: 1,
         [theme.fn.smallerThan('xs')]: {
-            padding: 5,
+            padding: '0',
         },
-        background: theme.colorScheme === 'dark' ? theme.fn.gradient({
-            from: 'black',
-            to: '#00609F',
-            deg: 20
-        }) : theme.fn.gradient({from: '#00609F', to: 'white', deg: 20})
     },
-    table: {
-        background: theme.colorScheme === 'dark' ? '#1A1B1E' : '#fff',
-        opacity: ".95"
-    }
-}))
+
+    tableRelativeContainer: {
+        position: 'relative',
+        height: '100%',
+        width: '100%',
+    },
+
+    dataTable: {
+        background: theme.colorScheme === 'dark' ? theme.black : theme.white,
+    },
+}));
 
 const ClassesTable = () => {
-    const navigate = useNavigate()
-    const {reviews, isLoading} = useReviews()
-    const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({columnAccessor: 'course', direction: 'asc'});
-    const [records, setRecords] = useState(reviews);
-    const [query, setQuery] = useState('');
-    const [debouncedQuery] = useDebouncedValue(query, 300);
-    const {classes} = useStyles()
+    const columnsConfiguration = useMemo(() => columns, []);
+    const navigate = useNavigate();
+    const { classes } = useStyles();
+    const [ref] = useResizeObserver();
+    const [records, setRecords] = useState<Review[]>([]);
+    const [scroll] = useWindowScroll();
+    const { data, fetchNextPage, isFetching } = usePaginatedReviews();
 
     useEffect(() => {
-        setRecords(reviews);
-    }, [reviews]);
+        if (data) {
+            console.log(data);
+            const newRecords = data.pages.map((v) => v.reviews.map((el) => el)).flat();
+            setRecords([...newRecords]);
+        }
+    }, [data]);
 
     useEffect(() => {
-        const data = sortBy(reviews, sortStatus.columnAccessor) as Review[];
-        setRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
-    }, [sortStatus]);
+        if (scroll.y >= ref.current?.clientHeight - window.innerHeight - 150) {
+            loadMoreRecords();
+        }
+    }, [ref, scroll]);
 
     const handleRowClick = (record: Review) => {
-        const dynamicPath = getPath(Paths.courseDetail).replace(':id', record._id);
+        const dynamicPath = '/courses/' + record._id;
         navigate(dynamicPath);
-    }
+    };
 
-    useEffect(() => {
-        setRecords(
-            reviews.filter(({course}) => {
-                return !(debouncedQuery !== '' && !course.toLowerCase().includes(debouncedQuery.trim().toLowerCase()));
-
-            })
-        );
-    }, [debouncedQuery]);
-
-    const ratingRender = (score: number) => {
-        return (
-            <>
-                <Rating
-                    value={score}
-                    fractions={2}
-                    readOnly
-                    onChange={() => {
-                        return false
-                    }}
-                />
-            </>
-
-        )
-    }
+    const loadMoreRecords = () => {
+        fetchNextPage().then(() => {});
+    };
 
     return (
-        <Box className={classes.tableContainer} w={'100vw'} h={'calc(100vh - 60px)'}>
-            <DataTable
-                className={classes.table}
-                withBorder
-                highlightOnHover
-                style={{
-                    minWidth: '100%',
-                    minHeight: '100%',
-                    borderRadius: '4px'
-                }}
-                columns={[
-                    {
-                        accessor: 'index',
-                        title: '#',
-                        textAlignment: 'right',
-                        width: 40,
-                        render: (record) => records.indexOf(record) + 1,
-                    },
-                    {
-                        accessor: 'course', sortable: true,
-                        filter: (
-                            <TextInput
-                                label="Courses"
-                                description="Search by course name"
-                                placeholder="Search by course name"
-                                icon={<IconSearch size={16}/>}
-                                value={query}
-                                onChange={(e) => setQuery(e.currentTarget.value)}
-                            />
-                        ),
-                        filtering: query !== '',
-                    },
-                    {accessor: 'professor', sortable: true},
-                    {accessor: 'courseId', sortable: true},
-                    {
-                        accessor: 'howInterestingRatingAverage',
-                        title: 'How interesting',
-                        sortable: true,
-                        render: ({howInterestingRatingAverage}) => ratingRender(howInterestingRatingAverage)
-                    },
-                    {
-                        accessor: 'howEasyRatingAverage',
-                        title: 'How easy',
-                        sortable: true,
-                        render: ({howEasyRatingAverage}) => ratingRender(howEasyRatingAverage)
-                    }
-                ]}
-                onRowClick={handleRowClick}
-                records={records}
-                fetching={isLoading}
-                sortStatus={sortStatus}
-                onSortStatusChange={setSortStatus}
-                loaderSize="xs"
-            />
+        <Box className={classes.tableContainer}>
+            <Box className={classes.tableRelativeContainer}>
+                <DataTable fontSize={'xs'} className={classes.dataTable} withBorder minHeight={window.innerHeight} withColumnBorders highlightOnHover onRowClick={handleRowClick} columns={columnsConfiguration} records={records} fetching={isFetching} customLoader={<BottomTableLoader />} scrollViewportRef={ref} />
+            </Box>
         </Box>
     );
 };
 
-export {ClassesTable};
+export { ClassesTable };

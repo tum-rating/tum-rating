@@ -1,6 +1,6 @@
-import {useState} from 'react';
-import {createStyles, Box, Text, Group, rem} from '@mantine/core';
-import {IconListSearch} from '@tabler/icons-react';
+import { useState } from 'react';
+import { Box, createStyles, Group, rem, Text } from '@mantine/core';
+import { IconListSearch } from '@tabler/icons-react';
 
 const LINK_HEIGHT = 38;
 const INDICATOR_SIZE = 10;
@@ -49,8 +49,8 @@ interface TableOfContentsFloatingProps {
     links: { label: string; link: string; order: number }[];
 }
 
-export function TableOfContentsFloating({links}: TableOfContentsFloatingProps) {
-    const {classes, cx} = useStyles();
+export function TableOfContentsFloating({ links }: TableOfContentsFloatingProps) {
+    const { classes, cx } = useStyles();
     const [active, setActive] = useState(2);
 
     const items = links.map((item, index) => (
@@ -62,8 +62,8 @@ export function TableOfContentsFloating({links}: TableOfContentsFloatingProps) {
                 setActive(index);
             }}
             key={item.label}
-            className={cx(classes.link, {[classes.linkActive]: active === index})}
-            sx={(theme) => ({paddingLeft: `calc(${item.order} * ${theme.spacing.lg})`})}
+            className={cx(classes.link, { [classes.linkActive]: active === index })}
+            sx={(theme) => ({ paddingLeft: `calc(${item.order} * ${theme.spacing.lg})` })}
         >
             {item.label}
         </Box>
@@ -72,14 +72,11 @@ export function TableOfContentsFloating({links}: TableOfContentsFloatingProps) {
     return (
         <div>
             <Group mb="md">
-                <IconListSearch size="1.1rem" stroke={1.5}/>
+                <IconListSearch size="1.1rem" stroke={1.5} />
                 <Text>Table of contents</Text>
             </Group>
             <div className={classes.links}>
-                <div
-                    className={classes.indicator}
-                    style={{transform: `translateY(${rem(active * LINK_HEIGHT + INDICATOR_OFFSET)})`}}
-                />
+                <div className={classes.indicator} style={{ transform: `translateY(${rem(active * LINK_HEIGHT + INDICATOR_OFFSET)})` }} />
                 {items}
             </div>
         </div>

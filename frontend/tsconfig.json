@@ -3,11 +3,14 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "es2020",
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "moduleResolution": "Node",
     "jsx": "react-jsx",
     "strict": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "noEmit": false,
@@ -17,9 +20,28 @@
     "outDir": "dist",
     "declaration": true,
     "declarationDir": "types",
+    "types": [
+      "vite/client"
+    ],
     "composite": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "cypress/*": [
+        "./cypress/*"
+      ]
+    }
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [
+    "src",
+    "cypress"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }

@@ -1,18 +1,17 @@
-import {useEffect, useState} from 'react';
-import {RatingProps} from './types';
-import {Flex, Rating, Stack, Text} from '@mantine/core';
-import {HowEasyBadge} from "./HowEasyBadge";
+import { useEffect, useState } from 'react';
+import { RatingProps } from './types';
+import { Flex, Rating, Stack, Text } from '@mantine/core';
+import { HowEasyBadge } from './HowEasyBadge';
 
-interface HowEasyRatingProps extends RatingProps {
-}
+interface HowEasyRatingProps extends RatingProps {}
 
 export const HowEasyRating = (props: HowEasyRatingProps) => {
-    const {initialScore = 0, readonly = false, onChange} = props;
+    const { initialScore = 0, readonly = false, onChange } = props;
     const [score, setScore] = useState(0);
 
     useEffect(() => {
-        setScore(initialScore)
-    }, [initialScore])
+        setScore(initialScore);
+    }, [initialScore]);
 
     return (
         <Stack w={120} align="center" spacing="0">
@@ -31,13 +30,13 @@ export const HowEasyRating = (props: HowEasyRatingProps) => {
                 onChange={(value) => {
                     if (!readonly) {
                         if (onChange) {
-                            onChange(value)
+                            onChange(value);
                         }
-                        setScore(value)
+                        setScore(value);
                     }
                 }}
             />
-            <HowEasyBadge score={score}/>
+            <HowEasyBadge score={score} />
         </Stack>
     );
 };

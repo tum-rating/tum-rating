@@ -1,14 +1,16 @@
-import {RatingProps} from './types';
-import {Flex, Rating, Stack, Text} from '@mantine/core';
-import {useEffect, useState} from 'react';
-import {HowInterestingBadge} from "./HowInterestingBadge";
+import { RatingProps } from './types';
+import { Flex, Rating, Stack, Text } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { HowInterestingBadge } from './HowInterestingBadge';
+
 interface HowInterestingRatingProps extends RatingProps {}
+
 export const HowInterestingRating = (props: HowInterestingRatingProps) => {
-    const {initialScore = 0, readonly = false, onChange} = props;
+    const { initialScore = 0, readonly = false, onChange } = props;
     const [score, setScore] = useState(0);
     useEffect(() => {
-        setScore(initialScore)
-    }, [initialScore])
+        setScore(initialScore);
+    }, [initialScore]);
 
     return (
         <Stack w={120} align="center" spacing="0">
@@ -27,13 +29,13 @@ export const HowInterestingRating = (props: HowInterestingRatingProps) => {
                 onChange={(value) => {
                     if (!readonly) {
                         if (onChange) {
-                            onChange(value)
+                            onChange(value);
                         }
-                        setScore(value)
+                        setScore(value);
                     }
                 }}
             />
-            <HowInterestingBadge score={score}/>
+            <HowInterestingBadge score={score} />
         </Stack>
     );
 };

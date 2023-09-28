@@ -1,4 +1,4 @@
 export const QUERY_KEY = {
-  user: 'user',
-  reviews: 'reviews'
+    user: 'user',
+    reviews: 'reviews',
 };

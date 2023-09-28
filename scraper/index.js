@@ -6,7 +6,7 @@ const baseUrl =
 const queryParams =
     "$filter=courseNormKey-eq=LVEAB;orgId-eq=1;termId-eq=198&$orderBy=title=ascnf";
 const pageSize = 20;
-const totalPages = 100;
+const totalPages = 310;
 
 const fetchPage = async (page) => {
     console.log(`Fetching page ${page}...`);

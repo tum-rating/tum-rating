@@ -1,15 +1,13 @@
-import {ColorScheme, ColorSchemeProvider, MantineProvider} from '@mantine/core';
-import {RoutesApp} from './routes';
-import {useState} from 'react';
-import {Notifications} from '@mantine/notifications';
-import {QueryClientProvider} from '@tanstack/react-query';
-import {queryClient} from './react-query/client';
-import {SpotlightProvider} from "@mantine/spotlight";
+import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
+import { RoutesApp } from './routes';
+import { useState } from 'react';
+import { Notifications } from '@mantine/notifications';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './react-query/client';
 
 function App() {
     const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
-    const toggleColorScheme = (value?: ColorScheme) =>
-        setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+    const toggleColorScheme = (value?: ColorScheme) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
     return (
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
             <MantineProvider
@@ -17,9 +15,10 @@ function App() {
                     globalStyles: () => ({
                         body: {
                             height: '100vh',
-                            overflow: 'hidden',
+                            overflowY: 'auto',
+                            overflowX: 'hidden',
                         },
-                        "#root": {
+                        '#root': {
                             height: '100%',
                         },
                     }),
@@ -28,12 +27,10 @@ function App() {
                 withGlobalStyles
                 withNormalizeCSS
             >
-                <SpotlightProvider shortcut={['mod + P', 'mod + K', '/']} actions={[]}>
-                    <QueryClientProvider client={queryClient}>
-                        <Notifications/>
-                        <RoutesApp/>
-                    </QueryClientProvider>
-                </SpotlightProvider>
+                <QueryClientProvider client={queryClient}>
+                    <Notifications />
+                    <RoutesApp />
+                </QueryClientProvider>
             </MantineProvider>
         </ColorSchemeProvider>
     );
