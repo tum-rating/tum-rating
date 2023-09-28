@@ -1,8 +1,8 @@
-import {useLocation} from 'react-router-dom';
-import {endpoints} from '../api';
-import {notifications} from '@mantine/notifications';
-import {IconCheck, IconX} from '@tabler/icons-react';
-import {useMemo} from "react";
+import { useLocation } from 'react-router-dom';
+import { endpoints } from '@/api';
+import { notifications } from '@mantine/notifications';
+import { IconCheck, IconX } from '@tabler/icons-react';
+import { useMemo } from 'react';
 
 async function activate(token: string | null): Promise<boolean> {
     const response = await fetch(endpoints.activate, {
@@ -10,13 +10,10 @@ async function activate(token: string | null): Promise<boolean> {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({token}),
+        body: JSON.stringify({ token }),
     });
 
-    if (!response.ok) {
-        return false;
-    }
-    return true;
+    return response.ok;
 }
 
 export async function useActivate() {
@@ -32,7 +29,7 @@ export async function useActivate() {
                         title: 'Success',
                         message: 'Activation successful!',
                         color: 'green',
-                        icon: <IconCheck/>,
+                        icon: <IconCheck />,
                     });
                     return true;
                 } else {
@@ -40,7 +37,7 @@ export async function useActivate() {
                         title: 'Error',
                         message: 'Ops.. Error on activation. Try again!',
                         color: 'red',
-                        icon: <IconX/>,
+                        icon: <IconX />,
                     });
                     return false;
                 }

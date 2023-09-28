@@ -1,0 +1,1 @@
+export { TableOfContentsFloating } from './TableOfContent';

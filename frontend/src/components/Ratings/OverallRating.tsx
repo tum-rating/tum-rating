@@ -1,12 +1,11 @@
-import {RatingProps} from './types';
-import {Badge, Flex, Rating, Stack, Text} from '@mantine/core';
-import {useState} from 'react';
+import { RatingProps } from './types';
+import { Badge, Flex, Rating, Stack, Text } from '@mantine/core';
+import { useState } from 'react';
 
-interface OverallRatingProps extends RatingProps {
-}
+interface OverallRatingProps extends RatingProps {}
 
 export const OverallRating = (props: OverallRatingProps) => {
-    const {initialScore = 0, readonly = false} = props; // Use initialScore and readonly props
+    const { initialScore = 0, readonly = false } = props; // Use initialScore and readonly props
     const [score, setScore] = useState(initialScore);
 
     let message = '';
@@ -27,13 +26,7 @@ export const OverallRating = (props: OverallRatingProps) => {
                 </Text>
                 <Text>/ 5</Text>
             </Flex>
-            <Rating
-                mb={10}
-                value={score}
-                fractions={2}
-                readOnly={readonly}
-                onChange={(value) => (readonly ? null : setScore(value))}
-            />
+            <Rating mb={10} value={score} fractions={2} readOnly={readonly} onChange={(value) => (readonly ? null : setScore(value))} />
             <Badge color={message === 'Poor' ? 'red' : message === 'Average' ? 'yellow' : 'green'}>{message}</Badge>
         </Stack>
     );

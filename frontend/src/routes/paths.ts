@@ -7,13 +7,21 @@ export enum Paths {
     courseDetail = ':id',
 }
 
-interface PathElement {
-    parent: Paths | null;
-}
+type PathElement = {
+    [key in Paths]: {
+        parent: Paths | null;
+    };
+};
 
-const PATH_ELEMENTS: Record<Paths, PathElement> = {
+const PATH_ELEMENTS: PathElement = {
     [Paths.home]: {
         parent: null,
+    },
+    [Paths.auth]: {
+        parent: null,
+    },
+    [Paths.courses]: {
+        parent: Paths.home,
     },
     [Paths.courseDetail]: {
         parent: Paths.courses,
@@ -27,12 +35,12 @@ const PATH_ELEMENTS: Record<Paths, PathElement> = {
 };
 
 const getPath = (pathToResolve: Paths) => {
-    let fullPath = `/${pathToResolve}`; // Use pathToResolve directly
+    let fullPath = `/${pathToResolve}`;
     let current = pathToResolve;
     while (PATH_ELEMENTS[current] && PATH_ELEMENTS[current].parent) {
         const parent = PATH_ELEMENTS[current].parent;
         if (parent) {
-            fullPath = `/${parent}${fullPath}`; // Use parent directly
+            fullPath = `/${parent}${fullPath}`;
             current = parent;
         } else {
             break;
@@ -42,4 +50,4 @@ const getPath = (pathToResolve: Paths) => {
     return fullPath;
 };
 
-export {PATH_ELEMENTS, getPath};
+export { PATH_ELEMENTS, getPath };

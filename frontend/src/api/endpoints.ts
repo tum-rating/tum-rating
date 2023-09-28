@@ -1,34 +1,50 @@
 const baseDomain = 'http://localhost:3000';
-
 const api = '/api';
 const apiVersion = '/v1';
 const baseApiUrl = baseDomain + api + apiVersion;
-
-const auth = {
-    auth: baseApiUrl + '/auth',
-    get signup() {
-        return this.auth + '/signup';
-    },
-    get signin() {
-        return this.auth + '/signin';
-    },
-    get activate() {
-        return this.auth + '/activate';
-    },
-    get recovery() {
-        return this.auth + '/recovery';
-    },
-    get user() {
-        return this.auth + '/users/me';
-    }
+const authBase = baseApiUrl + '/auth';
+const reviewsBase = baseApiUrl + '/reviews';
+type AuthEndpoints = {
+    base: string;
+    signup: string;
+    signin: string;
+    activate: string;
+    recovery: string;
+    user: string;
 };
 
+const auth: AuthEndpoints = {
+    base: authBase,
+    signup: authBase + '/signup',
+    signin: authBase + '/signin',
+    activate: authBase + '/activate',
+    recovery: authBase + '/recovery',
+    user: authBase + '/users/me',
+};
 
-const reviews = {
-    reviews: baseApiUrl + '/reviews',
-}
+type ReviewsEndpoints = {
+    base: string;
+    getAllReviews: string;
+    getSpecificReview: (id: string) => string;
+    postSpecificReview: (courseId: string, userId: string) => string;
+    getPaginatedReviews: (pageNumber: number, pageSize: number) => string;
+    searchReviews: (query: string) => string;
+    postReviewProposal: string;
+    searchReviewsOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => string;
+};
+
+const reviews: ReviewsEndpoints = {
+    base: reviewsBase,
+    getAllReviews: reviewsBase,
+    postReviewProposal: baseApiUrl + '/review-proposals',
+    getSpecificReview: (id: string) => `${reviewsBase}/${id}`,
+    postSpecificReview: (courseId: string, userId: string) => `${reviewsBase}/${courseId}/user/${userId}`,
+    getPaginatedReviews: (pageNumber: number, pageSize: number) => `${reviewsBase}?page-number=${pageNumber}&page-size=${pageSize}`,
+    searchReviews: (query: string) => `${reviewsBase}?search=${query}`,
+    searchReviewsOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => `${reviewsBase}?page-number=${pageNumber}&page-size=${pageSize}&search=${search}`,
+};
 
 export const endpoints = {
     ...auth,
-    ...reviews
+    ...reviews,
 };

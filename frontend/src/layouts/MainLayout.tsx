@@ -1,191 +1,182 @@
-import {PropsWithChildren} from 'react';
-import {
-    ActionIcon,
-    Box,
-    Burger,
-    Button,
-    Center,
-    createStyles,
-    Divider,
-    Drawer,
-    Group,
-    Header,
-    Image,
-    rem,
-    ScrollArea, TextInput,
-    useMantineColorScheme,
-} from '@mantine/core';
-import {useDisclosure} from '@mantine/hooks';
-import {IconLogout, IconMoonStars, IconPlus, IconSun,IconSearch} from '@tabler/icons-react';
-import {useTranslation} from 'react-i18next';
-import {useUser} from '../auth/useUser';
-import {UserButton} from '../components/UserButton';
-import {openSignInModal, openSignUpModal} from '../components/Modals';
-import logo from "../assets/img/logo.png"
-import {useNavigate} from "react-router-dom";
-import {openAddCourseModal} from "../components/Modals/AddCourseModal";
-import AnimatedBackground from "../assets/img/AnimatedBackground";
-import {useSignOut} from "../auth/useSignOut";
-import { useSpotlight } from '@mantine/spotlight';
+import { PropsWithChildren } from 'react';
+import { ActionIcon, Anchor, AppShell, Box, Burger, Button, createStyles, Drawer, Flex, Group, Header, Image, MediaQuery, Stack, Switch, Text, useMantineColorScheme } from '@mantine/core';
+import { useDisclosure, useHotkeys } from '@mantine/hooks';
+import { IconLogout, IconMoonStars, IconSun } from '@tabler/icons-react';
+import { useUser } from '@/auth/useUser';
+import { UserButton } from '@/components/UserButton';
+import { openSignInModal, openSignUpModal } from '@/components/Modals';
+import logo from '../assets/img/logo.png';
+import AnimatedBackground from '../assets/img/AnimatedBackground';
+import { SpotlightControl } from '@/components/Spotlight/SpotlightControl';
+import { openSpotlight } from '@/components/Modals/SpotlightModal';
+import { useSignOut } from '@/auth/useSignOut';
 
 const useStyles = createStyles((theme) => ({
-    link: {
-        display: 'flex',
-        alignItems: 'center',
-        height: '100%',
-        paddingLeft: theme.spacing.md,
-        paddingRight: theme.spacing.md,
-        textDecoration: 'none',
-        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-        fontWeight: 500,
-        fontSize: theme.fontSizes.sm,
-
-        [theme.fn.smallerThan('sm')]: {
-            height: rem(42),
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%',
+    appShell: {
+        '& .mantine-AppShell-main': {
+            padding: '100px 50px 0 50px',
         },
-
-        ...theme.fn.hover({
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-        }),
+        [theme.fn.smallerThan('xs')]: {
+            '& .mantine-AppShell-main': {
+                padding: '50px 0 0 0 ',
+            },
+            '& .spotlightControl': {
+                marginLeft: 'auto',
+            },
+        },
     },
-
-    subLink: {
-        width: '100%',
-        padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-        borderRadius: theme.radius.md,
-
-        ...theme.fn.hover({
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-        }),
-
-        '&:active': theme.activeStyles,
-    },
-
     hiddenMobile: {
         [theme.fn.smallerThan('xs')]: {
             display: 'none',
         },
     },
-
     hiddenDesktop: {
         [theme.fn.largerThan('xs')]: {
             display: 'none',
         },
     },
-    authModal: {
-        '.mantine-Modal-header': {
+    applicationLogo: {
+        background: theme.colorScheme === 'dark' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.1)',
+    },
+    header: {
+        background: 'transparent',
+        width: '100%',
+        borderBottom: `1px solid ${theme.colorScheme === 'dark' ? '#2C2E33' : '#e9ecef'}`,
+        '& .headerContainer': {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'nowrap',
+        },
+        '& .insetBlur': {
             position: 'absolute',
-            right: 0,
+            inset: '0',
+            background: theme.colorScheme === 'dark' ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.8)',
+            backdropFilter: 'blur(5px)',
+        },
+    },
+
+    mobileDrawer: {
+        '& .mobileDrawerHeader': {
+            paddingBottom: theme.spacing.sm,
+            borderBottom: `2px solid ${theme.colors.gray[2]}`,
+        },
+    },
+
+    drawerFooter: {
+        paddingTop: theme.spacing.md,
+        marginTop: theme.spacing.md,
+        borderTop: `2px solid ${theme.colors.gray[2]}`,
+    },
+    animatedBackground: {
+        '@media (prefers-reduced-motion)': {
+            display: 'none',
+        },
+        [theme.fn.smallerThan('xs')]: {
+            background: 'red',
+            display: 'none !important',
         },
     },
 }));
 
-export const MainLayout = ({children}: PropsWithChildren) => {
-    const {user} = useUser();
-    const {classes, theme} = useStyles();
-    const {colorScheme, toggleColorScheme} = useMantineColorScheme();
-    const spotlight = useSpotlight();
+export const MainLayout = ({ children }: PropsWithChildren) => {
+    const { user } = useUser();
+    const { classes, theme } = useStyles();
+    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const dark = colorScheme === 'dark';
-    const {t} = useTranslation();
-    const [drawerOpened, {toggle: toggleDrawer, close: closeDrawer}] = useDisclosure(false);
-    const navigate = useNavigate()
+    const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
     const signOut = useSignOut();
-    return (
-        <Box sx={{overflow: 'hidden', height: '100%'}}>
-            <Header height={60} px="md">
-                <Group position="apart" fw={600} sx={{height: '100%'}}>
-                    <ActionIcon w={150} onClick={() => navigate("/")}>
-                        <Image fit="contain" src={logo} alt="Random image"/>
-                    </ActionIcon>
 
-                    <TextInput type='search'
-                               onClick={(e)=>{
-                                   e.preventDefault()
-                                   spotlight.openSpotlight()
-                               }}
-                               icon={<IconSearch size={18}/>}
+    useHotkeys([['/', openSpotlight]]);
+
+    return (
+        <AppShell
+            className={classes.appShell}
+            data-testid="cypress-appshell"
+            navbar={
+                <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+                    <Drawer
+                        data-testid="cypress-drawer"
+                        className={classes.mobileDrawer}
+                        opened={drawerOpened}
+                        onClose={closeDrawer}
+                        title={
+                            <Anchor href="/">
+                                <Image data-test="app-logo" fit="contain" height={50} width={150} src={logo} alt="tum rating logo" />
+                            </Anchor>
+                        }
                     >
-                    </TextInput>
-                    <Group>
+                        {user ? (
+                            <>
+                                <Flex align="flex-end" justify="space-between">
+                                    <Text>Hello, {user.user.username}</Text>
+                                    <Switch onClick={() => toggleColorScheme()} size="md" color={theme.colorScheme === 'dark' ? 'gray' : 'dark'} onLabel={<IconSun size="1rem" stroke={2.5} color={theme.colors.yellow[4]} />} offLabel={<IconMoonStars size="1rem" stroke={2.5} color={theme.colors.blue[6]} />} />
+                                </Flex>
+
+                                <Stack className={classes.drawerFooter}>
+                                    <Button data-test="cypress-logout-btn" leftIcon={<IconLogout size={14} />} onClick={signOut} variant="default">
+                                        Logout
+                                    </Button>
+                                </Stack>
+                            </>
+                        ) : (
+                            <>
+                                <Flex align="flex-end" justify="space-between">
+                                    <Text>Hello</Text>
+                                    <Switch onClick={() => toggleColorScheme()} size="md" color={theme.colorScheme === 'dark' ? 'gray' : 'dark'} onLabel={<IconSun size="1rem" stroke={2.5} color={theme.colors.yellow[4]} />} offLabel={<IconMoonStars size="1rem" stroke={2.5} color={theme.colors.blue[6]} />} />
+                                </Flex>
+                                <Stack className={classes.drawerFooter}>
+                                    <Button data-testid="cypress-open-sign-in-modal-btn" onClick={openSignInModal} variant="default">
+                                        Login
+                                    </Button>
+                                    <Button data-testid="cypress-open-sign-up-modal-btn" onClick={openSignUpModal}>
+                                        Register
+                                    </Button>
+                                </Stack>
+                            </>
+                        )}
+                    </Drawer>
+                </MediaQuery>
+            }
+            header={
+                <Header className={classes.header} height={51} px="md">
+                    <Box className="insetBlur"></Box>
+                    <Group className="headerContainer">
+                        <Anchor href="/">
+                            <Image fit="contain" height={50} width={150} src={logo} alt="tum rating logo" />
+                        </Anchor>
+                        <SpotlightControl className="spotlightControl" onClick={openSpotlight} />
+                        <Burger data-testid="cypress-burger" opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
                         <Group className={classes.hiddenMobile}>
                             {user ? null : (
                                 <>
-                                    <Button compact onClick={openSignInModal} variant="default">
-                                        {t('login')}
+                                    <Button data-testid="cypress-open-sign-in-modal-btn" compact onClick={openSignInModal} variant="default">
+                                        Login
                                     </Button>
-                                    <Button compact onClick={openSignUpModal}>
-                                        {t('register')}
+                                    <Button data-testid="cypress-open-sign-up-modal-btn" compact onClick={openSignUpModal}>
+                                        Register
                                     </Button>
                                 </>
                             )}
                             {user ? (
                                 <>
-                                    <Button onClick={openAddCourseModal} leftIcon={<IconPlus/>}>Add
-                                        course</Button>
                                     <UserButton {...user.user} />
                                 </>
                             ) : null}
-                            <ActionIcon
-                                variant="outline"
-                                color={dark ? 'yellow' : 'blue'}
-                                onClick={() => toggleColorScheme()}
-                                title="Toggle color scheme"
-                            >
-                                {dark ? <IconSun size="1.1rem"/> : <IconMoonStars size="1.1rem"/>}
+                            <ActionIcon variant="outline" color={dark ? 'yellow' : 'blue'} onClick={() => toggleColorScheme()} title="Toggle color scheme">
+                                {dark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
                             </ActionIcon>
                         </Group>
                     </Group>
-                    <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop}/>
-                </Group>
-            </Header>
-            <Drawer
-                opened={drawerOpened}
-                onClose={closeDrawer}
-                size="100%"
-                padding="md"
-                className={classes.hiddenDesktop}
-                zIndex={1000000}
-            >
-                <a href="/" className={classes.link}>
-                    Home
-                </a>
-                <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'}/>
-                {user ? (
-                    <Button leftIcon={<IconLogout size={14}/>} onClick={() => {
-                        signOut();
-                        closeDrawer()
-                    }} variant="default">
-                        Logout
-                    </Button>
-                ) : (
-                    <>
-                        <Group position="center" grow pb="xl" px="md">
-                            <Button onClick={() => {
-                                openSignInModal();
-                                closeDrawer()
-                            }}
-                                    variant="default">
-                                {t('login')}
-                            </Button>
-                            <Button onClick={() => {
-                                openSignUpModal();
-                                closeDrawer()
-                            }}>
-                                {t('register')}
-                            </Button>
-                        </Group>
-                    </>
-                )}
-
-            </Drawer>
-            <Box w={'100%'} h={'100%'}
-                 sx={{position: 'relative', overflow: 'hidden', display: 'flex', paddingBottom: '60px'}}>
-                <AnimatedBackground/>
+                </Header>
+            }
+        >
+            <Box style={{ width: '100%' }}>
+                <Box className={classes.animatedBackground}>
+                    <AnimatedBackground />
+                </Box>
                 {children}
             </Box>
-        </Box>
+        </AppShell>
     );
 };
