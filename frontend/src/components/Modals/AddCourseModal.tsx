@@ -1,43 +1,43 @@
-
+import { useEffect } from 'react';
 import { useForm } from '@mantine/form';
-import {  Button, Group, Paper, Stack, Text, TextInput } from '@mantine/core';
-// eslint-disable-next-line import/named
+import { Button, Group, Paper, Select, Stack, Text, TextInput } from '@mantine/core';
 import { ContextModalProps, modals } from '@mantine/modals';
-import {useAddReview,ReviewInput} from "../../reviews/useAddReview";
-import {nanoid} from "nanoid";
-import {useEffect} from "react";
+import { nanoid } from 'nanoid';
+
+import { ReviewInput, useAddReview } from '@/reviews/useAddReview';
 
 const openAddCourseModal = () => {
     modals.openContextModal({
         modal: 'addCourse',
         title: 'Add Course',
         innerProps: {},
+        fullScreen: window.innerWidth <= 900,
     });
 };
 const AddCourseModal = ({ context, id }: ContextModalProps) => {
-    const {addReview,status} = useAddReview();
+    const { mutate: addReview, status } = useAddReview();
     const form = useForm({
         initialValues: {
             courseId: nanoid(),
             courseNumber: nanoid(),
-            professor: "",
-            course: "",
+            professor: '',
+            course: '',
+            semester: '',
         },
     });
 
     useEffect(() => {
-        if(status === 'success') {
-            context.closeModal(id)
+        if (status === 'success') {
+            context.closeModal(id);
         }
-    },[status])
+    }, [status]);
 
-    const onAddCourse = (form: ReviewInput) =>{
-        const {courseId, courseNumber, professor, course} = form;
-        addReview({courseId, courseNumber, professor, course})
-    }
+    const onAddCourse = (form: ReviewInput) => {
+        addReview({ ...form });
+    };
 
     return (
-        <Paper radius="md" p="xl">
+        <Paper data-testid="cypress-add-new-course-modal" radius="md" p="xl">
             <Text size="xl" weight={600}>
                 Add New Course
             </Text>
@@ -47,25 +47,12 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
                 })}
             >
                 <Stack>
-                    <TextInput
-                        required
-                        label="Course name"
-                        placeholder="Course name"
-                        value={form.values.course}
-                        onChange={(event) => form.setFieldValue('course', event.currentTarget.value)}
-                        radius="md"
-                    />
-                    <TextInput
-                        required
-                        label="Professor"
-                        placeholder="Professor"
-                        value={form.values.professor}
-                        onChange={(event) => form.setFieldValue('professor', event.currentTarget.value)}
-                        radius="md"
-                    />
+                    <TextInput data-testid="cypress-add-new-course-name-input" required label="Course name" placeholder="Course name" value={form.values.course} onChange={(event) => form.setFieldValue('course', event.currentTarget.value)} radius="md" />
+                    <TextInput data-testid="cypress-add-new-course-professor-input" required label="Professor" placeholder="Professor" value={form.values.professor} onChange={(event) => form.setFieldValue('professor', event.currentTarget.value)} radius="md" />
+                    <Select data-testid="cypress-add-new-course-semester-select" label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={[{ value: '2023 S', label: '2023 S' }]} />
                 </Stack>
                 <Group position="apart" mt="xl">
-                    <Button type="submit" radius="xl">
+                    <Button data-testid="cypress-add-new-course-submit-btn" type="submit" radius="xl">
                         Add New Course
                     </Button>
                 </Group>
