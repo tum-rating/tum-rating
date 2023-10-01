@@ -1,1 +1,0 @@
-export { RoutesApp } from './Routes';
