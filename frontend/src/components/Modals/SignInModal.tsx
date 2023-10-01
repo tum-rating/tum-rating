@@ -18,7 +18,6 @@ const openSignInModal = () => {
         },
         fullScreen: window.innerWidth <= 900,
         innerProps: {},
-        attributes: {},
     });
 };
 
