@@ -26,8 +26,13 @@ import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
             },
           };
         }
-        // TODO add production logger config
-        return {};
+        // for AWS log to stdout
+        return {
+          pinoHttp: {
+            level: 'info',
+            stream: process.stdout,
+          }
+        };
       },
     }),
   ],
