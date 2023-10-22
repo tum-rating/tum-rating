@@ -23,7 +23,7 @@ jobs:
             IMAGE_TAG: ${{ github.ref_name }}
         run: |
           # Login
-          docker login $DO_REPOSITORY --username ${{ secrets.DIGITAL_OCEAN_TOKEN }} --passowrd ${{ secrets.DIGITAL_OCEAN_TOKEN }}
+          docker login $DO_REPOSITORY --username ${{ secrets.DIGITAL_OCEAN_TOKEN }} --password ${{ secrets.DIGITAL_OCEAN_TOKEN }}
           # Build a docker container and
           docker build -f ./backend/Dockerfile -t $DO_REPOSITORY:$IMAGE_TAG .
           docker push $DO_REPOSITORY:$IMAGE_TAG
