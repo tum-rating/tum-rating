@@ -28,7 +28,7 @@ jobs:
         env:
             DO_REPOSITORY: ${{ vars.DO_REPOSITORY }} 
             DO_IMAGE_NAME: ${{ vars.DO_IMAGE_NAME }} 
-            IMAGE_TAG: ${{ steps.package-version.outputs.current-versio }}
+            IMAGE_TAG: ${{ steps.package-version.outputs.current-version }}
         run: |
           # Login
           docker login $DO_REPOSITORY --username ${{ secrets.DIGITAL_OCEAN_TOKEN }} --password ${{ secrets.DIGITAL_OCEAN_TOKEN }}
@@ -42,7 +42,7 @@ jobs:
         env:
             DO_REPOSITORY: ${{ vars.DO_REPOSITORY }} 
             DO_IMAGE_NAME: ${{ vars.DO_IMAGE_NAME }} 
-            IMAGE_TAG: ${{ steps.package-version.outputs.current-versio }}
+            IMAGE_TAG: ${{ steps.package-version.outputs.current-version }}
         with:
           app_name: tum-rating-staging
           token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
