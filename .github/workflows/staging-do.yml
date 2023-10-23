@@ -35,7 +35,7 @@ jobs:
           # Build a docker container and
           docker build -f ./backend/Dockerfile -t $DO_REPOSITORY/$DO_IMAGE_NAME:$IMAGE_TAG .
           docker push $DO_REPOSITORY/$DO_IMAGE_NAME:$IMAGE_TAG
-          echo "image=$DO_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "image=$DO_REPOSITORY/$DO_IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: DigitalOcean App Platform deployment
         uses: digitalocean/app_action@v1.1.6 # replace this with current version from https://github.com/digitalocean/app_action/releases
@@ -51,8 +51,8 @@ jobs:
                       \"name\": \"tum-rating-staging\",
                       \"image\":{
                         \"registry_type\": \"DOCR\",
-                        \"repository\": \"$DO_REPOSITORY/$DO_IMAGE_NAME\",
-                        \"tag\": \"$IMAGE_TAG\"
+                        \"repository\": \"${DO_REPOSITORY}/${DO_IMAGE_NAME}\",
+                        \"tag\": \"${IMAGE_TAG}\"
                       },
                     },
                   ]"
