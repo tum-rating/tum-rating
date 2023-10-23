@@ -48,7 +48,7 @@ jobs:
           token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
           images: '[{
                   "name": "tum-rating-staging",
-                  "repository": "${{DO_REPOSITORY}}/${{DO_IMAGE_NAME}}",
-                  "tag": "${{IMAGE_TAG}}"
+                  "repository": "${{env.DO_REPOSITORY}}/${{env.DO_IMAGE_NAME}}",
+                  "tag": "${{env.IMAGE_TAG}}"
                 }
               ]'
