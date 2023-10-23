@@ -54,6 +54,7 @@ jobs:
               ]'
         
       - name: Push git tag
-        run: |
-          git tag ${{ steps.package-version.outputs.current-version }}
-          git push origin ${{ steps.package-version.outputs.current-version }}
+        uses: actions-ecosystem/action-push-tag@v1
+        with:
+          tag: ${{ steps.package-version.outputs.current-version }}
+          message: '${{ steps.package-version.outputs.current-version }}: PR #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}'
