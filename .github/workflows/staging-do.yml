@@ -51,8 +51,8 @@ jobs:
                       "name": "tum-rating-staging",
                       "image":{
                         "registry_type": "DOCR",
-                        "repository": "${DO_REPOSITORY}/${DO_IMAGE_NAME}",
-                        "tag": $IMAGE_TAG 
+                        "repository": "${{ DO_REPOSITORY }}/${{ DO_IMAGE_NAME }}",
+                        "tag": "${{ IMAGE_TAG }}"
                       },
                     },
                   ]'
