@@ -28,7 +28,7 @@ jobs:
         env:
             DO_REPOSITORY: ${{ vars.DO_REPOSITORY }} 
             DO_IMAGE_NAME: ${{ vars.DO_IMAGE_NAME }} 
-            IMAGE_TAG: ${{ steps.package-version.outputs.current-version }}
+            IMAGE_TAG: ${{ steps.package-version.outputs.current-versio }}
         run: |
           # Login
           docker login $DO_REPOSITORY --username ${{ secrets.DIGITAL_OCEAN_TOKEN }} --password ${{ secrets.DIGITAL_OCEAN_TOKEN }}
@@ -39,24 +39,20 @@ jobs:
 
       - name: DigitalOcean App Platform deployment
         uses: digitalocean/app_action@v1.1.6 # replace this with current version from https://github.com/digitalocean/app_action/releases
+        env:
+            DO_REPOSITORY: ${{ vars.DO_REPOSITORY }} 
+            DO_IMAGE_NAME: ${{ vars.DO_IMAGE_NAME }} 
+            IMAGE_TAG: ${{ steps.package-version.outputs.current-versio }}
         with:
-          app_name: my_DO_app
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          app_name: tum-rating-staging
+          token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
           images: '[
                     {
-                      "name": "sample-golang",
+                      "name": "tum-rating-staging",
                       "image":{
                         "registry_type": "DOCR",
-                        "repository": "add_sample",
-                        "tag": "a5cae3e"
+                        "repository": "${DO_REPOSITORY}/${DO_IMAGE_NAME}",
+                        "tag": $IMAGE_TAG 
                       },
                     },
-                    {
-                      "name": "sample-add",
-                      "image":{
-                        "registry_type": "DOCKER_HUB",
-                        "registry": "nginxdemos",
-                        "repository": "hello",
-                        "tag": "0.2"
-                      },
                   ]'
