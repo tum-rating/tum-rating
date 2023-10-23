@@ -52,3 +52,8 @@ jobs:
                   "tag": "${{env.IMAGE_TAG}}"
                 }
               ]'
+        
+      - name: Push git tag
+        run: |
+          git tag ${{ steps.package-version.outputs.current-version }}
+          git push origin ${{ steps.package-version.outputs.current-version }}
