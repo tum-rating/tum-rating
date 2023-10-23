@@ -15,19 +15,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Version tag
-        id: github-tag
+      - name: Get version tag
+        id: package-version
         run: |
           echo "Reading package.json from ./package.json"
           PACKAGE_VERSION=$(cat ./package.json | jq '.version' | tr -d '"')
+          echo "Current version: ${PACKAGE_VERSION}"
           echo "current-version=${PACKAGE_VERSION}" >> $GITHUB_OUTPUT
-          exit 1
+
       - name: Docker login, build, tag, and push image to DigitalOcean
         id: build-image
         env:
             DO_REPOSITORY: ${{ vars.DO_REPOSITORY }} 
             DO_IMAGE_NAME: ${{ vars.DO_IMAGE_NAME }} 
-            IMAGE_TAG: ${{ github.ref_name }}
+            IMAGE_TAG: ${{ steps.package-version.outputs.package_version }}
         run: |
           # Login
           docker login $DO_REPOSITORY --username ${{ secrets.DIGITAL_OCEAN_TOKEN }} --password ${{ secrets.DIGITAL_OCEAN_TOKEN }}
