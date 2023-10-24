@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useResizeObserver, useWindowScroll } from '@mantine/hooks';
-import { Box, createStyles } from '@mantine/core';
-import { DataTable } from 'mantine-datatable';
+import {useEffect, useMemo, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {useResizeObserver, useWindowScroll} from '@mantine/hooks';
+import {Box, createStyles} from '@mantine/core';
+import {DataTable} from 'mantine-datatable';
 
-import { usePaginatedReviews } from '@/reviews/usePaginatedReviews';
-import { Review } from '@/reviews/types';
-import { BottomTableLoader } from '../Loaders/BottomTableLoader';
-import { columns } from './Columns';
+import {usePaginatedReviews} from '@/reviews/usePaginatedReviews';
+import {Review} from '@/reviews/types';
+import {BottomTableLoader} from '../Loaders/BottomTableLoader';
+import {columns} from './Columns';
 
 const useStyles = createStyles((theme) => ({
     tableContainer: {
@@ -29,22 +29,22 @@ const useStyles = createStyles((theme) => ({
     },
 
     dataTable: {
-        background: theme.colorScheme === 'dark' ? theme.black : theme.white,
-    },
+        width: '100%',
+        background: theme.fn.rgba( theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[4],theme.colorScheme === 'dark' ? 0.15 : 0.08)
+    }
 }));
 
 const ClassesTable = () => {
     const columnsConfiguration = useMemo(() => columns, []);
     const navigate = useNavigate();
-    const { classes } = useStyles();
+    const {classes} = useStyles();
     const [ref] = useResizeObserver();
     const [records, setRecords] = useState<Review[]>([]);
     const [scroll] = useWindowScroll();
-    const { data, fetchNextPage, isFetching } = usePaginatedReviews();
+    const {data, fetchNextPage, isFetching} = usePaginatedReviews();
 
     useEffect(() => {
         if (data) {
-            console.log(data);
             const newRecords = data.pages.map((v) => v.reviews.map((el) => el)).flat();
             setRecords([...newRecords]);
         }

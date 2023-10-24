@@ -5,8 +5,6 @@ import { DetailReview } from './types';
 
 async function getDetailReview(_id: string): Promise<DetailReview | null> {
     const endpoint = endpoints.getSpecificReview(_id);
-
-    console.log(endpoints.getSpecificReview(_id));
     const response = await fetch(endpoint);
     if (!response.ok) throw new ResponseError('Failed on get reviews request', response);
     return await response.json();

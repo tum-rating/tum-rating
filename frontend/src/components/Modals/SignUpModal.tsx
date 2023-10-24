@@ -2,7 +2,6 @@ import { useForm } from '@mantine/form';
 import { Anchor, Button, Checkbox, Flex, Group, LoadingOverlay, Paper, PasswordInput, Stack, Text, TextInput, ThemeIcon } from '@mantine/core';
 import { useSignUp } from '@/auth/useSignUp';
 import { ContextModalProps, modals } from '@mantine/modals';
-import { useDisclosure } from '@mantine/hooks';
 import { IconMail } from '@tabler/icons-react';
 import { openSignInModal } from './SignInModal';
 
@@ -21,9 +20,7 @@ const openSignUpModal = () => {
 };
 
 const SignUpModal = ({ context, id }: ContextModalProps) => {
-    const { isSuccess, signUp } = useSignUp();
-    const [visible, { open, close }] = useDisclosure(false);
-
+    const { isSuccess,isLoading, mutate:signUp } = useSignUp();
     const form = useForm({
         initialValues: {
             email: '',
@@ -38,7 +35,7 @@ const SignUpModal = ({ context, id }: ContextModalProps) => {
 
     return (
         <Paper radius="md" p="xl" data-testid="cypress-sign-up-modal">
-            <LoadingOverlay visible={visible} overlayBlur={2} />
+            <LoadingOverlay visible={isLoading} overlayBlur={2} />
             {isSuccess ? (
                 <Flex direction="column" align="center" gap={25}>
                     <Group>
@@ -66,14 +63,7 @@ const SignUpModal = ({ context, id }: ContextModalProps) => {
                     </Text>
                     <form
                         onSubmit={form.onSubmit((e) => {
-                            open();
                             signUp(e)
-                                .then(() => {
-                                    close();
-                                })
-                                .catch(() => {
-                                    close();
-                                });
                         })}
                     >
                         <Stack>

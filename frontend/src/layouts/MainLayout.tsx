@@ -16,7 +16,7 @@ const useStyles = createStyles((theme) => ({
         '& .mantine-AppShell-main': {
             padding: '100px 50px 0 50px',
         },
-        [theme.fn.smallerThan('xs')]: {
+        [theme.fn.smallerThan('sm')]: {
             '& .mantine-AppShell-main': {
                 padding: '50px 0 0 0 ',
             },
@@ -26,12 +26,12 @@ const useStyles = createStyles((theme) => ({
         },
     },
     hiddenMobile: {
-        [theme.fn.smallerThan('xs')]: {
+        [theme.fn.smallerThan('sm')]: {
             display: 'none',
         },
     },
     hiddenDesktop: {
-        [theme.fn.largerThan('xs')]: {
+        [theme.fn.largerThan('sm')]: {
             display: 'none',
         },
     },
@@ -72,8 +72,7 @@ const useStyles = createStyles((theme) => ({
         '@media (prefers-reduced-motion)': {
             display: 'none',
         },
-        [theme.fn.smallerThan('xs')]: {
-            background: 'red',
+        [theme.fn.smallerThan('sm')]: {
             display: 'none !important',
         },
     },

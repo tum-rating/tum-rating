@@ -15,7 +15,6 @@ async function signIn({ email, password }: LoginInput): Promise<User> {
         },
         body: JSON.stringify({ email, password }),
     });
-    console.log(response);
     if (!response.ok) throw new ResponseError('Failed on sign in request', response);
     return await response.json();
 }
@@ -25,8 +24,8 @@ export type LoginInput = {
     password: string;
 };
 
-export function useSignIn(): { signIn: any; isSuccess: boolean } {
-    const { mutateAsync: signInMutation, isSuccess } = useMutation({
+export function useSignIn() {
+    return useMutation({
         mutationFn: async ({ email, password }: LoginInput) => await signIn({ email, password }),
         onSuccess: (data) => {
             queryClient.setQueryData([QUERY_KEY.user], data);
@@ -37,7 +36,6 @@ export function useSignIn(): { signIn: any; isSuccess: boolean } {
             });
         },
         onError: (error) => {
-            console.log(error);
             const errorMessage = error instanceof ResponseError ? error.message : 'Ops.. Error on sign up. Try again!';
             notifications.show({
                 message: errorMessage,
@@ -46,5 +44,4 @@ export function useSignIn(): { signIn: any; isSuccess: boolean } {
             });
         },
     });
-    return { signIn: signInMutation, isSuccess };
 }
