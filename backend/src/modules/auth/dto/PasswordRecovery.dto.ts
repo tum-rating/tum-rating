@@ -17,6 +17,7 @@ export const PasswordRecoveryRequestSchema =
   Joi.object<PasswordRecoveryRequestDto>({
     token: Joi.string().regex(JWTRegex),
     email: Joi.string().email(),
+    password: Joi.string(),
   })
     .or('token', 'email')
     .and('token', 'password');

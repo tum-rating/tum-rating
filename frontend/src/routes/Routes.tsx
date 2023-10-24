@@ -3,7 +3,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { ModalsProvider } from '@mantine/modals';
 
 import { getPath, Paths } from './paths';
-import { Activation, Course, Home, PageNotFound } from '@/pages';
+import { Activation, Course, Home, PageNotFound,Recovery } from '@/pages';
 import { MainLayout } from '@/layouts';
 import { SpotlightModal } from '@/components/Modals/SpotlightModal';
 import { SignInModal, SignUpModal } from '@/components/Modals';
@@ -47,6 +47,14 @@ const RoutesApp = () => {
                     element: (
                         <Suspense fallback={'Loading...'}>
                             <Activation />
+                        </Suspense>
+                    ),
+                },
+                {
+                    path: getPath(Paths.recovery),
+                    element: (
+                        <Suspense fallback={'Loading...'}>
+                            <Recovery/>
                         </Suspense>
                     ),
                 },
