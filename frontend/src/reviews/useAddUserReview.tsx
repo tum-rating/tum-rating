@@ -34,7 +34,6 @@ export interface UserAddReviewInput {
 }
 
 export function useAddUserReview(courseId: string, type: 'POST' | 'PUT'): any {
-    console.log(type);
     const user = userLocalStorage.getUser();
     return useMutation({
         mutationFn: async (newReview: UserAddReviewInput) => addUserReview(user, newReview, courseId, type),
@@ -45,7 +44,6 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PUT'): any {
                 color: 'green',
                 icon: <IconCheck />,
             });
-            console.log(courseId);
             queryClient.invalidateQueries(['detailReview', courseId]);
             queryClient.invalidateQueries(['courses']);
         },
