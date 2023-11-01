@@ -1,20 +1,26 @@
-FROM node:18.18-alpine AS development
+FROM node:18.18-alpine AS frontend-build
 
 WORKDIR /usr/app
 
-COPY --chown=node:node backend/package.json ./
+RUN mkdir -p /usr/app/frontend
 
-COPY --chown=node:node package-lock.json ./
+COPY --chown=node:node package*.json ./
 
-# RUN npm i -g npm@10.1.0
+COPY --chown=node:node frontend/package.json ./frontend
 
-RUN npm ci
+RUN npm install
 
-COPY --chown=node:node backend/ .
+COPY --chown=node:node tsconfig*.json ./
+
+COPY --chown=node:node frontend ./frontend
+
+RUN npm -w frontend run build:staging
+
+RUN npm ci --only=production && npm cache clean --force
 
 USER node
 
-FROM node:18.18-alpine AS build
+FROM node:18.18-alpine AS backend-development
 
 WORKDIR /usr/app
 
@@ -22,7 +28,19 @@ COPY --chown=node:node backend/package.json ./
 
 COPY --chown=node:node package-lock.json ./
 
-COPY --chown=node:node --from=development /usr/app/node_modules ./node_modules
+RUN npm ci
+
+USER node
+
+FROM node:18.18-alpine AS backend-build
+
+WORKDIR /usr/app
+
+COPY --chown=node:node backend/package.json ./
+
+COPY --chown=node:node package-lock.json ./
+
+COPY --chown=node:node --from=backend-development /usr/app/node_modules ./node_modules
 
 COPY --chown=node:node backend/ .
 
@@ -36,7 +54,11 @@ USER node
 
 FROM node:18.18-alpine AS production
 
-COPY --chown=node:node --from=build /usr/app/node_modules ./node_modules
-COPY --chown=node:node --from=build /usr/app/dist ./dist
+COPY --chown=node:node --from=backend-build /usr/app/node_modules ./node_modules
+COPY --chown=node:node --from=backend-build /usr/app/dist ./dist
+
+# # copy frontend build
+RUN mkdir -p ./public
+COPY --chown=node:node --from=frontend-build /usr/app/frontend/dist ./public
 
 CMD [ "node", "dist/main.js" ]

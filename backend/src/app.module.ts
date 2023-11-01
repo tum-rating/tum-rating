@@ -8,6 +8,7 @@ import { MongoModule } from 'src/database/mongo.module';
 import { LoggerModule } from 'src/utils/logger/logger.module';
 
 import { AuthModule } from './modules/auth/auth.module';
+import { FrontendModule } from './modules/frontend-serve/frontendServe.module';
 import { HealthModule } from './modules/health/health.module';
 import { UserModule } from './modules/user/user.module';
 import { ReviewModule } from './modules/review/review.module';
@@ -21,6 +22,7 @@ import { ReviewProposalModule } from './modules/review-proposal/reviewProposal.m
     LoggerModule,
 
     AuthModule,
+    FrontendModule,
     HealthModule,
     UserModule,
     ReviewModule,

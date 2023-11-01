@@ -10,7 +10,6 @@ type Reviews = {
 };
 
 async function getPaginatedReviews({ pageParam = 1 }): Promise<Reviews> {
-    console.log(isMobile);
     const PAGE_SIZE = isMobile ? 20 : 45;
     const response = await fetch(endpoints.getPaginatedReviews(pageParam, PAGE_SIZE));
     const responseData = await response.json();

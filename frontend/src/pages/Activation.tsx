@@ -105,7 +105,6 @@ export const Activation = () => {
     const navigate = useNavigate();
 
     status.then((res) => {
-        console.log(res);
         if (!res) {
             navigate('/404');
             return null;

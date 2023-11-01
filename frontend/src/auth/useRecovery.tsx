@@ -1,14 +1,23 @@
-import { notifications } from '@mantine/notifications';
-import { IconCheck, IconX } from '@tabler/icons-react';
-import { endpoints } from '@/api';
+import {notifications} from '@mantine/notifications';
+import {IconX} from '@tabler/icons-react';
+import {endpoints} from '@/api';
+import {useMutation} from "@tanstack/react-query";
+import {ResponseError} from "@/utils/Errors/ResponseError";
 
-async function recovery({ email }: RecoveryBody) {
+async function recovery(props: RecoveryBody) {
+    const requestBody = Object.entries(props).reduce((acc: RecoveryBody, [key, value]) => {
+        if (value) {
+            acc[key] = value;
+        }
+        return acc;
+    }, {})
+
     const response = await fetch(endpoints.recovery, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
@@ -19,28 +28,26 @@ async function recovery({ email }: RecoveryBody) {
 }
 
 interface RecoveryBody {
-    email: string;
+    email?: string;
+    password?: string;
+    token?: string;
+    [key: string]: string | undefined;
 }
 
 export function useRecovery() {
-    return (recoveryBody: RecoveryBody) =>
-        recovery(recoveryBody).then((status) => {
-            if (status) {
-                notifications.show({
-                    title: 'Success',
-                    message: 'Recovery successful!',
-                    color: 'green',
-                    icon: <IconCheck />,
-                });
-                return true;
-            } else {
-                notifications.show({
-                    title: 'Error',
-                    message: 'Ops.. Error on recovery. Try again!',
-                    color: 'red',
-                    icon: <IconX />,
-                });
-                return false;
-            }
-        });
+    return useMutation({
+        mutationFn: async ({email, password, token}: RecoveryBody) => await recovery({
+            email,
+            password,
+            token
+        }),
+        onError: (error) => {
+            const errorMessage = error instanceof ResponseError ? error.message : 'Ops.. Error on sign up. Try again!';
+            notifications.show({
+                message: errorMessage,
+                color: 'red',
+                icon: <IconX/>,
+            });
+        },
+    });
 }
