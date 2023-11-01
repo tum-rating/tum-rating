@@ -1,11 +1,11 @@
 {
   "name": "@tum-rating/frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build:staging": "tsc && vite build --mode staging",
     "lint": "eslint ./src --ext .ts,.tsx",
     "cypress": "cypress open",
     "cypress:all": "cypress run",
@@ -39,7 +39,7 @@
     "cypress-wait-until": "^2.0.1",
     "eslint": "^8.49.0",
     "eslint-config-react-app": "^7.0.1",
-    "prettier": "^3.0.2",
+    "prettier": "^3.0.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vite-plugin-eslint": "^1.8.1"
