@@ -1,28 +1,21 @@
-FROM node:18.18-alpine AS frontend-development
-
-WORKDIR /usr/app
-
-COPY --chown=node:node frontend/package.json ./frontend
-
-COPY --chown=node:node package-lock.json ./
-
-RUN npm ci
-
 FROM node:18.18-alpine AS frontend-build
 
 WORKDIR /usr/app
 
-COPY --chown=node:node frontend/package.json ./
+RUN mkdir -p /usr/app/frontend
 
-COPY --chown=node:node package-lock.json ./
+COPY --chown=node:node package*.json ./
 
-COPY --chown=node:node --from=frontend-development /usr/app/node_modules ./node_modules
+COPY --chown=node:node frontend/package.json ./frontend
 
-COPY --chown=node:node frontend/ .
+RUN npm install
 
-RUN npm run build:staging
+COPY --chown=node:node tsconfig*.json ./
 
-#czy to jest potrzebne??
+COPY --chown=node:node frontend ./frontend
+
+RUN npm -w frontend run build:staging
+
 RUN npm ci --only=production && npm cache clean --force
 
 USER node
@@ -55,7 +48,6 @@ RUN npm run build
 
 ENV NODE_ENV production
 
-#czy to jest potrzebne??
 RUN npm ci --only=production && npm cache clean --force
 
 USER node
@@ -65,8 +57,8 @@ FROM node:18.18-alpine AS production
 COPY --chown=node:node --from=backend-build /usr/app/node_modules ./node_modules
 COPY --chown=node:node --from=backend-build /usr/app/dist ./dist
 
-# copy frontend build
+# # copy frontend build
 RUN mkdir -p ./public
-COPY --chown=node:node --from=frontend-build /usr/app/dist ./public
+COPY --chown=node:node --from=frontend-build /usr/app/frontend/dist ./public
 
 CMD [ "node", "dist/main.js" ]
