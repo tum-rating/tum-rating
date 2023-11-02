@@ -15,9 +15,6 @@ jobs:
     steps:
       - name: Docker build
         id: build-image
-        env:
-            DO_REPOSITORY: ${{ vars.DO_REPOSITORY }} 
-            DO_IMAGE_NAME: ${{ vars.DO_IMAGE_NAME }} 
         run: |
           # Build a docker container and
-          docker build -f ./backend/Dockerfile -t $DO_REPOSITORY/$DO_IMAGE_NAME:latest .
+          docker build -f ./backend/Dockerfile -t tum-rating/build .
