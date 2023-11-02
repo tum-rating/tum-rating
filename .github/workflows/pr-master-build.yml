@@ -2,6 +2,8 @@ name: Build
 
 on:  
   push:
+    branches:
+      - master
   pull_request:
     branches:
       - master
@@ -18,4 +20,4 @@ jobs:
             DO_IMAGE_NAME: ${{ vars.DO_IMAGE_NAME }} 
         run: |
           # Build a docker container and
-          docker build -f ./backend/Dockerfile -t $DO_REPOSITORY/$DO_IMAGE_NAME:build .
+          docker build -f ./backend/Dockerfile -t $DO_REPOSITORY/$DO_IMAGE_NAME:tests .
