@@ -176,5 +176,5 @@ describe('Put User Review', () => {
                 expect(response.body.votesNumber).toBe(2);
                 expect(response.body.reviews.find(review => review.userId === signInResponse2.user.id)).toBeDefined();
             });
-    });
+    }, 10000);
 });

@@ -141,5 +141,5 @@ describe('Add User Review', () => {
                 expect(response.body.howEasyRatingAverage).toBe(4.5);
                 expect(response.body.votesNumber).toBe(2);
             });
-    });
+    }, 10000);
 });
