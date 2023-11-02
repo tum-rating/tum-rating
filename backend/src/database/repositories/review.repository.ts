@@ -40,7 +40,7 @@ export class ReviewRepository extends BaseRepository<Review> {
     return this._reviewModel.find(query)
       .sort({course: 1})
       .select('-reviews -__v')
-      .skip(pageNumber * pageSize)
+      .skip(alignedPageNumber * pageSize)
       .limit(pageSize);
   }
 
