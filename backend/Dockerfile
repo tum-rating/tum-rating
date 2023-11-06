@@ -57,8 +57,10 @@ FROM node:18.18-alpine AS production
 COPY --chown=node:node --from=backend-build /usr/app/node_modules ./node_modules
 COPY --chown=node:node --from=backend-build /usr/app/dist ./dist
 
-# # copy frontend build
+# copy frontend build
 RUN mkdir -p ./public
 COPY --chown=node:node --from=frontend-build /usr/app/frontend/dist ./public
+
+# TODO add mail templates
 
 CMD [ "node", "dist/main.js" ]

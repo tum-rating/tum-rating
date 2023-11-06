@@ -10,8 +10,9 @@ interface MailRecipient {
     name?: string,
 }
 
-const emailActivationTemplateFile = 'activation.html'
-const emailRecoveryTemplateFile = 'recovery.html'
+const emailTemplatesDir = 'assets/mail-templates';
+const emailActivationTemplateFile = 'activation.html';
+const emailRecoveryTemplateFile = 'recovery.html';
 
 @Injectable()
 export class MailerService {
@@ -58,7 +59,7 @@ export class MailerService {
         const activationLink = `${this._configService.getOrThrow('webapp.url')}/auth/activate?token=${activationToken}`;
         const username = to[0].name || 'User';
 
-        const templateFilePath = join('templates', emailActivationTemplateFile)
+        const templateFilePath = join(process.cwd(), emailTemplatesDir, emailActivationTemplateFile)
         const emailTemplate = fs.readFileSync(templateFilePath, 'utf8');
 
         const processedEmailTemplate = emailTemplate
@@ -77,7 +78,7 @@ export class MailerService {
         const username = to[0].name || 'User';
         const email = to[0].email || 'Email';
 
-        const templateFilePath = join('templates', emailRecoveryTemplateFile)
+        const templateFilePath = join(process.cwd(), emailTemplatesDir, emailRecoveryTemplateFile)
         const emailTemplate = fs.readFileSync(templateFilePath, 'utf8');
 
         const processedEmailTemplate = emailTemplate

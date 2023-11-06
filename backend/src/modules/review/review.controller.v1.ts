@@ -20,7 +20,7 @@ import { PinoLogger } from 'nestjs-pino';
 import { USER_ID } from 'src/utils/headers/context.headers';
 import { AdminGuard } from 'src/common/guards/admin.guard';
 import { AuthGuard } from 'src/common/guards/auth.guard';
-import { OptionalIntPipe } from 'src/common/pipes/OptionalInt.pipe';
+import { OptionalIntPipeAtLeast1 } from 'src/common/pipes/OptionalIntAtLeast1.pipe';
 
 import { ReviewService } from './review.service';
 import {
@@ -66,8 +66,8 @@ export class ReviewControllerV1 {
     type: Number,
   })
   public async getReviews(
-    @Query('page-number', new JoiObjectSchemaPipe(OptionalIntPipe)) pageNumber: number = 0,
-    @Query('page-size', new JoiObjectSchemaPipe(OptionalIntPipe)) pageSize: number = 100,
+    @Query('page-number', new JoiObjectSchemaPipe(OptionalIntPipeAtLeast1)) pageNumber: number = 1,
+    @Query('page-size', new JoiObjectSchemaPipe(OptionalIntPipeAtLeast1)) pageSize: number = 100, 
     @Query('search') search?: string,
   ) {
     this._logger.info('Get reviews requested with pageNumber %s, pageSize %d and search %s', pageNumber, pageSize, search);

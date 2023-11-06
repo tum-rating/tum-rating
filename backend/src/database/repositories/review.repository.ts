@@ -34,10 +34,13 @@ export class ReviewRepository extends BaseRepository<Review> {
       query['$text'] = {$search: search}
     }
 
+    // align page number with index 0
+    const alignedPageNumber = pageNumber - 1;
+
     return this._reviewModel.find(query)
       .sort({course: 1})
       .select('-reviews -__v')
-      .skip(pageNumber * pageSize)
+      .skip(alignedPageNumber * pageSize)
       .limit(pageSize);
   }
 

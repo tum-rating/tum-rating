@@ -1,64 +1,64 @@
-import { ActionIcon, Avatar, createStyles, Group, Menu, Text, UnstyledButtonProps } from '@mantine/core';
-import { IconLogout } from '@tabler/icons-react';
-import { useSignOut } from '@/auth/useSignOut';
+import { ActionIcon, Box, Group, Menu, rem, Stack, Text, ThemeIcon } from '@mantine/core';
+import { IconLego, IconLogout } from '@tabler/icons-react';
+import { useSignOut } from '@/auth/useSignOut.tsx';
+import { useUser } from '@/auth/useUser.tsx';
 
-interface UserButtonProps extends UnstyledButtonProps {
-    username: string;
-    email: string;
-    mode?: 'mobile' | 'desktop' | undefined;
+interface UserButtonProps {
+    withoutDropdown?: boolean;
 }
 
-const useStyles = createStyles((theme) => ({
-    user: {
-        display: 'flex',
-        width: '100%',
-        padding: theme.spacing.md,
-        color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-    },
-}));
-
-export function UserButton({ username, email, mode = 'desktop' }: UserButtonProps) {
-    const { classes } = useStyles();
+export function UserButton({ withoutDropdown = false }: UserButtonProps) {
     const signOut = useSignOut();
-
-    if (mode === 'mobile') {
+    const { user } = useUser();
+    if (!user) return null;
+    if (withoutDropdown) {
         return (
-            <Avatar data-testid="cypress-user-button" color="blue" radius="xs" size={30}>
-                {username.slice(0, 1).toUpperCase()}
-            </Avatar>
+            <Box>
+                <Group wrap="nowrap" p="xs">
+                    <ThemeIcon>
+                        <IconLego size="1.2rem" />
+                    </ThemeIcon>
+                    <Stack gap={0}>
+                        <Text truncate="end" size="sm" fw={500}>
+                            {user.user.username}
+                        </Text>
+                        <Text truncate="end" c="dimmed" size="xs">
+                            {user.user.email}
+                        </Text>
+                    </Stack>
+                </Group>
+            </Box>
         );
     } else {
         return (
-            <Menu data-testid="cypress-user-button" shadow="md" width={200}>
+            <Menu position="bottom-end" shadow="md" width={200}>
                 <Menu.Target>
-                    <ActionIcon variant="outline" title="Toggle color scheme">
-                        <Avatar color="blue" radius="xs" size={30}>
-                            {username.slice(0, 1).toUpperCase()}
-                        </Avatar>
+                    <ActionIcon variant="outline">
+                        <IconLego size="1.2rem" />
                     </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
-                    <Group className={classes.user}>
-                        <Avatar color="blue" radius="xs" size={30}>
-                            {username.slice(0, 1).toUpperCase()}
-                        </Avatar>
-                        <div style={{ flex: 1 }}>
-                            <Text size="sm" weight={500}>
-                                {username}
-                            </Text>
-
-                            <Text color="dimmed" size="xs">
-                                {email}
-                            </Text>
-                        </div>
-                    </Group>
+                    <Box maw={300} mx="auto">
+                        <Group wrap="nowrap" p="xs">
+                            <ThemeIcon>
+                                <IconLego size="1.2rem" />
+                            </ThemeIcon>
+                            <Stack gap={0}>
+                                <Text w={120} truncate="end" size="sm" fw={500}>
+                                    {user.user.username}
+                                </Text>
+                                <Text w={120} truncate="end" c="dimmed" size="xs">
+                                    {user.user.email}
+                                </Text>
+                            </Stack>
+                        </Group>
+                    </Box>
                     <Menu.Label>Application</Menu.Label>
                     <Menu.Item
-                        data-testid="ypress-logout-btn"
                         onClick={() => {
                             signOut();
                         }}
-                        icon={<IconLogout size={14} />}
+                        leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}
                     >
                         Logout
                     </Menu.Item>

@@ -3,5 +3,5 @@ import mongoose from 'mongoose';
 import {mongooseConfig} from './config';
 
 export const connectMongo = () => {
-    return mongoose.connect(mongooseConfig.connectionUrl);
+    return mongoose.connect(mongooseConfig.connectionUrl, {dbName: mongooseConfig.dbName});
 }

@@ -1,0 +1,16 @@
+.courseBreadcrumbsContainer {
+    height: rem(45);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    overflow: hidden;
+    position:relative;
+    z-index: 5;
+}
+
+.courseBreadcrumbs {
+    margin: 0;
+    max-width: 100%;
+    padding-right: var(--mantine-spacing-xs);
+}

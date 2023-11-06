@@ -1,1 +1,1 @@
-export { RoutesApp } from './Routes';
+export { RoutesApp } from './Routes.tsx';

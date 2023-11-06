@@ -1,0 +1,15 @@
+
+.actions {
+    padding: calc(var(--mantine-spacing-xs) / 2);
+
+}
+
+
+.actionsGroup {
+    text-transform: uppercase;
+    font-size: var(--mantine-font-size-xs);
+    font-weight: 700;
+    padding: var(--mantine-spacing-md) rem(12) 0;
+}
+
+

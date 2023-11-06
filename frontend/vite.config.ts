@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'url';
-import eslint from 'vite-plugin-eslint';
 
 export default defineConfig({
     resolve: {
@@ -13,5 +12,5 @@ export default defineConfig({
     server: {
         port: 5174,
     },
-    plugins: [react(), eslint()],
+    plugins: [react()],
 });

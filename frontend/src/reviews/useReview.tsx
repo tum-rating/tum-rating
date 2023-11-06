@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { endpoints } from '@/api';
-import { ResponseError } from '@/utils/Errors/ResponseError';
-import { DetailReview } from './types';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import { DetailReview } from './types.ts';
 
 async function getDetailReview(_id: string): Promise<DetailReview | null> {
     const endpoint = endpoints.getSpecificReview(_id);

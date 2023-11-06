@@ -12,13 +12,19 @@ export const getActivationTokenFromMail = async (to: string) => {
     if(mail.length === 0)
         return null;
 
-    const text: string = mail[0].text;
+    const text: string = mail[0].html;
 
     const searchPhrase = 'token=';
 
     const tokenStart = text.indexOf(searchPhrase);
-                                                        // remove \n
-    return text.slice(tokenStart + searchPhrase.length, -1);
+
+    const result = text.slice(tokenStart + searchPhrase.length, -1);
+
+    const tokenEnd = result.indexOf('"');
+
+    const result2 = result.slice(0, tokenEnd);
+
+    return result2;
 }
 
 export const getRecoveryTokenFromMail = async (to: string) => {
@@ -27,11 +33,17 @@ export const getRecoveryTokenFromMail = async (to: string) => {
     if(mail.length === 0)
         return null;
 
-    const text: string = mail[0].text;
+    const text: string = mail[0].html;
 
     const searchPhrase = 'token=';
 
     const tokenStart = text.indexOf(searchPhrase);
-                                                        // remove \n
-    return text.slice(tokenStart + searchPhrase.length, -1);
+
+    const result = text.slice(tokenStart + searchPhrase.length, -1);
+
+    const tokenEnd = result.indexOf('"');
+
+    const result2 = result.slice(0, tokenEnd);
+
+    return result2;
 }
