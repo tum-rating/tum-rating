@@ -1,0 +1,11 @@
+
+.wrapper {
+    padding: rem(60px) rem(10px) rem(80px) rem(10px);
+    width: 460px;
+    @media (max-width: $mantine-breakpoint-sm){
+        width: 100%
+    }
+}
+
+
+

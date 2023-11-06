@@ -2,20 +2,23 @@ import { Suspense } from 'react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { ModalsProvider } from '@mantine/modals';
 
-import { getPath, Paths } from './paths';
-import { Activation, Course, Home, PageNotFound,Recovery } from '@/pages';
+import { getPath, Paths } from './paths.ts';
+import { Activation, Course, Home, PageNotFound, Recovery } from '@/pages';
 import { MainLayout } from '@/layouts';
-import { SpotlightModal } from '@/components/Modals/SpotlightModal';
-import { SignInModal, SignUpModal } from '@/components/Modals';
-import { AddCourseModal } from '@/components/Modals/AddCourseModal';
-import { AddUserReviewModal } from '@/components/Modals/AddUserReview';
+import { SpotlightModal } from '@/components/Modals/SpotlightModal/SpotlightModal.tsx';
+import { RecoveryModal, SignInModal, SignUpModal } from '@/components/Modals';
+import { AddCourseModal } from '@/components/Modals/AddCourseModal/AddCourseModal.tsx';
+import { AddUserReviewModal } from '@/components/Modals/AddUserReview/AddUserReview.tsx';
+import { EditUserReviewModal } from '@/components/Modals/EditUserReview';
 
 const modals = {
     signIn: SignInModal,
     signUp: SignUpModal,
     addCourse: AddCourseModal,
     addUserReview: AddUserReviewModal,
+    editUserReview: EditUserReviewModal,
     spotlight: SpotlightModal,
+    recovery: RecoveryModal,
 };
 const RoutesApp = () => {
     const routes = [
@@ -54,7 +57,7 @@ const RoutesApp = () => {
                     path: getPath(Paths.recovery),
                     element: (
                         <Suspense fallback={'Loading...'}>
-                            <Recovery/>
+                            <Recovery />
                         </Suspense>
                     ),
                 },

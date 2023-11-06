@@ -1,1 +1,0 @@
-export { TableOfContentsFloating } from './TableOfContent';

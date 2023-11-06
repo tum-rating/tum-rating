@@ -1,3 +1,3 @@
-import { Review } from '@/reviews/types';
+import { Review } from '@/reviews/types.ts';
 
-export type SpotlightAction = Review;
+export type ActionProps = Review;

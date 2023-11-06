@@ -1,0 +1,19 @@
+
+.content {
+    position: relative;
+    overflow: hidden;
+}
+
+.searchInput {
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    border: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    &, &:focus-within {
+        border-bottom: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+    }
+}
+
+
+

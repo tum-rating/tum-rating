@@ -1,38 +1,30 @@
-import { Badge, Flex } from '@mantine/core';
+import { Flex } from '@mantine/core';
 
-import { Review } from '@/reviews/types';
+import { Review } from '@/reviews/types.ts';
 import { NumberRatingBadge } from '../Ratings';
-
 export const columns = [
     {
         title: 'Course',
         accessor: 'course',
-        width: '60%',
-    },
-    {
-        title: 'Semester',
-        accessor: 'offeredInSemesters',
+        width: '40%',
         render: (element: Review) => {
             return (
                 <>
-                    {element.offeredInSemesters.map((offeredInSemester, index) => (
-                        <Badge key={index} variant="filled">
-                            {offeredInSemester}
-                        </Badge>
-                    ))}
+                    <span style={{ fontWeight: 500 }}>{element.course}</span>
                 </>
             );
         },
-        visibleMediaQuery: (theme: { breakpoints: { xs: any } }) => `(min-width: ${theme.breakpoints.xs})`,
     },
     {
         title: 'Professor',
+        width: 75,
         accessor: 'professor',
-        visibleMediaQuery: (theme: { breakpoints: { xs: any } }) => `(min-width: ${theme.breakpoints.xs})`,
     },
     {
         title: 'How interesting',
         accessor: 'howInterestingRatingAverage',
+        width: 70,
+        ellipsis: true,
         render: (element: Review) => {
             return (
                 <>
@@ -46,6 +38,8 @@ export const columns = [
     {
         title: 'How easy',
         accessor: 'howEasyRatingAverage',
+        ellipsis: true,
+        width: 100,
         render: (element: Review) => {
             return (
                 <>

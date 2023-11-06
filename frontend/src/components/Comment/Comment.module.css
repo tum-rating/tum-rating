@@ -1,0 +1,16 @@
+
+.comment {
+    padding: var(--mantine-spacing-lg) var(--mantine-spacing-xl);
+}
+
+.body {
+    padding-top: 5px;
+    font-size: var(--mantine-font-size-sm);
+}
+
+.content {
+    & > p:last-child {
+        margin-bottom: 0;
+    }
+}
+
