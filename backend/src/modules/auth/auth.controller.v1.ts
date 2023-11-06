@@ -114,12 +114,12 @@ export class AuthControllerV1 {
       const databaseUser = await this._userService.getUserByEmail(body.email);
 
       if(!databaseUser) {
-          this._logger.warn('Sign in request fail, user email is not activated for %s', body.email);
+          this._logger.warn('Sign in request fail, user email does not exsit for %s', body.email);
           throw new UnauthorizedException();
       }
 
       if(!databaseUser.isEmailActivated) {
-          this._logger.warn('Sign in request fail, user does not exsit for %s', body.email);
+          this._logger.warn('Sign in request fail, user email is not activated for %s', body.email);
           const activationToken = await this._jwtService.signJWTActivate(databaseUser.id);
 
           await this._mailerService.sendEmailActivationEmail(

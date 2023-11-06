@@ -3,15 +3,16 @@ import { ConfigService } from '@nestjs/config';
 import { PinoLogger } from 'nestjs-pino';
 import * as NodeMailer from 'nodemailer';
 import * as fs from 'fs';
-import {join} from 'path';
+import { join } from 'path';
 
 interface MailRecipient {
     email: string;
     name?: string,
 }
 
-const emailActivationTemplateFile = 'activation.html'
-const emailRecoveryTemplateFile = 'recovery.html'
+const emailTemplatesDir = 'assets/mail-templates';
+const emailActivationTemplateFile = 'activation.html';
+const emailRecoveryTemplateFile = 'recovery.html';
 
 @Injectable()
 export class MailerService {
@@ -58,7 +59,7 @@ export class MailerService {
         const activationLink = `${this._configService.getOrThrow('webapp.url')}/auth/activate?token=${activationToken}`;
         const username = to[0].name || 'User';
 
-        const templateFilePath = join(process.cwd(), '../mails', emailActivationTemplateFile)
+        const templateFilePath = join(process.cwd(), emailTemplatesDir, emailActivationTemplateFile)
         const emailTemplate = fs.readFileSync(templateFilePath, 'utf8');
 
         const processedEmailTemplate = emailTemplate
@@ -77,7 +78,7 @@ export class MailerService {
         const username = to[0].name || 'User';
         const email = to[0].email || 'Email';
 
-        const templateFilePath = join(process.cwd(), '../mails', emailRecoveryTemplateFile)
+        const templateFilePath = join(process.cwd(), emailTemplatesDir, emailRecoveryTemplateFile)
         const emailTemplate = fs.readFileSync(templateFilePath, 'utf8');
 
         const processedEmailTemplate = emailTemplate
