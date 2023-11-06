@@ -1,0 +1,12 @@
+
+.dataTable {
+    width: 100%;
+    min-height: calc(100vh - 45px);
+    opacity: .96;
+    & * {
+        @media (max-width: $mantine-breakpoint-sm) {
+            font-size: 12px;
+        }
+    }
+
+}

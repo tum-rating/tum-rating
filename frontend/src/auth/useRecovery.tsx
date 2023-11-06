@@ -1,8 +1,8 @@
-import {notifications} from '@mantine/notifications';
-import {IconX} from '@tabler/icons-react';
-import {endpoints} from '@/api';
-import {useMutation} from "@tanstack/react-query";
-import {ResponseError} from "@/utils/Errors/ResponseError";
+import { notifications } from '@mantine/notifications';
+import { IconX } from '@tabler/icons-react';
+import { endpoints } from '@/api';
+import { useMutation } from '@tanstack/react-query';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function recovery(props: RecoveryBody) {
     const requestBody = Object.entries(props).reduce((acc: RecoveryBody, [key, value]) => {
@@ -10,7 +10,7 @@ async function recovery(props: RecoveryBody) {
             acc[key] = value;
         }
         return acc;
-    }, {})
+    }, {});
 
     const response = await fetch(endpoints.recovery, {
         method: 'POST',
@@ -27,7 +27,7 @@ async function recovery(props: RecoveryBody) {
     return true;
 }
 
-interface RecoveryBody {
+export interface RecoveryBody {
     email?: string;
     password?: string;
     token?: string;
@@ -36,17 +36,18 @@ interface RecoveryBody {
 
 export function useRecovery() {
     return useMutation({
-        mutationFn: async ({email, password, token}: RecoveryBody) => await recovery({
-            email,
-            password,
-            token
-        }),
+        mutationFn: async ({ email, password, token }: RecoveryBody) =>
+            await recovery({
+                email,
+                password,
+                token,
+            }),
         onError: (error) => {
             const errorMessage = error instanceof ResponseError ? error.message : 'Ops.. Error on sign up. Try again!';
             notifications.show({
                 message: errorMessage,
                 color: 'red',
-                icon: <IconX/>,
+                icon: <IconX />,
             });
         },
     });

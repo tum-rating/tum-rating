@@ -3,10 +3,10 @@ import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
 
 import { endpoints } from '@/api';
-import { QUERY_KEY } from '@/constants/queryKeys';
-import { ResponseError } from '@/utils/Errors/ResponseError';
-import { User } from '@/auth/useUser';
-import * as userLocalStorage from '../auth/user.localstore';
+import { QUERY_KEY } from '@/constants/queryKeys.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import { User } from '@/auth/useUser.tsx';
+import * as userLocalStorage from '../auth/user.localstore.ts';
 
 const convertToProperObject = (obj: any) => {
     const newObj = { ...obj };

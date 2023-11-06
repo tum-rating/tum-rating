@@ -1,17 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
 import { endpoints } from '@/api';
-import { ResponseError } from '@/utils/Errors/ResponseError';
-import { User } from '@/auth/useUser';
-import * as userLocalStorage from '../auth/user.localstore';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import { User } from '@/auth/useUser.tsx';
+import * as userLocalStorage from '../auth/user.localstore.ts';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
-import { queryClient } from '@/react-query/client';
+import { queryClient } from '@/react-query/client.ts';
 
 async function addUserReview(user: User | null | undefined, userReview: UserAddReviewInput, courseId: string, type: 'POST' | 'PUT'): Promise<any> {
     if (!user) return null;
     const body = { ...userReview };
-
-    console.log(type);
     const endpoint = endpoints.postSpecificReview(courseId, String(user.user.id));
     const response = await fetch(endpoint, {
         method: type,

@@ -1,4 +1,4 @@
-import { User } from './useUser';
+import { User } from './useUser.tsx';
 
 const USER_LOCAL_STORAGE_KEY = 'TUM-REVIEW-USER';
 

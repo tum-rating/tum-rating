@@ -1,20 +1,6 @@
-import { Avatar, createStyles, Flex, Paper, Rating, Spoiler, Text, TypographyStylesProvider } from '@mantine/core';
-import { useUser } from '@/auth/useUser';
-
-const useStyles = createStyles((theme) => ({
-    comment: {
-        padding: `${theme.spacing.lg} ${theme.spacing.xl}`,
-    },
-    body: {
-        paddingTop: 5,
-        fontSize: theme.fontSizes.sm,
-    },
-    content: {
-        '& > p:last-child': {
-            marginBottom: 0,
-        },
-    },
-}));
+import { Avatar, Badge, Flex, Text } from '@mantine/core';
+import { Box, Group, ThemeIcon } from '@mantine/core';
+import { IconStarFilled } from '@tabler/icons-react';
 
 interface CommentProps {
     comment: string;
@@ -23,40 +9,69 @@ interface CommentProps {
     howInterestingRating: number;
     userId: string;
     _id: string;
+    userReview: {
+        userId: string;
+    };
 }
 
-export const Comment = ({ comment, userId, howEasyRating, howInterestingRating }: CommentProps) => {
-    const { user } = useUser();
-    const { classes } = useStyles();
+export const Comment = (props: CommentProps) => {
+    const { userId, howInterestingRating, howEasyRating, comment, createdAt, userReview } = props;
+
+    if (!userId) return '';
+    const userCommentFlag = (userReview || {}).userId === userId;
     return (
-        <Paper withBorder radius="md" className={classes.comment}>
-            <Flex align="flex-start" gap={10}>
-                <Avatar alt={userId} radius="xl" />
-                <Flex direction="column" mt={6} gap={5} h="100%" justify="center">
-                    <Text fz="sm">
-                        {userId} {userId === String(user?.user.id) ? '(Your comment)' : ''}
-                    </Text>
-                    <Flex gap={10}>
-                        <Flex align="center" gap={5}>
-                            <Text fz="xs" mr={3} color="dimmed">
-                                How interesting
-                            </Text>
-                            <Rating size="12px" value={howInterestingRating} fractions={2} readOnly />
-                        </Flex>
-                        <Flex align="center" gap={5}>
-                            <Text fz="xs" mr={3} color="dimmed">
+        <>
+            <Box
+                data-comment={userCommentFlag ? 'user-comment' : 'comment'}
+                p="sm"
+                style={{
+                    borderRadius: 'var(--mantine-radius-lg)',
+                    border: userCommentFlag ? '1px solid var(--mantine-color-green-light)' : '1px solid var(--mantine-color-gray-3)',
+                    background: userCommentFlag ? 'var(--mantine-color-green-light)' : 'auto',
+                }}
+            >
+                <Group>
+                    <Avatar radius="xl" color="cyan" alt={userId}>
+                        {userId.slice(0, 2)}
+                    </Avatar>
+                    <div>
+                        <Text size="sm">
+                            {userId}{' '}
+                            {userCommentFlag && (
+                                <Badge ml="auto" variant="light">
+                                    Your Review
+                                </Badge>
+                            )}
+                        </Text>
+                        <Text size="xs" c="dimmed">
+                            {new Date(createdAt).toLocaleString()}
+                        </Text>
+                    </div>
+                </Group>
+                <Text pl={54} pt="sm" size="sm">
+                    <Box mb={10}>
+                        <Flex align="center" gap={3} fz="sm" fw={600}>
+                            <Text fz="xs" c="dimmed">
                                 How easy
                             </Text>
-                            <Rating size="12px" value={howEasyRating} fractions={2} readOnly />
+                            <ThemeIcon c="yellow" variant="white" size="xs">
+                                <IconStarFilled></IconStarFilled>
+                            </ThemeIcon>
+                            {howEasyRating}
                         </Flex>
-                    </Flex>
-                    <TypographyStylesProvider className={classes.body}>
-                        <Spoiler maxHeight={40} showLabel="Show more" hideLabel="Hide" transitionDuration={0}>
-                            <div className={classes.content} dangerouslySetInnerHTML={{ __html: comment }} />
-                        </Spoiler>
-                    </TypographyStylesProvider>
-                </Flex>
-            </Flex>
-        </Paper>
+                        <Flex align="center" gap={3} fz="sm" fw={600}>
+                            <Text fz="xs" c="dimmed">
+                                How interesting
+                            </Text>
+                            <ThemeIcon c="yellow" variant="white" size="xs">
+                                <IconStarFilled></IconStarFilled>
+                            </ThemeIcon>
+                            {howInterestingRating}
+                        </Flex>
+                    </Box>
+                    {comment}
+                </Text>
+            </Box>
+        </>
     );
 };
