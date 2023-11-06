@@ -6,7 +6,6 @@ import { queryClient } from './react-query/client.ts';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import 'mantine-datatable/styles.css';
-import '../layout.css';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { TableScrollProvider } from '@/context';
 
