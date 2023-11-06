@@ -1,4 +1,4 @@
-const baseDomain = 'http://localhost:3000';
+const baseDomain = import.meta.env.VITE_API_BASE;
 const api = '/api';
 const apiVersion = '/v1';
 const baseApiUrl = baseDomain + api + apiVersion;

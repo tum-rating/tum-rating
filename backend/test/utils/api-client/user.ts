@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { SignUpRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignUpRequest.dto';
-import { SignInRequestDto } from 'src/modules/auth/dto/SignInRequest.dto';
+import { SignInRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignInRequest.dto';
 import { baseUrlV1 } from './config';
 
 import { activateUserEmail as activateUserEmailDB, changeUserRole as changeUserRoleDB } from '@tum-rating/backend/test/utils/db-client/user';
-import { UserRole } from 'src/database/documents/user';
+import { UserRole } from '@tum-rating/backend/src/database/documents/user';
 
 export const authUrl = baseUrlV1 + '/auth';
 

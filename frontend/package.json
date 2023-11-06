@@ -1,7 +1,7 @@
 {
   "name": "@tum-rating/frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +9,7 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "prettier": "prettier --check \"**/*.{ts,tsx}\"",
     "prettier:write": "prettier --write \"**/*.{ts,tsx}\"",
+    "build:staging": "tsc && vite build --mode staging",
     "cypress": "cypress open",
     "cypress:all": "cypress run",
     "preview": "vite preview"
@@ -47,7 +48,7 @@
     "postcss": "^8.4.24",
     "postcss-preset-mantine": "1.9.0",
     "postcss-simple-vars": "^7.0.1",
-    "prettier": "^3.0.2",
+    "prettier": "^3.0.3",
     "typescript": "^5.0.2",
     "vite": "^4.3.2"
   }

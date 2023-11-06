@@ -22,7 +22,7 @@ export class ReviewService {
 
     return {
       reviews: results,
-      nextPageNumber: pageNumber + 1,
+      nextPageNumber: results.length > 0 ? pageNumber + 1 : null,
     };
   }
 
