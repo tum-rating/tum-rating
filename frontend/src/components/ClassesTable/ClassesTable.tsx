@@ -1,76 +1,57 @@
-import {useEffect, useMemo, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {useResizeObserver, useWindowScroll} from '@mantine/hooks';
-import {Box, createStyles} from '@mantine/core';
-import {DataTable} from 'mantine-datatable';
-
-import {usePaginatedReviews} from '@/reviews/usePaginatedReviews';
-import {Review} from '@/reviews/types';
-import {BottomTableLoader} from '../Loaders/BottomTableLoader';
-import {columns} from './Columns';
-
-const useStyles = createStyles((theme) => ({
-    tableContainer: {
-        position: 'relative',
-        overflowX: 'hidden',
-        width: '100%',
-        background: 'transparent',
-        paddingBottom: theme.spacing.xl,
-        zIndex: 1,
-        [theme.fn.smallerThan('xs')]: {
-            padding: '0',
-        },
-    },
-
-    tableRelativeContainer: {
-        position: 'relative',
-        height: '100%',
-        width: '100%',
-    },
-
-    dataTable: {
-        width: '100%',
-        background: theme.fn.rgba( theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[4],theme.colorScheme === 'dark' ? 0.15 : 0.08)
-    }
-}));
+import { DataTable } from 'mantine-datatable';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { columns } from '@/components/ClassesTable/Columns';
+import { Review } from '@/reviews/types';
+import { usePaginatedReviews } from '@/reviews/usePaginatedReviews';
+import { useNavigate } from 'react-router-dom';
+import { useViewportSize } from '@mantine/hooks';
+import classes from './ClassesTable.module.css';
+import { useTableScrollContext } from '@/context';
 
 const ClassesTable = () => {
     const columnsConfiguration = useMemo(() => columns, []);
-    const navigate = useNavigate();
-    const {classes} = useStyles();
-    const [ref] = useResizeObserver();
     const [records, setRecords] = useState<Review[]>([]);
-    const [scroll] = useWindowScroll();
-    const {data, fetchNextPage, isFetching} = usePaginatedReviews();
+    const [internalLoading, setInternalLoading] = useState(true);
+    const { data, fetchNextPage, isFetching, isLoading, isInitialLoading } = usePaginatedReviews();
+    const { height } = useViewportSize();
+    const navigate = useNavigate();
+    const scrollViewportRef = useRef<HTMLDivElement>(null);
+    const { scrollY, setScrollY } = useTableScrollContext();
 
     useEffect(() => {
         if (data) {
             const newRecords = data.pages.map((v) => v.reviews.map((el) => el)).flat();
             setRecords([...newRecords]);
+            setInternalLoading(false);
         }
     }, [data]);
 
     useEffect(() => {
-        if (scroll.y >= ref.current?.clientHeight - window.innerHeight - 150) {
-            loadMoreRecords();
+        if (scrollViewportRef.current) {
+            scrollViewportRef.current?.scrollTo(0, scrollY);
         }
-    }, [ref, scroll]);
-
-    const handleRowClick = (record: Review) => {
-        const dynamicPath = '/courses/' + record._id;
-        navigate(dynamicPath);
-    };
+    }, [scrollViewportRef.current]);
 
     const loadMoreRecords = () => {
         fetchNextPage().then(() => {});
     };
 
+    const handleRowClick = (record: Review) => {
+        const dynamicPath = '/courses/' + record._id;
+        setScrollY(scrollViewportRef.current.scrollTop);
+        navigate(dynamicPath);
+    };
+
+    console.log(records, {
+        data,
+        isFetching,
+        isLoading,
+        isInitialLoading,
+    });
     return (
-        <Box className={classes.tableContainer}>
-            <Box className={classes.tableRelativeContainer}>
-                <DataTable fontSize={'xs'} className={classes.dataTable} withBorder minHeight={window.innerHeight} withColumnBorders highlightOnHover onRowClick={handleRowClick} columns={columnsConfiguration} records={records} fetching={isFetching} customLoader={<BottomTableLoader />} scrollViewportRef={ref} />
-            </Box>
-        </Box>
+        <>
+            <DataTable withColumnBorders highlightOnHover striped height={height - 45} columns={columnsConfiguration} records={records} onScrollToBottom={loadMoreRecords} scrollViewportRef={scrollViewportRef} fetching={isFetching || internalLoading} className={classes.dataTable} rowClassName={classes.dataTableRow} onRowClick={({ record }) => handleRowClick(record)}></DataTable>
+        </>
     );
 };
 
