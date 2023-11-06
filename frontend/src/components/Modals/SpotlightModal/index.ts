@@ -1,1 +1,1 @@
-export { SpotlightModal, openSpotlightModal } from './SpotlightModal.tsx';
+export { SpotlightModal, openSpotlight } from './SpotlightModal.tsx';
