@@ -5,6 +5,7 @@ export enum Paths {
     recovery = 'recovery',
     courses = 'courses',
     courseDetail = ':id',
+    signIn = '#modal=sign-in'
 }
 
 type PathElement = {

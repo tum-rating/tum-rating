@@ -12,7 +12,7 @@ const ClassesTable = () => {
     const columnsConfiguration = useMemo(() => columns, []);
     const [records, setRecords] = useState<Review[]>([]);
     const [internalLoading, setInternalLoading] = useState(true);
-    const { data, fetchNextPage, isFetching, isLoading, isInitialLoading } = usePaginatedReviews();
+    const { data, fetchNextPage, isFetching } = usePaginatedReviews();
     const { height } = useViewportSize();
     const navigate = useNavigate();
     const scrollViewportRef = useRef<HTMLDivElement>(null);
@@ -42,12 +42,6 @@ const ClassesTable = () => {
         navigate(dynamicPath);
     };
 
-    console.log(records, {
-        data,
-        isFetching,
-        isLoading,
-        isInitialLoading,
-    });
     return (
         <>
             <DataTable withColumnBorders highlightOnHover striped height={height - 45} columns={columnsConfiguration} records={records} onScrollToBottom={loadMoreRecords} scrollViewportRef={scrollViewportRef} fetching={isFetching || internalLoading} className={classes.dataTable} rowClassName={classes.dataTableRow} onRowClick={({ record }) => handleRowClick(record)}></DataTable>

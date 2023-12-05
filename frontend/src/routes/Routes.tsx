@@ -3,13 +3,14 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { ModalsProvider } from '@mantine/modals';
 
 import { getPath, Paths } from './paths.ts';
-import { Activation, Course, Home, PageNotFound, Recovery } from '@/pages';
+import { Activation, Course, Home, PageNotFound, Recovery} from '@/pages';
 import { MainLayout } from '@/layouts';
 import { SpotlightModal } from '@/components/Modals/SpotlightModal/SpotlightModal.tsx';
-import { RecoveryModal, SignInModal, SignUpModal } from '@/components/Modals';
+import { RecoveryModal, SignInModal, SignUpModal, ModalsHashController } from '@/components/Modals';
 import { AddCourseModal } from '@/components/Modals/AddCourseModal/AddCourseModal.tsx';
 import { AddUserReviewModal } from '@/components/Modals/AddUserReview/AddUserReview.tsx';
 import { EditUserReviewModal } from '@/components/Modals/EditUserReview';
+
 
 const modals = {
     signIn: SignInModal,
@@ -31,9 +32,10 @@ const RoutesApp = () => {
             ),
             element: (
                 <ModalsProvider modals={modals}>
-                    <MainLayout>
-                        <Outlet />
-                    </MainLayout>
+                        <ModalsHashController/>
+                        <MainLayout>
+                            <Outlet />
+                        </MainLayout>
                 </ModalsProvider>
             ),
             children: [

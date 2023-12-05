@@ -10,9 +10,12 @@ import { UserButton } from '@/components/UserButton';
 import { useSignOut } from '@/auth/useSignOut';
 import { SpotlightControl } from '@/components/Spotlight/SpotlightControl';
 import { isMobile } from 'react-device-detect';
+import {getPath, Paths} from "@/routes/paths.ts";
+import {useNavigate} from "react-router-dom";
 
 export const MainLayout = ({ children }: PropsWithChildren) => {
     const { user } = useUser();
+    const navigate = useNavigate()
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const signOut = useSignOut();
@@ -30,7 +33,9 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     <SpotlightControl onClick={() => openSpotlight(isMobile)} />
                     {!user ? (
                         <>
-                            <Button data-testid="cypress-open-sign-in-modal-btn" size="xs" variant="outline" onClick={openSignInModal}>
+                            <Button data-testid="cypress-open-sign-in-modal-btn" size="xs" variant="outline" onClick={()=>{
+                                navigate(getPath(Paths.signIn))
+                            }}>
                                 Sign In
                             </Button>
                             <Button data-testid="cypress-open-sign-up-modal-btn" size="xs" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={openSignUpModal}>
