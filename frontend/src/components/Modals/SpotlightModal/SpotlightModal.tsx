@@ -14,7 +14,11 @@ function SpotlightScrollArea(props: ScrollAreaAutosizeProps) {
     return <ScrollArea.Autosize mah="calc(100vh - 18rem)" {...props} />;
 }
 
-const openSpotlight = (fullScreen: boolean) => {
+interface SpotlightModalProps extends ContextModalProps {
+    isMobile?: boolean;
+}
+
+const openSpotlight = ({isMobile,...props}:SpotlightModalProps) => {
     modals.openContextModal({
         modal: 'spotlight',
         withCloseButton: false,
@@ -22,12 +26,13 @@ const openSpotlight = (fullScreen: boolean) => {
         size: 'lg',
         m: 0,
         p: 0,
-        radius: fullScreen ? 0 : 4,
-        fullScreen: fullScreen,
+        radius: isMobile ? 0 : 4,
+        fullScreen: isMobile,
         overlayProps: {
             backgroundOpacity: 0.55,
             blur: 3,
         },
+        ...props
     });
 };
 

@@ -5,7 +5,12 @@ export enum Paths {
     recovery = 'recovery',
     courses = 'courses',
     courseDetail = ':id',
-    signIn = '#modal=sign-in'
+    signIn = '#modal=sign-in',
+    signUp = '#modal=sign-up',
+    addCourse = '#modal=add-course',
+    addUserReview = '#modal=add-user-review',
+    editUserReview = '#modal=edit-user-review',
+    spotlight = '#modal=spotlight',
 }
 
 type PathElement = {
@@ -33,11 +38,32 @@ const PATH_ELEMENTS: PathElement = {
     [Paths.activate]: {
         parent: Paths.auth,
     },
+    // modals
+    [Paths.signIn]: {
+        parent: null,
+    },
+    [Paths.signUp]: {
+        parent: null,
+    },
+    [Paths.addCourse]: {
+        parent: null,
+    },
+    [Paths.addUserReview]: {
+        parent: null,
+    },
+    [Paths.editUserReview]: {
+        parent: null,
+    },
+    [Paths.spotlight]: {
+        parent: null,
+    },
 };
 
 const getPath = (pathToResolve: Paths) => {
     let fullPath = `/${pathToResolve}`;
     let current = pathToResolve;
+    if (fullPath.includes('#modal=')) fullPath = fullPath.replace('/', '');
+
     while (PATH_ELEMENTS[current] && PATH_ELEMENTS[current].parent) {
         const parent = PATH_ELEMENTS[current].parent;
         if (parent) {
@@ -51,4 +77,4 @@ const getPath = (pathToResolve: Paths) => {
     return fullPath;
 };
 
-export { PATH_ELEMENTS, getPath };
+export {PATH_ELEMENTS, getPath};

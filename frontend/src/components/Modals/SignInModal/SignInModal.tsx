@@ -4,7 +4,6 @@ import { ContextModalProps, modals } from '@mantine/modals';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { LoginInput, useSignIn } from '@/auth/useSignIn.tsx';
-import { openSignUpModal } from '@/components/Modals';
 import { useEffect } from 'react';
 import { IconAt, IconLock } from '@tabler/icons-react';
 import { openRecoveryModal } from '@/components/Modals/RecoveryModal';
@@ -17,7 +16,7 @@ const openSignInModal = () => {
 };
 
 const SignInModal = ({ context, id }: ContextModalProps) => {
-    const { mutate: signIn, isLoading: signInLoading, isSuccess: isSignInSuccess } = useSignIn();
+    const { mutate: signIn, isPending: signInLoading, isSuccess: isSignInSuccess } = useSignIn();
     const navigate = useNavigate();
     const location = useLocation();
     const form = useForm({
@@ -56,7 +55,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
                             component="button"
                             type="button"
                             onClick={() => {
-                                openSignUpModal();
+                                // openSignUpModal();
                                 context.closeModal(id);
                             }}
                             size="xs"

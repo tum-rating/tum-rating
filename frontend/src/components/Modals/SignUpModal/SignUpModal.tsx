@@ -6,15 +6,19 @@ import { IconMail } from '@tabler/icons-react';
 import { openSignInModal } from '@/components/Modals';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 
-const openSignUpModal = () => {
+interface SignUpModalProps extends ContextModalProps {}
+
+
+const openSignUpModal = ({...props}:SignUpModalProps) => {
     modals.openContextModal({
         ...contextModalConfig('signUp', <Text fw={600}>Sign Up</Text>),
         closeOnClickOutside: false,
+        ...props
     });
 };
 
 const SignUpModal = ({ context, id }: ContextModalProps) => {
-    const { isSuccess, isLoading, mutate: signUp } = useSignUp();
+    const { isSuccess, isPending: isLoading, mutate: signUp } = useSignUp();
     const form = useForm({
         initialValues: {
             email: '',

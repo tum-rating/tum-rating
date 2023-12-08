@@ -30,11 +30,13 @@ interface IUseUser {
 }
 
 export function useUser(): IUseUser {
-    const { data: user } = useQuery<User | null>([QUERY_KEY.user], async (): Promise<User | null> => getUser(user), {
+    const { data: user } = useQuery({
+        queryKey: [QUERY_KEY.user],
+        queryFn: async () => getUser(user),
         refetchOnMount: false,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
-        initialData: userLocalStorage.getUser,
+        initialData: userLocalStorage.getUser(),
     });
 
     useEffect(() => {

@@ -13,7 +13,7 @@ const openRecoveryModal = () => {
 };
 
 const RecoveryModal = ({ context, id }: ContextModalProps) => {
-    const { mutate: recovery, isLoading: recoveryLoading, isSuccess: isRecoverySuccess } = useRecovery();
+    const { mutate: recovery, isPending: recoveryLoading, isSuccess: isRecoverySuccess } = useRecovery();
     const form = useForm({
         initialValues: {
             email: '',
