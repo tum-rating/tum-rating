@@ -1,21 +1,25 @@
-import { useForm } from '@mantine/form';
-import { Anchor, Button, Container, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput } from '@mantine/core';
-import { ContextModalProps, modals } from '@mantine/modals';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {useForm} from '@mantine/form';
+import {Anchor, Button, Container, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput} from '@mantine/core';
+import {ContextModalProps, modals} from '@mantine/modals';
+import {useLocation, useNavigate} from 'react-router-dom';
 
-import { LoginInput, useSignIn } from '@/auth/useSignIn.tsx';
-import { useEffect } from 'react';
-import { IconAt, IconLock } from '@tabler/icons-react';
-import { openRecoveryModal } from '@/components/Modals/RecoveryModal';
-import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
+import {LoginInput, useSignIn} from '@/auth/useSignIn.tsx';
+import {useEffect} from 'react';
+import {IconAt, IconLock} from '@tabler/icons-react';
+import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
+import {getPath, Paths} from "@/routes/paths.ts";
 
-const openSignInModal = () => {
+interface SignInModalProps extends ContextModalProps {}
+
+const openSignInModal = ({...props}:SignInModalProps) => {
+
     modals.openContextModal({
         ...contextModalConfig('signIn', <Text fw={600}>Sign In</Text>),
+        ...props,
     });
 };
 
-const SignInModal = ({ context, id }: ContextModalProps) => {
+const SignInModal = () => {
     const { mutate: signIn, isPending: signInLoading, isSuccess: isSignInSuccess } = useSignIn();
     const navigate = useNavigate();
     const location = useLocation();
@@ -35,7 +39,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
             if (location.pathname !== '/' && !location.pathname.includes('courses')) {
                 navigate('/');
             }
-            context.closeModal(id);
+            navigate("/")
         }
     }, [isSignInSuccess]);
 
@@ -55,8 +59,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
                             component="button"
                             type="button"
                             onClick={() => {
-                                // openSignUpModal();
-                                context.closeModal(id);
+                                navigate(getPath(Paths.signUp))
                             }}
                             size="xs"
                         >
@@ -66,8 +69,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
                             component="button"
                             type="button"
                             onClick={() => {
-                                context.closeModal(id);
-                                openRecoveryModal();
+                                navigate(getPath(Paths.forgotPassword))
                             }}
                             size="xs"
                         >

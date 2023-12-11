@@ -11,7 +11,6 @@ import {AddUserReviewModal} from '@/components/Modals/AddUserReview/AddUserRevie
 import {EditUserReviewModal} from '@/components/Modals/EditUserReview';
 import {ModalsProvider} from "@mantine/modals";
 
-
 const modals = {
     signIn: SignInModal,
     signUp: SignUpModal,
@@ -21,6 +20,7 @@ const modals = {
     spotlight: SpotlightModal,
     recovery: RecoveryModal,
 };
+
 const RoutesApp = () => {
     const routes = [
         {

@@ -18,7 +18,6 @@ import {
 import {useDisclosure, useHotkeys} from '@mantine/hooks';
 import logo from '@/assets/img/logo.png';
 import {IconMoonStars, IconSearch, IconSun} from '@tabler/icons-react';
-import {openSignInModal, openSignUpModal} from '@/components/Modals';
 import {useUser} from '@/auth/useUser';
 import {UserButton} from '@/components/UserButton';
 import {useSignOut} from '@/auth/useSignOut';
@@ -90,12 +89,12 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                             ) : (
                                 <>
                                     <Button data-testid="cypress-open-sign-in-modal-btn" fullWidth size="xs"
-                                            variant="outline" onClick={openSignInModal}>
+                                            variant="outline" onClick={()=>navigate(getPath(Paths.signIn))}>
                                         Sign In
                                     </Button>
                                     <Button data-testid="cypress-open-sign-up-modal-btn" fullWidth size="xs"
                                             variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}}
-                                            onClick={openSignUpModal}>
+                                            onClick={()=>navigate(getPath(Paths.signUp))}>
                                         Sign Up
                                     </Button>
                                 </>

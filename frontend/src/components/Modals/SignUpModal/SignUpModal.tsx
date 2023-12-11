@@ -3,8 +3,9 @@ import { Anchor, Button, Checkbox, Container, Flex, Group, LoadingOverlay, Passw
 import { useSignUp } from '@/auth/useSignUp.tsx';
 import { ContextModalProps, modals } from '@mantine/modals';
 import { IconMail } from '@tabler/icons-react';
-import { openSignInModal } from '@/components/Modals';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
+import {getPath, Paths} from "@/routes/paths.ts";
+import {useNavigate} from "react-router-dom";
 
 interface SignUpModalProps extends ContextModalProps {}
 
@@ -17,8 +18,9 @@ const openSignUpModal = ({...props}:SignUpModalProps) => {
     });
 };
 
-const SignUpModal = ({ context, id }: ContextModalProps) => {
+const SignUpModal = () => {
     const { isSuccess, isPending: isLoading, mutate: signUp } = useSignUp();
+    const navigate = useNavigate();
     const form = useForm({
         initialValues: {
             email: '',
@@ -72,8 +74,7 @@ const SignUpModal = ({ context, id }: ContextModalProps) => {
                                 component="button"
                                 type="button"
                                 onClick={() => {
-                                    openSignInModal();
-                                    context.closeModal(id);
+                                    navigate(getPath(Paths.signIn))
                                 }}
                                 size="xs"
                             >

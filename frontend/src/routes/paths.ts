@@ -11,6 +11,7 @@ export enum Paths {
     addUserReview = '#modal=add-user-review',
     editUserReview = '#modal=edit-user-review',
     spotlight = '#modal=spotlight',
+    forgotPassword = '#modal=forgot-password',
 }
 
 type PathElement = {
@@ -55,6 +56,9 @@ const PATH_ELEMENTS: PathElement = {
         parent: null,
     },
     [Paths.spotlight]: {
+        parent: null,
+    },
+    [Paths.forgotPassword]: {
         parent: null,
     },
 };
