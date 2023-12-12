@@ -15,7 +15,7 @@ interface CommentProps {
 }
 
 export const Comment = (props: CommentProps) => {
-    const { userId, howInterestingRating, howEasyRating, comment, createdAt, userReview } = props;
+    const { userId, howInterestingRating, howEasyRating, comment, createdAt, userReview,userName } = props;
 
     if (!userId) return '';
     const userCommentFlag = (userReview || {}).userId === userId;
@@ -32,11 +32,11 @@ export const Comment = (props: CommentProps) => {
             >
                 <Group>
                     <Avatar radius="xl" color="cyan" alt={userId}>
-                        {userId.slice(0, 2)}
+                        {userName.slice(0, 2)}
                     </Avatar>
                     <div>
                         <Text size="sm">
-                            {userId}{' '}
+                            {userName}{' '}
                             {userCommentFlag && (
                                 <Badge ml="auto" variant="light">
                                     Your Review
