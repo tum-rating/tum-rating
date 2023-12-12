@@ -28,7 +28,7 @@ const EditUserReviewModal = ({
     courseId: string;
 }>) => {
     const { courseId } = innerProps;
-    const { mutate: editUserReview, isSuccess, isLoading } = useAddUserReview(courseId, 'PUT');
+    const { mutate: editUserReview, isSuccess, isLoading } = useAddUserReview(courseId, 'PATCH');
     const { user } = useUser();
     const { data: userReview }: { data: DetailReview } = useDetailReview(courseId, { staleTime: Infinity });
 
