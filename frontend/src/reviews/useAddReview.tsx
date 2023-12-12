@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation} from '@tanstack/react-query';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
 
 import { endpoints } from '@/api';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
+// import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 import { User } from '@/auth/useUser.tsx';
 import * as userLocalStorage from '../auth/user.localstore.ts';
@@ -41,7 +41,7 @@ export interface ReviewInput {
 
 export function useAddReview(): any {
     const user = userLocalStorage.getUser();
-    const queryClient = useQueryClient();
+    // const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (newReview: ReviewInput) => addReview(user, newReview),
         onSuccess: () => {
@@ -51,7 +51,7 @@ export function useAddReview(): any {
                 color: 'green',
                 icon: <IconCheck />,
             });
-            queryClient.invalidateQueries([QUERY_KEY.reviews]);
+            // queryClient.invalidateQueries([QUERY_KEY.reviews]);
         },
     });
 }

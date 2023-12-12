@@ -1,9 +1,9 @@
 import { Button, Container, Image, SimpleGrid, Text, Title } from '@mantine/core';
-import { openSignInModal } from '@/components/Modals';
 import { useActivate } from '@/auth/useActivate.tsx';
 import { useNavigate } from 'react-router-dom';
 import activated from '@/assets/img/activated.svg';
 import classes from './Activation.module.css';
+import {getPath, Paths} from "@/routes/paths.ts";
 
 export const Activation = () => {
     const status = useActivate();
@@ -24,7 +24,7 @@ export const Activation = () => {
                     <Text c="dimmed" size="lg">
                         Congratulations! Your account is now activated. You can log in and start exploring and enjoying our platform's features.
                     </Text>
-                    <Button onClick={openSignInModal} variant="outline" size="md" mt="xl" className={classes.control}>
+                    <Button onClick={()=>navigate(getPath(Paths.signIn))} variant="outline" size="md" mt="xl" className={classes.control}>
                         Log In
                     </Button>
                 </div>
