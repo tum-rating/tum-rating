@@ -3,9 +3,10 @@ import { Button, Divider, Flex, Image, Text } from '@mantine/core';
 import type { ActionProps } from '../types.ts';
 import { Review } from '@/reviews/types.ts';
 import notFoundImage from '../../../assets/img/not-found.png';
-import { openAddCourseModal } from '@/components/Modals/AddCourseModal';
 import classes from './SpotlightActionList.module.css';
 import { SpotlightAction } from '@/components/Spotlight/SpotlightAction';
+import { useNavigate } from 'react-router-dom';
+import { getPath, Paths } from '@/routes/paths.ts';
 
 export interface ActionsListProps extends React.ComponentPropsWithoutRef<'div'> {
     actions: Review[];
@@ -22,6 +23,7 @@ export function ActionsList({ actions, actionComponent: Action, hovered, onActio
     const items = actions.map((item, index) => {
         return <SpotlightAction data-testid="cypress-global-search-item" query={query} key={item._id} action={item} hovered={index === hovered} onTrigger={() => onActionTrigger(item)} radius={4} />;
     });
+    const navigate = useNavigate();
 
     const shouldRenderActions = items.length > 0 || (!!nothingFoundMessage && query.trim().length > 0);
 
@@ -53,7 +55,7 @@ export function ActionsList({ actions, actionComponent: Action, hovered, onActio
                                     data-testid="cypress-open-add-new-course-modal-btn"
                                     onClick={() => {
                                         close();
-                                        openAddCourseModal();
+                                        navigate(getPath(Paths.addCourse));
                                     }}
                                 >
                                     Add a new course

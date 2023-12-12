@@ -6,9 +6,13 @@ import { nanoid } from 'nanoid';
 import { ReviewInput, useAddReview } from '@/reviews/useAddReview.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 
-const openAddCourseModal = () => {
-    modals.openContextModal({ ...contextModalConfig('addCourse', <Text fw={600}>Add New Course</Text>) });
+const openAddCourseModal = ({ courseId, ...props }) => {
+    modals.openContextModal({
+        ...contextModalConfig('addCourse', <Text fw={600}>Add New Course</Text>),
+        ...props,
+    });
 };
+
 const AddCourseModal = ({ context, id }: ContextModalProps) => {
     const { mutate: addReview, status, isLoading: addReviewLoading } = useAddReview();
     const form = useForm({

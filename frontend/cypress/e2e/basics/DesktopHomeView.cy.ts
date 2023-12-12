@@ -16,7 +16,7 @@ describe('Desktop home view', () => {
                     .get('tr')
                     .should('have.length', PAGE_SIZE)
                     .then(() => true),
-            {timeout: 2000, interval: 1000},
+            { timeout: 2000, interval: 1000 },
         );
 
         cy.get('tr').should('have.length.at.least', PAGE_SIZE);
