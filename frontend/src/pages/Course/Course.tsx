@@ -1,27 +1,17 @@
 import '@mantine/core/styles.css';
-import {ActionIcon, Affix, Box, Button, Flex, Image, Paper, rem, Skeleton, Stack, Text, ThemeIcon} from '@mantine/core';
-import {Breadcrumbs} from '@/components/Breadcrumbs';
+import { ActionIcon, Affix, Box, Button, Flex, Image, Paper, rem, Skeleton, Stack, Text, ThemeIcon } from '@mantine/core';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import classes from './Course.module.css';
-import {useWindowScroll} from '@mantine/hooks';
-import {
-    IconArrowLeft,
-    IconCirclePlus,
-    IconEditCircle,
-    IconSchool,
-    IconStarFilled,
-    IconUser,
-    IconUsersGroup
-} from '@tabler/icons-react';
-import {Comment} from '@/components/Comment';
-import {useNavigate, useParams} from 'react-router-dom';
-import {useUser} from '@/auth/useUser.tsx';
-import {useDetailReview} from '@/reviews/useReview.tsx';
-import {ReactNode} from 'react';
-import {openAddUserReviewModal} from '@/components/Modals/AddUserReview';
-import {openEditUserReviewModal} from '@/components/Modals/EditUserReview';
-import {NumberRatingBadge} from '@/components/Ratings';
-import {openSignInModal} from '@/components/Modals';
-import {getPath, Paths} from "@/routes/paths.ts";
+import { useWindowScroll } from '@mantine/hooks';
+import { IconArrowLeft, IconCirclePlus, IconEditCircle, IconSchool, IconStarFilled, IconUser, IconUsersGroup } from '@tabler/icons-react';
+import { Comment } from '@/components/Comment';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useUser } from '@/auth/useUser.tsx';
+import { useDetailReview } from '@/reviews/useReview.tsx';
+import { ReactNode } from 'react';
+import { NumberRatingBadge } from '@/components/Ratings';
+import { getPath, Paths } from '@/routes/paths.ts';
+import {isMobile} from "react-device-detect";
 
 const Course = () => {
     const { id } = useParams();
@@ -50,16 +40,15 @@ const Course = () => {
                 </Box>
                 <Box className={classes.courseControlsBtns}>
                     {!user ? (
-                        <Button variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => navigate(getPath(Paths.signIn))} leftSection={<IconCirclePlus style={{ width: rem(16), height: rem(16) }} />}>
+                        <Button size={isMobile ? "md" : "sm"} variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => navigate(getPath(Paths.signIn))} leftSection={<IconCirclePlus style={{ width: rem(16), height: rem(16) }} />}>
                             Sign In do add review
                         </Button>
                     ) : userReview ? (
-                        // courses/65709710e53362188beee528?editComment=123#modal=edit-user-review
-                        <Button variant="gradient" gradient={{ from: 'teal', to: 'lime', deg: 170 }} onClick={() => openEditUserReviewModal(data._id, userReview)} leftSection={<IconEditCircle style={{ width: rem(16), height: rem(16) }} />}>
+                        <Button size={isMobile ? "md" : "sm"} variant="gradient" gradient={{ from: 'teal', to: 'lime', deg: 170 }} onClick={() => navigate(getPath(Paths.editUserReview))} leftSection={<IconEditCircle style={{ width: rem(16), height: rem(16) }} />}>
                             Edit your review
                         </Button>
                     ) : (
-                        <Button variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => openAddUserReviewModal(data._id)} leftSection={<IconCirclePlus style={{ width: rem(16), height: rem(16) }} />}>
+                        <Button size={isMobile ? "md" : "sm"} variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => navigate(getPath(Paths.addUserReview))} leftSection={<IconCirclePlus style={{ width: rem(16), height: rem(16) }} />}>
                             Add review
                         </Button>
                     )}
@@ -187,17 +176,17 @@ const Course = () => {
                 <Affix className={classes.courseMobileAffix} position={{ bottom: 15, right: 20 }}>
                     {user ? (
                         userReview ? (
-                            <Button variant="gradient" className={classes.courseMobileAffixButtons} gradient={{ from: 'teal', to: 'lime', deg: 170 }} color="green" onClick={() => openEditUserReviewModal(data._id, userReview)} leftSection={<IconEditCircle style={{ width: rem(16), height: rem(16) }} />}>
+                            <Button size={isMobile ? "md" : "sm"} variant="gradient" className={classes.courseMobileAffixButtons} gradient={{ from: 'teal', to: 'lime', deg: 170 }} color="green" onClick={() => navigate(getPath(Paths.editUserReview))} leftSection={<IconEditCircle style={{ width: rem(16), height: rem(16) }} />}>
                                 Edit your review
                             </Button>
                         ) : (
-                            <Button variant="gradient" className={classes.courseMobileAffixButtons} gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => openAddUserReviewModal(data._id)} leftSection={<IconCirclePlus style={{ width: rem(16), height: rem(16) }} />}>
+                            <Button size={isMobile ? "md" : "sm"} variant="gradient" className={classes.courseMobileAffixButtons} gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => navigate(getPath(Paths.addUserReview))} leftSection={<IconCirclePlus style={{ width: rem(16), height: rem(16) }} />}>
                                 Add review
                             </Button>
                         )
                     ) : (
                         <>
-                            <Button variant="gradient" className={classes.courseMobileAffixButtons} gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => openSignInModal()}>
+                            <Button size={isMobile ? "md" : "sm"} variant="gradient" className={classes.courseMobileAffixButtons} gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => navigate(getPath(Paths.signIn))}>
                                 Sign In to add review
                             </Button>
                         </>

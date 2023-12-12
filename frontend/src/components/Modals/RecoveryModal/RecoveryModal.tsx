@@ -4,15 +4,15 @@ import { Anchor, Button, Flex, Group, LoadingOverlay, Stack, Text, TextInput, Th
 import { useForm } from '@mantine/form';
 import { IconAt, IconMail } from '@tabler/icons-react';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
-import {getPath, Paths} from "@/routes/paths.ts";
-import {useNavigate} from "react-router-dom";
+import { getPath, Paths } from '@/routes/paths.ts';
+import { useNavigate } from 'react-router-dom';
 
 interface RecoveryModalProps extends ContextModalProps {}
 
-const openRecoveryModal = ({...props}:RecoveryModalProps) => {
+const openRecoveryModal = ({ ...props }: RecoveryModalProps) => {
     modals.openContextModal({
         ...contextModalConfig('recovery', <Text fw={600}>Recover Your Password</Text>),
-        ...props
+        ...props,
     });
 };
 
@@ -65,7 +65,7 @@ const RecoveryModal = () => {
                             component="button"
                             type="button"
                             onClick={() => {
-                                navigate(getPath(Paths.signIn))
+                                navigate(getPath(Paths.signIn));
                             }}
                             size="xs"
                         >

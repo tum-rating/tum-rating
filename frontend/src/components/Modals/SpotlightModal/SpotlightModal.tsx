@@ -18,7 +18,7 @@ interface SpotlightModalProps extends ContextModalProps {
     isMobile?: boolean;
 }
 
-const openSpotlight = ({isMobile,...props}:SpotlightModalProps) => {
+const openSpotlight = ({ isMobile, ...props }: SpotlightModalProps) => {
     modals.openContextModal({
         modal: 'spotlight',
         withCloseButton: false,
@@ -32,7 +32,7 @@ const openSpotlight = ({isMobile,...props}:SpotlightModalProps) => {
             backgroundOpacity: 0.55,
             blur: 3,
         },
-        ...props
+        ...props,
     });
 };
 

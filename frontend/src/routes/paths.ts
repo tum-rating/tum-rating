@@ -81,4 +81,4 @@ const getPath = (pathToResolve: Paths) => {
     return fullPath;
 };
 
-export {PATH_ELEMENTS, getPath};
+export { PATH_ELEMENTS, getPath };

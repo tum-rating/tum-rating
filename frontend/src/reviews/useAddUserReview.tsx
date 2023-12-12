@@ -42,8 +42,12 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PUT'): any {
                 color: 'green',
                 icon: <IconCheck />,
             });
-            queryClient.invalidateQueries(['detailReview', courseId]);
-            queryClient.invalidateQueries(['courses']);
+            queryClient.invalidateQueries({
+                queryKey: ['detailReview', courseId],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ['courses'],
+            });
         },
     });
 }

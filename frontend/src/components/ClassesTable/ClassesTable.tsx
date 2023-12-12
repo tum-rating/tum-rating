@@ -7,9 +7,15 @@ import { useNavigate } from 'react-router-dom';
 import { useViewportSize } from '@mantine/hooks';
 import classes from './ClassesTable.module.css';
 import { useTableScrollContext } from '@/context';
+import { isMobile } from 'react-device-detect';
 
 const ClassesTable = () => {
-    const columnsConfiguration = useMemo(() => columns, []);
+    const columnsConfiguration = useMemo(() => {
+        if (isMobile) {
+            return columns.filter((x) => x.accessor !== 'professor');
+        }
+        return columns;
+    }, []);
     const [records, setRecords] = useState<Review[]>([]);
     const [internalLoading, setInternalLoading] = useState(true);
     const { data, fetchNextPage, isFetching } = usePaginatedReviews();
