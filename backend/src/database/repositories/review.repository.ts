@@ -4,9 +4,6 @@ import {
   Review,
   ReviewDocument,
 } from 'src/database/documents/review';
-import {
-  ReviewUser
-} from 'src/database/documents/reviewUser';
 import { BaseRepository } from './base.repository';
 
 export class ReviewRepository extends BaseRepository<Review> {
@@ -59,7 +56,6 @@ export class ReviewRepository extends BaseRepository<Review> {
   }
 
   public async updateReviewStats(reviewId: string, stats: Pick<Review, 'howEasyRatingAverage' | 'howInterestingRatingAverage' | 'votesNumber'>) {
-    // console.log('update review id ', reviewId);
     return this._reviewModel.updateOne({_id: reviewId}, stats);
   }
 }

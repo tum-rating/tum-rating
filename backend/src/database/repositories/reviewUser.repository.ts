@@ -28,14 +28,16 @@ export class ReviewUserRepository extends BaseRepository<ReviewUser> {
     return super.create(reviewUser as ReviewUser);
   }
 
+  public async getOneByReviewIdAndUserId(reviewId: string, userId: string) {
+    return this._reviewUserModel.findOne({reviewId, userId});
+  }
+
   public async updateOneByUserIdAndReviewId(userId: string, reviewId: string, reviewUser: PatchReviewUserType) {
     const result = await this._reviewUserModel.findOneAndUpdate({userId, reviewId},
       {
         ...reviewUser,
         updatedAt: new Date()
       }, {new: true});
-
-      console.log('results', result)
 
     return result;
   }

@@ -93,6 +93,33 @@ export class ReviewControllerV1 {
     return review;
   }
 
+  @Get('/:reviewId/user/me')
+  @UseGuards(AuthGuard) 
+  public async getReviewUser(
+    @Headers(USER_ID) userId: string,
+    @Param('reviewId') reviewId: string,
+  ) {
+    this._logger.info('Get review %s user %s', reviewId, userId);
+
+    try {
+      const review = await this._reviewService.getReviewUser(reviewId, userId);
+
+      this._logger.info('Successfuly retrieved with id: %s', review.id);
+
+      console.log('review', review);
+
+      return review;
+    } catch(error) {
+      if(error instanceof NotFoundError) {
+        this._logger.debug('Review %s user %s not found', reviewId, userId);
+        throw new NotFoundException(error.message);
+      }
+
+      this._logger.error('Failed to get review %s user %s: ', reviewId, userId, error);
+      throw error;
+    }
+  }
+
   @ApiBearerAuth()
   @ApiParam({
     name: 'user-id',
@@ -164,8 +191,6 @@ export class ReviewControllerV1 {
       reviewId: reviewId as unknown as ObjectId
     };
 
-    console.log("add review user:", reviewUser);
-
     let createdReviewUser: any;
     try {
       createdReviewUser = await this._reviewService.addReviewUser(reviewUser);
@@ -215,9 +240,7 @@ export class ReviewControllerV1 {
       throw new InternalServerErrorException();
     }
 
-    const response = await this._reviewService.updateReviewStats(reviewId);
-
-    console.log('response: ', response);
+    await this._reviewService.updateReviewStats(reviewId);
 
     this._logger.info(
       'Successfully added review user: %s to review: %s',
@@ -275,8 +298,6 @@ export class ReviewControllerV1 {
       this._logger.error('User put review error %s', error);
       throw new InternalServerErrorException();
     }
-
-    console.log('resposne', updatedReview);
 
     await this._reviewService.updateReviewStats(reviewId);
 

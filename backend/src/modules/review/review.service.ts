@@ -39,6 +39,15 @@ export class ReviewService {
     return review;
   }
 
+  public async getReviewUser(reviewId: string, userId: string) {
+    const reviewUser = await this._reviewUserRepository.getOneByReviewIdAndUserId(reviewId, userId);
+
+    if(reviewUser === null)
+      throw new NotFoundError(`review ${reviewId} user ${userId} not found`);
+
+    return reviewUser;
+  }
+
   public async addReviewUser(
     reviewUser: CreateReviewUserType,
   ) {
