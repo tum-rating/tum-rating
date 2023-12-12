@@ -109,7 +109,7 @@ describe('Add User Review', () => {
             .post('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .send(requestBody)
-            .expect(404);
+            .expect(400);
     });
 
     it('should correctly update ratings after added user reviews', async () => {

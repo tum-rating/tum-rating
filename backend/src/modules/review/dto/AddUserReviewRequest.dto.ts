@@ -9,7 +9,7 @@ export class AddUserReviewRequestDto {
   howEasyRating: number;
 
   @ApiProperty()
-  comment: string;
+  comment?: string;
 
   @ApiProperty()
   semester: string;
