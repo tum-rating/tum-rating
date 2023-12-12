@@ -2,15 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
 
 import { ReviewRepository } from 'src/database/repositories/review.repository';
-import { Review, UserReview } from 'src/database/documents/review';
-import { ReviewuserUniqueRepository } from 'src/database/repositories/reviewUserUnique';
-import { AddUserReviewError, AddUserReviewNotFoundError, NotFoundError } from 'src/utils/errors/errors';
+import { Review } from 'src/database/documents/review';
+import { ReviewUser } from 'src/database/documents/reviewUser';
+import { BadRequestError, NotFoundError, UserReviewSemesterMismatch } from 'src/utils/errors/errors';
+import { CreateReviewUserType, PatchReviewUserType, ReviewUserRepository } from 'src/database/repositories/reviewUser.repository';
 
 @Injectable()
 export class ReviewService {
   constructor(
     private readonly _reviewRepository: ReviewRepository,
-    private readonly _reviewUserUniqueRepository: ReviewuserUniqueRepository,
+    private readonly _reviewUserRepository: ReviewUserRepository,
   ) {}
 
   public async createReview(review: Partial<Review>) {
@@ -32,60 +33,71 @@ export class ReviewService {
     return review;
   }
 
-  public async addUserReview(
-    userReview: Pick<
-      UserReview,
-      'userId' | 'howEasyRating' | 'howInterestingRating' | 'comment' | 'semester'
-    >,
-    reviewId: string,
-  ) {
-    // aggregate might be a better approach here but possibly slower
-    await this._reviewUserUniqueRepository.create({
-      userId: userReview.userId,
-      reviewId: reviewId as unknown as ObjectId,
-    });
+  public async getReviewByIdWihtPopulatedReviewsUser(id: string) {
+    const review = await this._reviewRepository.findOneByIdWithPopulatedReviews(id);
 
-    try {
-      const result = await this._reviewRepository.addUserReview(userReview, reviewId);
-      if(!result) {
-        throw new AddUserReviewNotFoundError('review not found');
-      }
-    } catch (error) {
-      if (error instanceof AddUserReviewNotFoundError) {
-        throw error;
-      }
-      throw new AddUserReviewError(error);
-    }
+    return review;
   }
 
-  public async deleteReviewUserUnique(userId: string, reviewId: string) {
-    return this._reviewUserUniqueRepository.deleteOneByUserIdAndReviewId(
+  public async getReviewUser(reviewId: string, userId: string) {
+    const reviewUser = await this._reviewUserRepository.getOneByReviewIdAndUserId(reviewId, userId);
+
+    if(reviewUser === null)
+      throw new NotFoundError(`review ${reviewId} user ${userId} not found`);
+
+    return reviewUser;
+  }
+
+  public async addReviewUser(
+    reviewUser: CreateReviewUserType,
+  ) {
+    const review = await this.getReviewById(reviewUser.reviewId as unknown as string);
+
+    if(!review.offeredInSemesters.includes(reviewUser.semester))
+      throw new UserReviewSemesterMismatch(reviewUser.semester);
+
+    const createdReviewUser = await this._reviewUserRepository.create(reviewUser);
+
+    await this._reviewRepository.addReviewUser(review.id, createdReviewUser.id);
+
+    return createdReviewUser;
+  }
+
+  public async deleteReviewUser(userId: string, reviewId: string) {
+    return this._reviewUserRepository.deleteOneByUserIdAndReviewId(
       userId,
       reviewId,
     );
   }
 
   public async updateReviewStats(reviewId: string) {
-    return this._reviewRepository.updateReviewStats(reviewId);
+    const stats = await this._reviewUserRepository.getStatsByReviewId(reviewId);
+
+    return this._reviewRepository.updateReviewStats(reviewId, stats);
   }
 
   public async updateReview(id: string, review: Partial<Review>) {
     return this._reviewRepository.updateOneById(id, review);
   }
 
-  public async putUserReview(reviewId: string, userId: string, putUserReview: Omit<UserReview, 'createdAt'>) {
-    const updateResult = await this._reviewRepository.putUserReview(userId, reviewId, putUserReview as UserReview);
+  public async patchReviewUser(reviewId: string, userId: string, patchUserReview: PatchReviewUserType) {
+    const review = await this._reviewRepository.findOneById(reviewId);
 
-    if(updateResult === null) throw new NotFoundError('user review not found');
+    if(review === null) 
+      throw new NotFoundError('review not found');
+
+    if(patchUserReview.semester && !review.offeredInSemesters.includes(patchUserReview.semester))
+      throw new UserReviewSemesterMismatch(patchUserReview.semester);
+
+    const updateResult = await this._reviewUserRepository.updateOneByUserIdAndReviewId(userId, reviewId, patchUserReview);
+
+    if(updateResult === null) 
+      throw new NotFoundError('user review not found');
 
     return updateResult;
   }
 
   public async deleteReview(id: string) {
     return this._reviewRepository.deleteOneById(id);
-  }
-
-  public async findReviewUserUnique(userId: string, reviewId: string) {
-    return this._reviewUserUniqueRepository.getOneByUserIdAndReviewId(userId, reviewId);
   }
 }

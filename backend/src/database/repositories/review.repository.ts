@@ -3,10 +3,8 @@ import { ClientSession, Model } from 'mongoose';
 import {
   Review,
   ReviewDocument,
-  UserReview,
 } from 'src/database/documents/review';
 import { BaseRepository } from './base.repository';
-import * as mongoose from 'mongoose';
 
 export class ReviewRepository extends BaseRepository<Review> {
   constructor(
@@ -44,67 +42,20 @@ export class ReviewRepository extends BaseRepository<Review> {
       .limit(pageSize);
   }
 
-  public async getById(id: string) {
-    return this._reviewModel.findById(id).select('-__v');
+  public async findOneByIdWithPopulatedReviews(id: string) {
+    return this._reviewModel.findById(id).populate('reviews', '-__v').select('-__v');
   }
 
-  public async addUserReview(
-    userReview: Pick<
-      UserReview,
-      'userId' | 'howEasyRating' | 'howInterestingRating' | 'comment' | 'semester'
-    >,
+  public async addReviewUser(
     reviewId: string,
-    session?: ClientSession,
+    reviewUserId: string
   ) {
-    return this._reviewModel.findOneAndUpdate({_id: reviewId, offeredInSemesters: userReview.semester}, {
-      $push: { reviews: userReview },
+    return this._reviewModel.findOneAndUpdate({_id: reviewId}, {
+      $push: { reviews: reviewUserId },
     });
   }
 
-  public async updateReviewStats(reviewId: string) {
-    return this._reviewModel
-      .aggregate([
-        {
-          $match: { _id: new mongoose.Types.ObjectId(reviewId) },
-        },
-        {
-          $project: {
-            _id: 1,
-            reviews: 1,
-            howInteresingAvg: {
-              $trunc: [ { $avg: '$reviews.howInterestingRating' }, 2 ],
-            },
-            howEasyAvg: { $trunc: [ { $avg: '$reviews.howEasyRating' }, 2 ]},
-            votesNumber: { $size: '$reviews' },
-          },
-        },
-        {
-          $project: {
-            _id: 1,
-            howInterestingRatingAverage: '$howInteresingAvg',
-            howEasyRatingAverage: '$howEasyAvg',
-            votesNumber: '$votesNumber',
-          },
-        },
-        {
-          $merge: {
-            into: 'reviews',
-            on: '_id',
-            whenMatched: 'merge',
-            whenNotMatched: 'fail',
-          },
-        },
-      ])
-      .exec();
-  }
-
-  public async putUserReview(userId: string, reviewId: string, putUserReview: UserReview) {
-    return this._reviewModel.findOneAndUpdate({
-      _id: reviewId,
-      offeredInSemesters: putUserReview.semester,
-      'reviews.userId': userId
-    }, {
-      $set: {'reviews.$': putUserReview}
-    });
+  public async updateReviewStats(reviewId: string, stats: Pick<Review, 'howEasyRatingAverage' | 'howInterestingRatingAverage' | 'votesNumber'>) {
+    return this._reviewModel.updateOne({_id: reviewId}, stats);
   }
 }
