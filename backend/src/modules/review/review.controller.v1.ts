@@ -106,8 +106,6 @@ export class ReviewControllerV1 {
 
       this._logger.info('Successfuly retrieved with id: %s', review.id);
 
-      console.log('review', review);
-
       return review;
     } catch(error) {
       if(error instanceof NotFoundError) {
