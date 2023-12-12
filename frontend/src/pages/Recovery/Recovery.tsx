@@ -1,9 +1,10 @@
-import { Button, Container, LoadingOverlay, PasswordInput, Stack, Text, Title } from '@mantine/core';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useForm } from '@mantine/form';
-import { useRecovery } from '@/auth/useRecovery.tsx';
-import { openSignInModal } from '@/components/Modals';
+import {Button, Container, LoadingOverlay, PasswordInput, Stack, Text, Title} from '@mantine/core';
+import {useLocation, useNavigate} from 'react-router-dom';
+import {useForm} from '@mantine/form';
+import {useRecovery} from '@/auth/useRecovery.tsx';
 import classes from './Recovery.module.css';
+import {getPath, Paths} from "@/routes/paths.ts";
+
 interface RecoveryFormProps {
     password: string;
     confirmPassword: string;
@@ -13,7 +14,7 @@ export const Recovery = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get('token');
-    const { mutate: recovery, isLoading: recoveryLoading, isSuccess: isRecoverySuccess } = useRecovery();
+    const { mutate: recovery, isPending: recoveryLoading, isSuccess: isRecoverySuccess } = useRecovery();
     const form = useForm({
         initialValues: {
             password: '',
@@ -47,7 +48,7 @@ export const Recovery = () => {
                         </Text>
                     </Container>
                     <div className={classes.controls}>
-                        <Button mt={10} fullWidth variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} className={classes.control} onClick={openSignInModal}>
+                        <Button mt={10} fullWidth variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} className={classes.control} onClick={()=>navigate(getPath(Paths.signIn))}>
                             Log In
                         </Button>
                     </div>

@@ -6,12 +6,10 @@ import { useForm } from '@mantine/form';
 import { HowEasyRating, HowInterestingRating } from '@/components/Ratings';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 
-const openAddUserReviewModal = (courseId: string) => {
+const openAddUserReviewModal = ({ courseId, ...props }) => {
     modals.openContextModal({
         ...contextModalConfig('addUserReview', <Text fw={600}>Add your review</Text>),
-        innerProps: {
-            courseId,
-        },
+        ...props,
     });
 };
 
@@ -27,8 +25,11 @@ const AddUserReviewModal = ({
 
     useEffect(() => {
         if (isSuccess) {
-            context.closeModal(id);
-            document.querySelector("[data-comment='user-comment']")?.scrollIntoView({ behavior: 'smooth' });
+            document.querySelector("[data-comment='user-comment']")?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'nearest',
+            });
         }
     }, [isSuccess]);
 
@@ -44,7 +45,6 @@ const AddUserReviewModal = ({
     const handleSubmit = (form: UserAddReviewInput) => {
         if (form.howInterestingRating === 0 || form.howEasyRating === 0) return;
         addUserReview({ ...form });
-        document.querySelector("[data-comment='user-comment']")?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
     };
 
     return (
@@ -66,7 +66,7 @@ const AddUserReviewModal = ({
                         <Button onClick={() => context.closeModal(id)} color={'gray'} variant={'subtle'}>
                             Cancel
                         </Button>
-                        <Button type="submit" onClick={() => context.closeModal(id)}>
+                        <Button type="submit" onClick={() => {}}>
                             Send
                         </Button>
                     </Flex>

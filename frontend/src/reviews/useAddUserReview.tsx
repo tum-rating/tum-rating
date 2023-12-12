@@ -7,7 +7,7 @@ import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
 import { queryClient } from '@/react-query/client.ts';
 
-async function addUserReview(user: User | null | undefined, userReview: UserAddReviewInput, courseId: string, type: 'POST' | 'PUT'): Promise<any> {
+async function addUserReview(user: User | null | undefined, userReview: UserAddReviewInput, courseId: string, type: 'POST' | 'PATCH'): Promise<any> {
     if (!user) return null;
     const body = { ...userReview };
     const endpoint = endpoints.postSpecificReview(courseId, String(user.user.id));
@@ -31,7 +31,7 @@ export interface UserAddReviewInput {
     semester: string;
 }
 
-export function useAddUserReview(courseId: string, type: 'POST' | 'PUT'): any {
+export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any {
     const user = userLocalStorage.getUser();
     return useMutation({
         mutationFn: async (newReview: UserAddReviewInput) => addUserReview(user, newReview, courseId, type),
@@ -42,8 +42,12 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PUT'): any {
                 color: 'green',
                 icon: <IconCheck />,
             });
-            queryClient.invalidateQueries(['detailReview', courseId]);
-            queryClient.invalidateQueries(['courses']);
+            queryClient.invalidateQueries({
+                queryKey: ['detailReview', courseId],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ['courses'],
+            });
         },
     });
 }

@@ -23,6 +23,6 @@ export function usePaginatedReviews() {
         staleTime: Infinity, // Set staleTime to Infinity to prevent automatic refetching
         queryFn: getPaginatedReviews,
         getNextPageParam: (lastPage) => lastPage.nextPageNumber,
-        keepPreviousData: true, // Enable keepPreviousData to reuse previous data
+        initialPageParam: 1,
     });
 }

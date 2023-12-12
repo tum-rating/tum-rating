@@ -6,10 +6,5 @@ export const contextModalConfig = (modalName: string, modalTitle: ReactNode | st
         title: modalTitle,
         centered: true,
         innerProps: {},
-        size: 'sm',
-        overlayProps: {
-            backgroundOpacity: 0.55,
-            blur: 3,
-        },
     };
 };

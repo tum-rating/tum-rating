@@ -11,7 +11,8 @@ import {
   Query,
   NotFoundException,
   ForbiddenException,
-  Put,
+  Patch,
+  BadRequestException,
 } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
 import { ApiBearerAuth, ApiTags, ApiQuery, ApiParam } from '@nestjs/swagger';
@@ -21,6 +22,7 @@ import { USER_ID } from 'src/utils/headers/context.headers';
 import { AdminGuard } from 'src/common/guards/admin.guard';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { OptionalIntPipeAtLeast1 } from 'src/common/pipes/OptionalIntAtLeast1.pipe';
+import { UserService } from 'src/modules/user/user.service';
 
 import { ReviewService } from './review.service';
 import {
@@ -32,18 +34,19 @@ import {
   AddUserReviewRequestSchema,
 } from './dto/AddUserReviewRequest.dto';
 import {
-  PutUserReviewRequestDto,
-  PutUserReviewRequestSchema
+  PatchUserReviewRequestDto,
+  PatchUserReviewRequestSchema
 } from './dto/PutUserReviewRequest.dto'
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
-import { AddUserReviewError, AddUserReviewNotFoundError, NotFoundError } from 'src/utils/errors/errors';
+import { BadRequestError, AddUserReviewError, AddUserReviewNotFoundError, UserReviewSemesterMismatch, NotFoundError } from 'src/utils/errors/errors';
 
 @ApiTags('reviews')
 @Controller('/api/v1/reviews')
 export class ReviewControllerV1 {
   constructor(
     private readonly _reviewService: ReviewService,
+    private readonly _userService: UserService,
     private readonly _logger: PinoLogger,
   ) {
     this._logger.setContext(ReviewControllerV1.name);
@@ -81,13 +84,38 @@ export class ReviewControllerV1 {
 
   @Get('/:id')
   public async getReviewById(@Param('id') id: string) {
-    this._logger.info('Get review with id: ', id);
+    this._logger.info('Get review with id: %s', id);
 
-    const review = await this._reviewService.getReviewById(id);
+    const review = await this._reviewService.getReviewByIdWihtPopulatedReviewsUser(id);
 
     this._logger.info('Successfuly retrieved with id: %s', review.id);
 
     return review;
+  }
+
+  @Get('/:reviewId/user/me')
+  @UseGuards(AuthGuard) 
+  public async getReviewUser(
+    @Headers(USER_ID) userId: string,
+    @Param('reviewId') reviewId: string,
+  ) {
+    this._logger.info('Get review %s user %s', reviewId, userId);
+
+    try {
+      const review = await this._reviewService.getReviewUser(reviewId, userId);
+
+      this._logger.info('Successfuly retrieved with id: %s', review.id);
+
+      return review;
+    } catch(error) {
+      if(error instanceof NotFoundError) {
+        this._logger.debug('Review %s user %s not found', reviewId, userId);
+        throw new NotFoundException(error.message);
+      }
+
+      this._logger.error('Failed to get review %s user %s: ', reviewId, userId, error);
+      throw error;
+    }
   }
 
   @ApiBearerAuth()
@@ -98,14 +126,14 @@ export class ReviewControllerV1 {
         '(Leave empty. It will be extracted from JWT token)',
   })
   @Post()
-  @UseGuards(AdminGuard) //TODO align test with admin guard
+  @UseGuards(AdminGuard) 
   public async createReview(
     @Headers(USER_ID) userId: string,
     @Body(new JoiObjectSchemaPipe(CreateReviewRequestSchema))
     body: CreateReviewRequestDto,
   ) {
     this._logger.info(
-      'Create review request received for %s, %s',
+      'Create review request received for course: %s, professor: %s',
       body.course,
       body.professor,
     );
@@ -133,7 +161,7 @@ export class ReviewControllerV1 {
   })
   @Post('/:review_id/user/:user_id')
   @UseGuards(AuthGuard)
-  public async addUserReview(
+  public async addReviewUser(
     @Headers(USER_ID) userId: string,
     @Param('user_id') queryUserId: string,
     @Param('review_id') reviewId: string,
@@ -147,13 +175,23 @@ export class ReviewControllerV1 {
       throw new ForbiddenException();
     }
 
-    const userReview = {
+    const user = await this._userService.getUser(userId);
+
+    if(!user) {
+      this._logger.warn('User %s does not exist', userId);
+      throw new NotFoundException();
+    }
+
+    const reviewUser = {
       ...body,
       userId: userId as unknown as ObjectId,
+      userName: user.username,
+      reviewId: reviewId as unknown as ObjectId
     };
 
+    let createdReviewUser: any;
     try {
-      await this._reviewService.addUserReview(userReview, reviewId);
+      createdReviewUser = await this._reviewService.addReviewUser(reviewUser);
     } catch (error: any) {
       if (error.code == ERROR_MONGO_DUPLICATE_CODE) {
         this._logger.debug(
@@ -172,7 +210,7 @@ export class ReviewControllerV1 {
           userId,
           reviewId,
         );
-        await this._reviewService.deleteReviewUserUnique(userId, reviewId);
+
         throw new NotFoundException('review not found');
       }
 
@@ -182,20 +220,25 @@ export class ReviewControllerV1 {
           userId,
           reviewId,
         );
-        await this._reviewService.deleteReviewUserUnique(userId, reviewId);
+
         throw new InternalServerErrorException();
+      }
+
+      if (error instanceof UserReviewSemesterMismatch){
+        this._logger.debug(
+          'Add review user error, semester mismatch review %s, semester %s',
+          reviewId,
+          body.semester
+        );
+
+        throw new BadRequestException('semester');
       }
 
       this._logger.error('User add review error', error);
       throw new InternalServerErrorException();
     }
 
-    this._reviewService
-      .updateReviewStats(reviewId)
-      .then(() => this._logger.debug('Review stats updated for %s', reviewId))
-      .catch(() =>
-        this._logger.warn('Review stats update failed for %s', reviewId),
-      );
+    await this._reviewService.updateReviewStats(reviewId);
 
     this._logger.info(
       'Successfully added review user: %s to review: %s',
@@ -204,7 +247,7 @@ export class ReviewControllerV1 {
     );
 
     return {
-      userReview,
+      createdReviewUser
     };
   }
 
@@ -216,57 +259,45 @@ export class ReviewControllerV1 {
     description:
         '(Leave empty. It will be extracted from JWT token)',
   })
-  @Put('/:review_id/user/:user_id')
+  @Patch('/:review_id/user/:user_id')
   @UseGuards(AuthGuard)
-  public async putUserReview(
+  public async patchUserReview(
     @Headers(USER_ID) userId: string,
     @Param('user_id') queryUserId: string,
     @Param('review_id') reviewId: string,
-    @Body(new JoiObjectSchemaPipe(PutUserReviewRequestSchema))
-    body: PutUserReviewRequestDto,
+    @Body(new JoiObjectSchemaPipe(PatchUserReviewRequestSchema))
+    body: PatchUserReviewRequestDto,
   ) {
     this._logger.info('Patch review user: %s to review %s', userId, reviewId);
 
-    if (userId != queryUserId) {
-      this._logger.warn('User id from jwt does not match one in query param');
-      throw new ForbiddenException();
-    }
-
-    const reviewUserUnique = await this._reviewService.findReviewUserUnique(userId, reviewId);
-
-    if(!reviewUserUnique) {
-      this._logger.debug('Relation user %s review %s unique does not exist', userId, reviewId);
-      throw new NotFoundException();
-    }
-
-    const userReview = {
-      ...body,
-      userId: userId as unknown as ObjectId,
-    };
-
+    let updatedReview: any;
     try {
-      await this._reviewService.putUserReview(reviewId, userId, userReview);
+      updatedReview = await this._reviewService.patchReviewUser(reviewId, userId, body);
     } catch (error: any) {
       if (error instanceof NotFoundError) {
         this._logger.warn(
           'Review not found, user: %s review: %s, semester %s',
           userId,
           reviewId,
-          userReview.semester
         );
         throw new NotFoundException('review not found');
+      }
+
+      if (error instanceof UserReviewSemesterMismatch){
+        this._logger.debug(
+          'Add review user error, semester mismatch review %s, semester %s',
+          reviewId,
+          body.semester
+        );
+
+        throw new BadRequestException('semester');
       }
 
       this._logger.error('User put review error %s', error);
       throw new InternalServerErrorException();
     }
 
-    this._reviewService
-      .updateReviewStats(reviewId)
-      .then(() => this._logger.debug('Review stats updated for %s', reviewId))
-      .catch(() =>
-        this._logger.warn('Review stats update failed for %s', reviewId),
-      );
+    await this._reviewService.updateReviewStats(reviewId);
 
     this._logger.info(
       'Successfully put review user: %s to review: %s',
@@ -275,7 +306,7 @@ export class ReviewControllerV1 {
     );
 
     return {
-      userReview,
+      updatedReview,
     };
   }
 }

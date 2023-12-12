@@ -35,8 +35,8 @@ export const getCourseReviewById = async (id: string) => {
 
 export const addUserReviewMockRequest = async (token: string, reviewId: string, userId: string, userReview?: Partial<AddUserReviewRequestDto>) => {
     const requestBody: AddUserReviewRequestDto = {
-        howInterestingRating: faker.number.int({min: 0, max: 100}),
-        howEasyRating: faker.number.int({min: 0, max: 100}),
+        howInterestingRating: faker.number.int({min: 0, max: 5}),
+        howEasyRating: faker.number.int({min: 0, max: 5}),
         comment: faker.word.words(faker.number.int({min: 2, max: 100})),
         semester: 'SS 2023',
         ...userReview

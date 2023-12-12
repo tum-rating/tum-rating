@@ -15,14 +15,14 @@ afterAll(async () => {
     mongoose.disconnect();
 });
 
-describe('Put User Review', () => {
-    it('should put single user review', async () => {
+describe('Patch User Review', () => {
+    it('should patch single user review', async () => {
         const signInResponse = await signInRequestMock();
 
         const signInAdminResponse = await signInAdminRequestMock();
 
         const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
-        
+
         let requestBody: AddUserReviewRequestDto = {
             howInterestingRating: 1,
             howEasyRating: 5,
@@ -52,7 +52,7 @@ describe('Put User Review', () => {
         requestBody.howEasyRating = 2;
 
         await supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
-            .put('/')
+            .patch('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .send(requestBody)
             .expect(200);
@@ -84,7 +84,7 @@ describe('Put User Review', () => {
         };
 
         return supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
-            .put('/')
+            .patch('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .send(requestBody)
             .expect(404);
@@ -113,10 +113,10 @@ describe('Put User Review', () => {
         requestBody.semester = 'not matching'
 
         return supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
-            .put('/')
+            .patch('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .send(requestBody)
-            .expect(404);
+            .expect(400);
     });
 
     it('should correctly update ratings after put user reviews', async () => {
@@ -159,7 +159,7 @@ describe('Put User Review', () => {
         };
 
         await supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse2.user.id}`)
-            .put('/')
+            .patch('/')
             .set('Authorization', 'Bearer ' + signInResponse2.token)
             .send(putRequestBody)
             .expect(200);

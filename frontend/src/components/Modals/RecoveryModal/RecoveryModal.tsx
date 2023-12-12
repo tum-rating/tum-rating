@@ -2,18 +2,23 @@ import { ContextModalProps, modals } from '@mantine/modals';
 import { RecoveryBody, useRecovery } from '@/auth/useRecovery.tsx';
 import { Anchor, Button, Flex, Group, LoadingOverlay, Stack, Text, TextInput, ThemeIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { openSignInModal } from '@/components/Modals';
 import { IconAt, IconMail } from '@tabler/icons-react';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
+import { getPath, Paths } from '@/routes/paths.ts';
+import { useNavigate } from 'react-router-dom';
 
-const openRecoveryModal = () => {
+interface RecoveryModalProps extends ContextModalProps {}
+
+const openRecoveryModal = ({ ...props }: RecoveryModalProps) => {
     modals.openContextModal({
         ...contextModalConfig('recovery', <Text fw={600}>Recover Your Password</Text>),
+        ...props,
     });
 };
 
-const RecoveryModal = ({ context, id }: ContextModalProps) => {
-    const { mutate: recovery, isLoading: recoveryLoading, isSuccess: isRecoverySuccess } = useRecovery();
+const RecoveryModal = () => {
+    const { mutate: recovery, isPending: recoveryLoading, isSuccess: isRecoverySuccess } = useRecovery();
+    const navigate = useNavigate();
     const form = useForm({
         initialValues: {
             email: '',
@@ -60,8 +65,7 @@ const RecoveryModal = ({ context, id }: ContextModalProps) => {
                             component="button"
                             type="button"
                             onClick={() => {
-                                context.closeModal(id);
-                                openSignInModal();
+                                navigate(getPath(Paths.signIn));
                             }}
                             size="xs"
                         >

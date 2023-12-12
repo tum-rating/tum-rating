@@ -1,15 +1,15 @@
 import { Suspense } from 'react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
-import { ModalsProvider } from '@mantine/modals';
 
 import { getPath, Paths } from './paths.ts';
 import { Activation, Course, Home, PageNotFound, Recovery } from '@/pages';
 import { MainLayout } from '@/layouts';
 import { SpotlightModal } from '@/components/Modals/SpotlightModal/SpotlightModal.tsx';
-import { RecoveryModal, SignInModal, SignUpModal } from '@/components/Modals';
+import { ModalsHashController, RecoveryModal, SignInModal, SignUpModal } from '@/components/Modals';
 import { AddCourseModal } from '@/components/Modals/AddCourseModal/AddCourseModal.tsx';
 import { AddUserReviewModal } from '@/components/Modals/AddUserReview/AddUserReview.tsx';
 import { EditUserReviewModal } from '@/components/Modals/EditUserReview';
+import { ModalsProvider } from '@mantine/modals';
 
 const modals = {
     signIn: SignInModal,
@@ -20,21 +20,24 @@ const modals = {
     spotlight: SpotlightModal,
     recovery: RecoveryModal,
 };
+
 const RoutesApp = () => {
     const routes = [
         {
             path: '/',
             errorElement: (
-                <MainLayout>
+                <ModalsProvider modals={modals}>
+                    <ModalsHashController />
                     <PageNotFound />
-                </MainLayout>
+                </ModalsProvider>
             ),
             element: (
-                <ModalsProvider modals={modals}>
-                    <MainLayout>
+                <MainLayout>
+                    <ModalsProvider modals={modals}>
+                        <ModalsHashController />
                         <Outlet />
-                    </MainLayout>
-                </ModalsProvider>
+                    </ModalsProvider>
+                </MainLayout>
             ),
             children: [
                 {

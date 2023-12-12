@@ -1,2 +1,3 @@
-@import "@/assets/fonts/inter.css";
-
+[data-full-screen] .m-54c44539{
+    --_content-height: 100% !important;
+}

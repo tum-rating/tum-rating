@@ -11,7 +11,7 @@ interface SearchControlProps extends ComponentPropsWithoutRef<'button'> {
 const SpotlightControl = ({ className, ...others }: SearchControlProps) => {
     return (
         <>
-            <UnstyledButton  ml="auto" className={clsx(classes.hiddenMobile, classes.root)} data-testid="cypress-global-search" {...others}>
+            <UnstyledButton ml="auto" className={clsx(classes.hiddenMobile, classes.root)} data-testid="cypress-global-search" {...others}>
                 <Group gap="xs" className={classes.hiddenMobile}>
                     <IconSearch size=".9rem" stroke={1.5} />
                     <Text size="sm" c="dimmed" pr={80}>

@@ -1,25 +1,25 @@
 import { PropsWithChildren } from 'react';
 import { ActionIcon, Anchor, AppShell, Box, Burger, Button, Drawer, Flex, Group, Image, Stack, Switch, Text, useMantineColorScheme } from '@mantine/core';
 import { useDisclosure, useHotkeys } from '@mantine/hooks';
-import { openSpotlight } from '@/components/Modals/SpotlightModal/SpotlightModal';
 import logo from '@/assets/img/logo.png';
 import { IconMoonStars, IconSearch, IconSun } from '@tabler/icons-react';
-import { openSignInModal, openSignUpModal } from '@/components/Modals';
 import { useUser } from '@/auth/useUser';
 import { UserButton } from '@/components/UserButton';
 import { useSignOut } from '@/auth/useSignOut';
 import { SpotlightControl } from '@/components/Spotlight/SpotlightControl';
-import { isMobile } from 'react-device-detect';
+import { getPath, Paths } from '@/routes/paths.ts';
+import { useNavigate } from 'react-router-dom';
 
 export const MainLayout = ({ children }: PropsWithChildren) => {
     const { user } = useUser();
+    const navigate = useNavigate();
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const signOut = useSignOut();
-    useHotkeys([['/', () => openSpotlight(isMobile)]]);
+    useHotkeys([['/', () => navigate(getPath(Paths.spotlight))]]);
     const Logo = () => (
         <Anchor href="/">
-                <Image  data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" />
+            <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" />
         </Anchor>
     );
     return (
@@ -27,13 +27,21 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
             <AppShell.Header maw="100vw">
                 <Group visibleFrom="sm" h="100%" px="md" justify="space-between">
                     <Logo />
-                    <SpotlightControl onClick={() => openSpotlight(isMobile)} />
+                    <SpotlightControl onClick={() => navigate(getPath(Paths.spotlight))} />
                     {!user ? (
                         <>
-                            <Button data-testid="cypress-open-sign-in-modal-btn" size="xs" variant="outline" onClick={openSignInModal}>
+                            <Button data-testid="cypress-open-sign-in-modal-btn" size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
                                 Sign In
                             </Button>
-                            <Button data-testid="cypress-open-sign-up-modal-btn" size="xs" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={openSignUpModal}>
+                            <Button
+                                data-testid="cypress-open-sign-up-modal-btn"
+                                size="xs"
+                                variant="gradient"
+                                gradient={{ from: 'indigo', to: 'blue', deg: 90 }}
+                                onClick={() => {
+                                    navigate(getPath(Paths.signUp));
+                                }}
+                            >
                                 Sign Up
                             </Button>
                         </>
@@ -47,7 +55,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                 <Group hiddenFrom="sm" h="100%" px="md" justify="space-between">
                     <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
                     <Logo />
-                    <ActionIcon variant="outline" data-testid="cypress-global-search" onClick={() => openSpotlight(isMobile)}>
+                    <ActionIcon variant="outline" data-testid="cypress-global-search" onClick={() => navigate(getPath(Paths.spotlight))}>
                         <IconSearch size="1.1rem" />
                     </ActionIcon>
                 </Group>
@@ -59,22 +67,22 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                             {user ? <UserButton withoutDropdown /> : <Text>Hello</Text>}
                             <Switch size="md" onChange={toggleColorScheme} checked={colorScheme === 'light'} onLabel={<IconSun size="1.1rem" />} offLabel={<IconMoonStars size="1.1rem" />} />
                         </Flex>
-                        <Group w="100%" wrap="nowrap">
+                        <Flex direction="column" w="100%" wrap="nowrap" gap="sm">
                             {user ? (
-                                <Button fullWidth size="xs" variant="outline" onClick={signOut}>
+                                <Button fullWidth size="lg" variant="outline" onClick={signOut}>
                                     Log out
                                 </Button>
                             ) : (
                                 <>
-                                    <Button data-testid="cypress-open-sign-in-modal-btn"  fullWidth size="xs" variant="outline" onClick={openSignInModal}>
+                                    <Button data-testid="cypress-open-sign-in-modal-btn" fullWidth size="md" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
                                         Sign In
                                     </Button>
-                                    <Button data-testid="cypress-open-sign-up-modal-btn" fullWidth size="xs" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={openSignUpModal}>
+                                    <Button data-testid="cypress-open-sign-up-modal-btn" fullWidth size="md" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => navigate(getPath(Paths.signUp))}>
                                         Sign Up
                                     </Button>
                                 </>
                             )}
-                        </Group>
+                        </Flex>
                     </Stack>
                 </Drawer>
                 <Box pt={45}>{children}</Box>
