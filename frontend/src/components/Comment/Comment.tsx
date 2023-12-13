@@ -1,6 +1,5 @@
-import { Avatar, Badge, Flex, Text } from '@mantine/core';
-import { Box, Group, ThemeIcon } from '@mantine/core';
-import { IconStarFilled } from '@tabler/icons-react';
+import {Avatar, Badge, Box, Flex, Group, Text, ThemeIcon} from '@mantine/core';
+import {IconStarFilled} from '@tabler/icons-react';
 
 interface CommentProps {
     comment: string;
@@ -9,13 +8,14 @@ interface CommentProps {
     howInterestingRating: number;
     userId: string;
     _id: string;
+    userName: string;
     userReview: {
         userId: string;
     };
 }
 
 export const Comment = (props: CommentProps) => {
-    const { userId, howInterestingRating, howEasyRating, comment, createdAt, userReview,userName } = props;
+    const {userId, howInterestingRating, howEasyRating, comment, createdAt, userReview, userName} = props;
 
     if (!userId) return '';
     const userCommentFlag = (userReview || {}).userId === userId;
