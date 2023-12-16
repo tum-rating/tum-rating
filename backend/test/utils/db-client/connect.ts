@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 
-import {mongooseConfig} from './config';
+import { mongooseConfig } from './config';
 
 export const connectMongo = () => {
-    return mongoose.connect(mongooseConfig.connectionUrl, {dbName: mongooseConfig.dbName});
-}
+    return mongoose.connect(mongooseConfig.connectionUrl, {
+        dbName: mongooseConfig.dbName,
+    });
+};

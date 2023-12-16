@@ -19,7 +19,10 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 
 import { ReviewProposalService } from './reviewProposal.service';
-import { CreateReviewProposalRequestDto, CreateReviewProposalRequestSchema } from './dto/CreateReviewProposalRequest.dto';
+import {
+    CreateReviewProposalRequestDto,
+    CreateReviewProposalRequestSchema,
+} from './dto/CreateReviewProposalRequest.dto';
 
 @ApiTags('review-proposals')
 @Controller('/api/v1/review-proposals')
@@ -30,41 +33,48 @@ export class ReviewProposalControllerV1 {
     ) {
         this._logger.setContext(ReviewProposalControllerV1.name);
     }
-  
+
     @ApiBearerAuth()
     @UseGuards(AdminGuard)
     @Get()
     public async getReviewProposals() {
         this._logger.info('Get reviews proposal requested');
-    
-        const reviewProposals = await this._reviewProposalService.getAllReviewProposals();
-    
-        this._logger.info('Successfuly retrieved all review proposal with count %d', reviewProposals.length);
-    
+
+        const reviewProposals =
+            await this._reviewProposalService.getAllReviewProposals();
+
+        this._logger.info(
+            'Successfuly retrieved all review proposal with count %d',
+            reviewProposals.length,
+        );
+
         return reviewProposals;
     }
-  
+
     @ApiBearerAuth()
     @UseGuards(AdminGuard)
     @Get('/:id')
     public async getReviewProposalById(@Param('id') id: string) {
         this._logger.info('Get review proposal with with id: %s', id);
-    
-        const review = await this._reviewProposalService.getReviewProposalsById(id);
-        
-        if(review === null) throw new NotFoundException();
-        
-        this._logger.info('Successfuly retrieved reveiw proposal with id: %s', review.id);
-    
+
+        const review =
+            await this._reviewProposalService.getReviewProposalsById(id);
+
+        if (review === null) throw new NotFoundException();
+
+        this._logger.info(
+            'Successfuly retrieved reveiw proposal with id: %s',
+            review.id,
+        );
+
         return review;
     }
-  
+
     @ApiBearerAuth()
     @ApiParam({
         name: 'user-id',
         required: false,
-        description:
-            '(Leave empty. It will be extracted from JWT token)',
+        description: '(Leave empty. It will be extracted from JWT token)',
     })
     @UseGuards(AuthGuard)
     @Post()
@@ -77,20 +87,21 @@ export class ReviewProposalControllerV1 {
             'Create review proposal request received for %s, %s, by user %s',
             body.course,
             body.professor,
-            userId
+            userId,
         );
-    
-        const createdReview = await this._reviewProposalService.createReviewProposal({
-            ...body,
-            userId
-        });
-    
+
+        const createdReview =
+            await this._reviewProposalService.createReviewProposal({
+                ...body,
+                userId,
+            });
+
         this._logger.info(
             'Successfuly created review proposal for course %s, %s',
             body.course,
             body.professor,
         );
-    
+
         return {
             id: createdReview.id,
         };
@@ -100,27 +111,29 @@ export class ReviewProposalControllerV1 {
     @ApiParam({
         name: 'user-id',
         required: false,
-        description:
-            '(Leave empty. It will be extracted from JWT token)',
+        description: '(Leave empty. It will be extracted from JWT token)',
     })
     @UseGuards(AdminGuard)
     @Post('/:id/accept')
     public async acceptReviewProposal(
         @Headers(USER_ID) userId: ObjectId,
-        @Param('id') id: string
+        @Param('id') id: string,
     ) {
         this._logger.info(
             'Accept review proposal with id %s requested by user %s',
             id,
-            userId
+            userId,
         );
-    
-        const createdReview = await this._reviewProposalService.acceptReviewProposalAddingItToReviews(id);
-    
+
+        const createdReview =
+            await this._reviewProposalService.acceptReviewProposalAddingItToReviews(
+                id,
+            );
+
         this._logger.info(
             'Successfuly accepted review proposal with id %s, created review with id %s',
             id,
-            createdReview._id
+            createdReview._id,
         );
 
         await this._reviewProposalService.deleteReviewProposal(id);
@@ -129,7 +142,7 @@ export class ReviewProposalControllerV1 {
             'Successfuly deleted review proposal %s, after acceptance',
             id,
         );
-    
+
         return {
             createdReview: createdReview._id,
         };
@@ -140,11 +153,15 @@ export class ReviewProposalControllerV1 {
     @Delete('/:id')
     public async deleteReviewProposal(@Param('id') id: string) {
         this._logger.info('Delete review proposal with with id: %s', id);
-    
-        const review = await this._reviewProposalService.deleteReviewProposal(id);
-    
-        this._logger.info('Successfuly deleted review proposal with id: %s', review.id);
-    
+
+        const review =
+            await this._reviewProposalService.deleteReviewProposal(id);
+
+        this._logger.info(
+            'Successfuly deleted review proposal with id: %s',
+            review.id,
+        );
+
         return review;
     }
 }

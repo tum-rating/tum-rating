@@ -1,4 +1,7 @@
-import { signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils/api-client/user';
+import {
+    signInRequestMock,
+    signInAdminRequestMock,
+} from '@tum-rating/backend/test/utils/api-client/user';
 import { connectMongo } from '@tum-rating/backend/test/utils';
 
 import mongoose from 'mongoose';
@@ -16,4 +19,3 @@ import mongoose from 'mongoose';
 
     await mongoose.disconnect();
 })();
-

@@ -15,22 +15,22 @@ import { ReviewModule } from './modules/review/review.module';
 import { ReviewProposalModule } from './modules/review-proposal/reviewProposal.module';
 
 @Module({
-  imports: [
-    ConfigModule,
-    MailerModule,
-    MongoModule,
-    LoggerModule,
+    imports: [
+        ConfigModule,
+        MailerModule,
+        MongoModule,
+        LoggerModule,
 
-    AuthModule,
-    FrontendModule,
-    HealthModule,
-    UserModule,
-    ReviewModule,
-    ReviewProposalModule
-  ],
+        AuthModule,
+        FrontendModule,
+        HealthModule,
+        UserModule,
+        ReviewModule,
+        ReviewProposalModule,
+    ],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
-  }
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(LoggerMiddleware).forRoutes('*');
+    }
 }

@@ -7,7 +7,7 @@ import { join } from 'path';
 
 interface MailRecipient {
     email: string;
-    name?: string,
+    name?: string;
 }
 
 const emailTemplatesDir = 'assets/mail-templates';
@@ -19,7 +19,7 @@ export class MailerService {
     private readonly _transporter: NodeMailer.Transporter;
     private readonly _sender: string;
 
-    constructor (
+    constructor(
         private readonly _configService: ConfigService,
         private readonly _logger: PinoLogger,
     ) {
@@ -30,7 +30,7 @@ export class MailerService {
             port: this._configService.getOrThrow('mailer.port'),
         });
 
-        this._sender = this._configService.getOrThrow('mailer.sender')
+        this._sender = this._configService.getOrThrow('mailer.sender');
     }
 
     public async send(to: MailRecipient[], subject: string, html: string) {
@@ -42,54 +42,73 @@ export class MailerService {
             subject,
             html: html,
             headers: {
-                'Content-Type': 'text/html; charset=utf-8'
-            }
+                'Content-Type': 'text/html; charset=utf-8',
+            },
         });
 
-        this._logger.debug('Successfuly sent email to %o, subject %s',  to, subject);
+        this._logger.debug(
+            'Successfuly sent email to %o, subject %s',
+            to,
+            subject,
+        );
     }
 
     private _formatRecipients(recipients: MailRecipient[]) {
         return recipients
-            .map((recipient) => `${recipient.name ? recipient.name.concat(' ') : ''}<${recipient.email}>`)
+            .map(
+                (recipient) =>
+                    `${recipient.name ? recipient.name.concat(' ') : ''}<${
+                        recipient.email
+                    }>`,
+            )
             .join(',');
     }
 
-    public async sendEmailActivationEmail(to: MailRecipient[], activationToken: string) {
-        const activationLink = `${this._configService.getOrThrow('webapp.url')}/auth/activate?token=${activationToken}`;
+    public async sendEmailActivationEmail(
+        to: MailRecipient[],
+        activationToken: string,
+    ) {
+        const activationLink = `${this._configService.getOrThrow(
+            'webapp.url',
+        )}/auth/activate?token=${activationToken}`;
         const username = to[0].name || 'User';
 
-        const templateFilePath = join(process.cwd(), emailTemplatesDir, emailActivationTemplateFile)
+        const templateFilePath = join(
+            process.cwd(),
+            emailTemplatesDir,
+            emailActivationTemplateFile,
+        );
         const emailTemplate = fs.readFileSync(templateFilePath, 'utf8');
 
         const processedEmailTemplate = emailTemplate
-          .replace(/\[Username\]/g, username)
-          .replace(/\[ActivationLink\]/g, activationLink);
+            .replace(/\[Username\]/g, username)
+            .replace(/\[ActivationLink\]/g, activationLink);
 
-        return this.send(
-          to,
-          'Activate your account',
-          processedEmailTemplate
-        );
+        return this.send(to, 'Activate your account', processedEmailTemplate);
     }
 
-    public async sendPasswordRecoveryEmail(to: MailRecipient[], recoveryToken: string) {
-        const passwordResetLink = `${this._configService.getOrThrow('webapp.url')}/auth/recovery?token=${recoveryToken}`;
+    public async sendPasswordRecoveryEmail(
+        to: MailRecipient[],
+        recoveryToken: string,
+    ) {
+        const passwordResetLink = `${this._configService.getOrThrow(
+            'webapp.url',
+        )}/auth/recovery?token=${recoveryToken}`;
         const username = to[0].name || 'User';
         const email = to[0].email || 'Email';
 
-        const templateFilePath = join(process.cwd(), emailTemplatesDir, emailRecoveryTemplateFile)
+        const templateFilePath = join(
+            process.cwd(),
+            emailTemplatesDir,
+            emailRecoveryTemplateFile,
+        );
         const emailTemplate = fs.readFileSync(templateFilePath, 'utf8');
 
         const processedEmailTemplate = emailTemplate
-          .replace(/\[Username\]/g, username)
-          .replace(/\[PasswordResetLink\]/g, passwordResetLink)
-          .replace(/\[Email\]/g, email);
+            .replace(/\[Username\]/g, username)
+            .replace(/\[PasswordResetLink\]/g, passwordResetLink)
+            .replace(/\[Email\]/g, email);
 
-        return this.send(
-            to,
-            'Password recovery',
-          processedEmailTemplate
-        )
+        return this.send(to, 'Password recovery', processedEmailTemplate);
     }
 }

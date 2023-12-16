@@ -10,46 +10,61 @@ import { AddUserReviewRequestDto } from 'src/modules/review/dto/AddUserReviewReq
 
 export const reviewUrl = baseUrlV1 + '/reviews';
 
-export const createCourseReviewMockRequest = async (token: string, review?: Partial<CreateReviewRequestDto>) => {
+export const createCourseReviewMockRequest = async (
+    token: string,
+    review?: Partial<CreateReviewRequestDto>,
+) => {
     const requestBody: CreateReviewRequestDto = {
         courseId: fakeNumberOfLenght(9),
         courseNumber: fakeNumberOfLenght(8),
-        course: faker.word.words(faker.number.int({min: 2, max: 10})),
+        course: faker.word.words(faker.number.int({ min: 2, max: 10 })),
         professor: faker.word.words(2),
         offeredInSemesters: ['SS 2023', 'WS 2023'],
-        ...review
+        ...review,
     };
 
-    const createCourseReviewResponse = await axios.post(reviewUrl, requestBody, {headers: {Authorization: 'Bearer '+token}});
+    const createCourseReviewResponse = await axios.post(
+        reviewUrl,
+        requestBody,
+        { headers: { Authorization: 'Bearer ' + token } },
+    );
 
     return {
         id: createCourseReviewResponse.data.id,
-        ...requestBody
-    }
+        ...requestBody,
+    };
 };
 
 export const getCourseReviewById = async (id: string) => {
     const review = await axios.get(reviewUrl + '/' + id);
     return review.data as Review;
-}
+};
 
-export const addUserReviewMockRequest = async (token: string, reviewId: string, userId: string, userReview?: Partial<AddUserReviewRequestDto>) => {
+export const addUserReviewMockRequest = async (
+    token: string,
+    reviewId: string,
+    userId: string,
+    userReview?: Partial<AddUserReviewRequestDto>,
+) => {
     const requestBody: AddUserReviewRequestDto = {
-        howInterestingRating: faker.number.int({min: 0, max: 5}),
-        howEasyRating: faker.number.int({min: 0, max: 5}),
-        comment: faker.word.words(faker.number.int({min: 2, max: 100})),
+        howInterestingRating: faker.number.int({ min: 0, max: 5 }),
+        howEasyRating: faker.number.int({ min: 0, max: 5 }),
+        comment: faker.word.words(faker.number.int({ min: 2, max: 100 })),
         semester: 'SS 2023',
-        ...userReview
+        ...userReview,
     };
 
-    const addUserReviewResponse = await axios.post(`${reviewUrl}/${reviewId}/user/${userId}`, 
+    const addUserReviewResponse = await axios.post(
+        `${reviewUrl}/${reviewId}/user/${userId}`,
         requestBody,
-        {headers: {
-            Authorization: 'Bearer ' + token
-        }}
+        {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        },
     );
 
     return {
-        userReview: requestBody
-    }
-}
+        userReview: requestBody,
+    };
+};

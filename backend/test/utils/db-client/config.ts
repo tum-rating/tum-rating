@@ -5,7 +5,15 @@ export const mongooseConfig = {
     port: '27017',
     dbName: 'tum-rating',
     get connectionUrl() {
-        return 'mongodb://' + this.username + ':' + this.password + '@' + this.host + ':' + this.port;
-    }
-}
-
+        return (
+            'mongodb://' +
+            this.username +
+            ':' +
+            this.password +
+            '@' +
+            this.host +
+            ':' +
+            this.port
+        );
+    },
+};

@@ -1,24 +1,24 @@
 import {
-  PipeTransform,
-  Injectable,
-  ArgumentMetadata,
-  BadRequestException,
+    PipeTransform,
+    Injectable,
+    ArgumentMetadata,
+    BadRequestException,
 } from '@nestjs/common';
 import { ObjectSchema, Schema } from 'joi';
 
 @Injectable()
 export class JoiObjectSchemaPipe implements PipeTransform {
-  constructor(private schema: ObjectSchema | Schema) {}
+    constructor(private schema: ObjectSchema | Schema) {}
 
-  transform(value: any, metadata: ArgumentMetadata) {
-    const { value: parsedValue, error } = this.schema.validate(value);
-    if (error) {
-      console.log(value, error);
-      throw new BadRequestException({
-        error: 'Bad request',
-        message: error.message,
-      });
+    transform(value: any, metadata: ArgumentMetadata) {
+        const { value: parsedValue, error } = this.schema.validate(value);
+        if (error) {
+            console.log(value, error);
+            throw new BadRequestException({
+                error: 'Bad request',
+                message: error.message,
+            });
+        }
+        return parsedValue;
     }
-    return parsedValue;
-  }
 }

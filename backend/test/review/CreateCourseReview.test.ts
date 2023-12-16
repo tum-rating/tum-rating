@@ -3,7 +3,11 @@ import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
 import { CreateReviewRequestDto } from '@tum-rating/backend/src/modules/review/dto/CreateReviewRequest.dto';
-import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
+import {
+    connectMongo,
+    signInRequestMock,
+    signInAdminRequestMock,
+} from '@tum-rating/backend/test/utils';
 import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNumberOfLenght';
 import { reviewUrl } from '@tum-rating/backend/test/utils/api-client/review';
 
@@ -22,11 +26,11 @@ describe('Create Course Review', () => {
         const requestBody: CreateReviewRequestDto = {
             courseId: fakeNumberOfLenght(9),
             courseNumber: fakeNumberOfLenght(8),
-            course: faker.word.words(faker.number.int({min: 2, max: 10})),
+            course: faker.word.words(faker.number.int({ min: 2, max: 10 })),
             professor: faker.word.words(2),
-            offeredInSemesters: ['SS 2023', 'WS 2023']
+            offeredInSemesters: ['SS 2023', 'WS 2023'],
         };
-    
+
         return supertest(reviewUrl)
             .post('/')
             .send(requestBody)
@@ -43,11 +47,11 @@ describe('Create Course Review', () => {
         const requestBody: CreateReviewRequestDto = {
             courseId: fakeNumberOfLenght(9),
             courseNumber: fakeNumberOfLenght(8),
-            course: faker.word.words(faker.number.int({min: 2, max: 10})),
+            course: faker.word.words(faker.number.int({ min: 2, max: 10 })),
             professor: faker.word.words(2),
-            offeredInSemesters: ['SS 2023', 'WS 2023']
+            offeredInSemesters: ['SS 2023', 'WS 2023'],
         };
-    
+
         return supertest(reviewUrl)
             .post('/')
             .send(requestBody)
