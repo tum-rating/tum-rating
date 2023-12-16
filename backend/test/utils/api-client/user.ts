@@ -4,10 +4,7 @@ import { SignUpRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignU
 import { SignInRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignInRequest.dto';
 import { baseUrlV1 } from './config';
 
-import {
-    activateUserEmail as activateUserEmailDB,
-    changeUserRole as changeUserRoleDB,
-} from '@tum-rating/backend/test/utils/db-client/user';
+import { activateUserEmail as activateUserEmailDB, changeUserRole as changeUserRoleDB } from '@tum-rating/backend/test/utils/db-client/user';
 import { UserRole } from '@tum-rating/backend/src/database/documents/user';
 
 export const authUrl = baseUrlV1 + '/auth';
@@ -19,9 +16,7 @@ export const signUpRequest = async (request: SignUpRequestDto) => {
 /**
  * Signs up user and activates its email
  */
-export const signUpRequestMock = async (
-    request?: Partial<SignUpRequestDto>,
-) => {
+export const signUpRequestMock = async (request?: Partial<SignUpRequestDto>) => {
     const mockRequest: SignUpRequestDto = {
         email: faker.internet.email({ provider: 'tum.de' }),
         username: faker.internet.userName(),
@@ -36,9 +31,7 @@ export const signUpRequestMock = async (
     return mockRequest;
 };
 
-export const signInRequestMock = async (
-    request?: Partial<SignUpRequestDto>,
-) => {
+export const signInRequestMock = async (request?: Partial<SignUpRequestDto>) => {
     const signUpResponse = await signUpRequestMock(request);
 
     const signInRequest: SignInRequestDto = {
@@ -57,9 +50,7 @@ export const signInRequestMock = async (
     };
 };
 
-export const signInAdminRequestMock = async (
-    request?: Partial<SignUpRequestDto>,
-) => {
+export const signInAdminRequestMock = async (request?: Partial<SignUpRequestDto>) => {
     const signInResponse = await signInRequestMock(request);
 
     await changeUserRoleDB(signInResponse.user.id, UserRole.admin);
@@ -69,10 +60,7 @@ export const signInAdminRequestMock = async (
         password: signInResponse.user.password,
     };
 
-    const signInResponse2 = await axios.post(
-        authUrl + '/signin',
-        signInRequest,
-    );
+    const signInResponse2 = await axios.post(authUrl + '/signin', signInRequest);
 
     return {
         user: {

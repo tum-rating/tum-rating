@@ -16,18 +16,11 @@ async function bootstrap() {
 
     if (configService.getOrThrow('app.env') === 'development') {
         initOpenApi(app);
-        loggerServivce.info(
-            'Swagger initialized on localhost:%s/api',
-            configService.getOrThrow('app.port'),
-        );
+        loggerServivce.info('Swagger initialized on localhost:%s/api', configService.getOrThrow('app.port'));
     }
 
     await app.listen(configService.getOrThrow('app.port'), () => {
-        loggerServivce.info(
-            'Application v: %s, started on port %s',
-            process.env.npm_package_version,
-            configService.getOrThrow('app.port'),
-        );
+        loggerServivce.info('Application v: %s, started on port %s', process.env.npm_package_version, configService.getOrThrow('app.port'));
     });
 }
 bootstrap();

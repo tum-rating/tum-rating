@@ -10,10 +10,7 @@ import { AddUserReviewRequestDto } from 'src/modules/review/dto/AddUserReviewReq
 
 export const reviewUrl = baseUrlV1 + '/reviews';
 
-export const createCourseReviewMockRequest = async (
-    token: string,
-    review?: Partial<CreateReviewRequestDto>,
-) => {
+export const createCourseReviewMockRequest = async (token: string, review?: Partial<CreateReviewRequestDto>) => {
     const requestBody: CreateReviewRequestDto = {
         courseId: fakeNumberOfLenght(9),
         courseNumber: fakeNumberOfLenght(8),
@@ -23,11 +20,7 @@ export const createCourseReviewMockRequest = async (
         ...review,
     };
 
-    const createCourseReviewResponse = await axios.post(
-        reviewUrl,
-        requestBody,
-        { headers: { Authorization: 'Bearer ' + token } },
-    );
+    const createCourseReviewResponse = await axios.post(reviewUrl, requestBody, { headers: { Authorization: 'Bearer ' + token } });
 
     return {
         id: createCourseReviewResponse.data.id,
@@ -40,12 +33,7 @@ export const getCourseReviewById = async (id: string) => {
     return review.data as Review;
 };
 
-export const addUserReviewMockRequest = async (
-    token: string,
-    reviewId: string,
-    userId: string,
-    userReview?: Partial<AddUserReviewRequestDto>,
-) => {
+export const addUserReviewMockRequest = async (token: string, reviewId: string, userId: string, userReview?: Partial<AddUserReviewRequestDto>) => {
     const requestBody: AddUserReviewRequestDto = {
         howInterestingRating: faker.number.int({ min: 0, max: 5 }),
         howEasyRating: faker.number.int({ min: 0, max: 5 }),
@@ -54,15 +42,11 @@ export const addUserReviewMockRequest = async (
         ...userReview,
     };
 
-    const addUserReviewResponse = await axios.post(
-        `${reviewUrl}/${reviewId}/user/${userId}`,
-        requestBody,
-        {
-            headers: {
-                Authorization: 'Bearer ' + token,
-            },
+    const addUserReviewResponse = await axios.post(`${reviewUrl}/${reviewId}/user/${userId}`, requestBody, {
+        headers: {
+            Authorization: 'Bearer ' + token,
         },
-    );
+    });
 
     return {
         userReview: requestBody,

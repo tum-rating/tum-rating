@@ -13,15 +13,7 @@ import WebappConfig from './webapp.config';
     imports: [
         NestConfigModule.forRoot({
             isGlobal: true,
-            load: [
-                AppConfig,
-                GoogleAuthConfig,
-                JWTConfig,
-                MailerConfig,
-                MongoConfig,
-                SignUpConfig,
-                WebappConfig,
-            ],
+            load: [AppConfig, GoogleAuthConfig, JWTConfig, MailerConfig, MongoConfig, SignUpConfig, WebappConfig],
         }),
     ],
 })

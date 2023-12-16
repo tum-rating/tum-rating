@@ -15,10 +15,9 @@ export class PatchUserReviewRequestDto {
     semester?: string;
 }
 
-export const PatchUserReviewRequestSchema =
-    Joi.object<PatchUserReviewRequestDto>({
-        howInterestingRating: Joi.number().min(0).max(5).precision(2),
-        howEasyRating: Joi.number().min(0).max(5).precision(2),
-        comment: Joi.string(),
-        semester: Joi.string(),
-    });
+export const PatchUserReviewRequestSchema = Joi.object<PatchUserReviewRequestDto>({
+    howInterestingRating: Joi.number().min(0).max(5).precision(2),
+    howEasyRating: Joi.number().min(0).max(5).precision(2),
+    comment: Joi.string(),
+    semester: Joi.string(),
+});

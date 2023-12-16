@@ -2,30 +2,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema as MongooseSchema } from 'mongoose';
 import * as mongoose from 'mongoose';
 
-import {
-    ReviewUser,
-    ReviewUserDocument,
-} from 'src/database/documents/reviewUser';
+import { ReviewUser, ReviewUserDocument } from 'src/database/documents/reviewUser';
 
 import { BaseRepository } from './base.repository';
 
-export type CreateReviewUserType = Pick<
-    ReviewUser,
-    | 'userId'
-    | 'userName'
-    | 'reviewId'
-    | 'howEasyRating'
-    | 'howInterestingRating'
-    | 'comment'
-    | 'semester'
->;
+export type CreateReviewUserType = Pick<ReviewUser, 'userId' | 'userName' | 'reviewId' | 'howEasyRating' | 'howInterestingRating' | 'comment' | 'semester'>;
 
-export type PatchReviewUserType = Partial<
-    Pick<
-        ReviewUser,
-        'howEasyRating' | 'howInterestingRating' | 'comment' | 'semester'
-    >
->;
+export type PatchReviewUserType = Partial<Pick<ReviewUser, 'howEasyRating' | 'howInterestingRating' | 'comment' | 'semester'>>;
 
 export class ReviewUserRepository extends BaseRepository<ReviewUser> {
     constructor(
@@ -43,11 +26,7 @@ export class ReviewUserRepository extends BaseRepository<ReviewUser> {
         return this._reviewUserModel.findOne({ reviewId, userId });
     }
 
-    public async updateOneByUserIdAndReviewId(
-        userId: string,
-        reviewId: string,
-        reviewUser: PatchReviewUserType,
-    ) {
+    public async updateOneByUserIdAndReviewId(userId: string, reviewId: string, reviewUser: PatchReviewUserType) {
         const result = await this._reviewUserModel.findOneAndUpdate(
             { userId, reviewId },
             {
@@ -60,10 +39,7 @@ export class ReviewUserRepository extends BaseRepository<ReviewUser> {
         return result;
     }
 
-    public async deleteOneByUserIdAndReviewId(
-        userId: string,
-        reviewId: string,
-    ) {
+    public async deleteOneByUserIdAndReviewId(userId: string, reviewId: string) {
         return this._reviewUserModel.deleteOne({ userId, reviewId });
     }
 

@@ -1,14 +1,4 @@
-import {
-    Controller,
-    Delete,
-    Get,
-    Headers,
-    Logger,
-    Patch,
-    NotImplementedException,
-    UnauthorizedException,
-    UseGuards,
-} from '@nestjs/common';
+import { Controller, Delete, Get, Headers, Logger, Patch, NotImplementedException, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
@@ -41,18 +31,13 @@ export class UserControllerV1 {
     })
     @UseGuards(AuthGuard)
     @Get('/me')
-    public async getMe(
-        @Headers(USER_ID) userId: string,
-    ): Promise<UserResponseDto> {
+    public async getMe(@Headers(USER_ID) userId: string): Promise<UserResponseDto> {
         this._logger.info('Get me request received from user %s', userId);
 
         const user = await this._userService.getUser(userId);
 
         if (!user) {
-            this._logger.error(
-                'Get me request failed, not found user %s',
-                userId,
-            );
+            this._logger.error('Get me request failed, not found user %s', userId);
             throw new UnauthorizedException();
         }
 

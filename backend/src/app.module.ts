@@ -15,19 +15,7 @@ import { ReviewModule } from './modules/review/review.module';
 import { ReviewProposalModule } from './modules/review-proposal/reviewProposal.module';
 
 @Module({
-    imports: [
-        ConfigModule,
-        MailerModule,
-        MongoModule,
-        LoggerModule,
-
-        AuthModule,
-        FrontendModule,
-        HealthModule,
-        UserModule,
-        ReviewModule,
-        ReviewProposalModule,
-    ],
+    imports: [ConfigModule, MailerModule, MongoModule, LoggerModule, AuthModule, FrontendModule, HealthModule, UserModule, ReviewModule, ReviewProposalModule],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {

@@ -1,14 +1,4 @@
-import {
-    Controller,
-    UseGuards,
-    Get,
-    Post,
-    Headers,
-    Body,
-    Param,
-    Delete,
-    NotFoundException,
-} from '@nestjs/common';
+import { Controller, UseGuards, Get, Post, Headers, Body, Param, Delete, NotFoundException } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
 import { ApiBearerAuth, ApiTags, ApiParam } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
@@ -19,10 +9,7 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 
 import { ReviewProposalService } from './reviewProposal.service';
-import {
-    CreateReviewProposalRequestDto,
-    CreateReviewProposalRequestSchema,
-} from './dto/CreateReviewProposalRequest.dto';
+import { CreateReviewProposalRequestDto, CreateReviewProposalRequestSchema } from './dto/CreateReviewProposalRequest.dto';
 
 @ApiTags('review-proposals')
 @Controller('/api/v1/review-proposals')
@@ -40,13 +27,9 @@ export class ReviewProposalControllerV1 {
     public async getReviewProposals() {
         this._logger.info('Get reviews proposal requested');
 
-        const reviewProposals =
-            await this._reviewProposalService.getAllReviewProposals();
+        const reviewProposals = await this._reviewProposalService.getAllReviewProposals();
 
-        this._logger.info(
-            'Successfuly retrieved all review proposal with count %d',
-            reviewProposals.length,
-        );
+        this._logger.info('Successfuly retrieved all review proposal with count %d', reviewProposals.length);
 
         return reviewProposals;
     }
@@ -57,15 +40,11 @@ export class ReviewProposalControllerV1 {
     public async getReviewProposalById(@Param('id') id: string) {
         this._logger.info('Get review proposal with with id: %s', id);
 
-        const review =
-            await this._reviewProposalService.getReviewProposalsById(id);
+        const review = await this._reviewProposalService.getReviewProposalsById(id);
 
         if (review === null) throw new NotFoundException();
 
-        this._logger.info(
-            'Successfuly retrieved reveiw proposal with id: %s',
-            review.id,
-        );
+        this._logger.info('Successfuly retrieved reveiw proposal with id: %s', review.id);
 
         return review;
     }
@@ -83,24 +62,14 @@ export class ReviewProposalControllerV1 {
         @Body(new JoiObjectSchemaPipe(CreateReviewProposalRequestSchema))
         body: CreateReviewProposalRequestDto,
     ) {
-        this._logger.info(
-            'Create review proposal request received for %s, %s, by user %s',
-            body.course,
-            body.professor,
+        this._logger.info('Create review proposal request received for %s, %s, by user %s', body.course, body.professor, userId);
+
+        const createdReview = await this._reviewProposalService.createReviewProposal({
+            ...body,
             userId,
-        );
+        });
 
-        const createdReview =
-            await this._reviewProposalService.createReviewProposal({
-                ...body,
-                userId,
-            });
-
-        this._logger.info(
-            'Successfuly created review proposal for course %s, %s',
-            body.course,
-            body.professor,
-        );
+        this._logger.info('Successfuly created review proposal for course %s, %s', body.course, body.professor);
 
         return {
             id: createdReview.id,
@@ -115,33 +84,16 @@ export class ReviewProposalControllerV1 {
     })
     @UseGuards(AdminGuard)
     @Post('/:id/accept')
-    public async acceptReviewProposal(
-        @Headers(USER_ID) userId: ObjectId,
-        @Param('id') id: string,
-    ) {
-        this._logger.info(
-            'Accept review proposal with id %s requested by user %s',
-            id,
-            userId,
-        );
+    public async acceptReviewProposal(@Headers(USER_ID) userId: ObjectId, @Param('id') id: string) {
+        this._logger.info('Accept review proposal with id %s requested by user %s', id, userId);
 
-        const createdReview =
-            await this._reviewProposalService.acceptReviewProposalAddingItToReviews(
-                id,
-            );
+        const createdReview = await this._reviewProposalService.acceptReviewProposalAddingItToReviews(id);
 
-        this._logger.info(
-            'Successfuly accepted review proposal with id %s, created review with id %s',
-            id,
-            createdReview._id,
-        );
+        this._logger.info('Successfuly accepted review proposal with id %s, created review with id %s', id, createdReview._id);
 
         await this._reviewProposalService.deleteReviewProposal(id);
 
-        this._logger.info(
-            'Successfuly deleted review proposal %s, after acceptance',
-            id,
-        );
+        this._logger.info('Successfuly deleted review proposal %s, after acceptance', id);
 
         return {
             createdReview: createdReview._id,
@@ -154,13 +106,9 @@ export class ReviewProposalControllerV1 {
     public async deleteReviewProposal(@Param('id') id: string) {
         this._logger.info('Delete review proposal with with id: %s', id);
 
-        const review =
-            await this._reviewProposalService.deleteReviewProposal(id);
+        const review = await this._reviewProposalService.deleteReviewProposal(id);
 
-        this._logger.info(
-            'Successfuly deleted review proposal with id: %s',
-            review.id,
-        );
+        this._logger.info('Successfuly deleted review proposal with id: %s', review.id);
 
         return review;
     }

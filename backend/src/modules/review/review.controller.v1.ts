@@ -25,27 +25,12 @@ import { OptionalIntPipeAtLeast1 } from 'src/common/pipes/OptionalIntAtLeast1.pi
 import { UserService } from 'src/modules/user/user.service';
 
 import { ReviewService } from './review.service';
-import {
-    CreateReviewRequestDto,
-    CreateReviewRequestSchema,
-} from './dto/CreateReviewRequest.dto';
-import {
-    AddUserReviewRequestDto,
-    AddUserReviewRequestSchema,
-} from './dto/AddUserReviewRequest.dto';
-import {
-    PatchUserReviewRequestDto,
-    PatchUserReviewRequestSchema,
-} from './dto/PutUserReviewRequest.dto';
+import { CreateReviewRequestDto, CreateReviewRequestSchema } from './dto/CreateReviewRequest.dto';
+import { AddUserReviewRequestDto, AddUserReviewRequestSchema } from './dto/AddUserReviewRequest.dto';
+import { PatchUserReviewRequestDto, PatchUserReviewRequestSchema } from './dto/PutUserReviewRequest.dto';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
-import {
-    BadRequestError,
-    AddUserReviewError,
-    AddUserReviewNotFoundError,
-    UserReviewSemesterMismatch,
-    NotFoundError,
-} from 'src/utils/errors/errors';
+import { BadRequestError, AddUserReviewError, AddUserReviewNotFoundError, UserReviewSemesterMismatch, NotFoundError } from 'src/utils/errors/errors';
 
 @ApiTags('reviews')
 @Controller('/api/v1/reviews')
@@ -81,24 +66,11 @@ export class ReviewControllerV1 {
         pageSize: number = 100,
         @Query('search') search?: string,
     ) {
-        this._logger.info(
-            'Get reviews requested with pageNumber %s, pageSize %d and search %s',
-            pageNumber,
-            pageSize,
-            search,
-        );
+        this._logger.info('Get reviews requested with pageNumber %s, pageSize %d and search %s', pageNumber, pageSize, search);
 
-        const paginetedResults =
-            await this._reviewService.getReviewsOverviewPaginated(
-                pageNumber,
-                pageSize,
-                search,
-            );
+        const paginetedResults = await this._reviewService.getReviewsOverviewPaginated(pageNumber, pageSize, search);
 
-        this._logger.info(
-            'Successfuly retrieved reviews with count %d',
-            paginetedResults.reviews.length,
-        );
+        this._logger.info('Successfuly retrieved reviews with count %d', paginetedResults.reviews.length);
 
         return paginetedResults;
     }
@@ -107,8 +79,7 @@ export class ReviewControllerV1 {
     public async getReviewById(@Param('id') id: string) {
         this._logger.info('Get review with id: %s', id);
 
-        const review =
-            await this._reviewService.getReviewByIdWihtPopulatedReviewsUser(id);
+        const review = await this._reviewService.getReviewByIdWihtPopulatedReviewsUser(id);
 
         this._logger.info('Successfuly retrieved with id: %s', review.id);
 
@@ -117,37 +88,22 @@ export class ReviewControllerV1 {
 
     @Get('/:reviewId/user/me')
     @UseGuards(AuthGuard)
-    public async getReviewUser(
-        @Headers(USER_ID) userId: string,
-        @Param('reviewId') reviewId: string,
-    ) {
+    public async getReviewUser(@Headers(USER_ID) userId: string, @Param('reviewId') reviewId: string) {
         this._logger.info('Get review %s user %s', reviewId, userId);
 
         try {
-            const review = await this._reviewService.getReviewUser(
-                reviewId,
-                userId,
-            );
+            const review = await this._reviewService.getReviewUser(reviewId, userId);
 
             this._logger.info('Successfuly retrieved with id: %s', review.id);
 
             return review;
         } catch (error) {
             if (error instanceof NotFoundError) {
-                this._logger.debug(
-                    'Review %s user %s not found',
-                    reviewId,
-                    userId,
-                );
+                this._logger.debug('Review %s user %s not found', reviewId, userId);
                 throw new NotFoundException(error.message);
             }
 
-            this._logger.error(
-                'Failed to get review %s user %s: ',
-                reviewId,
-                userId,
-                error,
-            );
+            this._logger.error('Failed to get review %s user %s: ', reviewId, userId, error);
             throw error;
         }
     }
@@ -165,19 +121,11 @@ export class ReviewControllerV1 {
         @Body(new JoiObjectSchemaPipe(CreateReviewRequestSchema))
         body: CreateReviewRequestDto,
     ) {
-        this._logger.info(
-            'Create review request received for course: %s, professor: %s',
-            body.course,
-            body.professor,
-        );
+        this._logger.info('Create review request received for course: %s, professor: %s', body.course, body.professor);
 
         const createdReview = await this._reviewService.createReview(body);
 
-        this._logger.info(
-            'Successfuly created review for course %s, %s',
-            body.course,
-            body.professor,
-        );
+        this._logger.info('Successfuly created review for course %s, %s', body.course, body.professor);
 
         return {
             id: createdReview.id,
@@ -203,9 +151,7 @@ export class ReviewControllerV1 {
         this._logger.info('Add review user: %s to review %s', userId, reviewId);
 
         if (userId != queryUserId) {
-            this._logger.warn(
-                'User id from jwt does not match one in query param',
-            );
+            this._logger.warn('User id from jwt does not match one in query param');
             throw new ForbiddenException();
         }
 
@@ -225,46 +171,27 @@ export class ReviewControllerV1 {
 
         let createdReviewUser: any;
         try {
-            createdReviewUser =
-                await this._reviewService.addReviewUser(reviewUser);
+            createdReviewUser = await this._reviewService.addReviewUser(reviewUser);
         } catch (error: any) {
             if (error.code == ERROR_MONGO_DUPLICATE_CODE) {
-                this._logger.debug(
-                    'User %s has already submitted a review for %s',
-                    userId,
-                    reviewId,
-                );
-                throw new ConflictException(
-                    'User has already submitted a review, use put method to update',
-                );
+                this._logger.debug('User %s has already submitted a review for %s', userId, reviewId);
+                throw new ConflictException('User has already submitted a review, use put method to update');
             }
 
             if (error instanceof AddUserReviewNotFoundError) {
-                this._logger.warn(
-                    'Review not found, reverting unique user review, user: %s review: %s',
-                    userId,
-                    reviewId,
-                );
+                this._logger.warn('Review not found, reverting unique user review, user: %s review: %s', userId, reviewId);
 
                 throw new NotFoundException('review not found');
             }
 
             if (error instanceof AddUserReviewError) {
-                this._logger.warn(
-                    'Add review error, reverting unique user review, user: %s review: %s',
-                    userId,
-                    reviewId,
-                );
+                this._logger.warn('Add review error, reverting unique user review, user: %s review: %s', userId, reviewId);
 
                 throw new InternalServerErrorException();
             }
 
             if (error instanceof UserReviewSemesterMismatch) {
-                this._logger.debug(
-                    'Add review user error, semester mismatch review %s, semester %s',
-                    reviewId,
-                    body.semester,
-                );
+                this._logger.debug('Add review user error, semester mismatch review %s, semester %s', reviewId, body.semester);
 
                 throw new BadRequestException('semester');
             }
@@ -275,11 +202,7 @@ export class ReviewControllerV1 {
 
         await this._reviewService.updateReviewStats(reviewId);
 
-        this._logger.info(
-            'Successfully added review user: %s to review: %s',
-            userId,
-            reviewId,
-        );
+        this._logger.info('Successfully added review user: %s to review: %s', userId, reviewId);
 
         return {
             createdReviewUser,
@@ -302,35 +225,19 @@ export class ReviewControllerV1 {
         @Body(new JoiObjectSchemaPipe(PatchUserReviewRequestSchema))
         body: PatchUserReviewRequestDto,
     ) {
-        this._logger.info(
-            'Patch review user: %s to review %s',
-            userId,
-            reviewId,
-        );
+        this._logger.info('Patch review user: %s to review %s', userId, reviewId);
 
         let updatedReview: any;
         try {
-            updatedReview = await this._reviewService.patchReviewUser(
-                reviewId,
-                userId,
-                body,
-            );
+            updatedReview = await this._reviewService.patchReviewUser(reviewId, userId, body);
         } catch (error: any) {
             if (error instanceof NotFoundError) {
-                this._logger.warn(
-                    'Review not found, user: %s review: %s, semester %s',
-                    userId,
-                    reviewId,
-                );
+                this._logger.warn('Review not found, user: %s review: %s, semester %s', userId, reviewId);
                 throw new NotFoundException('review not found');
             }
 
             if (error instanceof UserReviewSemesterMismatch) {
-                this._logger.debug(
-                    'Add review user error, semester mismatch review %s, semester %s',
-                    reviewId,
-                    body.semester,
-                );
+                this._logger.debug('Add review user error, semester mismatch review %s, semester %s', reviewId, body.semester);
 
                 throw new BadRequestException('semester');
             }
@@ -341,11 +248,7 @@ export class ReviewControllerV1 {
 
         await this._reviewService.updateReviewStats(reviewId);
 
-        this._logger.info(
-            'Successfully put review user: %s to review: %s',
-            userId,
-            reviewId,
-        );
+        this._logger.info('Successfully put review user: %s to review: %s', userId, reviewId);
 
         return {
             updatedReview,

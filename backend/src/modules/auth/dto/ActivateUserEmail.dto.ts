@@ -7,7 +7,6 @@ export class ActivateUserEmailRequestDto {
     token: string;
 }
 
-export const ActivateUserEmailRequestSchema =
-    Joi.object<ActivateUserEmailRequestDto>({
-        token: Joi.string().regex(JWTRegex).required(),
-    });
+export const ActivateUserEmailRequestSchema = Joi.object<ActivateUserEmailRequestDto>({
+    token: Joi.string().regex(JWTRegex).required(),
+});

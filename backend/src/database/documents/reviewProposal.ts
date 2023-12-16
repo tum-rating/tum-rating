@@ -33,5 +33,4 @@ export class ReviewProposal {
 
 export type ReviewProposalDocument = ReviewProposal & Document;
 
-export const ReviewProposalSchema =
-    SchemaFactory.createForClass(ReviewProposal);
+export const ReviewProposalSchema = SchemaFactory.createForClass(ReviewProposal);

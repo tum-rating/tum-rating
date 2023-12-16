@@ -89,9 +89,7 @@ describe('User SignUp', () => {
             .send(mockRequest)
             .expect(409)
             .expect((response: supertest.Response) => {
-                expect(response.body.message).toContain(
-                    'Username already exists',
-                );
+                expect(response.body.message).toContain('Username already exists');
             });
     });
 });

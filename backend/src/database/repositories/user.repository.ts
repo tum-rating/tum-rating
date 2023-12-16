@@ -21,11 +21,7 @@ export class UserRepository extends BaseRepository<User> {
         });
     }
 
-    public updatePassword(
-        id: string,
-        newPasswordHash: string,
-        newPasswordSalt: string,
-    ) {
+    public updatePassword(id: string, newPasswordHash: string, newPasswordSalt: string) {
         return this._userModel.findByIdAndUpdate(id, {
             passwordHash: newPasswordHash,
             passwordSalt: newPasswordSalt,

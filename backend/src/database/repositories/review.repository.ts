@@ -19,11 +19,7 @@ export class ReviewRepository extends BaseRepository<Review> {
         return this._reviewModel.find().select('-reviews -__v');
     }
 
-    public async getReviewsByQuery(
-        pageNumber: number,
-        pageSize: number,
-        search?: string,
-    ) {
+    public async getReviewsByQuery(pageNumber: number, pageSize: number, search?: string) {
         // rage base pagination - think how to combine with text search, for now good enough
         // let query = {_id: {$gt: pageId}}
 
@@ -45,10 +41,7 @@ export class ReviewRepository extends BaseRepository<Review> {
     }
 
     public async findOneByIdWithPopulatedReviews(id: string) {
-        return this._reviewModel
-            .findById(id)
-            .populate('reviews', '-__v')
-            .select('-__v');
+        return this._reviewModel.findById(id).populate('reviews', '-__v').select('-__v');
     }
 
     public async addReviewUser(reviewId: string, reviewUserId: string) {
@@ -60,15 +53,7 @@ export class ReviewRepository extends BaseRepository<Review> {
         );
     }
 
-    public async updateReviewStats(
-        reviewId: string,
-        stats: Pick<
-            Review,
-            | 'howEasyRatingAverage'
-            | 'howInterestingRatingAverage'
-            | 'votesNumber'
-        >,
-    ) {
+    public async updateReviewStats(reviewId: string, stats: Pick<Review, 'howEasyRatingAverage' | 'howInterestingRatingAverage' | 'votesNumber'>) {
         return this._reviewModel.updateOne({ _id: reviewId }, stats);
     }
 }

@@ -3,10 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ReviewRepository } from 'src/database/repositories/review.repository';
 import { Review, ReviewSchema } from 'src/database/documents/review';
 import { JWTService } from 'src/utils/jwt/jwt.service';
-import {
-    ReviewUser,
-    ReviewUserSchema,
-} from 'src/database/documents/reviewUser';
+import { ReviewUser, ReviewUserSchema } from 'src/database/documents/reviewUser';
 import { UserModule } from 'src/modules/user/user.module';
 import { ReviewUserRepository } from 'src/database/repositories/reviewUser.repository';
 
@@ -22,13 +19,7 @@ import { ReviewService } from './review.service';
         UserModule,
     ],
     controllers: [ReviewControllerV1],
-    providers: [
-        JWTService,
-        ReviewService,
-        ReviewRepository,
-        ReviewUserRepository,
-        Logger,
-    ],
+    providers: [JWTService, ReviewService, ReviewRepository, ReviewUserRepository, Logger],
     exports: [ReviewService, ReviewRepository],
 })
 export class ReviewModule {}

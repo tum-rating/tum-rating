@@ -15,10 +15,7 @@ export abstract class BaseRepository<T> {
         return savedModel;
     }
 
-    public async findOneById(
-        id: string,
-        session?: ClientSession,
-    ): Promise<CreateReturn<T>> {
+    public async findOneById(id: string, session?: ClientSession): Promise<CreateReturn<T>> {
         return this.model.findById(id, undefined, { session });
     }
 
@@ -26,11 +23,7 @@ export abstract class BaseRepository<T> {
         return this.model.find();
     }
 
-    public async updateOneById(
-        id: string,
-        data: Partial<T>,
-        session?: ClientSession,
-    ): Promise<CreateReturn<T>> {
+    public async updateOneById(id: string, data: Partial<T>, session?: ClientSession): Promise<CreateReturn<T>> {
         return this.model.findByIdAndUpdate(id, data, { new: true, session });
     }
 

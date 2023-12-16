@@ -12,10 +12,7 @@ import { join } from 'path';
                 if (configService.getOrThrow('app.env') === 'development') {
                     return [
                         {
-                            rootPath: join(
-                                __dirname,
-                                '../../../../frontend/dist',
-                            ),
+                            rootPath: join(__dirname, '../../../../frontend/dist'),
                         },
                     ];
                 } else {

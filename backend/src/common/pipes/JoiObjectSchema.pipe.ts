@@ -1,9 +1,4 @@
-import {
-    PipeTransform,
-    Injectable,
-    ArgumentMetadata,
-    BadRequestException,
-} from '@nestjs/common';
+import { PipeTransform, Injectable, ArgumentMetadata, BadRequestException } from '@nestjs/common';
 import { ObjectSchema, Schema } from 'joi';
 
 @Injectable()

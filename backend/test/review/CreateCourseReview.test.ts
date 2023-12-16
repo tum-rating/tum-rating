@@ -3,11 +3,7 @@ import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
 import { CreateReviewRequestDto } from '@tum-rating/backend/src/modules/review/dto/CreateReviewRequest.dto';
-import {
-    connectMongo,
-    signInRequestMock,
-    signInAdminRequestMock,
-} from '@tum-rating/backend/test/utils';
+import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
 import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNumberOfLenght';
 import { reviewUrl } from '@tum-rating/backend/test/utils/api-client/review';
 

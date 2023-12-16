@@ -7,11 +7,7 @@ import { AddUserReviewRequestDto } from 'src/modules/review/dto/AddUserReviewReq
 
 import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNumberOfLenght';
 import { reviewProposalUrl } from '@tum-rating/backend/test/utils/api-client/review-proposal';
-import {
-    connectMongo,
-    signInRequestMock,
-    signInAdminRequestMock,
-} from '@tum-rating/backend/test/utils';
+import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
 import { createCourseReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
 
 beforeAll(async () => {

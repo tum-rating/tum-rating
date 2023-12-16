@@ -43,15 +43,7 @@ export class UserService {
         return this._userRepository.activateEmail(id);
     }
 
-    public async updatePassword(
-        id: string,
-        newPasswordHash: string,
-        newPasswordSalt: string,
-    ) {
-        return this._userRepository.updatePassword(
-            id,
-            newPasswordHash,
-            newPasswordSalt,
-        );
+    public async updatePassword(id: string, newPasswordHash: string, newPasswordSalt: string) {
+        return this._userRepository.updatePassword(id, newPasswordHash, newPasswordSalt);
     }
 }

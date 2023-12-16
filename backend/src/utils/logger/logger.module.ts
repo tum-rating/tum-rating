@@ -21,8 +21,7 @@ import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
                                 sync: true,
                                 translateTime: 'SYS:standard',
                                 ignore: 'req,res,pid,hostname,context',
-                                messageFormat:
-                                    '[{context}] [{req.headers.x-trace-id}]: {msg}',
+                                messageFormat: '[{context}] [{req.headers.x-trace-id}]: {msg}',
                             }),
                         },
                     };

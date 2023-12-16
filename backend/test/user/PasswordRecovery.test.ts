@@ -30,9 +30,7 @@ describe('User Password Recovery', () => {
             .send(emailRecoveryRequest)
             .expect(204);
 
-        const recoveryToken = await getRecoveryTokenFromMail(
-            signUpResponse.email,
-        );
+        const recoveryToken = await getRecoveryTokenFromMail(signUpResponse.email);
 
         const recoveryRequest: PasswordRecoveryRequestDto = {
             password: faker.internet.password(),
@@ -77,9 +75,7 @@ describe('User Password Recovery', () => {
             .send(emailRecoveryRequest)
             .expect(204);
 
-        const recoveryToken = await getRecoveryTokenFromMail(
-            signUpResponse.email,
-        );
+        const recoveryToken = await getRecoveryTokenFromMail(signUpResponse.email);
 
         const recoveryRequest: PasswordRecoveryRequestDto = {
             password: faker.internet.password(),
@@ -104,9 +100,7 @@ describe('User Password Recovery', () => {
             .send(emailRecoveryRequest)
             .expect(204);
 
-        const recoveryToken = await getRecoveryTokenFromMail(
-            emailRecoveryRequest.email,
-        );
+        const recoveryToken = await getRecoveryTokenFromMail(emailRecoveryRequest.email);
 
         expect(recoveryToken).toBe(null);
     });

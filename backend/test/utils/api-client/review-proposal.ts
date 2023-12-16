@@ -6,10 +6,7 @@ import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNum
 
 export const reviewProposalUrl = baseUrlV1 + '/review-proposals';
 
-export const createReviewProposalMockRequest = async (
-    token: string,
-    reviewProposal?: Partial<CreateReviewProposalRequestDto>,
-) => {
+export const createReviewProposalMockRequest = async (token: string, reviewProposal?: Partial<CreateReviewProposalRequestDto>) => {
     const requestBody: CreateReviewProposalRequestDto = {
         courseId: fakeNumberOfLenght(9),
         courseNumber: fakeNumberOfLenght(8),
@@ -19,15 +16,11 @@ export const createReviewProposalMockRequest = async (
         ...reviewProposal,
     };
 
-    const addUserReviewResponse = await axios.post(
-        `${reviewProposalUrl}`,
-        requestBody,
-        {
-            headers: {
-                Authorization: 'Bearer ' + token,
-            },
+    const addUserReviewResponse = await axios.post(`${reviewProposalUrl}`, requestBody, {
+        headers: {
+            Authorization: 'Bearer ' + token,
         },
-    );
+    });
 
     return {
         ...requestBody,

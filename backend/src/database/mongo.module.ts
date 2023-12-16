@@ -11,9 +11,7 @@ import { MongooseModule } from '@nestjs/mongoose';
                 const uri =
                     'mongodb' +
                     // for multiple nodes
-                    (configService.getOrThrow('app.env') === 'production'
-                        ? '+srv'
-                        : '') +
+                    (configService.getOrThrow('app.env') === 'production' ? '+srv' : '') +
                     '://' +
                     configService.getOrThrow('mongo.username') +
                     ':' +
@@ -21,9 +19,7 @@ import { MongooseModule } from '@nestjs/mongoose';
                     '@' +
                     configService.getOrThrow('mongo.host') +
                     // cannot specify port with srv
-                    (configService.getOrThrow('app.env') === 'production'
-                        ? ''
-                        : ':' + configService.getOrThrow('mongo.port'));
+                    (configService.getOrThrow('app.env') === 'production' ? '' : ':' + configService.getOrThrow('mongo.port'));
 
                 return {
                     uri,

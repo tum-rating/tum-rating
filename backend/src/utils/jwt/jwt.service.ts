@@ -37,11 +37,7 @@ export class JWTService {
         return this._verifyJWT(token, TokenType.recovery);
     }
 
-    private async _signJWT(
-        userId: string,
-        tokenType: TokenType,
-        options?: Partial<JWTSignOptions>,
-    ) {
+    private async _signJWT(userId: string, tokenType: TokenType, options?: Partial<JWTSignOptions>) {
         const defaultJWTSignOptions: JWTSignOptions = {
             expiration: '1d',
             userRole: UserRole.user,
@@ -62,16 +58,11 @@ export class JWTService {
 
     private async _verifyJWT(token: string, tokenType: TokenType) {
         try {
-            const { payload, protectedHeader } = await jwtVerify(
-                token,
-                this._jwtSecret,
-            );
+            const { payload, protectedHeader } = await jwtVerify(token, this._jwtSecret);
 
-            if (payload.tokenType !== tokenType)
-                return { isValid: false, payload: null };
+            if (payload.tokenType !== tokenType) return { isValid: false, payload: null };
 
-            if (payload.userRole === undefined)
-                return { isValid: false, payload: null };
+            if (payload.userRole === undefined) return { isValid: false, payload: null };
 
             return { isValid: true, payload };
         } catch (error) {

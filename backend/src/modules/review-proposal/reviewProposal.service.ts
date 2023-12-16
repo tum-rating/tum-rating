@@ -25,18 +25,14 @@ export class ReviewProposalService {
         return this._reviewProposalRepository.create(review as ReviewProposal);
     }
 
-    public async updateReviewProposal(
-        id: string,
-        review: Partial<ReviewProposal>,
-    ) {
+    public async updateReviewProposal(id: string, review: Partial<ReviewProposal>) {
         return this._reviewProposalRepository.updateOneById(id, review);
     }
 
     public async acceptReviewProposalAddingItToReviews(id: string) {
         const reviewProposal = await this.getReviewProposalsById(id);
 
-        if (reviewProposal === null)
-            throw new NotFoundError('review proposal not found');
+        if (reviewProposal === null) throw new NotFoundError('review proposal not found');
 
         const reviewToCreate = {
             course: reviewProposal.course,
@@ -50,10 +46,7 @@ export class ReviewProposalService {
         Reflect.deleteProperty(reviewToCreate, '_id');
         delete reviewToCreate['__v'];
 
-        console.log(
-            'acceptReviewProposalAddingItToReviews review to be created: ',
-            reviewToCreate,
-        );
+        console.log('acceptReviewProposalAddingItToReviews review to be created: ', reviewToCreate);
 
         return this._reviewRepository.create(reviewToCreate);
     }

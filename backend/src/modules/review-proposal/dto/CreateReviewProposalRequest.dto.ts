@@ -1,9 +1,3 @@
-import {
-    CreateReviewRequestDto,
-    CreateReviewRequestSchema,
-} from 'src/modules/review/dto/CreateReviewRequest.dto';
+import { CreateReviewRequestDto, CreateReviewRequestSchema } from 'src/modules/review/dto/CreateReviewRequest.dto';
 
-export {
-    CreateReviewRequestDto as CreateReviewProposalRequestDto,
-    CreateReviewRequestSchema as CreateReviewProposalRequestSchema,
-};
+export { CreateReviewRequestDto as CreateReviewProposalRequestDto, CreateReviewRequestSchema as CreateReviewProposalRequestSchema };
