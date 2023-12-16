@@ -23,7 +23,7 @@ describe('User Password Recovery', () => {
 
         const emailRecoveryRequest: PasswordRecoveryRequestDto = {
             email: signUpResponse.email,
-        }
+        };
 
         supertest(authUrl + '/recovery')
             .post('/')
@@ -34,7 +34,7 @@ describe('User Password Recovery', () => {
 
         const recoveryRequest: PasswordRecoveryRequestDto = {
             password: faker.internet.password(),
-            token: recoveryToken
+            token: recoveryToken,
         };
 
         supertest(authUrl + '/recovery')
@@ -44,23 +44,23 @@ describe('User Password Recovery', () => {
 
         const signInRequestWithOldPassword: SignInRequestDto = {
             email: signUpResponse.email,
-            password: signUpResponse.password
+            password: signUpResponse.password,
         };
 
         supertest(authUrl + 'signin')
             .post('/')
             .send(signInRequestWithOldPassword)
-            .expect(401)
+            .expect(401);
 
         const signInRequestWithNewPassowrd: SignInRequestDto = {
             email: signUpResponse.email,
-            password: recoveryRequest.password
+            password: recoveryRequest.password,
         };
 
         supertest(authUrl + 'signin')
             .post('/')
             .send(signInRequestWithNewPassowrd)
-            .expect(200)
+            .expect(200);
     });
 
     it('should fail with invalid token', async () => {
@@ -68,7 +68,7 @@ describe('User Password Recovery', () => {
 
         const emailRecoveryRequest: PasswordRecoveryRequestDto = {
             email: signUpResponse.email,
-        }
+        };
 
         supertest(authUrl + '/recovery')
             .post('/')
@@ -76,22 +76,24 @@ describe('User Password Recovery', () => {
             .expect(204);
 
         const recoveryToken = await getRecoveryTokenFromMail(signUpResponse.email);
-        
+
         const recoveryRequest: PasswordRecoveryRequestDto = {
             password: faker.internet.password(),
-            token: recoveryToken
+            token: recoveryToken,
         };
 
         supertest(authUrl + '/recovery')
             .post('/')
-            .send('eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjIsInN1YiI6IjY0ZTI4MDE3NGUwMGZkZjgzZGNlODk1ZiIsImV4cCI6MTY5MjY1MTkyN30.SIRt6KtlK-sFig1RUESLyApBH_F56OG3-9BEjD8QLPW')
+            .send(
+                'eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjIsInN1YiI6IjY0ZTI4MDE3NGUwMGZkZjgzZGNlODk1ZiIsImV4cCI6MTY5MjY1MTkyN30.SIRt6KtlK-sFig1RUESLyApBH_F56OG3-9BEjD8QLPW',
+            )
             .expect(204);
     });
 
     it('should silently fail if email is not registered', async () => {
         const emailRecoveryRequest: PasswordRecoveryRequestDto = {
-            email: faker.internet.email() 
-        }
+            email: faker.internet.email(),
+        };
 
         supertest(authUrl + '/recovery')
             .post('/')
@@ -99,7 +101,7 @@ describe('User Password Recovery', () => {
             .expect(204);
 
         const recoveryToken = await getRecoveryTokenFromMail(emailRecoveryRequest.email);
-        
+
         expect(recoveryToken).toBe(null);
     });
 });

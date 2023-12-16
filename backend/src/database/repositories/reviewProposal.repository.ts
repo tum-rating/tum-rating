@@ -6,10 +6,10 @@ import { ReviewProposal, ReviewProposalDocument } from 'src/database/documents/r
 import { BaseRepository } from './base.repository';
 
 export class ReviewProposalRepository extends BaseRepository<ReviewProposal> {
-  constructor(
-    @InjectModel(ReviewProposal.name)
-    private readonly _reviewProposalModel: Model<ReviewProposalDocument>,
-  ) {
-    super(_reviewProposalModel);
-  }
+    constructor(
+        @InjectModel(ReviewProposal.name)
+        private readonly _reviewProposalModel: Model<ReviewProposalDocument>,
+    ) {
+        super(_reviewProposalModel);
+    }
 }

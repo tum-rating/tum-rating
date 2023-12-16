@@ -10,20 +10,9 @@ import { ReviewProposalControllerV1 } from './reviewProposal.controller.v1';
 import { ReviewProposalService } from './reviewProposal.service';
 
 @Module({
-  imports: [
-    ReviewModule,
-    UserModule,
-    MongooseModule.forFeature([
-      { name: ReviewProposal.name, schema: ReviewProposalSchema }
-    ]),
-  ],
-  controllers: [ReviewProposalControllerV1],
-  providers: [
-    JWTService,
-    ReviewProposalService,
-    ReviewProposalRepository,
-    Logger,
-  ],
-  exports: [ReviewProposalService],
+    imports: [ReviewModule, UserModule, MongooseModule.forFeature([{ name: ReviewProposal.name, schema: ReviewProposalSchema }])],
+    controllers: [ReviewProposalControllerV1],
+    providers: [JWTService, ReviewProposalService, ReviewProposalRepository, Logger],
+    exports: [ReviewProposalService],
 })
 export class ReviewProposalModule {}

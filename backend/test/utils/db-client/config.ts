@@ -6,6 +6,5 @@ export const mongooseConfig = {
     dbName: 'tum-rating',
     get connectionUrl() {
         return 'mongodb://' + this.username + ':' + this.password + '@' + this.host + ':' + this.port;
-    }
-}
-
+    },
+};
