@@ -6,6 +6,7 @@ import { SignUpRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignU
 import { SignInRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SigninRequest.dto';
 import { signUpRequestMock, authUrl } from '@tum-rating/backend/test/utils';
 import { connectMongo } from '@tum-rating/backend/test/utils';
+import { setUserBan } from '@tum-rating/backend/test/utils/db-client/user';
 
 beforeAll(async () => {
     await connectMongo();
@@ -77,6 +78,22 @@ describe('User SignIn', () => {
             email: faker.internet.email(),
             password: signUpResponse.password,
         };
+
+        return supertest(authUrl + '/signin')
+            .post('/')
+            .send(mockRequest)
+            .expect(401);
+    });
+
+    it('should fail signin if user is banned', async () => {
+        const signUpResponse = await signUpRequestMock();
+
+        const mockRequest: SignInRequestDto = {
+            email: faker.internet.email(),
+            password: signUpResponse.password,
+        };
+
+        await setUserBan(signUpResponse.email, true);
 
         return supertest(authUrl + '/signin')
             .post('/')

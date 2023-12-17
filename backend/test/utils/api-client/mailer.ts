@@ -45,3 +45,12 @@ export const getRecoveryTokenFromMail = async (to: string) => {
 
     return result2;
 };
+
+export const getDupicatesListFromMail = async (suffix: string) => {
+    const mails = await getMail('admin@email.com');
+
+    const filterd = mails.filter(mail => mail.html.includes(suffix));
+
+    return filterd;
+};
+

@@ -14,6 +14,10 @@ export class User {
     @Prop({ required: true, unique: true, message: 'Email must be unique' })
     email: string;
 
+    // for multiaccounts check
+    @Prop({ required: false})
+    emailDotSuffix?: string;
+
     @Prop({ required: true })
     passwordHash: string;
 
@@ -23,6 +27,9 @@ export class User {
     @Prop({ required: true, default: false })
     isEmailActivated: boolean;
 
+    @Prop({ required: true, default: false })
+    isBanned: boolean;
+
     @Prop({ required: true, enum: UserRole, default: UserRole.user })
     role: UserRole;
 }
@@ -30,3 +37,4 @@ export class User {
 export type UserDocument = User & Document;
 
 export const UserSchema = SchemaFactory.createForClass(User);
+UserSchema.index({emailDotSuffix: 1}, {sparse: true})

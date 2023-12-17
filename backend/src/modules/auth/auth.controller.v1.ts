@@ -49,7 +49,8 @@ export class AuthControllerV1 {
         this._logger.info('Signup request received with user email %o', body.email);
 
         const acceptedEmailDomains = this._configService.getOrThrow<string[]>('signup.acceptedEmailDomains');
-        if (!acceptedEmailDomains.includes(body.email.split('@')[1])) throw new BadRequestException(`Email domain must be of ${acceptedEmailDomains}`);
+        if (!acceptedEmailDomains.includes(body.email.split('@')[1])) 
+            throw new BadRequestException(`Email domain must be of ${acceptedEmailDomains}`);
 
         const passwordSalt = await this._authenticationService.getSalt();
 
@@ -69,12 +70,36 @@ export class AuthControllerV1 {
 
             await this._mailerService.sendEmailActivationEmail([{ email: body.email, name: body.username }], activationToken);
 
+            this._userService.getUsersWithMatchingEmailSuffix(body.email)
+                .then(possibleDuplicates => {
+
+                    if (possibleDuplicates.length <= 1)
+                        return;
+
+                    this._logger.warn('possible email dot suffix duplicates for %s', body.email);
+                    
+                    return this._mailerService.sendEmailMultiAccountsAlert(possibleDuplicates.map(
+                        duplicate => ({id: duplicate.id, email: duplicate.email})
+                    ));
+                })
+                .catch(error => this._logger.error('Failed to verify email dot duplcates for %s: %s', body.email, error));
+
             this._logger.info('Signup local request completed user created with email %s, id %s', body.email, createdUser.id);
         } catch (error) {
             this._logger.error('Signup local error: %o', error);
             if (error.code == ERROR_MONGO_DUPLICATE_CODE) {
                 let errorMessage;
-                if (Object.keys(error.keyPattern).includes('email')) errorMessage = 'Email already exists';
+                if (Object.keys(error.keyPattern).includes('email')) {
+                    errorMessage = 'Email already exists';
+
+                    const user = await this._userService.getUserByEmail(body.email);
+                    if (!user.isEmailActivated) {
+                        this._logger.info('Email already exist, but is not activated, sending activation for %s', user.email);
+
+                        const activationToken = await this._jwtService.signJWTActivate(user.id);
+                        await this._mailerService.sendEmailActivationEmail([{ email: body.email, name: body.username }], activationToken);
+                    }
+                }
                 else if (Object.keys(error.keyPattern).includes('username')) errorMessage = 'Username already exists';
 
                 this._logger.info('Signup duplicate "%s" already exists %s, %s', errorMessage, body.username, body.email);
@@ -91,7 +116,7 @@ export class AuthControllerV1 {
         status: 200,
         type: SignInResponseDto,
     })
-    public async signin(
+    public async signIn(
         @Body(new JoiObjectSchemaPipe(SignInRequestSchema))
         body: SignInRequestDto,
     ): Promise<SignInResponseDto> {
@@ -111,6 +136,12 @@ export class AuthControllerV1 {
             await this._mailerService.sendEmailActivationEmail([{ email: databaseUser.email, name: databaseUser.username }], activationToken);
 
             // dont reveal email confirmation with specific message
+            throw new UnauthorizedException();
+        }
+
+        if (databaseUser.isBanned) {
+            this._logger.warn('Sign in request fail, user email is not banned for %s', body.email);
+
             throw new UnauthorizedException();
         }
 
@@ -178,9 +209,9 @@ export class AuthControllerV1 {
                 return;
             }
 
-            const recoveryTokoen = await this._jwtService.signJWTRecovery(user.id);
+            const recoveryToken = await this._jwtService.signJWTRecovery(user.id);
 
-            await this._mailerService.sendPasswordRecoveryEmail([{ email: user.email, name: user.username }], recoveryTokoen);
+            await this._mailerService.sendPasswordRecoveryEmail([{ email: user.email, name: user.username }], recoveryToken);
             this._logger.info('Succesfully send recovery email to %s', user.email);
             return;
         }
