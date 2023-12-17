@@ -16,7 +16,15 @@ export class UserService {
     }
 
     public async createUser(user: CreateUserDto) {
-        return this._userRepository.create(user as User);
+        const userToCreate = {...user} as User;
+
+        const emailUsernameSuffix = this.extractEmailUsernameDotSuffix(userToCreate.email);
+
+        if (emailUsernameSuffix) {
+            userToCreate.emailDotSuffix = emailUsernameSuffix;
+        }
+
+        return this._userRepository.create(userToCreate);
     }
 
     public async getUser(id: string) {
@@ -25,6 +33,28 @@ export class UserService {
         //     throw {code: GenericErrorCodes.not_found};
 
         return user;
+    }
+
+    // tum email have 2 possible username formats:
+    // 1. as12asd - some random id
+    // 2. <user input>.<student surname> - user input can be whatever, .<student surname> is mandatory
+    public extractEmailUsernameDotSuffix(email: string) {
+        const emailUsername = email.split('@')[0];
+        const dotSuffixSplit = emailUsername.split('.')
+
+        if (dotSuffixSplit.length < 2) return null;
+
+        return dotSuffixSplit[dotSuffixSplit.length - 1];
+    }
+
+    public async getUsersWithMatchingEmailSuffix(email: string) {
+        const dotSuffix = this.extractEmailUsernameDotSuffix(email);
+
+        if (!dotSuffix) return [];
+
+        const restults = await this._userRepository.getByEmailUsernameDotSuffix(dotSuffix);
+
+        return this._userRepository.getByEmailUsernameDotSuffix(dotSuffix);
     }
 
     public async getUserByEmail(email: string) {

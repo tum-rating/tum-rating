@@ -14,6 +14,10 @@ export class UserRepository extends BaseRepository<User> {
     public getByEmail(email: string) {
         return this._userModel.findOne({ email }).exec();
     }
+    
+    public getByEmailUsernameDotSuffix(emailDotSuffix: string) {
+        return this._userModel.find({ emailDotSuffix });
+    }
 
     public activateEmail(id: string) {
         return this._userModel.findByIdAndUpdate(id, {
@@ -25,6 +29,7 @@ export class UserRepository extends BaseRepository<User> {
         return this._userModel.findByIdAndUpdate(id, {
             passwordHash: newPasswordHash,
             passwordSalt: newPasswordSalt,
+            isEmailActivated: true,
         });
     }
 }
