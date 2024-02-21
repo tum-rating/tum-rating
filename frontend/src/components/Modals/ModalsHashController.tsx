@@ -17,15 +17,13 @@ export const ModalsHashController = (_: PropsWithChildren) => {
     let modalsContext = useModals();
     const modalSharedParams = {
         onClose: () => {
-            //TODO cosik tu trzeba poprawic
-            //https://github.com/mantinedev/mantine/issues/3623#issuecomment-1462329628
             closeAllModals();
             navigate('#');
         },
         fullScreen: isMobile,
-        transitionProps: {
-            duration: 0,
-        },
+        // transitionProps: {
+        //     duration: 0,
+        // },
         overlayProps: {
             backgroundOpacity: 0.55,
             blur: 3,
