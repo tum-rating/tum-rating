@@ -7,6 +7,7 @@ import {Review} from "@/reviews/types.ts";
 import classes from "./SearchInputDesktop.module.css"
 import {IconSearch} from "@tabler/icons-react";
 import clsx from "clsx";
+import {useNavigate} from "react-router-dom";
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
@@ -16,6 +17,7 @@ const SearchInputDesktop = () => {
     const [value, setValue] = useState('');
     const [empty, setEmpty] = useState(false);
     const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 150);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -53,9 +55,35 @@ const SearchInputDesktop = () => {
                 >
                     {item.course}
                 </Highlight>
+                <Highlight highlight={value.split(' ')}
+                           highlightStyles={{
+                               backgroundImage:
+                                   'linear-gradient(45deg, var(--mantine-color-cyan-5), var(--mantine-color-indigo-5))',
+                               fontWeight: 700,
+                               WebkitBackgroundClip: 'text',
+                               WebkitTextFillColor: 'transparent',
+                           }}
+                           fz="xs"
+                           fw={500}
+                           c="dimmed"
+                >
+                    {item.professor}
+                </Highlight>
+
             </Combobox.Option>
         ));
     }, [groupedActions]);
+
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (value.length) {
+            navigate('/?search=' + value);
+            setValue('');
+            combobox.closeDropdown();
+        }
+
+    }
 
     return (
         <Combobox
@@ -68,42 +96,44 @@ const SearchInputDesktop = () => {
             store={combobox}
         >
             <Combobox.Target>
-                <TextInput
-                    leftSection={
-                        <ThemeIcon variant="light">
-                            <IconSearch width={16} height={16}/>
-                        </ThemeIcon>
-                    }
-                    rightSection={
-                        value !== '' && (
-                            <CloseButton
-                                size="sm"
-                                onMouseDown={(event) => event.preventDefault()}
-                                onClick={() => {
-                                    setValue('')
-                                    combobox.closeDropdown()
-                                }}
-                                aria-label="Clear value"
-                            />
-                        )
-                    }
-                    classNames={{
-                        root: classes.searchInputDesktopRoot,
-                        input: clsx(classes.searchInputDesktopInput, combobox.dropdownOpened && classes.searchInputDesktopInputActive),
-                    }}
-                    placeholder="Search..."
-                    value={value}
-                    onChange={(event) => {
-                        setValue(event.currentTarget.value);
-                        combobox.resetSelectedOption();
-                        combobox.openDropdown();
-                    }}
-                    onClick={() => combobox.openDropdown()}
-                    onFocus={() => {
-                        combobox.openDropdown();
-                    }}
-                    onBlur={() => combobox.closeDropdown()}
-                />
+                <form style={{width: "100%"}} onSubmit={handleSubmit}>
+                    <TextInput
+                        leftSection={
+                            <ThemeIcon variant="light">
+                                <IconSearch width={16} height={16}/>
+                            </ThemeIcon>
+                        }
+                        rightSection={
+                            value !== '' && (
+                                <CloseButton
+                                    size="sm"
+                                    onMouseDown={(event) => event.preventDefault()}
+                                    onClick={() => {
+                                        setValue('')
+                                        combobox.closeDropdown()
+                                    }}
+                                    aria-label="Clear value"
+                                />
+                            )
+                        }
+                        classNames={{
+                            root: classes.searchInputDesktopRoot,
+                            input: clsx(classes.searchInputDesktopInput, combobox.dropdownOpened && classes.searchInputDesktopInputActive),
+                        }}
+                        placeholder="Search..."
+                        value={value}
+                        onChange={(event) => {
+                            setValue(event.currentTarget.value);
+                            combobox.resetSelectedOption();
+                            combobox.openDropdown();
+                        }}
+                        onClick={() => combobox.openDropdown()}
+                        onFocus={() => {
+                            combobox.openDropdown();
+                        }}
+                        onBlur={() => combobox.closeDropdown()}
+                    />
+                </form>
             </Combobox.Target>
 
             <Combobox.Dropdown className={classes.searchInputDesktopDropdown} hidden={data === null}>
@@ -115,7 +145,7 @@ const SearchInputDesktop = () => {
                 </Combobox.Options>
                 <Combobox.Footer>
                     <Text fz="xs" c="dimmed">
-                        TUM-RATING © 2023
+                        TUM-RATING © 2024
                     </Text>
                 </Combobox.Footer>
             </Combobox.Dropdown>

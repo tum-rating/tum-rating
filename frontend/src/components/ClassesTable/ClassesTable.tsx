@@ -3,12 +3,14 @@ import {useEffect, useMemo, useRef, useState} from 'react';
 import {columns} from '@/components/ClassesTable/Columns';
 import {Review} from '@/reviews/types';
 import {usePaginatedReviews} from '@/reviews/usePaginatedReviews';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {useViewportSize} from '@mantine/hooks';
 import classes from './ClassesTable.module.css';
 import {useTableScrollContext} from '@/context';
 import {isMobile} from 'react-device-detect';
-import {Box, Flex, Skeleton, Text} from "@mantine/core";
+import {ActionIcon, Box, Flex, Skeleton, Text} from "@mantine/core";
+import {useSearchReviews} from "@/reviews/useSearchReviews.tsx";
+import {IconX} from "@tabler/icons-react";
 
 const ClassesTable = () => {
     const columnsConfiguration = useMemo(() => {
@@ -18,10 +20,14 @@ const ClassesTable = () => {
         return columns;
     }, []);
     const [records, setRecords] = useState<Review[]>([]);
+    const [queryRecords, setQueryRecords] = useState<Review[]>([]);
     const [internalLoading, setInternalLoading] = useState(true);
     const {data, fetchNextPage, isFetching} = usePaginatedReviews();
+    const [query, setQuery] = useState('');
+    const {data: queryData, isFetching: isQueryDataFetching} = useSearchReviews(query);
     const {height} = useViewportSize();
     const navigate = useNavigate();
+    const location = useLocation()
     const scrollViewportRef = useRef<HTMLDivElement>(null);
     const {scrollY, setScrollY} = useTableScrollContext();
 
@@ -32,6 +38,22 @@ const ClassesTable = () => {
             setInternalLoading(false);
         }
     }, [data]);
+    useEffect(() => {
+        if (queryData) {
+            const newRecords = queryData.reviews;
+            setQueryRecords([...newRecords]);
+            setInternalLoading(false);
+        }
+    }, [queryData]);
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const searchParam = params.get('search');
+        if (searchParam) {
+            const decodedSearchParam = decodeURIComponent(searchParam);
+            setQuery(decodedSearchParam);
+        }
+    }, [location]);
 
     useEffect(() => {
         if (scrollViewportRef.current) {
@@ -49,12 +71,37 @@ const ClassesTable = () => {
         setScrollY(scrollViewportRef.current.scrollTop);
         navigate(dynamicPath);
     };
+
+    const removeQuery = () => {
+        setQuery('');
+        navigate('/');
+    }
+
     return (
         <>
             <Box className={classes.dataTableContainer} h={height - 250}>
                 <Flex justify="space-between" align="center" className={classes.dataTableInfo}>
-                    <Flex></Flex>
-                    <Flex>
+                    <Flex align="center">
+                        {query ? (
+                            <>
+                                <Text fw="500" size="xs">
+                                    Search results for:
+                                </Text>
+                                <Text
+                                    ml="5"
+                                    size="xs"
+                                    fw="bold"
+                                    c="blue">
+                                    {query}
+                                </Text>
+                                <ActionIcon ml={4} size="13" variant="filled" color="red" aria-label="Remove Query"
+                                            onClick={removeQuery}>
+                                    <IconX/>
+                                </ActionIcon>
+                            </>
+                        ) : null}
+                    </Flex>
+                    <Flex align="center">
                         <Text fw="500" size="xs">
                             Courses loaded:
                         </Text>
@@ -63,7 +110,8 @@ const ClassesTable = () => {
                             size="xs"
                             fw="bold"
                             c="blue">
-                            {isFetching || records.length === 0 ? <Skeleton w={20} h={15}/> : records.length}
+                            {isFetching || isQueryDataFetching || records.length === 0 ?
+                                <Skeleton w={20} h={15}/> : query ? queryRecords.length : records.length}
                         </Text>
                     </Flex>
                 </Flex>
@@ -73,10 +121,10 @@ const ClassesTable = () => {
                            verticalSpacing="lg"
                            height="100%"
                            columns={columnsConfiguration}
-                           records={records}
-                           onScrollToBottom={loadMoreRecords}
+                           records={query ? queryRecords : records}
+                           onScrollToBottom={!query ? loadMoreRecords : null}
                            scrollViewportRef={scrollViewportRef}
-                           fetching={isFetching || internalLoading}
+                           fetching={isFetching || isQueryDataFetching || internalLoading}
                            className={classes.dataTable}
                            rowClassName={classes.dataTableRow}
                            onRowClick={({record}) => handleRowClick(record)}></DataTable>
