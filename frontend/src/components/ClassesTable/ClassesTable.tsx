@@ -52,6 +52,8 @@ const ClassesTable = () => {
         if (searchParam) {
             const decodedSearchParam = decodeURIComponent(searchParam);
             setQuery(decodedSearchParam);
+        }else{
+            setQuery('');
         }
     }, [location]);
 
