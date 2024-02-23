@@ -12,8 +12,6 @@
 .courseControls {
     align-items: center;
     transition: all 0.1s linear ;
-    position: fixed;
-    top: 65px;
     left: var(--mantine-spacing-xl);
     right: var(--mantine-spacing-xl);
     padding: 0;
@@ -79,15 +77,21 @@
 }
 
 .container {
-    margin: var(--mantine-spacing-lg);
-    box-sizing: border-box;
-    overflow: hidden;
-    @media(max-width: 670px){
-        margin: 0;
-        min-height: calc(100vh - 45px);
-        border-radius: 0;
-        box-shadow: none;
-    }
+    /*margin: var(--mantine-spacing-lg);*/
+    /*box-sizing: border-box;*/
+    /*overflow: hidden;*/
+    /*@media(max-width: 670px){*/
+    /*    margin: 0;*/
+    /*    min-height: calc(100vh - 45px);*/
+    /*    border-radius: 0;*/
+    /*    box-shadow: none;*/
+    /*}*/
+    margin-top: 15px;
+    border-top-left-radius: var(--mantine-radius-lg);
+    border-top-right-radius: var(--mantine-radius-lg);
+    width: 100%;
+    background: var(--mantine-color-body);
+    /*min-height: calc(100vh - 110px);*/
 
 }
 

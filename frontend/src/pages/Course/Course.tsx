@@ -12,6 +12,7 @@ import { ReactNode } from 'react';
 import { NumberRatingBadge } from '@/components/Ratings';
 import { getPath, Paths } from '@/routes/paths.ts';
 import {isMobile} from "react-device-detect";
+import {CourseControls} from "@/pages/Course/CourseControls.tsx";
 
 const Course = () => {
     const { id } = useParams();
@@ -25,6 +26,17 @@ const Course = () => {
     const userReview = data?.reviews.find((data) => data.userId === user?.user.id);
     if (userReview) data?.reviews.sort((a) => (a.userId === user?.user.id ? -1 : 1));
     const scrollFlag = scroll.y >= 5;
+
+    return (
+        <Box className={classes.container}>
+            <CourseControls data={data} isFetching={isFetching} user={user} userReview={userReview}></CourseControls>
+        </Box>
+
+
+    )
+
+
+
     return (
         <Box className={classes.container} my={80}>
             <Flex px="lg" className={classes.courseControls} data-active={scrollFlag}>
