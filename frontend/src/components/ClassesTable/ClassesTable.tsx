@@ -8,9 +8,8 @@ import {useViewportSize} from '@mantine/hooks';
 import classes from './ClassesTable.module.css';
 import {useTableScrollContext} from '@/context';
 import {isMobile} from 'react-device-detect';
-import {ActionIcon, Box, Flex, Skeleton, Text} from "@mantine/core";
+import {Box, Flex, Pill, Skeleton, Text} from "@mantine/core";
 import {useSearchReviews} from "@/reviews/useSearchReviews.tsx";
-import {IconX} from "@tabler/icons-react";
 
 const ClassesTable = () => {
     const columnsConfiguration = useMemo(() => {
@@ -52,7 +51,7 @@ const ClassesTable = () => {
         if (searchParam) {
             const decodedSearchParam = decodeURIComponent(searchParam);
             setQuery(decodedSearchParam);
-        }else{
+        } else {
             setQuery('');
         }
     }, [location]);
@@ -89,17 +88,7 @@ const ClassesTable = () => {
                                 <Text fw="500" size="xs">
                                     Search results for:
                                 </Text>
-                                <Text
-                                    ml="5"
-                                    size="xs"
-                                    fw="bold"
-                                    c="blue">
-                                    {query}
-                                </Text>
-                                <ActionIcon ml={4} size="13" variant="filled" color="red" aria-label="Remove Query"
-                                            onClick={removeQuery}>
-                                    <IconX/>
-                                </ActionIcon>
+                                <Pill ml={4} onRemove={removeQuery} withRemoveButton>{query}</Pill>
                             </>
                         ) : null}
                     </Flex>

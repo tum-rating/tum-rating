@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
-import { Anchor, Box, Text } from '@mantine/core';
+import {ReactNode} from 'react';
+import {Anchor, Box, Text, Tooltip} from '@mantine/core';
 import classes from './Breadcrumbs.module.css';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
-const BreadcrumbsComponent = ({ courseName }: { courseName: ReactNode }) => {
+const BreadcrumbsComponent = ({courseName}: { courseName: ReactNode }) => {
     const navigate = useNavigate();
     return (
         <Box className={classes.courseBreadcrumbsContainer}>
@@ -20,11 +20,18 @@ const BreadcrumbsComponent = ({ courseName }: { courseName: ReactNode }) => {
                 Home
             </Anchor>
             <Text mx={7}>/</Text>
-            <Anchor fz="sm" fw={500} c="black" underline="hover" href="#" truncate>
-                {courseName}
-            </Anchor>
+            <Tooltip
+                openDelay={500}
+                label={courseName}
+                multiline={true}
+                transitionProps={{transition: 'fade', duration: 100}}
+            >
+                <Anchor fz="sm" fw={500} c="black" underline="hover" href="#" truncate>
+                    {courseName}
+                </Anchor>
+            </Tooltip>
         </Box>
     );
 };
 
-export { BreadcrumbsComponent as Breadcrumbs };
+export {BreadcrumbsComponent as Breadcrumbs};

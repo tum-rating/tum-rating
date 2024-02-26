@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { RatingProps } from '../types.ts';
 import { Flex, Rating, Stack, Text } from '@mantine/core';
-import { HowEasyBadge } from '@/components/Ratings';
+import {HowEasyBadge, NumberRatingBadge} from '@/components/Ratings';
 
 interface HowEasyRatingProps extends RatingProps {}
 
@@ -17,9 +17,7 @@ export const HowEasyRating = (props: HowEasyRatingProps) => {
         <Stack align="center" gap={0}>
             <Text fw={500}>How Easy</Text>
             <Flex gap={10} align="center">
-                <Text fz={36} fw={500}>
-                    {score}
-                </Text>
+                <NumberRatingBadge score={score}/>
                 <Text>/ 5</Text>
             </Flex>
             <Rating

@@ -4,9 +4,12 @@
 }
 
 .courseBanner {
-    background: var(--mantine-color-blue-light);
+    background: linear-gradient(90deg, rgb(145 167 255 / 20%) 0%, rgb(77 171 247 / 20%) 100%);
     padding: var(--mantine-spacing-sm) var(--mantine-spacing-lg);
     border-radius: var(--mantine-radius-lg);
+    @media(max-width: 670px){
+        flex-wrap: wrap;
+    }
 }
 
 .courseControls {

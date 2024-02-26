@@ -8,6 +8,7 @@ import classes from "./SearchInputDesktop.module.css"
 import {IconSearch} from "@tabler/icons-react";
 import clsx from "clsx";
 import {useNavigate} from "react-router-dom";
+import {SearchHighlight} from "@/components/Highlight";
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
@@ -44,32 +45,12 @@ const SearchInputDesktop = () => {
     const options = useMemo(() => {
         return (groupedActions || []).map((item: Review) => (
             <Combobox.Option value={item.courseId} key={item.courseId}>
-                <Highlight highlight={value.split(' ')}
-                           highlightStyles={{
-                               backgroundImage:
-                                   'linear-gradient(45deg, var(--mantine-color-cyan-5), var(--mantine-color-indigo-5))',
-                               fontWeight: 700,
-                               WebkitBackgroundClip: 'text',
-                               WebkitTextFillColor: 'transparent',
-                           }}
-                >
-                    {item.course}
-                </Highlight>
-                <Highlight highlight={value.split(' ')}
-                           highlightStyles={{
-                               backgroundImage:
-                                   'linear-gradient(45deg, var(--mantine-color-cyan-5), var(--mantine-color-indigo-5))',
-                               fontWeight: 700,
-                               WebkitBackgroundClip: 'text',
-                               WebkitTextFillColor: 'transparent',
-                           }}
-                           fz="xs"
-                           fw={500}
-                           c="dimmed"
-                >
-                    {item.professor}
-                </Highlight>
-
+                <SearchHighlight value={value.split(' ')} text={item.course}/>
+                <SearchHighlight value={value.split(' ')} text={item.professor} textStyles={{
+                    fz: "xs",
+                    fw: 500,
+                    c: "dimmed"
+                }}/>
             </Combobox.Option>
         ));
     }, [groupedActions]);

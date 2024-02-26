@@ -24,10 +24,10 @@ const CourseControls = ({data, isFetching, user, userReview}: CourseControlsProp
     const navigate = useNavigate()
 
     return (
-        <Flex px="lg" className={classes.courseControls} data-active={scrollFlag}>
-            <Button className={classes.courseControlsBackButton} variant="outline" mr="sm" size="xs"
+        <Flex px="lg" py="lg" className={classes.courseControls} data-active={scrollFlag}>
+            <Button className={classes.courseControlsBackButton}  variant="outline" mr="sm" size="xs"
                     leftSection={<IconArrowLeft size="1.1rem"/>} onClick={() => navigate('/')}>
-                Back to courses
+                Back
             </Button>
             <ActionIcon className={classes.courseControlsBackActionButton} mr="sm" size="sm"
                         onClick={() => navigate('/')}>
