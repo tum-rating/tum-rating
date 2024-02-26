@@ -34,10 +34,10 @@
     right: var(--mantine-spacing-xl);
     border-top-left-radius: var(--mantine-radius-lg);
     border-top-right-radius: var(--mantine-radius-lg);
-    padding: 0;
     margin: 0;
     display: flex;
     z-index: 4;
+    padding: var(--mantine-spacing-lg);
     @media (max-width: 670px) {
         transition: all 0.1s ease-in;
         left: 0;
@@ -45,14 +45,17 @@
     }
 
     &[data-active="true"] {
+        padding-top:0;
+        padding-bottom:0;
+        position: sticky;
         left: 0;
         right: 0;
         box-shadow: var(--mantine-shadow-lg);
-        top: 45px;
-
+        top: 56px;
         & .courseControlsOverlay {
+            z-index:-1;
             position: absolute;
-            inset: 0;
+            inset: -1px 0 0 0;
             background: light-dark(rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.8));
             border-bottom: light-dark(rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.8));
             backdrop-filter: blur(5px);

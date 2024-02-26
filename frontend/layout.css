@@ -1,3 +1,26 @@
 [data-full-screen] .m-54c44539{
     --_content-height: 100% !important;
 }
+
+
+body{
+
+}
+
+
+.children-animation > * {
+    animation: slideUp .15s ease-in-out both;
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(2%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+

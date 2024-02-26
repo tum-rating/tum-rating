@@ -26,7 +26,7 @@ const BreadcrumbsComponent = ({courseName}: { courseName: ReactNode }) => {
                 multiline={true}
                 transitionProps={{transition: 'fade', duration: 100}}
             >
-                <Anchor fz="sm" fw={500} c="black" underline="hover" href="#" truncate>
+                <Anchor fz="sm" fw={500}  underline="hover" href="#" truncate>
                     {courseName}
                 </Anchor>
             </Tooltip>

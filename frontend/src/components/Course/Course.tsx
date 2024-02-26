@@ -16,7 +16,6 @@ import {
 } from '@mantine/core';
 import {Breadcrumbs} from '@/components/Breadcrumbs';
 import classes from './Course.module.css';
-import {useWindowScroll} from '@mantine/hooks';
 import {
     IconAlien,
     IconArrowLeft,
@@ -32,32 +31,32 @@ import {Comment} from '@/components/Comment';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useUser} from '@/auth/useUser.tsx';
 import {useDetailReview} from '@/reviews/useReview.tsx';
-import {ReactNode} from 'react';
 import {NumberRatingBadge} from '@/components/Ratings';
 import {getPath, Paths} from '@/routes/paths.ts';
 import {isMobile} from "react-device-detect";
 import {CourseControls} from "./CourseControls.tsx";
-import {Rating} from "@/components/Course/Rating.tsx";
 import {HowEasyRating} from "@/components/Course/HowEasyRating.tsx";
+import {HowInterestingRating} from "@/components/Course/HowInterestingRating.tsx";
+import clsx from "clsx";
+import {useEffect} from "react";
+import {ReviewsBox} from "@/components/Course/ReviewsBox.tsx";
 
 const Course = () => {
     const {id} = useParams();
     const {user} = useUser();
     const navigate = useNavigate();
     const {data, isFetching} = useDetailReview(id || '');
-    const [scroll] = useWindowScroll();
-    const CourseSkeletonTemplate = (value: ReactNode, skeletonComponent: ReactNode) => {
-        return <>{isFetching ? skeletonComponent : value}</>;
-    };
-    const userReview = data?.reviews.find((data) => data.userId === user?.user.id);
-    if (userReview) data?.reviews.sort((a) => (a.userId === user?.user.id ? -1 : 1));
-    const scrollFlag = scroll.y >= 5;
-
+    useEffect(() => {
+        const children = document.querySelectorAll('.children-animation > *');
+        children.forEach((child: Element, index: number) => {
+            (child as HTMLElement).style.animationDelay = `${0.025 * (index + 1)}s`;
+        });
+    }, []);
     return (
-        <Box className={classes.container} h={1420}>
-            <CourseControls data={data} isFetching={isFetching} user={user} userReview={userReview}></CourseControls>
+        <Box className={classes.container}>
+            <CourseControls data={data} isFetching={isFetching} user={user} userReview={false}></CourseControls>
             <Box px="xl">
-                <Flex mt="lg" className={classes.courseBanner}>
+                <Flex mt="lg" className={clsx(classes.courseBanner, "children-animation")}>
                     <Image className={classes.image} my={16} h={100} mah={90} w={280} fit="contain"
                            fallbackSrc="https://placehold.co/600x400?text=Placeholder"
                            src="https://fordemocracy.de/wp-content/uploads/2019/08/TUM_Logo_extern_DE_blau_WEB.png"/>
@@ -91,37 +90,37 @@ const Course = () => {
                         </Flex>
                     </Flex>
                 </Flex>
-                <Flex mt="xl" direction="column">
+                <Flex mt="xl" direction="column" className="children-animation">
                     <Flex align="center" gap="xs" mb="lg">
                         <Box bg="blue" w={10} h={30} style={{borderRadius: "8px"}}/>
                         <Text fw="bold" fz="24">Key Statistics</Text>
                     </Flex>
-                    <Flex gap="lg">
-                        <HowEasyRating initialScore={3.5}/>
-                        <Flex direction="column" justify="center" align="center" style={{
-                            borderRadius: "16px",
-                            background: "linear-gradient(90deg, rgb(145 167 255 / 20%) 0%, rgb(77 171 247 / 20%) 100%)",
-                            width: "200px",
-                            height: "140px"
-                        }}>
-                            <Flex justify="center" align="center" gap="xs">
-                                <Text fz="34" fw="bold">4.25</Text>
-                            </Flex>
-                            <Text>How interesting</Text>
-                        </Flex>
-                        <Flex direction="column" justify="center" align="center" style={{
-                            borderRadius: "16px",
-                            background: "linear-gradient(90deg, rgb(145 167 255 / 20%) 0%, rgb(77 171 247 / 20%) 100%)",
-                            width: "200px",
-                            height: "140px"
-                        }}>
-                            <Text fz="34" fw="bold">125</Text>
-                            <Text>Reviews</Text>
-                        </Flex>
+                    <Flex gap="lg" wrap="wrap">
+                        <HowEasyRating score={data?.howEasyRatingAverage}/>
+                        <HowInterestingRating score={data?.howInterestingRatingAverage}/>
+                        <ReviewsBox votes={data?.votesNumber}/>
                     </Flex>
-
-                    {/*<HowInterestingRating initialScore={4}/>*/}
-                    {/*<HowEasyRating initialScore={4}/>*/}
+                </Flex>
+                <Flex mt="xl" direction="column" className="children-animation">
+                    <Flex align="center" gap="xs" mb="lg">
+                        <Box bg="blue" w={10} h={30} style={{borderRadius: "8px"}}/>
+                        <Text fw="bold" fz="24">Reviews</Text>
+                    </Flex>
+                    <Box>
+                        <Flex direction="column" style={{height: "1000px"}}>
+                            {data && data.reviews ? (
+                                data.reviews.length ? (
+                                    data.reviews.map((review, index) => {
+                                        return (
+                                            <Comment key={index} userReview={false} {...review}/>
+                                        );
+                                    })
+                                ) : (
+                                    <><Text size="xl" fw="bold" c="dimmed">No reviews</Text></>)
+                            ) : isFetching ? <Text size="xl" fw="bold" c="dimmed">Loading...</Text> :
+                                <Text size="xl" fw="bold" c="dimmed">No reviews</Text>}
+                        </Flex>
+                    </Box>
                 </Flex>
             </Box>
         </Box>
