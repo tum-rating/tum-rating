@@ -7,7 +7,6 @@ import {
     Button,
     Drawer,
     Flex,
-    getGradient,
     Group,
     Image,
     Stack,
@@ -36,13 +35,8 @@ export const MainLayout = ({children}: PropsWithChildren) => {
     const {user} = useUser();
     const navigate = useNavigate();
     const [mobileOpened, {toggle: toggleMobile}] = useDisclosure();
-    const theme = useMantineTheme();
     const {colorScheme, toggleColorScheme} = useMantineColorScheme();
     const signOut = useSignOut();
-
-
-    const {primary,primaryLayout} = useGradient();
-
 
     useHotkeys([['/', () => navigate(getPath(Paths.spotlight))]]);
     return (
@@ -67,8 +61,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                                 <Button
                                     data-testid="cypress-open-sign-up-modal-btn"
                                     size="xs"
-                                    variant="gradient"
-                                    gradient={primary}
+                                    variant="primary-gradient"
                                     onClick={() => {
                                         navigate(getPath(Paths.signUp));
                                     }}
@@ -96,7 +89,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                     </ActionIcon>
                 </Group>
             </AppShell.Header>
-            <AppShell.Main p={0} m={0} bg={getGradient(primaryLayout, theme)}>
+            <AppShell.Main p={0} m={0} style={{background: "var(--primary-layout-gradient)"}}>
                 <Drawer style={{zIndex: 6}} title={
                     <Anchor href="/">
                         <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo}
@@ -122,7 +115,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                                         Sign In
                                     </Button>
                                     <Button data-testid="cypress-open-sign-up-modal-btn" fullWidth size="md"
-                                            variant="gradient" gradient={primary}
+                                            variant="primary-gradient"
                                             onClick={() => navigate(getPath(Paths.signUp))}>
                                         Sign Up
                                     </Button>
