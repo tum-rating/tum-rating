@@ -1,7 +1,7 @@
 import { Flex } from '@mantine/core';
 
 import { Review } from '@/reviews/types.ts';
-import { NumberRatingBadge } from '../Ratings';
+import { NumberRatingBadge } from '@/components/Course';
 export const columns = [
     {
         title: 'Course',

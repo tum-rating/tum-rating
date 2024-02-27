@@ -18,7 +18,7 @@ interface CourseControlsProps {
 
 }
 
-const CourseControls = ({data, isFetching, user, userReview}: CourseControlsProps) => {
+const CourseControls = ({data, user, userReview}: CourseControlsProps) => {
     const [scroll] = useWindowScroll();
     const scrollFlag = scroll.y >= 5;
     const navigate = useNavigate()

@@ -1,0 +1,1 @@
+export {useHowEasyRating, useHowInterestingRating} from './useRating';
