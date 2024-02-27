@@ -1,5 +1,5 @@
 import {ContextModalProps, modals} from '@mantine/modals';
-import {Button, Container, Flex, LoadingOverlay, Select, Stack, Text, Textarea,Badge} from '@mantine/core';
+import {Badge, Button, Container, Flex, LoadingOverlay, Select, Stack, Text, Textarea} from '@mantine/core';
 import {useAddUserReview, UserAddReviewInput} from '@/reviews/useAddUserReview.tsx';
 import {useEffect} from 'react';
 import {useForm} from '@mantine/form';
@@ -51,6 +51,7 @@ const AddUserReviewModal = ({
     const handleSubmit = (form: UserAddReviewInput) => {
         if (form.howInterestingRating === 0 || form.howEasyRating === 0) return;
         addUserReview({...form});
+        context.closeModal(id);
     };
 
     return (
@@ -64,16 +65,18 @@ const AddUserReviewModal = ({
                 <Stack>
                     <Flex w="100%" align="center" justify="space-between" wrap="wrap">
                         <Stack>
-                            <HowEasyRating readOnly={false} onChange={(value) => form.setFieldValue('howEasyRating', value)}
+                            <HowEasyRating readOnly={false}
+                                           onChange={(value) => form.setFieldValue('howEasyRating', value)}
                                            score={form.values.howEasyRating}/>
-                            {form.errors.howInterestingRating &&
-                                <Badge variant="light" color="red">{form.errors.howInterestingRating}</Badge>}
+                            {form.errors.howEasyRating &&
+                                <Badge variant="light" color="red">{form.errors.howEasyRating}</Badge>}
                         </Stack>
                         <Stack>
                             <HowInterestingRating readOnly={false}
                                                   onChange={(value) => form.setFieldValue('howInterestingRating', value)}
                                                   score={form.values.howInterestingRating}/>
-                            {form.errors.howEasyRating && <Badge variant="light" color="red">{form.errors.howEasyRating}</Badge>}
+                            {form.errors.howInterestingRating &&
+                                <Badge variant="light" color="red">{form.errors.howInterestingRating}</Badge>}
                         </Stack>
                     </Flex>
                     <Textarea
