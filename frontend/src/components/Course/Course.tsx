@@ -1,44 +1,33 @@
 import '@mantine/core/styles.css';
 import {
-    ActionIcon,
     Affix,
     Badge,
     Box,
     Button,
+    Divider,
     Flex,
     Image,
-    Paper,
     rem,
-    Skeleton,
-    Stack,
     Text,
-    ThemeIcon
 } from '@mantine/core';
-import {Breadcrumbs} from '@/components/Breadcrumbs';
 import classes from './Course.module.css';
 import {
     IconAlien,
-    IconArrowLeft,
     IconCalendarMonth,
     IconCirclePlus,
     IconEditCircle,
-    IconSchool,
-    IconStarFilled,
-    IconUser,
-    IconUsersGroup
 } from '@tabler/icons-react';
 import {Comment} from '@/components/Comment';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useUser} from '@/auth/useUser.tsx';
 import {useDetailReview} from '@/reviews/useReview.tsx';
-import {NumberRatingBadge} from '@/components/Ratings';
 import {getPath, Paths} from '@/routes/paths.ts';
 import {isMobile} from "react-device-detect";
 import {CourseControls} from "./CourseControls.tsx";
 import {HowEasyRating} from "@/components/Course/HowEasyRating.tsx";
 import {HowInterestingRating} from "@/components/Course/HowInterestingRating.tsx";
 import clsx from "clsx";
-import {useEffect} from "react";
+import {Fragment, useEffect} from "react";
 import {ReviewsBox} from "@/components/Course/ReviewsBox.tsx";
 
 const Course = () => {
@@ -52,11 +41,21 @@ const Course = () => {
             (child as HTMLElement).style.animationDelay = `${0.025 * (index + 1)}s`;
         });
     }, []);
+
+    let userReview = null
+    let reviews = data?.reviews;
+
+    if (user) {
+        userReview = reviews?.find(review => review.userId === user.user.id);
+        reviews = reviews?.filter(review => review.userId !== user.user.id);
+    }
+
+
     return (
         <Box className={classes.container}>
-            <CourseControls data={data} isFetching={isFetching} user={user} userReview={false}></CourseControls>
-            <Box px="xl">
-                <Flex mt="lg" className={clsx(classes.courseBanner, "children-animation")}>
+            <CourseControls data={data} isFetching={isFetching} user={user} userReview={userReview}></CourseControls>
+            <Box className={classes.courseContent}>
+                <Flex className={clsx(classes.courseBanner, "children-animation")}>
                     <Image className={classes.image} my={16} h={100} mah={90} w={280} fit="contain"
                            fallbackSrc="https://placehold.co/600x400?text=Placeholder"
                            src="https://fordemocracy.de/wp-content/uploads/2019/08/TUM_Logo_extern_DE_blau_WEB.png"/>
@@ -81,9 +80,7 @@ const Course = () => {
                                     autoContrast
                                     variant="light"
                                     color="lime.9"
-                                    size="lg"
-
-                                >
+                                    size="lg">
                                     {semester}{' '}
                                 </Badge>
                             ))}
@@ -101,196 +98,35 @@ const Course = () => {
                         <ReviewsBox votes={data?.votesNumber}/>
                     </Flex>
                 </Flex>
-                <Flex mt="xl" direction="column" className="children-animation">
+                <Flex style={{flexGrow: 1}} mb="100" mt="xl" direction="column" className="children-animation">
                     <Flex align="center" gap="xs" mb="lg">
                         <Box bg="blue" w={10} h={30} style={{borderRadius: "8px"}}/>
                         <Text fw="bold" fz="24">Reviews</Text>
                     </Flex>
                     <Box>
-                        <Flex direction="column" style={{height: "1000px"}}>
-                            {data && data.reviews ? (
-                                data.reviews.length ? (
-                                    data.reviews.map((review, index) => {
-                                        return (
-                                            <Comment key={index} userReview={false} {...review}/>
-                                        );
-                                    })
-                                ) : (
-                                    <><Text size="xl" fw="bold" c="dimmed">No reviews</Text></>)
-                            ) : isFetching ? <Text size="xl" fw="bold" c="dimmed">Loading...</Text> :
-                                <Text size="xl" fw="bold" c="dimmed">No reviews</Text>}
+                        <Flex direction="column" mih="300" gap="xl">
+                            {
+                                userReview ? (
+                                    <Comment userReview={userReview} {...userReview}/>
+                                ) : null
+                            }
+                            {
+                                reviews?.map((review, index) => {
+                                    return (
+                                        <Fragment key={index}>
+                                            <Comment userReview={false} {...review}/>
+                                                 {index !== reviews.length - 1 && <Divider my="md"/>}
+                                        </Fragment>
+                                    );
+                                })
+                            }
+                            {
+                                !reviews?.length && !userReview ?
+                                    <Text size="xl" fw="bold" c="dimmed">No reviews yet</Text> : null
+                            }
                         </Flex>
                     </Box>
                 </Flex>
-            </Box>
-        </Box>
-
-
-    )
-
-
-    return (
-        <Box className={classes.container} my={80}>
-            <Flex px="lg" className={classes.courseControls} data-active={scrollFlag}>
-                <Box className={classes.courseControlsOverlay}/>
-                <Button className={classes.courseControlsBackButton} variant="outline" mr="sm" size="xs"
-                        leftSection={<IconArrowLeft size="1.1rem"/>} onClick={() => navigate('/')}>
-                    Back to courses
-                </Button>
-                <ActionIcon className={classes.courseControlsBackActionButton} mr="sm" size="sm"
-                            onClick={() => navigate('/')}>
-                    <IconArrowLeft size="1.1rem"/>
-                </ActionIcon>
-                <Box className={classes.courseControlsBreadcrumbs}>
-                    <Breadcrumbs courseName={CourseSkeletonTemplate(data?.course, <Skeleton width="150" height={15}
-                                                                                            radius="xl"/>)}/>
-                </Box>
-                <Box className={classes.courseControlsBtns}>
-                    {!user ? (
-                        <Button size={isMobile ? "md" : "sm"} variant="gradient"
-                                gradient={{from: 'indigo', to: 'blue', deg: 90}}
-                                onClick={() => navigate(getPath(Paths.signIn))}
-                                leftSection={<IconCirclePlus style={{width: rem(16), height: rem(16)}}/>}>
-                            Sign In do add review
-                        </Button>
-                    ) : userReview ? (
-                        <Button size={isMobile ? "md" : "sm"} variant="gradient"
-                                gradient={{from: 'teal', to: 'lime', deg: 170}}
-                                onClick={() => navigate(getPath(Paths.editUserReview))}
-                                leftSection={<IconEditCircle style={{width: rem(16), height: rem(16)}}/>}>
-                            Edit your review
-                        </Button>
-                    ) : (
-                        <Button size={isMobile ? "md" : "sm"} variant="gradient"
-                                gradient={{from: 'indigo', to: 'blue', deg: 90}}
-                                onClick={() => navigate(getPath(Paths.addUserReview))}
-                                leftSection={<IconCirclePlus style={{width: rem(16), height: rem(16)}}/>}>
-                            Add review
-                        </Button>
-                    )}
-                </Box>
-            </Flex>
-            <Box px="xl">
-                <Stack p={0} gap={10} className={classes.courseHeader}>
-                    <Box className={classes.courseBanner}>
-                        <Image className={classes.image} h={100} mah={100} w={200} fit="contain"
-                               fallbackSrc="https://placehold.co/600x400?text=Placeholder"
-                               src="https://www.soafee.io/_next/image?url=%2Flogos%2Ftum.png&w=256&q=75"/>
-                    </Box>
-                    {CourseSkeletonTemplate(
-                        <Text fz={rem(24)} fw="700" lineClamp={5}>
-                            {data?.course}{' '}
-                        </Text>,
-                        <Skeleton width="350" height={35} radius="xl"/>,
-                    )}
-                    <Stack gap={25}>
-                        <Flex align="center" gap={10} lh={1.5} wrap="wrap">
-                            <Flex fz="xs" c="dimmed" align="center" gap={3} lh={0}>
-                                <p>created: </p>
-                                {CourseSkeletonTemplate(
-                                    data ? (
-                                        <Text fz="xs" c="black">
-                                            {new Date(data.createdAt).toLocaleString()}
-                                        </Text>
-                                    ) : (
-                                        ''
-                                    ),
-                                    <Skeleton width="150" height={15} radius="xl"/>,
-                                )}
-                            </Flex>
-                            <Flex fz="xs" c="dimmed" align="center" gap={3} lh={0}>
-                                <p>updated: </p>
-                                {CourseSkeletonTemplate(
-                                    data ? (
-                                        <Text fz="xs" c="black">
-                                            {new Date(data.updatedAt).toLocaleString()}
-                                        </Text>
-                                    ) : (
-                                        ''
-                                    ),
-                                    <Skeleton width="150" height={15} radius="xl"/>,
-                                )}
-                            </Flex>
-                        </Flex>
-                        <Flex gap={10} wrap="wrap">
-                            <Paper p="xs" className={classes.courseBadge}>
-                                <Flex align="center" gap={5}>
-                                    <ThemeIcon variant="white" c="yellow" size="xs">
-                                        <IconStarFilled></IconStarFilled>
-                                    </ThemeIcon>
-                                    <Text fz="xs">How easy</Text>
-                                </Flex>
-                                {CourseSkeletonTemplate(
-                                    <Box ml={rem(23)} fz="sm" fw={600}>
-                                        <NumberRatingBadge score={data?.howEasyRatingAverage}/>
-                                    </Box>,
-                                    <Skeleton width="50" height={23} ml={rem(23)} radius="xl"/>,
-                                )}
-                            </Paper>
-                            <Paper p="xs" className={classes.courseBadge}>
-                                <Flex align="center" gap={5}>
-                                    <ThemeIcon variant="white" c="yellow" size="xs">
-                                        <IconStarFilled></IconStarFilled>
-                                    </ThemeIcon>
-                                    <Text fz="xs">How Interesting</Text>
-                                </Flex>
-                                {CourseSkeletonTemplate(
-                                    <Box ml={rem(23)} fz="sm" fw={600}>
-                                        <NumberRatingBadge score={data?.howInterestingRatingAverage}/>
-                                    </Box>,
-                                    <Skeleton width="50" height={23} ml={rem(23)} radius="xl"/>,
-                                )}
-                            </Paper>
-                            <Paper p="xs" className={classes.courseBadge}>
-                                <Flex align="center" gap={5}>
-                                    <ThemeIcon c="green" variant="white" size="xs">
-                                        <IconUsersGroup></IconUsersGroup>
-                                    </ThemeIcon>
-                                    <Text fz="xs">Number Of Votes</Text>
-                                </Flex>
-                                {CourseSkeletonTemplate(
-                                    <Text ml={rem(23)} fz="sm" fw={600}>
-                                        {data?.votesNumber}
-                                    </Text>,
-                                    <Skeleton width="50" height={23} ml={rem(23)} radius="xl"/>,
-                                )}
-                            </Paper>
-                            <Paper p="xs" className={classes.courseBadge}>
-                                <Flex align="center" gap={5}>
-                                    <ThemeIcon c="violet" variant="white" size="xs">
-                                        <IconUser/>
-                                    </ThemeIcon>
-                                    <Text fz="xs">Professor</Text>
-                                </Flex>
-
-                                {CourseSkeletonTemplate(
-                                    <Text ml={rem(23)} fz="sm" fw={600}>
-                                        {data?.professor}
-                                    </Text>,
-                                    <Skeleton width="50" height={23} ml={rem(23)} radius="xl"/>,
-                                )}
-                            </Paper>
-                            <Paper p="xs" className={classes.courseBadge}>
-                                <Flex align="center" gap={5}>
-                                    <ThemeIcon c="cyan" variant="white" size="xs">
-                                        <IconSchool></IconSchool>
-                                    </ThemeIcon>
-                                    <Text fz="xs">Semesters</Text>
-                                </Flex>
-                                {CourseSkeletonTemplate(
-                                    data ? (
-                                        <Text ml={rem(23)} fz="sm" fw={600}>
-                                            {data.offeredInSemesters.join(', ')}
-                                        </Text>
-                                    ) : (
-                                        ''
-                                    ),
-                                    <Skeleton width="50" height={23} ml={rem(23)} radius="xl"/>,
-                                )}
-                            </Paper>
-                        </Flex>
-                    </Stack>
-                </Stack>
                 <Affix className={classes.courseMobileAffix} position={{bottom: 15, right: 20}}>
                     {user ? (
                         userReview ? (
@@ -321,27 +157,9 @@ const Course = () => {
                         </>
                     )}
                 </Affix>
-                <Stack mt={50} mb={50} gap={25}>
-                    <Text fz="md" fw={600}>
-                        {data?.reviews.length ? 'Reviews:' : 'No reviews yet'}
-                    </Text>
-                    {data ? (
-                        data.reviews.map((review, index) => {
-                            return (
-                                <>
-                                    <Comment key={index} userReview={userReview} {...review} />
-                                </>
-                            );
-                        })
-                    ) : (
-                        <>
-                            <Skeleton height={150} mt={6} width="100%" radius="lg"/>
-                        </>
-                    )}
-                </Stack>
             </Box>
         </Box>
-    );
+    )
 };
 
 export {Course};

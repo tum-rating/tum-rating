@@ -3,9 +3,11 @@
 }
 
 
-body{
-
-}
+/*body{*/
+/*    @media (max-width: $mantine-breakpoint-sm) {*/
+/*        overflow: hidden;*/
+/*    }*/
+/*}*/
 
 
 .children-animation > * {

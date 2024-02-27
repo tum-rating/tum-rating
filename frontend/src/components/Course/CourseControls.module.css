@@ -29,15 +29,19 @@
 
 .courseControls {
     align-items: center;
-    transition: all 0.1s linear;
+    transition: all 0.1s ease-in;
     left: var(--mantine-spacing-xl);
     right: var(--mantine-spacing-xl);
     border-top-left-radius: var(--mantine-radius-lg);
     border-top-right-radius: var(--mantine-radius-lg);
     margin: 0;
     display: flex;
+    top: 54px;
     z-index: 4;
-    padding: var(--mantine-spacing-lg);
+    position: sticky;
+    height: 56px;
+    padding-left: var(--mantine-spacing-lg);
+    padding-right: var(--mantine-spacing-lg);
     @media (max-width: 670px) {
         transition: all 0.1s ease-in;
         left: 0;
@@ -45,13 +49,9 @@
     }
 
     &[data-active="true"] {
-        padding-top:0;
-        padding-bottom:0;
-        position: sticky;
         left: 0;
         right: 0;
         box-shadow: var(--mantine-shadow-lg);
-        top: 56px;
         & .courseControlsOverlay {
             z-index:-1;
             position: absolute;

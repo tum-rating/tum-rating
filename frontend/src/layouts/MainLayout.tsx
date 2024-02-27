@@ -13,7 +13,6 @@ import {
     Switch,
     Text,
     useMantineColorScheme,
-    useMantineTheme
 } from '@mantine/core';
 import {useDisclosure, useHotkeys} from '@mantine/hooks';
 import logo from '@/assets/img/logo.png';
@@ -23,12 +22,9 @@ import {UserButton} from '@/components/UserButton';
 import {useSignOut} from '@/auth/useSignOut';
 import {getPath, Paths} from '@/routes/paths.ts';
 import {useNavigate} from 'react-router-dom';
-
-import {useGradient} from "@/hooks";
 import {SearchInputDesktop} from "@/components/Search";
 
-
-const HEADER_HEIGHT = 55;
+const HEADER_HEIGHT = 54;
 const MAX_SITE_WIDTH = 1320;
 
 export const MainLayout = ({children}: PropsWithChildren) => {

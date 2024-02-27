@@ -1,116 +1,37 @@
+.container {
+    margin-top: 15px;
+    border-top-left-radius: var(--mantine-radius-lg);
+    border-top-right-radius: var(--mantine-radius-lg);
+    width: 100%;
+    background: var(--mantine-color-body);
+    @media (max-width: $mantine-breakpoint-sm) {
+        min-height: calc(100vh - 84px);
+        border-radius: 0;
+        margin-top: 0;
+    }
+}
 
-.image {
-    border-radius: var(--mantine-radius-lg);
+.courseContent {
+    padding: var(--mantine-spacing-lg);
+    @media (max-width: $mantine-breakpoint-sm) {
+        padding: 0 var(--mantine-spacing-md);
+    }
 }
 
 .courseBanner {
     background: linear-gradient(90deg, rgb(145 167 255 / 20%) 0%, rgb(77 171 247 / 20%) 100%);
     padding: var(--mantine-spacing-sm) var(--mantine-spacing-lg);
     border-radius: var(--mantine-radius-lg);
-    @media(max-width: 670px){
+    margin-top: var(--mantine-spacing-lg);
+    @media (max-width: 670px) {
         flex-wrap: wrap;
+        margin-top: 0;
+        padding: var(--mantine-spacing-sm) var(--mantine-spacing-lg);
     }
 }
 
-.courseControls {
-    align-items: center;
-    transition: all 0.1s linear ;
-    left: var(--mantine-spacing-xl);
-    right: var(--mantine-spacing-xl);
-    padding: 0;
-    margin: 0;
-    display: flex;
-    z-index: 4;
-    @media(max-width: 670px){
-        transition: all 0.1s ease-in;
-        left: 0;
-        right: 0;
-    }
-    &[data-active="true"] {
-        left: 0;
-        right: 0;
-        box-shadow: var(--mantine-shadow-lg);
-        top: 45px;
-        & .courseControlsOverlay {
-            position: absolute;
-            inset: 0;
-            background: light-dark(rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.8));
-            border-bottom: light-dark(rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.8));
-            backdrop-filter: blur(5px);
-        }
-    }
-}
-
-.courseControlsBreadcrumbs{
-    flex-grow: 1;
-    max-width: 100%;
-    overflow: hidden;
-    padding-right: var(--mantine-spacing-xs)
-}
-.courseControls.active {
-    position: sticky;
-    top: 50px;
-}
-
-.courseControlsBackButton{
-    @media(max-width: 670px){
-        display: none;
-    }
-}
-.courseControlsBackActionButton{
-    @media(min-width: 670px){
-        display: none;
-    }
-}
-
-.courseControlsBtns {
-    margin-left: auto;
-    @media(max-width: 670px){
-        display: none;
-    }
-}
-
-.courseMobileAffix{
-    display: none;
-    z-index: 5;
-    @media(max-width: 670px){
-        box-shadow: var(--mantine-shadow-xl);
-        display: block;
-    }
-}
-
-.container {
-    /*margin: var(--mantine-spacing-lg);*/
-    /*box-sizing: border-box;*/
-    /*overflow: hidden;*/
-    /*@media(max-width: 670px){*/
-    /*    margin: 0;*/
-    /*    min-height: calc(100vh - 45px);*/
-    /*    border-radius: 0;*/
-    /*    box-shadow: none;*/
-    /*}*/
-    margin-top: 15px;
-    border-top-left-radius: var(--mantine-radius-lg);
-    border-top-right-radius: var(--mantine-radius-lg);
-    width: 100%;
-    background: var(--mantine-color-body);
-    /*min-height: calc(100vh - 110px);*/
-
-}
-
-.courseHeader {
-    color: var(--mantine-color-black);
-    padding: var(--mantine-spacing-md) var(--mantine-spacing-sm)
-}
-
-.courseBadge {
-    border: 1px solid var(--mantine-color-gray-7);
+.image {
     border-radius: var(--mantine-radius-lg);
-}
-
-.courseMobileAffixButtons{
-    z-index: 5;
-    box-shadow: var(--mantine-shadow-lg);
 }
 
 
