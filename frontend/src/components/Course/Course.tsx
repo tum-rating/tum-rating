@@ -1,28 +1,12 @@
 import '@mantine/core/styles.css';
-import {
-    Affix,
-    Badge,
-    Box,
-    Button,
-    Divider,
-    Flex,
-    Image,
-    rem,
-    Text,
-} from '@mantine/core';
+import { Badge, Box, Button, Divider, Flex, Image, rem, Text,} from '@mantine/core';
 import classes from './Course.module.css';
-import {
-    IconAlien,
-    IconCalendarMonth,
-    IconCirclePlus,
-    IconEditCircle,
-} from '@tabler/icons-react';
+import {IconAlien, IconCalendarMonth, IconCirclePlus, IconEditCircle,} from '@tabler/icons-react';
 import {Comment} from '@/components/Comment';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useUser} from '@/auth/useUser.tsx';
 import {useDetailReview} from '@/reviews/useReview.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
-import {isMobile} from "react-device-detect";
 import {CourseControls} from "./CourseControls.tsx";
 import {HowEasyRating} from "@/components/Course/HowEasyRating.tsx";
 import {HowInterestingRating} from "@/components/Course/HowInterestingRating.tsx";
@@ -56,14 +40,14 @@ const Course = () => {
             <CourseControls data={data} isFetching={isFetching} user={user} userReview={userReview}></CourseControls>
             <Box className={classes.courseContent}>
                 <Flex className={clsx(classes.courseBanner, "children-animation")}>
-                    <Image className={classes.image} my={16} h={100} mah={90} w={280} fit="contain"
+                    <Image className={classes.image} h={100} mah={90} w={280} fit="contain"
                            fallbackSrc="https://placehold.co/600x400?text=Placeholder"
                            src="https://fordemocracy.de/wp-content/uploads/2019/08/TUM_Logo_extern_DE_blau_WEB.png"/>
-                    <Flex direction="column" gap={0}>
-                        <Text ml="md" pt="xs" fz={rem(24)} fw="700" lineClamp={5}>
+                    <Flex className={classes.courseDetails} direction="column" gap="xs">
+                        <Text style={{wordBreak: "break-word"}} fz={24} fw="700" lineClamp={5}>
                             {data?.course}{' '}
                         </Text>
-                        <Flex ml="md" mt="xs" gap="xs">
+                        <Flex gap="xs">
                             <Badge
                                 leftSection={<IconAlien width={16}/>}
                                 autoContrast
@@ -90,7 +74,7 @@ const Course = () => {
                 <Flex mt="xl" direction="column" className="children-animation">
                     <Flex align="center" gap="xs" mb="lg">
                         <Box bg="blue" w={10} h={30} style={{borderRadius: "8px"}}/>
-                        <Text fw="bold" fz="24">Key Statistics</Text>
+                        <Text fw="bold" fz="xl">Key Statistics</Text>
                     </Flex>
                     <Flex gap="lg" wrap="wrap">
                         <HowEasyRating score={data?.howEasyRatingAverage}/>
@@ -99,15 +83,48 @@ const Course = () => {
                     </Flex>
                 </Flex>
                 <Flex style={{flexGrow: 1}} mb="100" mt="xl" direction="column" className="children-animation">
-                    <Flex align="center" gap="xs" mb="lg">
-                        <Box bg="blue" w={10} h={30} style={{borderRadius: "8px"}}/>
-                        <Text fw="bold" fz="24">Reviews</Text>
+                    <Flex justify="space-between" align="center" mb="lg">
+                        <Flex align="center" gap="xs">
+                            <Box bg="blue" w={10} h={30} style={{borderRadius: "8px"}}/>
+                            <Text fw="bold" fz="xl">Reviews</Text>
+                        </Flex>
+                        <Box hiddenFrom="sm">
+                            {user ? (
+                                userReview ? (
+                                    <Button size="sm" variant="gradient"
+                                            gradient={{from: 'teal', to: 'lime', deg: 170}} color="green"
+                                            onClick={() => navigate(getPath(Paths.editUserReview))}
+                                            leftSection={<IconEditCircle style={{width: rem(16), height: rem(16)}}/>}>
+                                        Edit your review
+                                    </Button>
+                                ) : (
+                                    <Button size="sm" variant="gradient"
+                                            gradient={{from: 'indigo', to: 'blue', deg: 90}}
+                                            onClick={() => navigate(getPath(Paths.addUserReview))}
+                                            leftSection={<IconCirclePlus style={{width: rem(16), height: rem(16)}}/>}>
+                                        Add review
+                                    </Button>
+                                )
+                            ) : (
+                                <>
+                                    <Button size="sm" variant="gradient"
+                                            gradient={{from: 'indigo', to: 'blue', deg: 90}}
+                                            onClick={() => navigate(getPath(Paths.signIn))}>
+                                        Sign In to add review
+                                    </Button>
+                                </>
+                            )}
+                        </Box>
                     </Flex>
+
                     <Box>
-                        <Flex direction="column" mih="300" gap="xl">
+                        <Flex direction="column" mih="300" gap="xs">
                             {
                                 userReview ? (
-                                    <Comment userReview={userReview} {...userReview}/>
+                                    <>
+                                        <Comment userReview={userReview} {...userReview}/>
+                                        <Divider my="xs"/>
+                                    </>
                                 ) : null
                             }
                             {
@@ -115,48 +132,18 @@ const Course = () => {
                                     return (
                                         <Fragment key={index}>
                                             <Comment userReview={false} {...review}/>
-                                                 {index !== reviews.length - 1 && <Divider my="md"/>}
                                         </Fragment>
                                     );
                                 })
                             }
                             {
                                 !reviews?.length && !userReview ?
-                                    <Text size="xl" fw="bold" c="dimmed">No reviews yet</Text> : null
+                                    <Text ml="lg" size="xl" fw="bold" c="dimmed">No reviews yet</Text> : null
                             }
                         </Flex>
                     </Box>
                 </Flex>
-                <Affix className={classes.courseMobileAffix} position={{bottom: 15, right: 20}}>
-                    {user ? (
-                        userReview ? (
-                            <Button size={isMobile ? "md" : "sm"} variant="gradient"
-                                    className={classes.courseMobileAffixButtons}
-                                    gradient={{from: 'teal', to: 'lime', deg: 170}} color="green"
-                                    onClick={() => navigate(getPath(Paths.editUserReview))}
-                                    leftSection={<IconEditCircle style={{width: rem(16), height: rem(16)}}/>}>
-                                Edit your review
-                            </Button>
-                        ) : (
-                            <Button size={isMobile ? "md" : "sm"} variant="gradient"
-                                    className={classes.courseMobileAffixButtons}
-                                    gradient={{from: 'indigo', to: 'blue', deg: 90}}
-                                    onClick={() => navigate(getPath(Paths.addUserReview))}
-                                    leftSection={<IconCirclePlus style={{width: rem(16), height: rem(16)}}/>}>
-                                Add review
-                            </Button>
-                        )
-                    ) : (
-                        <>
-                            <Button size={isMobile ? "md" : "sm"} variant="gradient"
-                                    className={classes.courseMobileAffixButtons}
-                                    gradient={{from: 'indigo', to: 'blue', deg: 90}}
-                                    onClick={() => navigate(getPath(Paths.signIn))}>
-                                Sign In to add review
-                            </Button>
-                        </>
-                    )}
-                </Affix>
+
             </Box>
         </Box>
     )

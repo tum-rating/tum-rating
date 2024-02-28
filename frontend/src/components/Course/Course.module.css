@@ -18,20 +18,32 @@
     }
 }
 
-.courseBanner {
-    background: linear-gradient(90deg, rgb(145 167 255 / 20%) 0%, rgb(77 171 247 / 20%) 100%);
-    padding: var(--mantine-spacing-sm) var(--mantine-spacing-lg);
-    border-radius: var(--mantine-radius-lg);
-    margin-top: var(--mantine-spacing-lg);
+.courseDetails{
+    padding: var(--mantine-spacing-lg);
     @media (max-width: 670px) {
-        flex-wrap: wrap;
-        margin-top: 0;
-        padding: var(--mantine-spacing-sm) var(--mantine-spacing-lg);
+        padding: var(--mantine-spacing-xs) 4px 0 ;
     }
 }
 
 .image {
     border-radius: var(--mantine-radius-lg);
+    margin: var(--mantine-spacing-lg) 0 var(--mantine-spacing-lg) var(--mantine-spacing-lg);
+    @media (max-width: 670px) {
+        margin: var(--mantine-spacing-xs) 4px 0 ;
+    }
 }
+
+.courseBanner {
+    background: linear-gradient(90deg, rgb(145 167 255 / 20%) 0%, rgb(77 171 247 / 20%) 100%);
+    border-radius: var(--mantine-radius-lg);
+    margin-top: var(--mantine-spacing-lg);
+    @media (max-width: 670px) {
+        flex-wrap: wrap;
+        margin-top: 0;
+        padding: var(--mantine-spacing-md);
+    }
+}
+
+
 
 
