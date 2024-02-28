@@ -1,11 +1,9 @@
-import {RatingBox, RatingBoxProps} from "@/components/Course/RatingBox.tsx";
+import {RatingBox} from "@/components/Course/RatingBox.tsx";
 import {useHowEasyRating} from "@/hooks";
 
 interface HowEasyRatingProps {
     score?: number;
     compact?: boolean;
-    onChange?: RatingBoxProps['onChange'];
-    readOnly?: RatingBoxProps['readOnly'];
 }
 
 const HowEasyRating = (props: HowEasyRatingProps) => {

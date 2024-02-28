@@ -3,6 +3,11 @@
 }
 
 
+.mantine-Modal-body{
+    height: calc(100% - 60px);
+}
+
+
 /*body{*/
 /*    @media (max-width: $mantine-breakpoint-sm) {*/
 /*        overflow: hidden;*/

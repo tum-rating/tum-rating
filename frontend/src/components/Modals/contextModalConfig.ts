@@ -5,6 +5,8 @@ export const contextModalConfig = (modalName: string, modalTitle: ReactNode | st
         modal: modalName,
         title: modalTitle,
         centered: true,
-        innerProps: {},
+        height: "100%",
+        innerProps: {
+        },
     };
 };

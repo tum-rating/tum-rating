@@ -42,7 +42,7 @@
     height: 56px;
     padding-left: var(--mantine-spacing-lg);
     padding-right: var(--mantine-spacing-lg);
-    @media (max-width: 670px) {
+    @media (max-width: $mantine-breakpoint-sm) {
         transition: all 0.1s ease-in;
         left: 0;
         right: 0;
@@ -76,20 +76,20 @@
 }
 
 .courseControlsBackButton {
-    @media (max-width: 670px) {
+    @media (max-width: $mantine-breakpoint-sm) {
         display: none;
     }
 }
 
 .courseControlsBackActionButton {
-    @media (min-width: 670px) {
+    @media (min-width: $mantine-breakpoint-sm) {
         display: none;
     }
 }
 
 .courseControlsBtns {
     margin-left: auto;
-    @media (max-width: 670px) {
+    @media (max-width: $mantine-breakpoint-sm) {
         display: none;
     }
 }

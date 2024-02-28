@@ -3,11 +3,12 @@ import {Button, Container, Flex, LoadingOverlay, Select, Stack, Text, Textarea,B
 import {useAddUserReview, UserAddReviewInput} from '@/reviews/useAddUserReview.tsx';
 import {useEffect} from 'react';
 import {useForm} from '@mantine/form';
-import {HowEasyRating, HowInterestingRating} from '@/components/Course';
 import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
 import {useUser} from '@/auth/useUser.tsx';
 import {useDetailReview} from '@/reviews/useReview.tsx';
 import {DetailReview} from '@/reviews/types.ts';
+import {HowInterestingEditableRating} from "@/components/Course/HowInterestingEditableRating.tsx";
+import {HowEasyEditableRating} from "@/components/Course/HowEasyEditableRating.tsx";
 
 const openEditUserReviewModal = ({courseId, userReview, ...props}) => {
     modals.openContextModal({
@@ -76,34 +77,19 @@ const EditUserReviewModal = ({
     };
 
     return (
-        <Container pt="xl" pos="relative">
+        <Container  px={0} pos="relative" h="100%">
             <LoadingOverlay visible={isLoading} overlayProps={{radius: 'sm', blur: 2}}/>
-            <form
+            <form style={{height: '100%'}}
                 onSubmit={form.onSubmit((e) => {
                     onEditUserReview(e);
                 })}
             >
-                <Stack>
-                    <Flex w="100%" align="center" justify="space-between" wrap="wrap">
-                        <Stack>
-                            <HowEasyRating readOnly={false}
-                                           onChange={(value) => form.setFieldValue('howEasyRating', value)}
-                                           score={form.values.howEasyRating}/>
-                            {form.errors.howEasyRating &&
-                                <Badge variant="light" color="red">{form.errors.howEasyRating}</Badge>}
-                        </Stack>
-                        <Stack>
-                            <HowInterestingRating readOnly={false}
-                                                  onChange={(value) => form.setFieldValue('howInterestingRating', value)}
-                                                  score={form.values.howInterestingRating}/>
-                            {form.errors.howInterestingRating &&
-                                <Badge variant="light" color="red">{form.errors.howInterestingRating}</Badge>}
-                        </Stack>
-                    </Flex>
+                <Flex direction="column" gap="xs" h="100%">
                     <Textarea
-                        mt={24}
+                        autosize
                         placeholder="Your comment"
                         label="Your comment"
+                        maxRows={6}
                         value={form.values.comment}
                         {...form.getInputProps("comment")}
                         onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)}/>
@@ -112,11 +98,25 @@ const EditUserReviewModal = ({
                         label="Semester" placeholder="Semester" value={form.values.semester}
                         onChange={(value: string) => form.setFieldValue('semester', value)}
                         data={[{value: '2023 S', label: '2023 S'}]}/>
-                    <Flex mt={38} justify="space-between">
+                    <Flex w="100%" align="center" justify="space-around" wrap="wrap" mt="md" mb="md">
+                        <Stack>
+                            <HowEasyEditableRating onChange={(value) => form.setFieldValue('howEasyRating', value)}
+                                                   score={form.values.howEasyRating}/>
+                            {form.errors.howEasyRating &&
+                                <Badge variant="light" color="red">{form.errors.howEasyRating}</Badge>}
+                        </Stack>
+                        <Stack>
+                            <HowInterestingEditableRating onChange={(value) => form.setFieldValue('howInterestingRating', value)}
+                                                          score={form.values.howInterestingRating}/>
+                            {form.errors.howInterestingRating &&
+                                <Badge variant="light" color="red">{form.errors.howInterestingRating}</Badge>}
+                        </Stack>
+                    </Flex>
+                    <Flex mt="auto" justify="space-between">
                         <Button onClick={() => context.closeModal(id)} color={'gray'} variant={'subtle'}>Cancel</Button>
                         <Button type="submit">Update</Button>
                     </Flex>
-                </Stack>
+                </Flex>
             </form>
         </Container>
     );

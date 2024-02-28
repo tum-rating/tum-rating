@@ -11,7 +11,7 @@ const ReviewsBox = (props:ReviewsBoxProps) => {
     let color =  votes ? "black" : "gray"
     return (
         <Flex className={classes.ratingBox}  direction="column" px="md" py="md" align="flex-start" pos="relative">
-            <Flex align="center" gap={6}>
+            <Flex align="center" gap={6} mb="xs">
                 <Box w={7} h={20} style={{
                     borderRadius: "8px",
                     background: `var(--mantine-color-text)`
@@ -20,10 +20,10 @@ const ReviewsBox = (props:ReviewsBoxProps) => {
             </Flex>
             <Flex mt="3" direction="column" px={12}>
                 <Flex align="center">
-                    <Text mr="xs" fz="34" fw="bold" style={{
+                    <Text mr="xs" fz="xl" fw="bold" style={{
                         color: votes ? "var(--mantine-color-text)" : "var(--mantine-color-gray-text)"
                     }}>{votes}</Text>
-                    <IconUsersGroup strokeWidth="2" width={40} height={40} style={{
+                    <IconUsersGroup strokeWidth="2" width={30} height={40} style={{
                         fill: "var(--mantine-color-dimmed)",
                         stroke: color
                     }}/>
