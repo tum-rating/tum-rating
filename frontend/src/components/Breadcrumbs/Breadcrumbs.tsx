@@ -2,8 +2,14 @@ import {ReactNode} from 'react';
 import {Anchor, Box, Text, Tooltip} from '@mantine/core';
 import classes from './Breadcrumbs.module.css';
 import {useNavigate} from 'react-router-dom';
+import {Skeleton} from "@/components/Skeleton";
 
-const BreadcrumbsComponent = ({courseName}: { courseName: ReactNode }) => {
+interface BreadcrumbsProps {
+    courseName: ReactNode;
+    isLoading: boolean;
+}
+
+const BreadcrumbsComponent = ({courseName, isLoading}: BreadcrumbsProps) => {
     const navigate = useNavigate();
     return (
         <Box className={classes.courseBreadcrumbsContainer}>
@@ -26,9 +32,9 @@ const BreadcrumbsComponent = ({courseName}: { courseName: ReactNode }) => {
                 multiline={true}
                 transitionProps={{transition: 'fade', duration: 100}}
             >
-                <Anchor fz="sm" fw={500}  underline="hover" href="#" truncate>
+                <Skeleton radius="lg" loading={isLoading} h={22} w={150} component={<Anchor fz="sm" fw={500} underline="hover" href="#" truncate>
                     {courseName}
-                </Anchor>
+                </Anchor>}/>
             </Tooltip>
         </Box>
     );

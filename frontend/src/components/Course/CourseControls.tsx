@@ -12,13 +12,13 @@ import {User} from "@/auth/useUser.tsx";
 
 interface CourseControlsProps {
     data: Review | null;
-    isFetching: boolean;
+    isLoading: boolean;
     userReview: any;
     user: User | null;
 
 }
 
-const CourseControls = ({data, user, userReview}: CourseControlsProps) => {
+const CourseControls = ({data, user, userReview, isLoading}: CourseControlsProps) => {
     const [scroll] = useWindowScroll();
     const scrollFlag = scroll.y >= 5;
     const navigate = useNavigate()
@@ -34,25 +34,25 @@ const CourseControls = ({data, user, userReview}: CourseControlsProps) => {
                 <IconArrowLeft size="1.1rem"/>
             </ActionIcon>
             <Box className={classes.courseControlsBreadcrumbs}>
-                <Breadcrumbs courseName={data?.course}/>
+                <Breadcrumbs isLoading={isLoading} courseName={data?.course}/>
             </Box>
             <Box className={classes.courseControlsBtns}>
                 {!user ? (
-                    <Button size={isMobile ? "md" : "sm"} variant="gradient"
+                    <Button loading={isLoading} size={isMobile ? "md" : "sm"} variant="gradient"
                             gradient={{from: 'indigo', to: 'blue', deg: 90}}
                             onClick={() => navigate(getPath(Paths.signIn))}
                             leftSection={<IconCirclePlus style={{width: rem(16), height: rem(16)}}/>}>
                         Sign In do add review
                     </Button>
                 ) : userReview ? (
-                    <Button size={isMobile ? "md" : "sm"} variant="gradient"
+                    <Button loading={isLoading} size={isMobile ? "md" : "sm"} variant="gradient"
                             gradient={{from: 'teal', to: 'lime', deg: 170}}
                             onClick={() => navigate(getPath(Paths.editUserReview))}
                             leftSection={<IconEditCircle style={{width: rem(16), height: rem(16)}}/>}>
                         Edit your review
                     </Button>
                 ) : (
-                    <Button size={isMobile ? "md" : "sm"} variant="gradient"
+                    <Button loading={isLoading} size={isMobile ? "md" : "sm"} variant="gradient"
                             gradient={{from: 'indigo', to: 'blue', deg: 90}}
                             onClick={() => navigate(getPath(Paths.addUserReview))}
                             leftSection={<IconCirclePlus style={{width: rem(16), height: rem(16)}}/>}>

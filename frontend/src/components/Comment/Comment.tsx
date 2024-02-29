@@ -3,6 +3,8 @@ import {NumberRatingBadge} from "@/components/Course";
 import {IconDotsVertical} from "@tabler/icons-react";
 import classes from "./Comment.module.css"
 import {UserAvatar} from "@/components/Avatar";
+import {getPath, Paths} from "@/routes/paths.ts";
+import {useNavigate} from "react-router-dom";
 
 interface CommentProps {
     comment: string;
@@ -19,6 +21,8 @@ interface CommentProps {
 
 export const Comment = (props: CommentProps) => {
     const {userId, howInterestingRating, howEasyRating, comment, createdAt, userReview, userName} = props;
+
+    const navigate = useNavigate()
 
     if (!userId) return '';
     const userCommentFlag = (userReview || {}).userId === userId;
@@ -54,7 +58,7 @@ export const Comment = (props: CommentProps) => {
                         <Menu.Dropdown>
                             {userCommentFlag ? (
                                 <>
-                                    <Menu.Item><Text size="sm">Edit your review</Text></Menu.Item>
+                                    <Menu.Item onClick={() => navigate(getPath(Paths.editUserReview))}><Text size="sm">Edit your review</Text></Menu.Item>
                                     <Menu.Item>
                                         <Text size="sm" c="red">
                                             Delete your review
