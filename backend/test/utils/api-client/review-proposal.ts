@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { baseUrlV1 } from './config';
-import { CreateReviewProposalRequestDto } from 'src/modules/review-proposal/dto/CreateReviewProposalRequest.dto';
+import { CreateReviewProposalRequestDto } from '@tum-rating/backend/src/modules/review-proposal/dto/CreateReviewProposalRequest.dto';
+
 import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNumberOfLenght';
 
 export const reviewProposalUrl = baseUrlV1 + '/review-proposals';

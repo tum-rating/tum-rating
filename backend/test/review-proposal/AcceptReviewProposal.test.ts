@@ -2,13 +2,8 @@ import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
-import { CreateReviewProposalRequestDto } from 'src/modules/review-proposal/dto/CreateReviewProposalRequest.dto';
-import { AddUserReviewRequestDto } from 'src/modules/review/dto/AddUserReviewRequest.dto';
-
-import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNumberOfLenght';
 import { reviewProposalUrl } from '@tum-rating/backend/test/utils/api-client/review-proposal';
 import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
-import { createCourseReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
 import { createReviewProposalMockRequest } from '@tum-rating/backend/test/utils/api-client/review-proposal';
 import { reviewUrl } from '@tum-rating/backend/test/utils/api-client/review';
 

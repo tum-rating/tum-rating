@@ -5,7 +5,7 @@ import * as supertest from 'supertest';
 import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
 import { addUserReviewMockRequest, reviewUrl } from '@tum-rating/backend/test/utils/api-client/review';
 import { createCourseReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
-import { AddUserReviewRequestDto } from 'src/modules/review/dto/AddUserReviewRequest.dto';
+import { AddUserReviewRequestDto } from '@tum-rating/backend/src/modules/review/dto/AddUserReviewRequest.dto';
 
 beforeAll(async () => {
     await connectMongo();

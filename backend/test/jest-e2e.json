@@ -2,7 +2,7 @@
   "moduleFileExtensions": ["js", "json", "ts"],
   "moduleDirectories": ["../node_modules", "<rootDir>"],
   "moduleNameMapper": {
-    "src/(.*)": "@tum-rating/backend/src/$1"
+    "@tum-ratinng/(.*)": "../.."
   },
   "preset": "ts-jest/presets/js-with-ts",
   "rootDir": ".",
