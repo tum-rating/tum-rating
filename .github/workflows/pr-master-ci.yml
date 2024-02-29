@@ -19,3 +19,9 @@ jobs:
           echo ---Starting docker compose---
           docker-compose -f docker-compose-ci.yaml up --build -d
           echo ---Containers up---
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.18
+      - run: npm install
+      - run: npm -w backend run test:e2e
