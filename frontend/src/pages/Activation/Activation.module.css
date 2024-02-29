@@ -1,4 +1,7 @@
 .root {
+    position: absolute;
+    inset:0;
+    background: var(--mantine-color-body);
     padding-top: rem(80px);
     padding-bottom: rem(80px);
     @media (max-width: 47.99em) {
@@ -20,20 +23,5 @@
 .control {
     @media (max-width: $mantine-breakpoint-sm) {
         width: 100%;
-    }
-}
-
-.mobileImage {
-    height: 300px;
-    width: 200px;
-    @media (min-width: 48em) {
-        display: none !important;
-    }
-}
-
-.desktopImage {
-    height: 300px;
-    @media (max-width: 47.99em) {
-        display: none !important;
     }
 }
