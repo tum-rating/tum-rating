@@ -1,6 +1,8 @@
 
 .wrapper {
     padding: rem(60px) rem(10px) rem(80px) rem(10px);
+    background: var(--mantine-color-body);
+    border-radius: 16px;
     width: 460px;
     @media (max-width: $mantine-breakpoint-sm){
         width: 100%

@@ -4,6 +4,7 @@ import {useHowInterestingRating} from "@/hooks";
 interface HowInterestingRatingProps {
     score?: number;
     compact?: boolean;
+    isLoading?: boolean;
 }
 
 const HowInterestingRating = (props: HowInterestingRatingProps) => {

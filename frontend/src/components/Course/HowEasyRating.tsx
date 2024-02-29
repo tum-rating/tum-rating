@@ -4,6 +4,7 @@ import {useHowEasyRating} from "@/hooks";
 interface HowEasyRatingProps {
     score?: number;
     compact?: boolean;
+    isLoading?: boolean;
 }
 
 const HowEasyRating = (props: HowEasyRatingProps) => {

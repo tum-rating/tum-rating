@@ -18,7 +18,7 @@
     }
 }
 
-.courseDetails{
+.courseDetails {
     padding: var(--mantine-spacing-lg);
     @media (max-width: 670px) {
         padding: var(--mantine-spacing-xs) 4px 0 ;
@@ -26,7 +26,6 @@
 }
 
 .image {
-    border-radius: var(--mantine-radius-lg);
     margin: var(--mantine-spacing-lg) 0 var(--mantine-spacing-lg) var(--mantine-spacing-lg);
     @media (max-width: 670px) {
         margin: var(--mantine-spacing-xs) 4px 0 ;
@@ -42,6 +41,10 @@
         margin-top: 0;
         padding: var(--mantine-spacing-md);
     }
+}
+
+.notFoundImg {
+    fill: light-dark(black, white)
 }
 
 

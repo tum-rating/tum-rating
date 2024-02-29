@@ -58,7 +58,7 @@ const AddUserReviewModal = ({
     return (
         <Container px={0} pos="relative" h="100%">
             <LoadingOverlay visible={isLoading} overlayProps={{radius: 'sm', blur: 2}}/>
-            <form style={{height: '100%'}}
+            <form style={{height: '100%',overflowY: "auto"}}
                 onSubmit={form.onSubmit((e) => {
                     handleSubmit(e);
                 })}
@@ -66,6 +66,7 @@ const AddUserReviewModal = ({
                 <Flex direction="column" gap="xs" h="100%">
                     <Textarea
                         autosize
+                        minRows={6}
                         maxRows={6}
                         placeholder="Your comment"
                         label="Your comment"
@@ -78,7 +79,7 @@ const AddUserReviewModal = ({
                         label="Semester" placeholder="Semester" value={form.values.semester}
                         onChange={(value: string) => form.setFieldValue('semester', value)}
                         data={[{value: '2023 S', label: '2023 S'}]}/>
-                    <Flex w="100%" align="center" justify="space-around" wrap="wrap" mt="md" mb="md">
+                    <Flex w="100%" gap="lg"  direction="column" wrap="wrap" mt="md" mb="md">
                         <Stack>
                             <HowEasyEditableRating onChange={(value) => form.setFieldValue('howEasyRating', value)}
                                                    score={form.values.howEasyRating}/>
