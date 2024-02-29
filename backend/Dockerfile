@@ -54,8 +54,11 @@ USER node
 
 FROM node:18.18-alpine AS production
 
+WORKDIR /usr/app
+
 COPY --chown=node:node --from=backend-build /usr/app/node_modules ./node_modules
 COPY --chown=node:node --from=backend-build /usr/app/dist ./dist
+COPY --chown=node:node backend/assets ./assets
 
 # copy frontend build
 RUN mkdir -p ./public

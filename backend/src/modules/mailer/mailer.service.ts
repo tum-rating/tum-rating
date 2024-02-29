@@ -16,7 +16,7 @@ interface EmailTemplates {
     passwordRecovery: string;
 }
 
-const emailTemplatesDir = 'assets/mail-templates';
+const emailTemplatesDir = '../../../assets/mail-templates';
 const emailActivationTemplateFile = 'activation.html';
 const emailRecoveryTemplateFile = 'recovery.html';
 
@@ -63,10 +63,10 @@ export class MailerService {
     }
 
     private _initTemplates(): EmailTemplates {
-        const activationTemplateFilePath = join(process.cwd(), emailTemplatesDir, emailActivationTemplateFile);
+        const activationTemplateFilePath = join(__dirname, emailTemplatesDir, emailActivationTemplateFile);
         const activationEmailTemplate = fs.readFileSync(activationTemplateFilePath, 'utf8');
 
-        const passwordRecoveryTemplateFilePath = join(process.cwd(), emailTemplatesDir, emailRecoveryTemplateFile);
+        const passwordRecoveryTemplateFilePath = join(__dirname, emailTemplatesDir, emailRecoveryTemplateFile);
         const passwordRecoveryEmailTemplate = fs.readFileSync(passwordRecoveryTemplateFilePath, 'utf8');
 
         return {
