@@ -1,6 +1,6 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
-  "moduleDirectories": ["node_modules", "<rootDir>"],
+  "moduleDirectories": ["../node_modules", "<rootDir>"],
   "moduleNameMapper": {
     "src/(.*)": "@tum-rating/backend/src/$1"
   },
