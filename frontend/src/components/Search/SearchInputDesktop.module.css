@@ -26,3 +26,34 @@
     max-height: 560px;
     border-color: var(--mantine-primary-color-filled);
 }
+
+
+.option {
+    &[data-combobox-selected] {
+        background-color: var(--mantine-primary-color-light);
+        color: var(--mantine-color-text);
+    }
+}
+
+/*MOBILE*/
+
+.searchInputMobileRoot{
+    inset: 0;
+    position: absolute;
+}
+
+.searchInputMobileOptions{
+    inset: 60px 0 0 0;
+    position: absolute;
+    z-index: 1000;
+    background: var(--mantine-color-body)
+}
+
+
+.searchInputMobileScrollArea{
+    background: var(--mantine-color-body)
+}
+
+
+
+
