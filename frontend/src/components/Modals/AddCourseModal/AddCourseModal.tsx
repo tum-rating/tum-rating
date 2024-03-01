@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
-import { useForm } from '@mantine/form';
 import { Button, Container, LoadingOverlay, Select, Stack, TextInput, Text } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
 import { nanoid } from 'nanoid';
-import { ReviewInput, useAddReview } from '@/reviews/useAddReview.tsx';
+import { useEffect } from 'react';
+
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
+import { ReviewInput, useAddReview } from '@/reviews/useAddReview.tsx';
 
 const openAddCourseModal = ({ courseId, ...props }) => {
     modals.openContextModal({
@@ -29,7 +30,7 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
         if (status === 'success') {
             context.closeModal(id);
         }
-    }, [status]);
+    }, [context, id, status]);
 
     const handleSubmit = (form: ReviewInput) => {
         addReview({ ...form });

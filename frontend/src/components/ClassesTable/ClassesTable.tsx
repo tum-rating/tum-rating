@@ -1,15 +1,18 @@
-import {DataTable} from 'mantine-datatable';
-import {useEffect, useMemo, useRef, useState} from 'react';
-import {columns} from '@/components/ClassesTable/Columns';
-import {Review} from '@/reviews/types';
-import {usePaginatedReviews} from '@/reviews/usePaginatedReviews';
-import {useLocation, useNavigate} from 'react-router-dom';
-import {useViewportSize} from '@mantine/hooks';
+import { Box, Flex, Pill, Skeleton, Text } from '@mantine/core';
+import { useViewportSize } from '@mantine/hooks';
+import { DataTable } from 'mantine-datatable';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { isMobile } from 'react-device-detect';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import classes from './ClassesTable.module.css';
-import {useTableScrollContext} from '@/context';
-import {isMobile} from 'react-device-detect';
-import {Box, Flex, Pill, Skeleton, Text} from "@mantine/core";
-import {useSearchReviews} from "@/reviews/useSearchReviews.tsx";
+
+import { columns } from '@/components/ClassesTable/Columns';
+import { useTableScrollContext } from '@/context';
+import { Review } from '@/reviews/types';
+import { usePaginatedReviews } from '@/reviews/usePaginatedReviews';
+import { useSearchReviews } from '@/reviews/useSearchReviews.tsx';
+
 
 const ClassesTable = () => {
     const columnsConfiguration = useMemo(() => {
@@ -21,14 +24,14 @@ const ClassesTable = () => {
     const [records, setRecords] = useState<Review[]>([]);
     const [queryRecords, setQueryRecords] = useState<Review[]>([]);
     const [internalLoading, setInternalLoading] = useState(true);
-    const {data, fetchNextPage, isFetching} = usePaginatedReviews();
+    const { data, fetchNextPage, isFetching } = usePaginatedReviews();
     const [query, setQuery] = useState('');
-    const {data: queryData, isFetching: isQueryDataFetching} = useSearchReviews(query);
-    const {height} = useViewportSize();
+    const { data: queryData, isFetching: isQueryDataFetching } = useSearchReviews(query);
+    const { height } = useViewportSize();
     const navigate = useNavigate();
-    const location = useLocation()
+    const location = useLocation();
     const scrollViewportRef = useRef<HTMLDivElement>(null);
-    const {scrollY, setScrollY} = useTableScrollContext();
+    const { scrollY, setScrollY } = useTableScrollContext();
 
     useEffect(() => {
         if (data) {
@@ -60,11 +63,10 @@ const ClassesTable = () => {
         if (scrollViewportRef.current) {
             scrollViewportRef.current?.scrollTo(0, scrollY);
         }
-    }, [scrollViewportRef.current]);
+    }, [scrollY]);
 
     const loadMoreRecords = () => {
-        fetchNextPage().then(() => {
-        });
+        fetchNextPage().then(() => {});
     };
 
     const handleRowClick = (record: Review) => {
@@ -76,7 +78,7 @@ const ClassesTable = () => {
     const removeQuery = () => {
         setQuery('');
         navigate('/');
-    }
+    };
 
     return (
         <>
@@ -88,7 +90,9 @@ const ClassesTable = () => {
                                 <Text fw="500" size="xs">
                                     Search results for:
                                 </Text>
-                                <Pill ml={4} onRemove={removeQuery} withRemoveButton>{query}</Pill>
+                                <Pill ml={4} onRemove={removeQuery} withRemoveButton>
+                                    {query}
+                                </Pill>
                             </>
                         ) : null}
                     </Flex>
@@ -96,33 +100,29 @@ const ClassesTable = () => {
                         <Text fw="500" size="xs">
                             Courses loaded:
                         </Text>
-                        <Text
-                            ml="5"
-                            size="xs"
-                            fw="bold"
-                            c="blue">
-                            {isFetching || isQueryDataFetching || records.length === 0 ?
-                                <Skeleton w={20} h={15}/> : query ? queryRecords.length : records.length}
+                        <Text ml="5" size="xs" fw="bold" c="blue">
+                            {isFetching || isQueryDataFetching || records.length === 0 ? <Skeleton w={20} h={15} /> : query ? queryRecords.length : records.length}
                         </Text>
                     </Flex>
                 </Flex>
-                <DataTable withRowBorders={false}
-                           highlightOnHover
-                           striped
-                           verticalSpacing="lg"
-                           height="100%"
-                           columns={columnsConfiguration}
-                           records={query ? queryRecords : records}
-                           onScrollToBottom={!query ? loadMoreRecords : null}
-                           scrollViewportRef={scrollViewportRef}
-                           fetching={isFetching || isQueryDataFetching || internalLoading}
-                           className={classes.dataTable}
-                           rowClassName={classes.dataTableRow}
-                           onRowClick={({record}) => handleRowClick(record)}></DataTable>
+                <DataTable
+                    withRowBorders={false}
+                    highlightOnHover
+                    striped
+                    verticalSpacing="lg"
+                    height="100%"
+                    columns={columnsConfiguration}
+                    records={query ? queryRecords : records}
+                    onScrollToBottom={!query ? loadMoreRecords : null}
+                    scrollViewportRef={scrollViewportRef}
+                    fetching={isFetching || isQueryDataFetching || internalLoading}
+                    className={classes.dataTable}
+                    rowClassName={classes.dataTableRow}
+                    onRowClick={({ record }) => handleRowClick(record)}
+                ></DataTable>
             </Box>
-
         </>
     );
 };
 
-export {ClassesTable};
+export { ClassesTable };

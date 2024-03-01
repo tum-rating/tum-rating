@@ -1,8 +1,7 @@
-import {Course as SelectedCourse} from "@/components/Course"
+import { Course as SelectedCourse } from '@/components/Course';
 
 const Course = () => {
-    return <SelectedCourse/>
-}
-
+    return <SelectedCourse />;
+};
 
 export { Course };

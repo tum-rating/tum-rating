@@ -1,5 +1,5 @@
-import {RatingBox} from "@/components/Course/RatingBox.tsx";
-import {useHowEasyRating} from "@/hooks";
+import { RatingBox } from '@/components/Course/RatingBox.tsx';
+import { useHowEasyRating } from '@/hooks';
 
 interface HowEasyRatingProps {
     score?: number;
@@ -8,10 +8,9 @@ interface HowEasyRatingProps {
 }
 
 const HowEasyRating = (props: HowEasyRatingProps) => {
-    const {score, ...rest} = props;
+    const { score, ...rest } = props;
     const { message, color } = useHowEasyRating(score);
-    return <RatingBox label="How easy" score={score} message={message} color={color} {...rest}/>
+    return <RatingBox label="How easy" score={score} message={message} color={color} {...rest} />;
+};
 
-}
-
-export {HowEasyRating}
+export { HowEasyRating };

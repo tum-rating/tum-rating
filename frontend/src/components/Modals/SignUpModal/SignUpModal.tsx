@@ -1,11 +1,13 @@
-import { useForm } from '@mantine/form';
 import { Anchor, Box, Button, Checkbox, Container, Flex, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput, ThemeIcon } from '@mantine/core';
-import { useSignUp } from '@/auth/useSignUp.tsx';
+import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
 import { IconMail } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
+
+import { useSignUp } from '@/auth/useSignUp.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
-import { useNavigate } from 'react-router-dom';
+
 
 interface SignUpModalProps extends ContextModalProps {}
 

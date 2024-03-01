@@ -8,19 +8,21 @@ import {
     TextInput,
     ThemeIcon,
     useCombobox
-} from "@mantine/core";
-import {useEffect, useMemo, useRef, useState} from "react";
-import {useSearchReviews} from "@/reviews/useSearchReviews.tsx";
-import {useDebouncedState, useMediaQuery} from "@mantine/hooks";
-import {Review} from "@/reviews/types.ts";
+} from '@mantine/core';
+import {useDebouncedState, useMediaQuery} from '@mantine/hooks';
+import {IconArrowLeft, IconSearch} from '@tabler/icons-react';
+import clsx from 'clsx';
+import {useEffect, useMemo, useRef, useState} from 'react';
+import {isMobileOnly} from 'react-device-detect';
+import {useLocation, useNavigate} from 'react-router-dom';
 
-import classes from "./SearchInputDesktop.module.css"
-import {IconArrowLeft, IconSearch} from "@tabler/icons-react";
-import clsx from "clsx";
-import {useLocation, useNavigate} from "react-router-dom";
-import {SearchHighlight} from "@/components/Highlight";
-import {clearAllBodyScrollLocks, disableBodyScroll, enableBodyScroll} from "@/utils";
-import {isMobileOnly} from "react-device-detect";
+import classes from './SearchInputDesktop.module.css';
+
+import {SearchHighlight} from '@/components/Highlight';
+import {Review} from '@/reviews/types.ts';
+import {useSearchReviews} from '@/reviews/useSearchReviews.tsx';
+import {clearAllBodyScrollLocks, disableBodyScroll, enableBodyScroll} from '@/utils';
+
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
@@ -48,15 +50,13 @@ const SearchInputDesktop = () => {
         };
     }, []);
 
-
     useEffect(() => {
         if (isMobileOnly) {
             setIsSearchOpen(location.hash === '#search');
-        }else{
+        } else {
             setIsSearchOpen(false);
         }
     }, [location]);
-
 
     useEffect(() => {
         setDebouncedQuery(value);
@@ -73,22 +73,31 @@ const SearchInputDesktop = () => {
     }, [data]);
 
 
-    const groupedActions = useMemo(() => previousData ? previousData.reviews : [], [previousData]);
+    useEffect(() => {
+        if (!isSearchOpen) {
+            clearAllBodyScrollLocks();
+        }
+    }, [isSearchOpen]);
+
+    const groupedActions = useMemo(() => (previousData ? previousData.reviews : []), [previousData]);
 
     useEffect(() => {
         setEmpty(groupedActions.length === 0);
     }, [groupedActions]);
 
-
     const options = useMemo(() => {
         return (groupedActions || []).map((item: Review) => (
             <Combobox.Option className={classes.option} value={item._id} key={item.courseId}>
                 <SearchHighlight value={value.split(' ')} text={item.course}/>
-                <SearchHighlight value={value.split(' ')} text={item.professor} textStyles={{
-                    fz: "xs",
-                    fw: 500,
-                    c: "dimmed"
-                }}/>
+                <SearchHighlight
+                    value={value.split(' ')}
+                    text={item.professor}
+                    textStyles={{
+                        fz: 'xs',
+                        fw: 500,
+                        c: 'dimmed',
+                    }}
+                />
             </Combobox.Option>
         ));
     }, [groupedActions]);
@@ -100,98 +109,97 @@ const SearchInputDesktop = () => {
             setValue('');
             combobox.closeDropdown();
         }
-
-    }
+    };
 
     if (smallerMode) {
         return (
             <>
-                <ActionIcon variant="light" onClick={() => {
-                    if (isMobileOnly) {
-                        navigate('#search');
-                    } else {
-                        setIsSearchOpen(true);
-                    }
-
-                }}>
+                <ActionIcon
+                    variant="light"
+                    onClick={() => {
+                        if (isMobileOnly) {
+                            navigate('#search');
+                        } else {
+                            setIsSearchOpen(true);
+                        }
+                    }}
+                >
                     <IconSearch width={16} height={16}/>
                 </ActionIcon>
-                {
-                    isSearchOpen && (
-                        <Combobox
-                            onOptionSubmit={(optionValue) => {
-                                navigate('/courses/' + optionValue);
-                                combobox.closeDropdown();
-                            }}
-
-                            offset={9}
-                            withinPortal={true}
-                            store={combobox}
-                        >
-                            <Combobox.EventsTarget>
-                                <form style={{width: "100%"}} onSubmit={handleSubmit}>
-                                    <TextInput
-                                        radius={0}
-                                        height={100}
-                                        size="xl"
-                                        leftSection={
-                                            <ActionIcon onClick={() => {
-                                                setIsSearchOpen(false)
+                {isSearchOpen && (
+                    <Combobox
+                        onOptionSubmit={(optionValue) => {
+                            navigate('/courses/' + optionValue);
+                            combobox.closeDropdown();
+                        }}
+                        offset={9}
+                        withinPortal={true}
+                        store={combobox}
+                    >
+                        <Combobox.EventsTarget>
+                            <form style={{width: '100%'}} onSubmit={handleSubmit}>
+                                <TextInput
+                                    radius={0}
+                                    height={100}
+                                    size="xl"
+                                    autoFocus
+                                    leftSection={
+                                        <ActionIcon
+                                            onClick={() => {
+                                                setIsSearchOpen(false);
                                                 combobox.closeDropdown();
-                                            }}>
-                                                <IconArrowLeft width={16} height={16}/>
-                                            </ActionIcon>
-                                        }
-                                        rightSection={
-                                            value !== '' && (
-                                                <CloseButton
-                                                    size="sm"
-                                                    onMouseDown={(event) => event.preventDefault()}
-                                                    onClick={() => {
-                                                        setValue('')
-                                                        combobox.closeDropdown()
-                                                    }}
-                                                    aria-label="Clear value"
-                                                />
-                                            )
-                                        }
-                                        classNames={{
-                                            root: classes.searchInputMobileRoot,
-                                            input: clsx(classes.searchInputMobileInput, combobox.dropdownOpened && classes.searchInputMobileInputActive),
-                                        }}
-                                        placeholder="Search..."
-                                        value={value}
-                                        onChange={(event) => {
-                                            setValue(event.currentTarget.value);
-                                            combobox.resetSelectedOption();
-                                            combobox.openDropdown();
-                                        }}
-                                        onBlur={() => {
-                                            setIsSearchOpen(false)
-                                            combobox.closeDropdown()
-                                        }}
-                                    />
-                                </form>
-                            </Combobox.EventsTarget>
-                            <Combobox.Options className={classes.searchInputMobileOptions}>
-                                <ScrollArea.Autosize h="calc(100dvh - 58px)" ref={searchInputRef} type="scroll"
-                                                     className={classes.searchInputMobileScrollArea}>
-                                    {empty && <Combobox.Empty>No matching courses for "{value}"</Combobox.Empty>}
-                                    {options}
-                                </ScrollArea.Autosize>
-                            </Combobox.Options>
-                            <Combobox.Footer>
-                                <Text fz="xs" c="dimmed">
-                                    TUM-RATING © 2024
-                                </Text>
-                            </Combobox.Footer>
-                        </Combobox>
-                    )
-                }
-
-
+                                            }}
+                                        >
+                                            <IconArrowLeft width={16} height={16}/>
+                                        </ActionIcon>
+                                    }
+                                    rightSection={
+                                        value !== '' && (
+                                            <CloseButton
+                                                size="sm"
+                                                onMouseDown={(event) => event.preventDefault()}
+                                                onClick={() => {
+                                                    setValue('');
+                                                    combobox.closeDropdown();
+                                                }}
+                                                aria-label="Clear value"
+                                            />
+                                        )
+                                    }
+                                    classNames={{
+                                        root: classes.searchInputMobileRoot,
+                                        input: clsx(classes.searchInputMobileInput, combobox.dropdownOpened && classes.searchInputMobileInputActive),
+                                    }}
+                                    placeholder="Search..."
+                                    value={value}
+                                    onChange={(event) => {
+                                        setValue(event.currentTarget.value);
+                                        combobox.resetSelectedOption();
+                                        combobox.openDropdown();
+                                    }}
+                                    onBlur={() => {
+                                        setIsSearchOpen(false);
+                                        combobox.closeDropdown();
+                                    }}
+                                />
+                            </form>
+                        </Combobox.EventsTarget>
+                        <Combobox.Options className={classes.searchInputMobileOptions}>
+                            <ScrollArea.Autosize h="calc(100dvh - 58px)" ref={searchInputRef} type="scroll"
+                                                 className={classes.searchInputMobileScrollArea}>
+                                {empty && <Combobox.Empty>No matching courses for "{value}"</Combobox.Empty>}
+                                {options}
+                            </ScrollArea.Autosize>
+                        </Combobox.Options>
+                        <Combobox.Footer>
+                            <Text fz="xs" c="dimmed">
+                                TUM-RATING © 2024
+                            </Text>
+                        </Combobox.Footer>
+                    </Combobox>
+                )}
             </>
-        )
+        );
     }
 
     if (smallerMode === undefined) return <Loader size="xs"/>;
@@ -207,7 +215,7 @@ const SearchInputDesktop = () => {
             store={combobox}
         >
             <Combobox.Target>
-                <form style={{width: "100%"}} onSubmit={handleSubmit}>
+                <form style={{width: '100%'}} onSubmit={handleSubmit}>
                     <TextInput
                         leftSection={
                             <ThemeIcon variant="light">
@@ -220,8 +228,8 @@ const SearchInputDesktop = () => {
                                     size="sm"
                                     onMouseDown={(event) => event.preventDefault()}
                                     onClick={() => {
-                                        setValue('')
-                                        combobox.closeDropdown()
+                                        setValue('');
+                                        combobox.closeDropdown();
                                     }}
                                     aria-label="Clear value"
                                 />
@@ -260,9 +268,8 @@ const SearchInputDesktop = () => {
                     </Text>
                 </Combobox.Footer>
             </Combobox.Dropdown>
-
         </Combobox>
-    )
-}
+    );
+};
 
-export {SearchInputDesktop}
+export {SearchInputDesktop};

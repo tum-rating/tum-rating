@@ -1,1 +1,1 @@
-export * from "./bodyScrollLock.ts"
+export * from './bodyScrollLock.ts';

@@ -1,1 +1,1 @@
-export {SearchHighlight} from "./SearchHighlight";
+export { SearchHighlight } from './SearchHighlight';

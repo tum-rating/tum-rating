@@ -1,7 +1,10 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
+
+import { Review } from './types.ts';
+
 import { endpoints } from '@/api';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
-import { Review } from './types.ts';
+
 
 type Reviews = {
     reviews: Review[];

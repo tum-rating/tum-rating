@@ -1,9 +1,10 @@
-import {useLocation} from 'react-router-dom';
-import {endpoints} from '@/api';
-import {notifications} from '@mantine/notifications';
-import {IconCheck, IconX} from '@tabler/icons-react';
-import {useMutation} from "@tanstack/react-query";
-import {ResponseError} from "@/utils/Errors/ResponseError.ts";
+import { notifications } from '@mantine/notifications';
+import { IconCheck, IconX } from '@tabler/icons-react';
+import { useMutation } from '@tanstack/react-query';
+import { useLocation } from 'react-router-dom';
+
+import { endpoints } from '@/api';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function activate(token: string | null) {
     const response = await fetch(endpoints.activate, {
@@ -11,13 +12,13 @@ async function activate(token: string | null) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({token}),
+        body: JSON.stringify({ token }),
     });
     if (!response.ok) {
         const errorData = await response.json();
         throw new ResponseError(errorData.message, response);
     }
-    return {success: true}
+    return { success: true };
 }
 
 export function useActivate() {
@@ -31,7 +32,7 @@ export function useActivate() {
             notifications.show({
                 message: 'Activation successful!',
                 color: 'green',
-                icon: <IconCheck/>,
+                icon: <IconCheck />,
             });
         },
         onError: (error) => {
@@ -39,7 +40,7 @@ export function useActivate() {
             notifications.show({
                 message: errorMessage,
                 color: 'red',
-                icon: <IconX/>,
+                icon: <IconX />,
             });
         },
     });

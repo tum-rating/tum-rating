@@ -1,1 +1,1 @@
-export * from "./bodyScrollLock"
+export * from './bodyScrollLock';

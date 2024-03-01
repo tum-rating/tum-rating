@@ -1,12 +1,14 @@
-import { useMutation} from '@tanstack/react-query';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
+import { useMutation } from '@tanstack/react-query';
+
+import * as userLocalStorage from '../auth/user.localstore.ts';
 
 import { endpoints } from '@/api';
 // import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 import { User } from '@/auth/useUser.tsx';
-import * as userLocalStorage from '../auth/user.localstore.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+
 
 const convertToProperObject = (obj: any) => {
     const newObj = { ...obj };

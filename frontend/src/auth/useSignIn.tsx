@@ -1,11 +1,14 @@
-import { useMutation } from '@tanstack/react-query';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
-import { User } from './useUser.tsx';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { useMutation } from '@tanstack/react-query';
+
+import { User } from './useUser.tsx';
+
 import { endpoints } from '@/api';
+import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { queryClient } from '@/react-query/client.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+
 
 async function signIn({ email, password }: LoginInput): Promise<User> {
     const response = await fetch(endpoints.signin, {

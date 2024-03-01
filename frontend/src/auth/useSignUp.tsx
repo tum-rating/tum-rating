@@ -1,8 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { useMutation } from '@tanstack/react-query';
+
 import { endpoints } from '@/api';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function signUp({ email, password, username }: RegisterInput): Promise<{ success: boolean }> {
     const response = await fetch(endpoints.signup, {

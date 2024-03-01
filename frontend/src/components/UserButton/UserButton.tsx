@@ -1,5 +1,6 @@
 import { ActionIcon, Box, Group, Menu, rem, Stack, Text, ThemeIcon } from '@mantine/core';
 import { IconLego, IconLogout } from '@tabler/icons-react';
+
 import { useSignOut } from '@/auth/useSignOut.tsx';
 import { useUser } from '@/auth/useUser.tsx';
 

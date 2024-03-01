@@ -1,11 +1,14 @@
-import { useMutation } from '@tanstack/react-query';
-import { endpoints } from '@/api';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
-import { User } from '@/auth/useUser.tsx';
-import * as userLocalStorage from '../auth/user.localstore.ts';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
+import { useMutation } from '@tanstack/react-query';
+
+import * as userLocalStorage from '../auth/user.localstore.ts';
+
+import { endpoints } from '@/api';
+import { User } from '@/auth/useUser.tsx';
 import { queryClient } from '@/react-query/client.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+
 
 async function deleteUserReview(user: User | null | undefined, userReview: UserAddReviewInput, courseId: string, type: 'POST' | 'PATCH'): Promise<any> {
     if (!user) return null;

@@ -1,14 +1,15 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { closeAllModals, useModals } from '@mantine/modals';
 import { PropsWithChildren, useEffect } from 'react';
-import { openSignUpModal } from '@/components/Modals/SignUpModal';
-import { openSignInModal } from '@/components/Modals/SignInModal';
-import { openRecoveryModal } from '@/components/Modals/RecoveryModal';
+import { isMobile } from 'react-device-detect';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+
 import { openAddCourseModal } from '@/components/Modals/AddCourseModal';
 import { openAddUserReviewModal } from '@/components/Modals/AddUserReview';
 import { openEditUserReviewModal } from '@/components/Modals/EditUserReview';
-import { openSpotlight } from '@/components/Modals/SpotlightModal';
-import { isMobile } from 'react-device-detect';
-import { closeAllModals, useModals } from '@mantine/modals';
+import { openRecoveryModal } from '@/components/Modals/RecoveryModal';
+import { openSignInModal } from '@/components/Modals/SignInModal';
+import { openSignUpModal } from '@/components/Modals/SignUpModal';
+
 
 export const ModalsHashController = (_: PropsWithChildren) => {
     const location = useLocation();
@@ -21,9 +22,6 @@ export const ModalsHashController = (_: PropsWithChildren) => {
             navigate('#');
         },
         fullScreen: isMobile,
-        // transitionProps: {
-        //     duration: 0,
-        // },
         overlayProps: {
             backgroundOpacity: 0.55,
             blur: 3,
@@ -41,8 +39,7 @@ export const ModalsHashController = (_: PropsWithChildren) => {
         'edit-user-review': {
             component: openEditUserReviewModal,
             params: { ...modalSharedParams, innerProps: { courseId: id } },
-        },
-        spotlight: { component: openSpotlight, params: { ...modalSharedParams } },
+        }
     };
 
     useEffect(() => {
@@ -57,6 +54,6 @@ export const ModalsHashController = (_: PropsWithChildren) => {
                 closeAllModals();
             }
         }
-    }, [location]);
+    }, [location, modals, modalsContext.modals.length]);
     return null;
 };

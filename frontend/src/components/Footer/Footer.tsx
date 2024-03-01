@@ -1,5 +1,4 @@
-import {Text,Container} from '@mantine/core';
-
+import { Text, Container } from '@mantine/core';
 
 const Footer = () => {
     return (
@@ -10,8 +9,7 @@ const Footer = () => {
                 </Text>
             </Container>
         </footer>
-
     );
-}
+};
 
-export {Footer}
+export { Footer };
