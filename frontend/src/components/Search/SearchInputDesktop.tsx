@@ -12,17 +12,16 @@ import {
 import {useDebouncedState, useMediaQuery} from '@mantine/hooks';
 import {IconArrowLeft, IconSearch} from '@tabler/icons-react';
 import clsx from 'clsx';
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {useEffect, useMemo, useRef, useState,FormEvent} from 'react';
 import {isMobileOnly} from 'react-device-detect';
 import {useLocation, useNavigate} from 'react-router-dom';
 
 import classes from './SearchInputDesktop.module.css';
 
 import {SearchHighlight} from '@/components/Highlight';
+import {useScrollLock} from "@/hooks/useScrollLock";
 import {Review} from '@/reviews/types.ts';
 import {useSearchReviews} from '@/reviews/useSearchReviews.tsx';
-import {clearAllBodyScrollLocks, disableBodyScroll, enableBodyScroll} from '@/utils';
-
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
@@ -36,19 +35,8 @@ const SearchInputDesktop = () => {
     const smallerMode = useMediaQuery('(max-width: 48em)');
     const navigate = useNavigate();
     const location = useLocation();
+    const { lock, unlock } = useScrollLock({ autoLock: false })
     const searchInputRef = useRef(null); // Create a ref for the search input
-
-    useEffect(() => {
-        if (searchInputRef.current) {
-            disableBodyScroll(searchInputRef.current);
-        }
-        return () => {
-            if (searchInputRef.current) {
-                enableBodyScroll(searchInputRef.current);
-            }
-            clearAllBodyScrollLocks();
-        };
-    }, []);
 
     useEffect(() => {
         if (isMobileOnly) {
@@ -75,7 +63,9 @@ const SearchInputDesktop = () => {
 
     useEffect(() => {
         if (!isSearchOpen) {
-            clearAllBodyScrollLocks();
+            unlock();
+        }else{
+            lock();
         }
     }, [isSearchOpen]);
 
@@ -102,7 +92,7 @@ const SearchInputDesktop = () => {
         ));
     }, [groupedActions]);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (value.length) {
             navigate('/?search=' + value);
