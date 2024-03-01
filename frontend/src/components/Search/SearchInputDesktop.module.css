@@ -23,7 +23,6 @@
     border-top-right-radius: 0;
     border-top-left-radius: 0;
     border-top: none;
-    max-height: 560px;
     border-color: var(--mantine-primary-color-filled);
 }
 
