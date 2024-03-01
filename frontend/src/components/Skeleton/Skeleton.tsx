@@ -1,19 +1,21 @@
-import { Skeleton as SkeletonLoader, SkeletonProps as SkeletonLoaderProps } from '@mantine/core';
-import { ReactNode } from 'react';
-
-
+import {MantineComponent, Skeleton as SkeletonLoader, SkeletonProps as SkeletonLoaderProps} from '@mantine/core';
+import { forwardRef} from 'react';
 
 interface SkeletonProps extends SkeletonLoaderProps {
     loading: boolean;
-    component: ReactNode;
+    component: MantineComponent<any>;
 }
 
-const Skeleton = (props: SkeletonProps) => {
+const Skeleton = forwardRef((props: SkeletonProps, ref) => {
     const { loading, component: Component, ...rest } = props;
+
     if (loading) {
         return <SkeletonLoader {...rest} />;
     }
+    if (typeof Component === 'function') {
+        return <Component ref={ref} />;
+    }
     return Component;
-};
+});
 
 export { Skeleton };
