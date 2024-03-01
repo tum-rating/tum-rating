@@ -1,5 +1,20 @@
 
-import { ActionIcon, Anchor, AppShell, Burger, Button, Drawer, Flex, Group, Image, Stack, Switch, Text, useMantineColorScheme } from '@mantine/core';
+import {
+    ActionIcon,
+    Anchor,
+    AppShell,
+    Box,
+    Burger,
+    Button,
+    Drawer,
+    Flex,
+    Group,
+    Image,
+    Stack,
+    Switch,
+    Text,
+    useMantineColorScheme
+} from '@mantine/core';
 import { useDisclosure, useHotkeys , useMediaQuery } from '@mantine/hooks';
 import { IconMoonStars, IconSun } from '@tabler/icons-react';
 import { PropsWithChildren } from 'react';
@@ -27,6 +42,12 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
     useHotkeys([['/', () => navigate(getPath(Paths.spotlight))]]);
     return (
         <AppShell header={{ height: HEADER_HEIGHT }} padding="md">
+            <Box style={{
+                inset: 0,
+                position: "fixed",
+                background: 'var(--primary-layout-gradient)',
+                zIndex: -1,
+            }}/>
             <AppShell.Header maw="100vw">
                 <Flex visibleFrom="sm" h="100%" px="md" justify="space-between" align="center">
                     <Anchor href="/">
@@ -70,7 +91,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     <SearchInputDesktop />
                 </Group>
             </AppShell.Header>
-            <AppShell.Main p={0} m={0} style={{ background: 'var(--primary-layout-gradient)' }}>
+            <AppShell.Main h="100vh" p={0} m={0}>
                 <Drawer
                     style={{ zIndex: 6 }}
                     title={

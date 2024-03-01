@@ -8,8 +8,6 @@ import { UserAvatar } from '@/components/Avatar';
 import { NumberRatingBadge } from '@/components/Course';
 import { getPath, Paths } from '@/routes/paths.ts';
 
-
-
 interface CommentProps {
     comment: string;
     createdAt: string;
@@ -55,7 +53,7 @@ export const Comment = (props: CommentProps) => {
                     </Flex>
                     <Menu position="bottom-end">
                         <Menu.Target>
-                            <ActionIcon variant="light" color={userCommentFlag ? 'green' : 'auto'}>
+                            <ActionIcon variant="outline" color={userCommentFlag ? 'green' : 'auto'}>
                                 <IconDotsVertical width={16} height={16} />
                             </ActionIcon>
                         </Menu.Target>

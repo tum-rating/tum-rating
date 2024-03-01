@@ -1,5 +1,6 @@
-import { Box, Flex, Pill, Skeleton, Text } from '@mantine/core';
+import {ActionIcon, Box, Flex, Pill, Text} from '@mantine/core';
 import { useViewportSize } from '@mantine/hooks';
+import {IconDatabaseHeart} from "@tabler/icons-react";
 import { DataTable } from 'mantine-datatable';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -12,6 +13,7 @@ import { useTableScrollContext } from '@/context';
 import { Review } from '@/reviews/types';
 import { usePaginatedReviews } from '@/reviews/usePaginatedReviews';
 import { useSearchReviews } from '@/reviews/useSearchReviews.tsx';
+
 
 
 const ClassesTable = () => {
@@ -63,7 +65,7 @@ const ClassesTable = () => {
         if (scrollViewportRef.current) {
             scrollViewportRef.current?.scrollTo(0, scrollY);
         }
-    }, [scrollY]);
+    }, [scrollViewportRef.current]);
 
     const loadMoreRecords = () => {
         fetchNextPage().then(() => {});
@@ -97,12 +99,13 @@ const ClassesTable = () => {
                         ) : null}
                     </Flex>
                     <Flex align="center">
-                        <Text fw="500" size="xs">
-                            Courses loaded:
-                        </Text>
-                        <Text ml="5" size="xs" fw="bold" c="blue">
-                            {isFetching || isQueryDataFetching || records.length === 0 ? <Skeleton w={20} h={15} /> : query ? queryRecords.length : records.length}
-                        </Text>
+                        <ActionIcon variant="light" size="xs" onClick={async ()=>{
+                            const response = await fetch('http://localhost:3000/health');
+                            const data = await response.json();
+                            alert(JSON.stringify(data));
+                        }}>
+                            <IconDatabaseHeart/>
+                        </ActionIcon>
                     </Flex>
                 </Flex>
                 <DataTable
@@ -111,6 +114,7 @@ const ClassesTable = () => {
                     striped
                     verticalSpacing="lg"
                     height="100%"
+                    idAccessor='_id'
                     columns={columnsConfiguration}
                     records={query ? queryRecords : records}
                     onScrollToBottom={!query ? loadMoreRecords : null}

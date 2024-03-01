@@ -5,16 +5,24 @@
     width: 100%;
     background: var(--mantine-color-body);
     @media (max-width: $mantine-breakpoint-sm) {
-        min-height: calc(100vh - 84px);
         border-radius: 0;
         margin-top: 0;
     }
 }
 
 .courseContent {
-    padding: var(--mantine-spacing-lg);
+    padding-top: var(--mantine-spacing-lg);
+    /*
+        hack to fix body overflow. Dunno why it's happening.
+        First child is the banner that has his own padding.
+    */
+    & > *:not(:first-child) {
+        padding: 0 var(--mantine-spacing-lg);
+    }
     @media (max-width: $mantine-breakpoint-sm) {
-        padding: 0 var(--mantine-spacing-md);
+        & > *:not(:first-child) {
+            padding: 0 var(--mantine-spacing-md);
+        }
     }
 }
 
@@ -35,7 +43,7 @@
 .courseBanner {
     background: linear-gradient(90deg, rgb(145 167 255 / 20%) 0%, rgb(77 171 247 / 20%) 100%);
     border-radius: var(--mantine-radius-lg);
-    margin-top: var(--mantine-spacing-lg);
+    margin: var(--mantine-spacing-lg) var(--mantine-spacing-lg) 0;
     @media (max-width: 670px) {
         flex-wrap: wrap;
         margin-top: 0;

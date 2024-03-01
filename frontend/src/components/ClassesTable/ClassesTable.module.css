@@ -16,6 +16,7 @@
 }
 
 .dataTableInfo {
+    height: 38px;
     padding: var(--mantine-spacing-xs) var(--mantine-spacing-xs);
     background: var(--mantine-color-body);
     border-top-left-radius: var(--mantine-radius-lg);

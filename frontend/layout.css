@@ -7,14 +7,6 @@
     height: calc(100% - 60px);
 }
 
-
-/*body{*/
-/*    @media (max-width: $mantine-breakpoint-sm) {*/
-/*        overflow: hidden;*/
-/*    }*/
-/*}*/
-
-
 .children-animation > * {
     animation: slideUp .15s ease-in-out both;
 }
