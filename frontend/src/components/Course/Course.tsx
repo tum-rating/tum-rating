@@ -85,7 +85,7 @@ const Course = () => {
                                         radius="lg"
                                         loading={isLoading}
                                         component={
-                                            <Badge leftSection={<IconAlien width={16}/>} autoContrast variant="light"
+                                            <Badge leftSection={<IconAlien width={16}/>} variant="light"
                                                    onClick={() => navigate(`/?search=${data.professor}`)} size="lg">
                                                 {data?.professor}{' '}
                                             </Badge>
@@ -93,7 +93,7 @@ const Course = () => {
                                     />
                                     {data?.offeredInSemesters.map((semester, index) => (
                                         <Badge key={semester + index} leftSection={<IconCalendarMonth width={16}/>}
-                                               autoContrast variant="light" color="lime.9" size="lg">
+                                               variant="light" color="lime.9" size="lg">
                                             {semester}{' '}
                                         </Badge>
                                     ))}
