@@ -4,7 +4,7 @@ import * as supertest from 'supertest';
 
 import { SignUpRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignUpRequest.dto';
 import { ActivateUserEmailRequestDto } from '@tum-rating/backend/src/modules/auth/dto/ActivateUserEmail.dto';
-import { SignInRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SigninRequest.dto';
+import { SignInRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignInRequest.dto';
 import { authUrl } from '@tum-rating/backend/test/utils';
 import { connectMongo } from '@tum-rating/backend/test/utils';
 import { getActivationTokenFromMail } from '@tum-rating/backend/test/utils/api-client/mailer';

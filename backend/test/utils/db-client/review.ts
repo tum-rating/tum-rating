@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { ReviewSchema } from 'src/database/documents/Review';
+import { ReviewSchema } from '@tum-rating/backend/src/database/documents/review';
 
 const ReviewModel = mongoose.model('reviews', ReviewSchema);
 
