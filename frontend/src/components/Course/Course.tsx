@@ -113,7 +113,7 @@ const Course = () => {
                                 <ReviewsBox isLoading={isLoading} votes={data?.votesNumber}/>
                             </Flex>
                         </Flex>
-                        <Flex style={{flexGrow: 1, background: "var(--mantine-color-body)"}} mt="xl" direction="column"
+                        <Flex style={{flexGrow: 1, background: "var(--mantine-color-body)"}} pt="xl" direction="column"
                               className="children-animation">
                             <Flex justify="space-between" align="center" mb="lg">
                                 <Flex align="center" gap="xs">
