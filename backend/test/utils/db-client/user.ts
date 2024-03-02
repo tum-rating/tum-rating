@@ -5,9 +5,13 @@ import { UserRole, UserSchema } from '@tum-rating/backend/src/database/documents
 const UserModel = mongoose.model('users', UserSchema);
 
 export const activateUserEmail = async (email: string) => {
-    const res = await UserModel.updateOne({email}, {$set: {isEmailActivated: true}}).exec();
-}
+    const res = await UserModel.updateOne({ email }, { $set: { isEmailActivated: true } }).exec();
+};
 
 export const changeUserRole = async (id: string, role: UserRole) => {
-    const res = await UserModel.updateOne({_id: id}, {$set: {role}}).exec();
+    const res = await UserModel.updateOne({ _id: id }, { $set: { role } }).exec();
+};
+
+export const setUserBan = async (email: string, isBanned: boolean) => {
+    await UserModel.updateOne({ email }, { $set: { isBanned } }).exec();
 }

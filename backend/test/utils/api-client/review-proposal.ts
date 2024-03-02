@@ -10,21 +10,20 @@ export const createReviewProposalMockRequest = async (token: string, reviewPropo
     const requestBody: CreateReviewProposalRequestDto = {
         courseId: fakeNumberOfLenght(9),
         courseNumber: fakeNumberOfLenght(8),
-        course: faker.word.words(faker.number.int({min: 2, max: 10})),
+        course: faker.word.words(faker.number.int({ min: 2, max: 10 })),
         professor: faker.word.words(2),
         offeredInSemesters: ['SS 2023', 'WS 2023'],
-        ...reviewProposal
+        ...reviewProposal,
     };
 
-    const addUserReviewResponse = await axios.post(`${reviewProposalUrl}`, 
-        requestBody,
-        {headers: {
-            Authorization: 'Bearer ' + token
-        }}
-    );
+    const addUserReviewResponse = await axios.post(`${reviewProposalUrl}`, requestBody, {
+        headers: {
+            Authorization: 'Bearer ' + token,
+        },
+    });
 
     return {
         ...requestBody,
-        id: addUserReviewResponse.data.id
-    }
-}
+        id: addUserReviewResponse.data.id,
+    };
+};

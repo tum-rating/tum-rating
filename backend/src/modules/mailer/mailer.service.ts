@@ -4,10 +4,16 @@ import { PinoLogger } from 'nestjs-pino';
 import * as NodeMailer from 'nodemailer';
 import * as fs from 'fs';
 import { join } from 'path';
+import { User } from 'src/database/documents/user';
 
 interface MailRecipient {
     email: string;
-    name?: string,
+    name?: string;
+}
+
+interface EmailTemplates {
+    activation: string;
+    passwordRecovery: string;
 }
 
 const emailTemplatesDir = 'assets/mail-templates';
@@ -18,8 +24,9 @@ const emailRecoveryTemplateFile = 'recovery.html';
 export class MailerService {
     private readonly _transporter: NodeMailer.Transporter;
     private readonly _sender: string;
+    private readonly _templates: EmailTemplates;
 
-    constructor (
+    constructor(
         private readonly _configService: ConfigService,
         private readonly _logger: PinoLogger,
     ) {
@@ -30,10 +37,11 @@ export class MailerService {
             port: this._configService.getOrThrow('mailer.port'),
         });
 
-        this._sender = this._configService.getOrThrow('mailer.sender')
+        this._sender = this._configService.getOrThrow('mailer.sender');
+        this._templates = this._initTemplates();
     }
 
-    public async send(to: MailRecipient[], subject: string, html: string) {
+    public async send(to: MailRecipient[], subject: string, html: string, text?: string) {
         this._logger.debug('Sending email to %o, subject %s', to, subject);
 
         await this._transporter.sendMail({
@@ -42,35 +50,41 @@ export class MailerService {
             subject,
             html: html,
             headers: {
-                'Content-Type': 'text/html; charset=utf-8'
-            }
+                'Content-Type': 'text/html; charset=utf-8',
+            },
+            text
         });
 
-        this._logger.debug('Successfuly sent email to %o, subject %s',  to, subject);
+        this._logger.debug('Successfuly sent email to %o, subject %s', to, subject);
     }
 
     private _formatRecipients(recipients: MailRecipient[]) {
-        return recipients
-            .map((recipient) => `${recipient.name ? recipient.name.concat(' ') : ''}<${recipient.email}>`)
-            .join(',');
+        return recipients.map((recipient) => `${recipient.name ? recipient.name.concat(' ') : ''}<${recipient.email}>`).join(',');
     }
+
+    private _initTemplates(): EmailTemplates {
+        const activationTemplateFilePath = join(process.cwd(), emailTemplatesDir, emailActivationTemplateFile);
+        const activationEmailTemplate = fs.readFileSync(activationTemplateFilePath, 'utf8');
+
+        const passwordRecoveryTemplateFilePath = join(process.cwd(), emailTemplatesDir, emailRecoveryTemplateFile);
+        const passwordRecoveryEmailTemplate = fs.readFileSync(passwordRecoveryTemplateFilePath, 'utf8');
+
+        return {
+            activation: activationEmailTemplate,
+            passwordRecovery: passwordRecoveryEmailTemplate
+        };
+    }
+
 
     public async sendEmailActivationEmail(to: MailRecipient[], activationToken: string) {
         const activationLink = `${this._configService.getOrThrow('webapp.url')}/auth/activate?token=${activationToken}`;
         const username = to[0].name || 'User';
 
-        const templateFilePath = join(process.cwd(), emailTemplatesDir, emailActivationTemplateFile)
-        const emailTemplate = fs.readFileSync(templateFilePath, 'utf8');
+        const processedEmailTemplate = this._templates.activation
+            .replace(/\[Username\]/g, username)
+            .replace(/\[ActivationLink\]/g, activationLink);
 
-        const processedEmailTemplate = emailTemplate
-          .replace(/\[Username\]/g, username)
-          .replace(/\[ActivationLink\]/g, activationLink);
-
-        return this.send(
-          to,
-          'Activate your account',
-          processedEmailTemplate
-        );
+        return this.send(to, 'Activate your account', processedEmailTemplate);
     }
 
     public async sendPasswordRecoveryEmail(to: MailRecipient[], recoveryToken: string) {
@@ -78,18 +92,21 @@ export class MailerService {
         const username = to[0].name || 'User';
         const email = to[0].email || 'Email';
 
-        const templateFilePath = join(process.cwd(), emailTemplatesDir, emailRecoveryTemplateFile)
-        const emailTemplate = fs.readFileSync(templateFilePath, 'utf8');
+        const processedEmailTemplate = this._templates.passwordRecovery
+            .replace(/\[Username\]/g, username)
+            .replace(/\[PasswordResetLink\]/g, passwordResetLink)
+            .replace(/\[Email\]/g, email);
 
-        const processedEmailTemplate = emailTemplate
-          .replace(/\[Username\]/g, username)
-          .replace(/\[PasswordResetLink\]/g, passwordResetLink)
-          .replace(/\[Email\]/g, email);
+        return this.send(to, 'Password recovery', processedEmailTemplate);
+    }
 
-        return this.send(
-            to,
-            'Password recovery',
-          processedEmailTemplate
-        )
+    public async sendEmailMultiAccountsAlert(possibleDuplicates: (Pick<User, 'email'> & {id: string})[]) {
+        const adminEmails = this._configService.getOrThrow<string[]>('mailer.adminEmails');
+        const toFormatted = adminEmails.map(email => ({email}));
+
+        const text = 'Possible duplicates:\n'
+            + possibleDuplicates.map(duplicate => `${duplicate.id}, ${duplicate.email}`).join(';');
+
+        await this.send(toFormatted, 'TUM-RATING ADMIN ALERT', null, text);
     }
 }

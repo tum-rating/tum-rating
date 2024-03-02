@@ -11,17 +11,17 @@ export const authUrl = baseUrlV1 + '/auth';
 
 export const signUpRequest = async (request: SignUpRequestDto) => {
     return axios.post(authUrl + '/signup', request);
-}
+};
 
 /**
  * Signs up user and activates its email
  */
 export const signUpRequestMock = async (request?: Partial<SignUpRequestDto>) => {
     const mockRequest: SignUpRequestDto = {
-        email: faker.internet.email({provider: 'tum.de'}),
+        email: faker.internet.email({ provider: 'tum.de' }),
         username: faker.internet.userName(),
         password: faker.internet.password(),
-        ...request
+        ...request,
     };
 
     await axios.post(authUrl + '/signup', mockRequest);
@@ -29,14 +29,14 @@ export const signUpRequestMock = async (request?: Partial<SignUpRequestDto>) => 
     await activateUserEmailDB(mockRequest.email);
 
     return mockRequest;
-}
+};
 
 export const signInRequestMock = async (request?: Partial<SignUpRequestDto>) => {
     const signUpResponse = await signUpRequestMock(request);
 
-    const signInRequest:SignInRequestDto = {
+    const signInRequest: SignInRequestDto = {
         email: signUpResponse.email,
-        password: signUpResponse.password
+        password: signUpResponse.password,
     };
 
     const signInResponse = await axios.post(authUrl + '/signin', signInRequest);
@@ -44,11 +44,11 @@ export const signInRequestMock = async (request?: Partial<SignUpRequestDto>) => 
     return {
         user: {
             ...signUpResponse,
-            id: signInResponse.data.user.id
+            id: signInResponse.data.user.id,
         },
-        token: signInResponse.data.token
+        token: signInResponse.data.token,
     };
-}
+};
 
 export const signInAdminRequestMock = async (request?: Partial<SignUpRequestDto>) => {
     const signInResponse = await signInRequestMock(request);
@@ -57,7 +57,7 @@ export const signInAdminRequestMock = async (request?: Partial<SignUpRequestDto>
 
     const signInRequest: SignInRequestDto = {
         email: signInResponse.user.email,
-        password: signInResponse.user.password
+        password: signInResponse.user.password,
     };
 
     const signInResponse2 = await axios.post(authUrl + '/signin', signInRequest);
@@ -65,8 +65,8 @@ export const signInAdminRequestMock = async (request?: Partial<SignUpRequestDto>
     return {
         user: {
             ...signInResponse2.data,
-            id: signInResponse2.data.user.id
+            id: signInResponse2.data.user.id,
         },
-        token: signInResponse2.data.token
+        token: signInResponse2.data.token,
     };
-}
+};

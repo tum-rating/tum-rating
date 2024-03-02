@@ -8,50 +8,72 @@ import { CreateUserDto } from './dto/CreateUser.dto';
 
 @Injectable()
 export class UserService {
-  constructor(
-    private readonly _logger: PinoLogger,
-    private readonly _userRepository: UserRepository,
-  ) {
-    this._logger.setContext(UserService.name);
-  }
+    constructor(
+        private readonly _logger: PinoLogger,
+        private readonly _userRepository: UserRepository,
+    ) {
+        this._logger.setContext(UserService.name);
+    }
 
-  public async createUser(user: CreateUserDto) {
-    return this._userRepository.create(user as User);
-  }
+    public async createUser(user: CreateUserDto) {
+        const userToCreate = {...user} as User;
 
-  public async getUser(id: string) {
-    const user = await this._userRepository.findOneById(id);
-    // if(!user)
-    //     throw {code: GenericErrorCodes.not_found};
+        const emailUsernameSuffix = this.extractEmailUsernameDotSuffix(userToCreate.email);
 
-    return user;
-  }
+        if (emailUsernameSuffix) {
+            userToCreate.emailDotSuffix = emailUsernameSuffix;
+        }
 
-  public async getUserByEmail(email: string) {
-    return this._userRepository.getByEmail(email);
-  }
+        return this._userRepository.create(userToCreate);
+    }
 
-  public async updateUser(id: string, user: Partial<User>) {
-    return this._userRepository.updateOneById(id, user);
-  }
+    public async getUser(id: string) {
+        const user = await this._userRepository.findOneById(id);
+        // if(!user)
+        //     throw {code: GenericErrorCodes.not_found};
 
-  public async deleteUser(id: string) {
-    return this._userRepository.deleteOneById(id);
-  }
+        return user;
+    }
 
-  public async activateEmail(id: string) {
-    return this._userRepository.activateEmail(id);
-  }
+    // tum email have 2 possible username formats:
+    // 1. as12asd - some random id
+    // 2. <user input>.<student surname> - user input can be whatever, .<student surname> is mandatory
+    public extractEmailUsernameDotSuffix(email: string) {
+        const emailUsername = email.split('@')[0];
+        const dotSuffixSplit = emailUsername.split('.')
 
-  public async updatePassword(
-    id: string,
-    newPasswordHash: string,
-    newPasswordSalt: string,
-  ) {
-    return this._userRepository.updatePassword(
-      id,
-      newPasswordHash,
-      newPasswordSalt,
-    );
-  }
+        if (dotSuffixSplit.length < 2) return null;
+
+        return dotSuffixSplit[dotSuffixSplit.length - 1];
+    }
+
+    public async getUsersWithMatchingEmailSuffix(email: string) {
+        const dotSuffix = this.extractEmailUsernameDotSuffix(email);
+
+        if (!dotSuffix) return [];
+
+        const restults = await this._userRepository.getByEmailUsernameDotSuffix(dotSuffix);
+
+        return this._userRepository.getByEmailUsernameDotSuffix(dotSuffix);
+    }
+
+    public async getUserByEmail(email: string) {
+        return this._userRepository.getByEmail(email);
+    }
+
+    public async updateUser(id: string, user: Partial<User>) {
+        return this._userRepository.updateOneById(id, user);
+    }
+
+    public async deleteUser(id: string) {
+        return this._userRepository.deleteOneById(id);
+    }
+
+    public async activateEmail(id: string) {
+        return this._userRepository.activateEmail(id);
+    }
+
+    public async updatePassword(id: string, newPasswordHash: string, newPasswordSalt: string) {
+        return this._userRepository.updatePassword(id, newPasswordHash, newPasswordSalt);
+    }
 }

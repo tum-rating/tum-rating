@@ -1,7 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
+
+import { DetailReview } from './types.ts';
+
 import { endpoints } from '@/api';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
-import { DetailReview } from './types.ts';
+
 
 export async function getReviews(query: string): Promise<DetailReview | null> {
     const endpoint = endpoints.searchReviews(query);

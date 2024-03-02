@@ -1,7 +1,9 @@
 import { Flex } from '@mantine/core';
+import { isMobile } from 'react-device-detect';
 
+import { NumberRatingBadge } from '@/components/Course';
 import { Review } from '@/reviews/types.ts';
-import { NumberRatingBadge } from '../Ratings';
+
 export const columns = [
     {
         title: 'Course',
@@ -10,7 +12,14 @@ export const columns = [
         render: (element: Review) => {
             return (
                 <>
-                    <span style={{ fontWeight: 500 }}>{element.course}</span>
+                    <span style={{ fontWeight: 500 }}>
+                        {element.course}{' '}
+                        {isMobile ? (
+                            <>
+                                <br /> <span style={{ color: 'var(--mantine-color-dimmed' }}>{element.professor}</span>
+                            </>
+                        ) : null}
+                    </span>
                 </>
             );
         },

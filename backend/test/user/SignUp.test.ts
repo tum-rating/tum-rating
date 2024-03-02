@@ -17,10 +17,10 @@ afterAll(async () => {
 describe('User SignUp', () => {
     it('should signup with allowed emails domains', () => {
         const mockRequest: SignUpRequestDto = {
-            email: faker.internet.email({provider: 'tum.de'}),
+            email: faker.internet.email({ provider: 'tum.de' }),
             username: faker.internet.userName(),
             password: faker.internet.password(),
-        }
+        };
 
         return supertest(authUrl + '/signup')
             .post('/')
@@ -33,7 +33,7 @@ describe('User SignUp', () => {
             email: faker.internet.email(),
             username: faker.internet.userName(),
             password: faker.internet.password(),
-        }
+        };
 
         return supertest(authUrl + '/signup')
             .post('/')
@@ -43,10 +43,10 @@ describe('User SignUp', () => {
 
     it('should fail signup with if email already exists', async () => {
         let mockRequest: SignUpRequestDto = {
-            email: faker.internet.email({provider: 'tum.de'}),
+            email: faker.internet.email({ provider: 'tum.de' }),
             username: faker.internet.userName(),
             password: faker.internet.password(),
-        }
+        };
 
         await supertest(authUrl + '/signup')
             .post('/')
@@ -60,7 +60,7 @@ describe('User SignUp', () => {
             .send(mockRequest)
             .expect(409)
             .expect((response: supertest.Response) => {
-                expect(response.body.message).toContain('Email already exists')
+                expect(response.body.message).toContain('Email already exists');
             });
     });
 
@@ -68,10 +68,10 @@ describe('User SignUp', () => {
         const username = faker.internet.userName();
 
         let mockRequest: SignUpRequestDto = {
-            email: faker.internet.email({provider: 'tum.de'}),
+            email: faker.internet.email({ provider: 'tum.de' }),
             username,
             password: faker.internet.password(),
-        }
+        };
 
         await supertest(authUrl + '/signup')
             .post('/')
@@ -79,17 +79,17 @@ describe('User SignUp', () => {
             .expect(201);
 
         mockRequest = {
-            email: faker.internet.email({provider: 'tum.de'}),
+            email: faker.internet.email({ provider: 'tum.de' }),
             username,
             password: faker.internet.password(),
-        }
+        };
 
         return supertest(authUrl + '/signup')
             .post('/')
             .send(mockRequest)
             .expect(409)
             .expect((response: supertest.Response) => {
-                expect(response.body.message).toContain('Username already exists')
+                expect(response.body.message).toContain('Username already exists');
             });
     });
 });

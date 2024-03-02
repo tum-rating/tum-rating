@@ -16,4 +16,3 @@ import mongoose from 'mongoose';
 
     await mongoose.disconnect();
 })();
-

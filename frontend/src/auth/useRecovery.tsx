@@ -1,7 +1,8 @@
 import { notifications } from '@mantine/notifications';
 import { IconX } from '@tabler/icons-react';
-import { endpoints } from '@/api';
 import { useMutation } from '@tanstack/react-query';
+
+import { endpoints } from '@/api';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function recovery(props: RecoveryBody) {

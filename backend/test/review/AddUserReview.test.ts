@@ -22,12 +22,12 @@ describe('Add User Review', () => {
         const signInAdminResponse = await signInAdminRequestMock();
 
         const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
-        
+
         const requestBody: AddUserReviewRequestDto = {
             howInterestingRating: 3,
             howEasyRating: 4,
             comment: faker.word.words(),
-            semester: createdReview.offeredInSemesters[0]
+            semester: createdReview.offeredInSemesters[0],
         };
 
         return supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
@@ -43,12 +43,12 @@ describe('Add User Review', () => {
         const signInAdminResponse = await signInAdminRequestMock();
 
         const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
-        
+
         const requestBody: AddUserReviewRequestDto = {
             howInterestingRating: 3,
             howEasyRating: 4,
             comment: faker.word.words(),
-            semester: createdReview.offeredInSemesters[0]
+            semester: createdReview.offeredInSemesters[0],
         };
 
         await supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
@@ -70,12 +70,12 @@ describe('Add User Review', () => {
         const signInAdminResponse = await signInAdminRequestMock();
 
         const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
-        
+
         const requestBody: AddUserReviewRequestDto = {
             howInterestingRating: 3,
             howEasyRating: 4,
             comment: faker.word.words(),
-            semester: createdReview.offeredInSemesters[0]
+            semester: createdReview.offeredInSemesters[0],
         };
 
         await supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
@@ -97,12 +97,12 @@ describe('Add User Review', () => {
         const signInAdminResponse = await signInAdminRequestMock();
 
         const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
-        
+
         const requestBody: AddUserReviewRequestDto = {
             howInterestingRating: 3,
             howEasyRating: 4,
             comment: faker.word.words(),
-            semester: 'not matching'
+            semester: 'not matching',
         };
 
         return supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
@@ -122,12 +122,12 @@ describe('Add User Review', () => {
 
         await addUserReviewMockRequest(signInResponse.token, createdReview.id, signInResponse.user.id, {
             howInterestingRating: 3,
-            howEasyRating: 4
+            howEasyRating: 4,
         });
 
         await addUserReviewMockRequest(signInResponse2.token, createdReview.id, signInResponse2.user.id, {
             howInterestingRating: 2,
-            howEasyRating: 5
+            howEasyRating: 5,
         });
 
         return supertest(reviewUrl + '/' + createdReview.id)

@@ -21,11 +21,7 @@ describe('Get Review User', () => {
 
         const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
 
-        const reviewUser = await addUserReviewMockRequest(
-            signInResponse.token,
-            createdReview.id,
-            signInResponse.user.id
-        );
+        const reviewUser = await addUserReviewMockRequest(signInResponse.token, createdReview.id, signInResponse.user.id);
 
         return supertest(`${reviewUrl}/${createdReview.id}/user/me`)
             .get('/')
@@ -48,15 +44,9 @@ describe('Get Review User', () => {
 
         const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
 
-        await addUserReviewMockRequest(
-            signInResponse.token,
-            createdReview.id,
-            signInResponse.user.id
-        );
+        await addUserReviewMockRequest(signInResponse.token, createdReview.id, signInResponse.user.id);
 
-        return supertest(`${reviewUrl}/${createdReview.id}/user/me`)
-            .get('/')
-            .expect(401)
+        return supertest(`${reviewUrl}/${createdReview.id}/user/me`).get('/').expect(401);
     });
 
     it('should return 404 if no user review', async () => {
@@ -68,6 +58,6 @@ describe('Get Review User', () => {
         return supertest(`${reviewUrl}/${createdReview.id}/user/me`)
             .get('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
-            .expect(404)
+            .expect(404);
     });
 });

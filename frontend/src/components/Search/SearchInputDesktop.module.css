@@ -1,0 +1,58 @@
+.searchInputDesktopRoot {
+    width: 100%;
+}
+
+.searchInputDesktopInput {
+    --input-bg: var(--mantine-datatable-border-color);
+    width: 100%;
+    background: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-4));
+    color: var(--mantine-color-text);
+}
+.searchInputDesktopInputActive{
+    &:focus {
+        border-bottom: 1px solid var(--mantine-datatable-border-color);
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}
+
+
+.searchInputDesktopDropdown {
+    box-shadow: var(--mantine-shadow-xl);
+    border-top: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top: none;
+    border-color: var(--mantine-primary-color-filled);
+}
+
+
+.option {
+    &[data-combobox-selected] {
+        background-color: var(--mantine-primary-color-light);
+        color: var(--mantine-color-text);
+    }
+}
+
+/*MOBILE*/
+
+.searchInputMobileRoot{
+    inset: 0;
+    position: absolute;
+}
+
+.searchInputMobileOptions{
+    inset: 60px 0 0 0;
+    position: absolute;
+    z-index: 1000;
+    background: var(--mantine-color-body)
+}
+
+
+.searchInputMobileScrollArea{
+    background: var(--mantine-color-body)
+}
+
+
+
+

@@ -38,11 +38,11 @@ describe('Delete Review Proposal', () => {
                 expect(response.body.professor).toEqual(createdReviewProposal.professor);
                 expect(response.body.offeredInSemesters).toEqual(createdReviewProposal.offeredInSemesters);
             });
-        
+
         await supertest(reviewProposalUrl)
             .delete('/' + createdReviewProposal.id)
-            .set('Authorization', 'Bearer ' + singInAdminResponse.token)
-            expect(200);
+            .set('Authorization', 'Bearer ' + singInAdminResponse.token);
+        expect(200);
 
         await supertest(reviewProposalUrl)
             .get('/' + createdReviewProposal.id)

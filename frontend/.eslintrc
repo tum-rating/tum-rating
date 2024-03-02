@@ -1,8 +1,53 @@
 {
   "extends": [
-    "react-app"
+    "react-app",
+    "plugin:react-hooks/recommended",
+    "plugin:import/recommended"
   ],
   "rules": {
-    "no-console": "error"
+    "no-console": "error",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          ["parent", "sibling"],
+          "internal"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "@/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "./**",
+            "group": "parent"
+          },
+          {
+            "pattern": "../**",
+            "group": "parent"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [
+          "react"
+        ],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@", "./src"]
+        ],
+        "extensions": [".ts", ".tsx", ".js", ".jsx"]
+      }
+    }
   }
 }

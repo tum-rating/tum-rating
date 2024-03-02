@@ -1,13 +1,20 @@
+import {ActionIcon, Box, Flex, Pill, Text} from '@mantine/core';
+import { useViewportSize } from '@mantine/hooks';
+import {IconDatabaseHeart} from "@tabler/icons-react";
 import { DataTable } from 'mantine-datatable';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { isMobile } from 'react-device-detect';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import classes from './ClassesTable.module.css';
+
 import { columns } from '@/components/ClassesTable/Columns';
+import { useTableScrollContext } from '@/context';
 import { Review } from '@/reviews/types';
 import { usePaginatedReviews } from '@/reviews/usePaginatedReviews';
-import { useNavigate } from 'react-router-dom';
-import { useViewportSize } from '@mantine/hooks';
-import classes from './ClassesTable.module.css';
-import { useTableScrollContext } from '@/context';
-import { isMobile } from 'react-device-detect';
+import { useSearchReviews } from '@/reviews/useSearchReviews.tsx';
+
+
 
 const ClassesTable = () => {
     const columnsConfiguration = useMemo(() => {
@@ -17,10 +24,14 @@ const ClassesTable = () => {
         return columns;
     }, []);
     const [records, setRecords] = useState<Review[]>([]);
+    const [queryRecords, setQueryRecords] = useState<Review[]>([]);
     const [internalLoading, setInternalLoading] = useState(true);
     const { data, fetchNextPage, isFetching } = usePaginatedReviews();
+    const [query, setQuery] = useState('');
+    const { data: queryData, isFetching: isQueryDataFetching } = useSearchReviews(query);
     const { height } = useViewportSize();
     const navigate = useNavigate();
+    const location = useLocation();
     const scrollViewportRef = useRef<HTMLDivElement>(null);
     const { scrollY, setScrollY } = useTableScrollContext();
 
@@ -31,6 +42,24 @@ const ClassesTable = () => {
             setInternalLoading(false);
         }
     }, [data]);
+    useEffect(() => {
+        if (queryData) {
+            const newRecords = queryData.reviews;
+            setQueryRecords([...newRecords]);
+            setInternalLoading(false);
+        }
+    }, [queryData]);
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const searchParam = params.get('search');
+        if (searchParam) {
+            const decodedSearchParam = decodeURIComponent(searchParam);
+            setQuery(decodedSearchParam);
+        } else {
+            setQuery('');
+        }
+    }, [location]);
 
     useEffect(() => {
         if (scrollViewportRef.current) {
@@ -48,9 +77,54 @@ const ClassesTable = () => {
         navigate(dynamicPath);
     };
 
+    const removeQuery = () => {
+        setQuery('');
+        navigate('/');
+    };
+
     return (
         <>
-            <DataTable withColumnBorders highlightOnHover striped height={height - 45} columns={columnsConfiguration} records={records} onScrollToBottom={loadMoreRecords} scrollViewportRef={scrollViewportRef} fetching={isFetching || internalLoading} className={classes.dataTable} rowClassName={classes.dataTableRow} onRowClick={({ record }) => handleRowClick(record)}></DataTable>
+            <Box className={classes.dataTableContainer} h={height - 250}>
+                <Flex justify="space-between" align="center" className={classes.dataTableInfo}>
+                    <Flex align="center">
+                        {query ? (
+                            <>
+                                <Text fw="500" size="xs">
+                                    Search results for:
+                                </Text>
+                                <Pill ml={4} onRemove={removeQuery} withRemoveButton>
+                                    {query}
+                                </Pill>
+                            </>
+                        ) : null}
+                    </Flex>
+                    <Flex align="center">
+                        <ActionIcon variant="light" size="xs" onClick={async ()=>{
+                            const response = await fetch('http://localhost:3000/health');
+                            const data = await response.json();
+                            alert(JSON.stringify(data));
+                        }}>
+                            <IconDatabaseHeart/>
+                        </ActionIcon>
+                    </Flex>
+                </Flex>
+                <DataTable
+                    withRowBorders={false}
+                    highlightOnHover
+                    striped
+                    verticalSpacing="lg"
+                    height="100%"
+                    idAccessor='_id'
+                    columns={columnsConfiguration}
+                    records={query ? queryRecords : records}
+                    onScrollToBottom={!query ? loadMoreRecords : null}
+                    scrollViewportRef={scrollViewportRef}
+                    fetching={isFetching || isQueryDataFetching || internalLoading}
+                    className={classes.dataTable}
+                    rowClassName={classes.dataTableRow}
+                    onRowClick={({ record }) => handleRowClick(record)}
+                ></DataTable>
+            </Box>
         </>
     );
 };

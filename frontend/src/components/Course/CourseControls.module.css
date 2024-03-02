@@ -1,0 +1,98 @@
+
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(15%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.courseControls > * {
+    animation: slideUp 0.1s ease-out both;
+}
+
+.courseControls > *:nth-child(1) {
+    animation-delay: 0.01s;
+}
+
+.courseControls > *:nth-child(2) {
+    animation-delay: 0.02s;
+}
+
+.courseControls > *:nth-child(3) {
+    animation-delay: 0.03s;
+}
+
+.courseControls {
+    align-items: center;
+    transition: all 0.1s ease-in;
+    left: var(--mantine-spacing-xl);
+    right: var(--mantine-spacing-xl);
+    border-top-left-radius: var(--mantine-radius-lg);
+    border-top-right-radius: var(--mantine-radius-lg);
+    margin: 0;
+    display: flex;
+    top: 54px;
+    z-index: 4;
+    position: sticky;
+    height: 56px;
+    padding-left: var(--mantine-spacing-lg);
+    padding-right: var(--mantine-spacing-lg);
+    @media (max-width: $mantine-breakpoint-sm) {
+        transition: all 0.1s ease-in;
+        left: 0;
+        right: 0;
+    }
+
+    &[data-active="true"] {
+        left: 0;
+        right: 0;
+        box-shadow: var(--mantine-shadow-lg);
+        & .courseControlsOverlay {
+            z-index:-1;
+            position: absolute;
+            inset: -1px 0 0 0;
+            background: light-dark(rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.8));
+            border-bottom: light-dark(rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.8));
+            backdrop-filter: blur(5px);
+        }
+    }
+}
+
+.courseControlsBreadcrumbs {
+    flex-grow: 1;
+    max-width: 100%;
+    overflow: hidden;
+    padding-right: var(--mantine-spacing-xs)
+}
+
+.courseControls.active {
+    position: sticky;
+    top: 50px;
+}
+
+.courseControlsBackButton {
+    @media (max-width: $mantine-breakpoint-sm) {
+        display: none;
+    }
+}
+
+.courseControlsBackActionButton {
+    @media (min-width: $mantine-breakpoint-sm) {
+        display: none;
+    }
+}
+
+.courseControlsBtns {
+    margin-left: auto;
+    @media (max-width: $mantine-breakpoint-sm) {
+        display: none;
+    }
+}
+
+
+

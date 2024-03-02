@@ -19,12 +19,11 @@ afterAll(async () => {
 
 describe('UserActivation', () => {
     it('should activate user', async () => {
-
         const signInRequest: SignUpRequestDto = {
-            email: faker.internet.email({provider: 'tum.de'}),
+            email: faker.internet.email({ provider: 'tum.de' }),
             username: faker.internet.userName(),
             password: faker.internet.password(),
-        }
+        };
 
         await supertest(authUrl + '/signup')
             .post('/')
@@ -33,22 +32,20 @@ describe('UserActivation', () => {
 
         const token = await getActivationTokenFromMail(signInRequest.email);
 
-        if(!token)
-            throw new Error('token not present');
+        if (!token) throw new Error('token not present');
 
-            
         const mockSignInRequest: SignInRequestDto = {
             email: signInRequest.email,
-            password: signInRequest.password
+            password: signInRequest.password,
         };
-        
+
         await supertest(authUrl + '/signin')
             .post('/')
             .send(mockSignInRequest)
             .expect(401);
-            
+
         const requestActivate: ActivateUserEmailRequestDto = {
-            token
+            token,
         };
 
         await supertest(authUrl + '/activate')
@@ -56,13 +53,12 @@ describe('UserActivation', () => {
             .send(requestActivate)
             .expect(204);
 
-
         return supertest(authUrl + '/signin')
             .post('/')
             .send(mockSignInRequest)
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('token')
+                expect(response.body).toHaveProperty('token');
             });
     });
 });

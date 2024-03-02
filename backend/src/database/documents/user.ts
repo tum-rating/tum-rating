@@ -2,31 +2,39 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 export enum UserRole {
-  user = 0,
-  admin,
+    user = 0,
+    admin,
 }
 
 @Schema()
 export class User {
-  @Prop({ required: true, unique: true, message: 'username must be unique' })
-  username: string;
+    @Prop({ required: true, unique: true, message: 'username must be unique' })
+    username: string;
 
-  @Prop({ required: true, unique: true, message: 'Email must be unique' })
-  email: string;
+    @Prop({ required: true, unique: true, message: 'Email must be unique' })
+    email: string;
 
-  @Prop({ required: true })
-  passwordHash: string;
+    // for multiaccounts check
+    @Prop({ required: false})
+    emailDotSuffix?: string;
 
-  @Prop({ required: true })
-  passwordSalt: string;
+    @Prop({ required: true })
+    passwordHash: string;
 
-  @Prop({ required: true, default: false })
-  isEmailActivated: boolean;
+    @Prop({ required: true })
+    passwordSalt: string;
 
-  @Prop({ required: true, enum: UserRole, default: UserRole.user})
-  role: UserRole;
+    @Prop({ required: true, default: false })
+    isEmailActivated: boolean;
+
+    @Prop({ required: true, default: false })
+    isBanned: boolean;
+
+    @Prop({ required: true, enum: UserRole, default: UserRole.user })
+    role: UserRole;
 }
 
 export type UserDocument = User & Document;
 
 export const UserSchema = SchemaFactory.createForClass(User);
+UserSchema.index({emailDotSuffix: 1}, {sparse: true})
