@@ -1,11 +1,12 @@
-import { useForm } from '@mantine/form';
+
 import { Anchor, Box, Button, Container, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
+import { IconAt, IconLock } from '@tabler/icons-react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { LoginInput, useSignIn } from '@/auth/useSignIn.tsx';
-import { useEffect } from 'react';
-import { IconAt, IconLock } from '@tabler/icons-react';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
 
@@ -18,10 +19,11 @@ const openSignInModal = ({ ...props }: SignInModalProps) => {
     });
 };
 
-const SignInModal = () => {
+const SignInModal = ({ context, id }: ContextModalProps) => {
     const { mutate: signIn, isPending: signInLoading, isSuccess: isSignInSuccess } = useSignIn();
     const navigate = useNavigate();
     const location = useLocation();
+
     const form = useForm({
         initialValues: {
             email: '',
@@ -33,14 +35,16 @@ const SignInModal = () => {
             email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid Email'),
         },
     });
+
     useEffect(() => {
         if (isSignInSuccess) {
             if (location.pathname !== '/' && !location.pathname.includes('courses')) {
                 navigate('/');
+            } else {
+                context.closeModal(id);
             }
-            navigate('/');
         }
-    }, [isSignInSuccess]);
+    }, [context, id, isSignInSuccess, location.pathname, navigate]);
 
     const handleSubmit = (e: LoginInput) => {
         signIn(e);

@@ -1,67 +1,108 @@
+
+import {
+    ActionIcon,
+    Anchor,
+    AppShell,
+    Box,
+    Burger,
+    Button,
+    Drawer,
+    Flex,
+    Group,
+    Image,
+    Stack,
+    Switch,
+    Text,
+    useMantineColorScheme
+} from '@mantine/core';
+import { useDisclosure, useHotkeys , useMediaQuery } from '@mantine/hooks';
+import { IconMoonStars, IconSun } from '@tabler/icons-react';
 import { PropsWithChildren } from 'react';
-import { ActionIcon, Anchor, AppShell, Box, Burger, Button, Drawer, Flex, Group, Image, Stack, Switch, Text, useMantineColorScheme } from '@mantine/core';
-import { useDisclosure, useHotkeys } from '@mantine/hooks';
-import logo from '@/assets/img/logo.png';
-import { IconMoonStars, IconSearch, IconSun } from '@tabler/icons-react';
-import { useUser } from '@/auth/useUser';
-import { UserButton } from '@/components/UserButton';
-import { useSignOut } from '@/auth/useSignOut';
-import { SpotlightControl } from '@/components/Spotlight/SpotlightControl';
-import { getPath, Paths } from '@/routes/paths.ts';
+import { isMobileOnly } from 'react-device-detect';
 import { useNavigate } from 'react-router-dom';
+
+import logo from '@/assets/img/logo.png';
+import { useSignOut } from '@/auth/useSignOut';
+import { useUser } from '@/auth/useUser';
+import { SearchInputDesktop } from '@/components/Search';
+import { UserButton } from '@/components/UserButton';
+import { getPath, Paths } from '@/routes/paths.ts';
+
+
+const HEADER_HEIGHT = 54;
+const MAX_SITE_WIDTH = 1320;
 
 export const MainLayout = ({ children }: PropsWithChildren) => {
     const { user } = useUser();
     const navigate = useNavigate();
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+    const smallerMode = useMediaQuery('(max-width: 48em)');
     const signOut = useSignOut();
     useHotkeys([['/', () => navigate(getPath(Paths.spotlight))]]);
-    const Logo = () => (
-        <Anchor href="/">
-            <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" />
-        </Anchor>
-    );
     return (
-        <AppShell header={{ height: 45 }} padding="md">
+        <AppShell header={{ height: HEADER_HEIGHT }} padding="md">
+            <Box style={{
+                inset: 0,
+                position: "fixed",
+                background: 'var(--primary-layout-gradient)',
+                zIndex: -1,
+            }}/>
             <AppShell.Header maw="100vw">
-                <Group visibleFrom="sm" h="100%" px="md" justify="space-between">
-                    <Logo />
-                    <SpotlightControl onClick={() => navigate(getPath(Paths.spotlight))} />
-                    {!user ? (
-                        <>
-                            <Button data-testid="cypress-open-sign-in-modal-btn" size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
-                                Sign In
-                            </Button>
-                            <Button
-                                data-testid="cypress-open-sign-up-modal-btn"
-                                size="xs"
-                                variant="gradient"
-                                gradient={{ from: 'indigo', to: 'blue', deg: 90 }}
-                                onClick={() => {
-                                    navigate(getPath(Paths.signUp));
-                                }}
-                            >
-                                Sign Up
-                            </Button>
-                        </>
-                    ) : null}
+                <Flex visibleFrom="sm" h="100%" px="md" justify="space-between" align="center">
+                    <Anchor href="/">
+                        <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" />
+                    </Anchor>
+                    {!isMobileOnly && !smallerMode && (
+                        <Flex maw={580} style={{ flexGrow: 1 }}>
+                            <SearchInputDesktop />
+                        </Flex>
+                    )}
+                    <Flex gap={20}>
+                        {!user ? (
+                            <>
+                                <Button data-testid="cypress-open-sign-in-modal-btn" size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
+                                    Sign In
+                                </Button>
+                                <Button
+                                    data-testid="cypress-open-sign-up-modal-btn"
+                                    size="xs"
+                                    variant="primary-gradient"
+                                    onClick={() => {
+                                        navigate(getPath(Paths.signUp));
+                                    }}
+                                >
+                                    Sign Up
+                                </Button>
+                            </>
+                        ) : null}
 
-                    <UserButton />
-                    <ActionIcon variant="outline" onClick={toggleColorScheme}>
-                        {colorScheme === 'dark' ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
-                    </ActionIcon>
-                </Group>
-                <Group hiddenFrom="sm" h="100%" px="md" justify="space-between">
+                        <UserButton />
+                        <ActionIcon variant="outline" onClick={toggleColorScheme}>
+                            {colorScheme === 'dark' ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
+                        </ActionIcon>
+                    </Flex>
+                </Flex>
+                <Group hiddenFrom="sm" h="100%" px="md" justify="space-between" pos="relative">
                     <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-                    <Logo />
-                    <ActionIcon variant="outline" data-testid="cypress-global-search" onClick={() => navigate(getPath(Paths.spotlight))}>
-                        <IconSearch size="1.1rem" />
-                    </ActionIcon>
+                    <Anchor href="/">
+                        <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" />
+                    </Anchor>
+                    <SearchInputDesktop />
                 </Group>
             </AppShell.Header>
-            <AppShell.Main p={0} m={0}>
-                <Drawer style={{ zIndex: 6 }} title={<Logo />} opened={mobileOpened} onClose={toggleMobile} overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}>
+            <AppShell.Main h="100vh" p={0} m={0}>
+                <Drawer
+                    style={{ zIndex: 6 }}
+                    title={
+                        <Anchor href="/">
+                            <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" />
+                        </Anchor>
+                    }
+                    opened={mobileOpened}
+                    onClose={toggleMobile}
+                    overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+                >
                     <Stack h="100%" justify="space-between">
                         <Flex align="center" justify="space-between">
                             {user ? <UserButton withoutDropdown /> : <Text>Hello</Text>}
@@ -77,7 +118,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                                     <Button data-testid="cypress-open-sign-in-modal-btn" fullWidth size="md" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
                                         Sign In
                                     </Button>
-                                    <Button data-testid="cypress-open-sign-up-modal-btn" fullWidth size="md" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => navigate(getPath(Paths.signUp))}>
+                                    <Button data-testid="cypress-open-sign-up-modal-btn" fullWidth size="md" variant="primary-gradient" onClick={() => navigate(getPath(Paths.signUp))}>
                                         Sign Up
                                     </Button>
                                 </>
@@ -85,7 +126,9 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                         </Flex>
                     </Stack>
                 </Drawer>
-                <Box pt={45}>{children}</Box>
+                <Flex justify="center" pt={HEADER_HEIGHT} mx="auto" h="100%" maw={MAX_SITE_WIDTH}>
+                    {children}
+                </Flex>
             </AppShell.Main>
         </AppShell>
     );

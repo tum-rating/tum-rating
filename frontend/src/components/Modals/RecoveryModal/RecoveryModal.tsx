@@ -1,11 +1,13 @@
-import { ContextModalProps, modals } from '@mantine/modals';
-import { RecoveryBody, useRecovery } from '@/auth/useRecovery.tsx';
 import { Anchor, Button, Flex, Group, LoadingOverlay, Stack, Text, TextInput, ThemeIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { ContextModalProps, modals } from '@mantine/modals';
 import { IconAt, IconMail } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
+
+import { RecoveryBody, useRecovery } from '@/auth/useRecovery.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
-import { useNavigate } from 'react-router-dom';
+
 
 interface RecoveryModalProps extends ContextModalProps {}
 

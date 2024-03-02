@@ -1,35 +1,49 @@
-import { Button, Container, Image, SimpleGrid, Text, Title } from '@mantine/core';
-import { useActivate } from '@/auth/useActivate.tsx';
+import { Button, Flex, Text, Title } from '@mantine/core';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import activated from '@/assets/img/activated.svg';
+
 import classes from './Activation.module.css';
-import {getPath, Paths} from "@/routes/paths.ts";
+
+import { useActivate } from '@/auth/useActivate.tsx';
+import { ActivationImg } from '@/pages/Activation/ActivationImg.tsx';
+import { getPath, Paths } from '@/routes/paths.ts';
+
 
 export const Activation = () => {
-    const status = useActivate();
+    const { mutate, isError } = useActivate();
     const navigate = useNavigate();
+    useEffect(() => {
+        mutate();
+    }, []);
 
-    status.then((res) => {
-        if (!res) {
+    useEffect(() => {
+        if (isError) {
             navigate('/404');
-            return null;
-        } else return true;
-    });
+        }
+    }, [isError, navigate]);
+
     return (
-        <Container className={classes.root}>
-            <SimpleGrid spacing={{ base: 40, sm: 80 }} cols={{ base: 1, sm: 2 }}>
-                <Image src={activated} className={classes.mobileImage} />
-                <div>
-                    <Title className={classes.title}>Your Account is Activated!</Title>
-                    <Text c="dimmed" size="lg">
-                        Congratulations! Your account is now activated. You can log in and start exploring and enjoying our platform's features.
-                    </Text>
-                    <Button onClick={()=>navigate(getPath(Paths.signIn))} variant="outline" size="md" mt="xl" className={classes.control}>
-                        Log In
-                    </Button>
-                </div>
-                <Image src={activated} className={classes.desktopImage} />
-            </SimpleGrid>
-        </Container>
+        <Flex className={classes.root} justify="center" align="center">
+            <Flex direction="column" w={300} align="center">
+                <ActivationImg />
+                <Title fz="lg" className={classes.title}>
+                    Your Account is Activated!
+                </Title>
+                <Text ta="center" c="dimmed" size="md">
+                    Congratulations! Your account is now activated. You can log in and start exploring and enjoying our platform's features.
+                </Text>
+                <Button
+                    onClick={() => {
+                        navigate(getPath(Paths.signIn));
+                    }}
+                    variant="outline"
+                    size="md"
+                    mt="xl"
+                    className={classes.control}
+                >
+                    Log In
+                </Button>
+            </Flex>
+        </Flex>
     );
 };
