@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
 import { SignUpRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignUpRequest.dto';
-import { SignInRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SigninRequest.dto';
+import { SignInRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignInRequest.dto';
 import { signUpRequestMock, authUrl } from '@tum-rating/backend/test/utils';
 import { connectMongo } from '@tum-rating/backend/test/utils';
 import { setUserBan } from '@tum-rating/backend/test/utils/db-client/user';

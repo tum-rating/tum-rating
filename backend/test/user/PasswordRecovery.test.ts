@@ -2,9 +2,8 @@ import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
-import { PasswordRecoveryRequestDto } from '@tum-rating/backend/src/modules/auth/dto/PasswordRecovery.dto';
-import { SignInRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SigninRequest.dto';
-
+import { PasswordRecoveryRequestDto } from 'src/modules/auth/dto/PasswordRecovery.dto';
+import { SignInRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignInRequest.dto';
 import { authUrl } from '@tum-rating/backend/test/utils';
 import { connectMongo } from '@tum-rating/backend/test/utils';
 import { getRecoveryTokenFromMail } from '@tum-rating/backend/test/utils/api-client/mailer';
