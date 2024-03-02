@@ -5,7 +5,7 @@ import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNum
 import { baseUrlV1 } from './config';
 
 import { CreateReviewRequestDto } from '@tum-rating/backend/src/modules/review/dto/CreateReviewRequest.dto';
-import { Review } from '@tum-rating/backend/src/database/documents/Review';
+import { Review } from '../../../src/database/documents/Review';
 import { AddUserReviewRequestDto } from '@tum-rating/backend/src/modules/review/dto/AddUserReviewRequest.dto';
 
 export const reviewUrl = baseUrlV1 + '/reviews';
