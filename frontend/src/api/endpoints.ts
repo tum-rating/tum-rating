@@ -44,7 +44,18 @@ const reviews: ReviewsEndpoints = {
     searchReviewsOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => `${reviewsBase}?page-number=${pageNumber}&page-size=${pageSize}&search=${search}`,
 };
 
+type AdminEndpoints = {
+    getAllUsers: string;
+    getAllProposals: string;
+};
+
+const admin: AdminEndpoints = {
+    getAllUsers: baseApiUrl + '/admin/users',
+    getAllProposals: baseApiUrl + '/admin/proposals',
+};
+
 export const endpoints = {
     ...auth,
     ...reviews,
+    ...admin
 };

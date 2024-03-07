@@ -31,9 +31,6 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
             password: '',
             terms: true,
         },
-        validate: {
-            email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid Email'),
-        },
     });
 
     useEffect(() => {
