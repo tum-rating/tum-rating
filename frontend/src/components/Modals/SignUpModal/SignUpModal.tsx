@@ -29,9 +29,6 @@ const SignUpModal = () => {
             password: '',
             terms: true,
         },
-        validate: {
-            email: (val: string) => (/^\S+@\S+$/.test(val) ? null : 'Invalid Email'),
-        },
     });
 
     return (
