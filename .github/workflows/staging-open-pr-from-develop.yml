@@ -21,6 +21,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Verify if run from develop
+        run: |
+          if [ "${{ github.ref }}" != "refs/heads/develop" ]; then
+            echo "Workflow is NOT triggered from develop"
+            exit 1
+          fi
+          echo "Workflow is triggered from develop"
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
