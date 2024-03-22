@@ -55,7 +55,6 @@ jobs:
           author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
           branch: release/staging/v${{ steps.version-bump.outputs.current-version }}
           base: staging
-          delete-branch: true
           title: '[Example] Update report'
           body: |
             Staging PR from develop, release step.
