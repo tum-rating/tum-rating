@@ -6,6 +6,7 @@ on:
     inputs:
       version_bump:
         description: "Version bump (major minor patch)"
+        type: choice
         options:
           - "major"
           - "minor"
@@ -41,7 +42,7 @@ jobs:
           git commit -m "Bump version ${{ steps.version-bump.outputs.current-version }}"
           git push origin develop
 
-      - name: Create develop branch
+      - name: Create branch from develop
         run: |
           git checkout -b staging/develop-pr-${{ steps.version-bump.outputs.current-version }}
           git push origin staging/develop-pr-${{ steps.version-bump.outputs.current-version }}
