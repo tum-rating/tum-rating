@@ -16,6 +16,7 @@ on:
 jobs:
   staging-open-pr-from-develop:
     runs-on: ubuntu-latest
+    environment: staging
 
     steps:
       - name: Checkout
