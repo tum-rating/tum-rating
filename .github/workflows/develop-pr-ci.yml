@@ -3,10 +3,10 @@ name: CI
 on:
   pull_request:
     branches:
-      - master
+      - develop
 
 jobs:  
-  build-pr-master:
+  build-pr-develop-and-run-ci:
     runs-on: ubuntu-latest
 
     steps:
