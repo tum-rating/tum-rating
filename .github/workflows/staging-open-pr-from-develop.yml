@@ -47,14 +47,14 @@ jobs:
           git checkout -b release/staging/v${{ steps.version-bump.outputs.current-version }} develop
           git push --set-upstream origin release/staging/v${{ steps.version-bump.outputs.current-version }} 
 
-      - name: Open PR to staging
-        uses: peter-evans/create-pull-request@v6
-        with:
-          commit-message: Update report
-          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
-          branch: release/staging/v${{ steps.version-bump.outputs.current-version }}
-          base: staging
-          title: '[Example] Update report'
-          body: |
-            Staging PR from develop, release step.
+      # - name: Open PR to staging
+      #   uses: peter-evans/create-pull-request@v6
+      #   with:
+      #     commit-message: Update report
+      #     committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+      #     author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+      #     branch: release/staging/v${{ steps.version-bump.outputs.current-version }}
+      #     base: staging
+      #     title: '[Example] Update report'
+      #     body: |
+      #       Staging PR from develop, release step.
