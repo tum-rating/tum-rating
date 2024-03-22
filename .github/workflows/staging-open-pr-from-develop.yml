@@ -28,7 +28,7 @@ jobs:
         id: version-bump
         run: |
           echo "Bumping version type ${{ github.event.inputs.version_bump }}"
-          npm version ${{ github.event.inputs.version_bump }}
+          npm --no-commit-hooks --no-git-tag-version version ${{ github.event.inputs.version_bump }}
           PACKAGE_VERSION=$(cat ./package.json | jq '.version' | tr -d '"')
           echo "Package version after bump: ${PACKAGE_VERSION}"
           echo "current-version=${PACKAGE_VERSION}" >> $GITHUB_OUTPUT
