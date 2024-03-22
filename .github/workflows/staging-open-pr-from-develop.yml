@@ -44,8 +44,7 @@ jobs:
 
       - name: Create branch from develop
         run: |
-          git checkout develop
-          git checkout -b release/staging/v${{ steps.version-bump.outputs.current-version }}
+          git checkout -b release/staging/v${{ steps.version-bump.outputs.current-version }} develop
           git push --set-upstream origin release/staging/v${{ steps.version-bump.outputs.current-version }} 
 
       - name: Open PR to staging
