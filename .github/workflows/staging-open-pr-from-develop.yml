@@ -58,3 +58,8 @@ jobs:
       #     title: '[Example] Update report'
       #     body: |
       #       Staging PR from develop, release step.
+
+      - name: Create pull request
+        run: gh pr create -B staging -H release/staging/v${{ steps.version-bump.outputs.current-version }} --title 'Release staging v${{ steps.version-bump.outputs.current-version }}' --body 'Staging release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
