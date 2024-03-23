@@ -25,7 +25,7 @@ jobs:
           echo ---Upgrading docker compose---
           sudo rm -rf docker-compose
           sudo rm -rf /usr/bin/docker-compose
-          sudo rm -rf /usr/bin/local/docker-compose
+          sudo rm -rf /usr/local/bin/local/docker-compose
           sudo apt-get remove docker-compose-plugin
           docker-compose --version
           # echo "https://github.com/docker/compose/releases/download/2.25.0/docker-compose-$(uname -s)-$(uname -m)"
