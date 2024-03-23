@@ -24,10 +24,12 @@ jobs:
         run: |
           echo ---Upgrading docker compose---
           sudo rm -rf docker-compose
+          sudo rm -rf /usr/bin/docker-compose
           sudo curl -L "https://github.com/docker/compose/releases/download/2.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
           sudo chmod +x /usr/bin/docker-compose
           echo ---Docker compose version---
           docker-compose --version
+          whereis docker-compose
 
       - name: Docker compose
         id: docker-compose
