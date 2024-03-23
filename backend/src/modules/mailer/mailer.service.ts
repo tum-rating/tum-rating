@@ -43,12 +43,12 @@ export class MailerService {
         this._templates = this._initTemplates();
     }
 
-    public async send(to: MailRecipient[], subject: string, html: string, text?: string) {
+    public async send(to: MailRecipient, subject: string, html: string, text?: string) {
         this._logger.debug('Sending email to %o, subject %s', to, subject);
 
         await this._transporter.sendMail({
             from: this._sender,
-            to: this._formatRecipients(to),
+            to: this._formatRecipient(to),
             subject,
             html: html,
             headers: {
@@ -60,11 +60,19 @@ export class MailerService {
         this._logger.debug('Successfuly sent email to %o, subject %s', to, subject);
     }
 
+    public async sendMany(to: MailRecipient[], subject: string, html: string, text?: string) {
+        this._logger.debug('Sending email to %o, subject %s', to, subject);
 
+        for (const recipient of to) {
+            await this.send(recipient, subject, html, text);
+        }
 
-    public async sendEmailActivationEmail(to: MailRecipient[], activationToken: string) {
+        this._logger.debug('Successfuly sent email to %o, subject %s', to, subject);
+    }
+
+    public async sendEmailActivationEmail(to: MailRecipient, activationToken: string) {
         const activationLink = `${this._configService.getOrThrow('webapp.url')}/auth/activate?token=${activationToken}`;
-        const username = to[0].name || 'User';
+        const username = to.name || 'User';
 
         const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.activation, {
             Username: username,
@@ -74,7 +82,7 @@ export class MailerService {
         return this.send(to, 'Activate your account', processedEmailTemplate);
     }
 
-    public async sendPasswordRecoveryEmail(to: MailRecipient[], recoveryToken: string) {
+    public async sendPasswordRecoveryEmail(to: MailRecipient, recoveryToken: string) {
         const passwordResetLink = `${this._configService.getOrThrow('webapp.url')}/auth/recovery?token=${recoveryToken}`;
         const username = to[0].name || 'User';
         const email = to[0].email || 'Email';
@@ -95,21 +103,22 @@ export class MailerService {
         const text = 'Possible duplicates:\n'
             + possibleDuplicates.map(duplicate => `${duplicate.id}, ${duplicate.email}`).join(';');
 
-        await this.send(toFormatted, 'TUM-RATING ADMIN ALERT', null, text);
+        
+        await this.sendMany(toFormatted, 'TUM-RATING ADMIN ALERT', null, text);
     }
 
-    public async sendEmailAlreadyExists(to: MailRecipient[], username: string, email: string) {
+    public async sendEmailAlreadyExists(to: MailRecipient, username: string) {
         const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.emailAlreadyExists, {
             Username: username,
-            Email: email,
+            Email: to.email,
             RecoveryLink: `${this._configService.getOrThrow('webapp.url')}#modal=forgot-password`
         });
 
         return this.send(to, 'Email is already registered', processedEmailTemplate);
     }
 
-    private _formatRecipients(recipients: MailRecipient[]) {
-        return recipients.map((recipient) => `${recipient.name ? recipient.name.concat(' ') : ''}<${recipient.email}>`).join(',');
+    private _formatRecipient(recipient: MailRecipient) {
+        return `${recipient.name ? recipient.name.concat(' ') : ''}<${recipient.email}>`;
     }
 
     private _initTemplates(): EmailTemplates {
