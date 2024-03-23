@@ -25,7 +25,8 @@ jobs:
           echo ---Upgrading docker compose---
           sudo rm -rf docker-compose
           sudo rm -rf /usr/bin/docker-compose
-           sudo rm -rf /usr/bin/local/docker-compose
+          sudo rm -rf /usr/bin/local/docker-compose
+          echo "https://github.com/docker/compose/releases/download/2.25.0/docker-compose-$(uname -s)-$(uname -m)"
           sudo curl -L "https://github.com/docker/compose/releases/download/2.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
           sudo chmod +x /usr/bin/docker-compose
           echo ---Docker compose version---
