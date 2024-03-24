@@ -1,7 +1,9 @@
 import {
     ActionIcon,
+    Button,
     CloseButton,
     Combobox,
+    Flex,
     Loader,
     ScrollArea,
     Text,
@@ -12,7 +14,7 @@ import {
 import {useDebouncedState, useMediaQuery} from '@mantine/hooks';
 import {IconArrowLeft, IconSearch} from '@tabler/icons-react';
 import clsx from 'clsx';
-import {useEffect, useMemo, useRef, useState,FormEvent} from 'react';
+import {FormEvent, useEffect, useMemo, useRef, useState} from 'react';
 import {isMobileOnly} from 'react-device-detect';
 import {useLocation, useNavigate} from 'react-router-dom';
 
@@ -22,6 +24,8 @@ import {SearchHighlight} from '@/components/Highlight';
 import {useScrollLock} from "@/hooks/useScrollLock";
 import {Review} from '@/reviews/types.ts';
 import {useSearchReviews} from '@/reviews/useSearchReviews.tsx';
+import {getPath, Paths} from "@/routes/paths.ts";
+import {useUser} from "@/auth/useUser.tsx";
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
@@ -32,10 +36,11 @@ const SearchInputDesktop = () => {
     const [empty, setEmpty] = useState(false);
     const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 150);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const {user} = useUser()
     const smallerMode = useMediaQuery('(max-width: 48em)');
     const navigate = useNavigate();
     const location = useLocation();
-    const { lock, unlock } = useScrollLock({ autoLock: false })
+    const {lock, unlock} = useScrollLock({autoLock: false})
     const searchInputRef = useRef(null); // Create a ref for the search input
 
     useEffect(() => {
@@ -64,7 +69,7 @@ const SearchInputDesktop = () => {
     useEffect(() => {
         if (!isSearchOpen) {
             unlock();
-        }else{
+        } else {
             lock();
         }
     }, [isSearchOpen]);
@@ -248,7 +253,20 @@ const SearchInputDesktop = () => {
             <Combobox.Dropdown className={classes.searchInputDesktopDropdown} hidden={data === null}>
                 <Combobox.Options>
                     <ScrollArea.Autosize mah="50vh" type="scroll">
-                        {empty && <Combobox.Empty>No matching courses for "{value}"</Combobox.Empty>}
+                        {empty &&
+                            <Flex direction="column">
+                                <Combobox.Empty>No matching courses for "{value}"</Combobox.Empty>
+                                {user ?
+                                    <Button onClick={() => {
+                                        navigate(getPath(Paths.addCourse))
+                                    }} variant="subtle">Add Course Proposal</Button> :
+                                    <Button onClick={() => {
+                                        navigate(getPath(Paths.signIn))
+                                    }} variant="subtle">
+                                        Sign In to Add Course Proposal
+                                    </Button>}
+                            </Flex>
+                        }
                         {options}
                     </ScrollArea.Autosize>
                 </Combobox.Options>

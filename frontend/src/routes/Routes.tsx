@@ -10,7 +10,7 @@ import {AddCourseModal} from '@/components/Modals/AddCourseModal/AddCourseModal.
 import {AddUserReviewModal} from '@/components/Modals/AddUserReview/AddUserReview.tsx';
 import {EditUserReviewModal} from '@/components/Modals/EditUserReview';
 import {AdminLayout, MainLayout} from '@/layouts';
-import {Activation, Course, Home, PageNotFound, Recovery, Admin} from '@/pages';
+import {Activation, Admin, Course, Home, PageNotFound, Recovery} from '@/pages';
 
 
 const modals = {

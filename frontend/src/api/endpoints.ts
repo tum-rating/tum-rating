@@ -19,7 +19,7 @@ const auth: AuthEndpoints = {
     signin: authBase + '/signin',
     activate: authBase + '/activate',
     recovery: authBase + '/recovery',
-    user: authBase + '/users/me',
+    user: baseApiUrl + '/users/me',
 };
 
 type ReviewsEndpoints = {
@@ -35,7 +35,7 @@ type ReviewsEndpoints = {
 
 const reviews: ReviewsEndpoints = {
     base: reviewsBase,
-    getAllReviews: reviewsBase,
+    getAllReviews: reviewsBase ,
     postReviewProposal: baseApiUrl + '/review-proposals',
     getSpecificReview: (id: string) => `${reviewsBase}/${id}`,
     postSpecificReview: (courseId: string, userId: string) => `${reviewsBase}/${courseId}/user/${userId}`,
@@ -47,11 +47,15 @@ const reviews: ReviewsEndpoints = {
 type AdminEndpoints = {
     getAllUsers: string;
     getAllProposals: string;
+    acceptProposal: (proposalId: string) => string;
+    removeProposal: (proposalId: string) => string;
 };
 
 const admin: AdminEndpoints = {
-    getAllUsers: baseApiUrl + '/admin/users',
-    getAllProposals: baseApiUrl + '/admin/proposals',
+    getAllUsers: baseApiUrl + '/users',
+    getAllProposals: baseApiUrl + '/review-proposals',
+    acceptProposal: (proposalId: string) => `${baseApiUrl}/review-proposals/${proposalId}/accept`,
+    removeProposal: (proposalId: string) => `${baseApiUrl}/review-proposals/${proposalId}`,
 };
 
 export const endpoints = {

@@ -43,6 +43,8 @@ export function useSignIn() {
             notifications.show({
                 message: errorMessage,
                 color: 'red',
+                autoClose: 10000,
+                withCloseButton: true,
                 icon: <IconX />,
             });
         },

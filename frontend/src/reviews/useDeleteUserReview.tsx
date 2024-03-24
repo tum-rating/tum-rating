@@ -1,10 +1,9 @@
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
-import { useMutation } from '@tanstack/react-query';
 
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
-import { endpoints } from '@/api';
+import {endpoints, useMutationWithAuth} from '@/api';
 import { User } from '@/auth/useUser.tsx';
 import { queryClient } from '@/react-query/client.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
@@ -36,7 +35,7 @@ export interface UserAddReviewInput {
 
 export function useDeleteUserReview(courseId: string, type: 'POST' | 'PATCH'): any {
     const user = userLocalStorage.getUser();
-    return useMutation({
+    return useMutationWithAuth({
         mutationFn: async (newReview: UserAddReviewInput) => deleteUserReview(user, newReview, courseId, type),
         onSuccess: () => {
             notifications.show({

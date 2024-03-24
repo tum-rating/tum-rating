@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-
-
 import * as userLocalStorage from './user.localstore.ts';
 
 import { endpoints } from '@/api';
+import {handleAuthErrors} from "@/api/handleErrors.tsx";
+import {useSignOut} from "@/auth/useSignOut.tsx";
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
@@ -35,21 +35,26 @@ interface IUseUser {
 }
 
 export function useUser(): IUseUser {
-    const { data: user } = useQuery({
+    const signOut = useSignOut(); // get the signOut function
+    const { data: user, error, isError }  = useQuery({
         queryKey: [QUERY_KEY.user],
         queryFn: async () => getUser(user),
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
         initialData: userLocalStorage.getUser(),
+        refetchIntervalInBackground: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false
     });
 
     useEffect(() => {
+        if (isError) {
+            handleAuthErrors({ error, signOut }); // handle the error
+        }
         if (!user) userLocalStorage.removeUser();
         else {
             userLocalStorage.saveUser(user);
         }
-    }, [user]);
+    }, [user, isError, error]);
 
     return {
         user: user ?? null,
