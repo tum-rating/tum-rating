@@ -14,11 +14,13 @@ interface MailRecipient {
 interface EmailTemplates {
     activation: string;
     passwordRecovery: string;
+    emailAlreadyExists: string;
 }
 
 const emailTemplatesDir = '../../../assets/mail-templates';
 const emailActivationTemplateFile = 'activation.html';
 const emailRecoveryTemplateFile = 'recovery.html';
+const emailEmailAlreadyExistsTemplateFile = 'email-already-exists.html';
 
 @Injectable()
 export class MailerService {
@@ -41,12 +43,12 @@ export class MailerService {
         this._templates = this._initTemplates();
     }
 
-    public async send(to: MailRecipient[], subject: string, html: string, text?: string) {
+    public async send(to: MailRecipient, subject: string, html: string, text?: string) {
         this._logger.debug('Sending email to %o, subject %s', to, subject);
 
         await this._transporter.sendMail({
             from: this._sender,
-            to: this._formatRecipients(to),
+            to: this._formatRecipient(to),
             subject,
             html: html,
             headers: {
@@ -58,44 +60,38 @@ export class MailerService {
         this._logger.debug('Successfuly sent email to %o, subject %s', to, subject);
     }
 
-    private _formatRecipients(recipients: MailRecipient[]) {
-        return recipients.map((recipient) => `${recipient.name ? recipient.name.concat(' ') : ''}<${recipient.email}>`).join(',');
+    public async sendMany(to: MailRecipient[], subject: string, html: string, text?: string) {
+        this._logger.debug('Sending email to %o, subject %s', to, subject);
+
+        for (const recipient of to) {
+            await this.send(recipient, subject, html, text);
+        }
+
+        this._logger.debug('Successfuly sent email to %o, subject %s', to, subject);
     }
 
-    private _initTemplates(): EmailTemplates {
-        const activationTemplateFilePath = join(__dirname, emailTemplatesDir, emailActivationTemplateFile);
-        const activationEmailTemplate = fs.readFileSync(activationTemplateFilePath, 'utf8');
-
-        const passwordRecoveryTemplateFilePath = join(__dirname, emailTemplatesDir, emailRecoveryTemplateFile);
-        const passwordRecoveryEmailTemplate = fs.readFileSync(passwordRecoveryTemplateFilePath, 'utf8');
-
-        return {
-            activation: activationEmailTemplate,
-            passwordRecovery: passwordRecoveryEmailTemplate
-        };
-    }
-
-
-    public async sendEmailActivationEmail(to: MailRecipient[], activationToken: string) {
+    public async sendEmailActivationEmail(to: MailRecipient, activationToken: string) {
         const activationLink = `${this._configService.getOrThrow('webapp.url')}/auth/activate?token=${activationToken}`;
-        const username = to[0].name || 'User';
+        const username = to.name || 'User';
 
-        const processedEmailTemplate = this._templates.activation
-            .replace(/\[Username\]/g, username)
-            .replace(/\[ActivationLink\]/g, activationLink);
+        const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.activation, {
+            Username: username,
+            ActivationLink: activationLink
+        });
 
         return this.send(to, 'Activate your account', processedEmailTemplate);
     }
 
-    public async sendPasswordRecoveryEmail(to: MailRecipient[], recoveryToken: string) {
+    public async sendPasswordRecoveryEmail(to: MailRecipient, recoveryToken: string) {
         const passwordResetLink = `${this._configService.getOrThrow('webapp.url')}/auth/recovery?token=${recoveryToken}`;
         const username = to[0].name || 'User';
         const email = to[0].email || 'Email';
 
-        const processedEmailTemplate = this._templates.passwordRecovery
-            .replace(/\[Username\]/g, username)
-            .replace(/\[PasswordResetLink\]/g, passwordResetLink)
-            .replace(/\[Email\]/g, email);
+        const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.passwordRecovery, {
+            Username: username,
+            PasswordResetLink: passwordResetLink,
+            Email: email
+        });
 
         return this.send(to, 'Password recovery', processedEmailTemplate);
     }
@@ -107,6 +103,44 @@ export class MailerService {
         const text = 'Possible duplicates:\n'
             + possibleDuplicates.map(duplicate => `${duplicate.id}, ${duplicate.email}`).join(';');
 
-        await this.send(toFormatted, 'TUM-RATING ADMIN ALERT', null, text);
+        
+        await this.sendMany(toFormatted, 'TUM-RATING ADMIN ALERT', null, text);
+    }
+
+    public async sendEmailAlreadyExists(to: MailRecipient, username: string) {
+        const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.emailAlreadyExists, {
+            Username: username,
+            Email: to.email,
+            RecoveryLink: `${this._configService.getOrThrow('webapp.url')}#modal=forgot-password`
+        });
+
+        return this.send(to, 'Email is already registered', processedEmailTemplate);
+    }
+
+    private _formatRecipient(recipient: MailRecipient) {
+        return `${recipient.name ? recipient.name.concat(' ') : ''}<${recipient.email}>`;
+    }
+
+    private _initTemplates(): EmailTemplates {
+        const activationTemplateFilePath = join(__dirname, emailTemplatesDir, emailActivationTemplateFile);
+        const activationEmailTemplate = fs.readFileSync(activationTemplateFilePath, 'utf8');
+
+        const passwordRecoveryTemplateFilePath = join(__dirname, emailTemplatesDir, emailRecoveryTemplateFile);
+        const passwordRecoveryEmailTemplate = fs.readFileSync(passwordRecoveryTemplateFilePath, 'utf8');
+
+        const emailAlreadyExistsTemplateFilePath = join(__dirname, emailTemplatesDir, emailEmailAlreadyExistsTemplateFile);
+        const emailAlreadyExistsEmailTemplate = fs.readFileSync(emailAlreadyExistsTemplateFilePath, 'utf8');
+
+        return {
+            activation: activationEmailTemplate,
+            passwordRecovery: passwordRecoveryEmailTemplate,
+            emailAlreadyExists: emailAlreadyExistsEmailTemplate
+        };
+    }
+
+    private _injectVariablesToTemplate(template: string, variables: Record<string, string>): string {
+        return Object.entries(variables).reduce((acc, [key, value]) => {
+            return acc.replace(new RegExp(`\\[${key}\\]`, 'g'), value);
+        }, template);
     }
 }
