@@ -1,11 +1,9 @@
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
-import { useMutation } from '@tanstack/react-query';
 
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
-import { endpoints } from '@/api';
-// import { QUERY_KEY } from '@/constants/queryKeys.ts';
+import {endpoints, useMutationWithAuth} from '@/api';
 import { User } from '@/auth/useUser.tsx';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
@@ -44,12 +42,12 @@ export interface ReviewInput {
 export function useAddReview(): any {
     const user = userLocalStorage.getUser();
     // const queryClient = useQueryClient();
-    return useMutation({
+    return useMutationWithAuth({
         mutationFn: async (newReview: ReviewInput) => addReview(user, newReview),
         onSuccess: () => {
             notifications.show({
                 title: 'Success',
-                message: 'Course added!',
+                message: 'Review proposal has been added successfully',
                 color: 'green',
                 icon: <IconCheck />,
             });

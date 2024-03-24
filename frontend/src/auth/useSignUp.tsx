@@ -15,6 +15,7 @@ async function signUp({ email, password, username }: RegisterInput): Promise<{ s
     });
     if (!response.ok) {
         const errorData = await response.json();
+        console.log(errorData)
         throw new ResponseError(errorData.message, response);
     }
     return { success: true };
@@ -40,6 +41,9 @@ export function useSignUp() {
             const errorMessage = error instanceof ResponseError ? error.message : 'Ops.. Error on sign up. Try again!';
             notifications.show({
                 message: errorMessage,
+                withCloseButton: true,
+                autoClose: 10000,
+                title: 'Error',
                 color: 'red',
                 icon: <IconX />,
             });

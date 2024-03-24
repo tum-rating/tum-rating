@@ -29,7 +29,6 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
             email: '',
             username: '',
             password: '',
-            terms: true,
         },
     });
 
@@ -53,7 +52,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
                 <LoadingOverlay visible={signInLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
                 <form onSubmit={form.onSubmit((e) => handleSubmit(e))}>
                     <Stack>
-                        <TextInput leftSection={<IconAt size="1.1rem" />} data-testid="cypress-login-email-input" required label="Email" placeholder="Email" {...form.getInputProps('email')} />
+                        <TextInput type="email" leftSection={<IconAt size="1.1rem" />} data-testid="cypress-login-email-input" required label="Email" placeholder="Email" {...form.getInputProps('email')} />
                         <PasswordInput leftSection={<IconLock size="1.1rem" />} data-testid="cypress-login-password-input" autoComplete="on" required label="Password" placeholder="Password" {...form.getInputProps('password')} />
                         <Group justify="space-between">
                             <Anchor

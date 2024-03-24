@@ -1,4 +1,14 @@
-import { Button, Container, LoadingOverlay, Select, Stack, TextInput, Text } from '@mantine/core';
+import {
+    Button,
+    Container,
+    LoadingOverlay,
+    Select,
+    Stack,
+    TextInput,
+    Text,
+    Center,
+    BackgroundImage, Overlay
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
 import { nanoid } from 'nanoid';
@@ -7,9 +17,9 @@ import { useEffect } from 'react';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { ReviewInput, useAddReview } from '@/reviews/useAddReview.tsx';
 
-const openAddCourseModal = ({ courseId, ...props }) => {
+const openAddCourseModal = ({ ...props }) => {
     modals.openContextModal({
-        ...contextModalConfig('addCourse', <Text fw={600}>Add New Course</Text>),
+        ...contextModalConfig('addCourse', <Text fw={600}>Add Course Proposal</Text>),
         ...props,
     });
 };
@@ -45,8 +55,19 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
                     <TextInput data-testid="cypress-add-new-course-professor-input" required label="Professor" placeholder="Professor" value={form.values.professor} onChange={(event) => form.setFieldValue('professor', event.currentTarget.value)} radius="md" />
                     <Select data-testid="cypress-add-new-course-semester-select" label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={[{ value: '2023 S', label: '2023 S' }]} />
                     <Button mt="xs" type="submit" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
-                        Add New Course
+                        Add Course Proposal
                     </Button>
+                    <BackgroundImage
+                        src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-6.png"
+                        radius="md"
+                        pos="relative"
+                    >
+                        <Center p="md">
+                            <Text c="white" fw={800} pos='relative' style={{zIndex: 5}}>
+                                Your course proposal will be reviewed in 24 hours. Thank you for your contribution!
+                            </Text>
+                        </Center>
+                    </BackgroundImage>
                 </Stack>
             </form>
         </Container>
