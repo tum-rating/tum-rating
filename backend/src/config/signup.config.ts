@@ -1,7 +1,9 @@
 import { registerAs } from '@nestjs/config';
+import { parseStringToArray } from 'src/utils/parsers/parseStringToArray';
 
 export default registerAs('signup', () => {
-    const acceptedEmailDomains = process.env.ACCEPTED_EMAILS_DOMAINS ?? process.env.ACCEPTED_EMAILS_DOMAINS.split(',');
+    const acceptedEmailDomains = parseStringToArray(process.env.ACCEPTED_EMAILS_DOMAINS);
+
     return {
         acceptedEmailDomains,
     };

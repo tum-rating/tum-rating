@@ -1,7 +1,8 @@
 import { registerAs } from '@nestjs/config';
+import { parseStringToArray } from 'src/utils/parsers/parseStringToArray';
 
 export default registerAs('mailer', () => {
-    const adminEmails = process.env.MAILER_ADMIN_EMAILS.split(',');
+    const adminEmails = parseStringToArray(process.env.MAILER_ADMIN_EMAILS);
 
     return {
         host: process.env.MAILER_HOST,
