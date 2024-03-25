@@ -68,7 +68,7 @@ export class AuthControllerV1 {
 
             const activationToken = await this._jwtService.signJWTActivate(createdUser.id);
 
-            await this._mailerService.sendEmailActivationEmail([{ email: body.email, name: body.username }], activationToken);
+            await this._mailerService.sendEmailActivationEmail({ email: body.email, name: body.username }, activationToken);
 
             this._userService.getUsersWithMatchingEmailSuffix(body.email)
                 .then(possibleDuplicates => {
@@ -93,12 +93,24 @@ export class AuthControllerV1 {
                     errorMessage = 'Email already exists';
 
                     const user = await this._userService.getUserByEmail(body.email);
+
+                    if (!user) {
+                        this._logger.error('User not found after duplicate email error %s', body.email);
+                        throw new InternalServerErrorException();
+                    }
+
                     if (!user.isEmailActivated) {
                         this._logger.info('Email already exist, but is not activated, sending activation for %s', user.email);
 
                         const activationToken = await this._jwtService.signJWTActivate(user.id);
-                        await this._mailerService.sendEmailActivationEmail([{ email: body.email, name: body.username }], activationToken);
+                        await this._mailerService.sendEmailActivationEmail({ email: body.email, name: body.username }, activationToken);
+                    } else {
+                        this._logger.info('Email already exist, and is activated, sending already exist email for %s', user.email);
+
+                        await this._mailerService.sendEmailAlreadyExists({ email: user.email, name: user.username }, user.username);
                     }
+
+                    return;
                 }
                 else if (Object.keys(error.keyPattern).includes('username')) errorMessage = 'Username already exists';
 
@@ -133,7 +145,7 @@ export class AuthControllerV1 {
             this._logger.warn('Sign in request fail, user email is not activated for %s', body.email);
             const activationToken = await this._jwtService.signJWTActivate(databaseUser.id);
 
-            await this._mailerService.sendEmailActivationEmail([{ email: databaseUser.email, name: databaseUser.username }], activationToken);
+            await this._mailerService.sendEmailActivationEmail({ email: databaseUser.email, name: databaseUser.username }, activationToken);
 
             // dont reveal email confirmation with specific message
             throw new UnauthorizedException();
@@ -211,7 +223,7 @@ export class AuthControllerV1 {
 
             const recoveryToken = await this._jwtService.signJWTRecovery(user.id);
 
-            await this._mailerService.sendPasswordRecoveryEmail([{ email: user.email, name: user.username }], recoveryToken);
+            await this._mailerService.sendPasswordRecoveryEmail({ email: user.email, name: user.username }, recoveryToken);
             this._logger.info('Succesfully send recovery email to %s', user.email);
             return;
         }
