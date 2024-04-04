@@ -1,14 +1,13 @@
-import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
-import { Logger } from 'nestjs-pino';
+import { ExecutionContext, ForbiddenException } from '@nestjs/common';
+import { PinoLogger } from 'nestjs-pino';
 
-import { USER_ID, USER_ROLE } from 'src/utils/headers/context.headers';
+import { USER_ID } from 'src/utils/headers/context.headers';
 import { UserService } from 'src/modules/user/user.service';
-import { UserRole } from 'src/utils/jwt/jwt.interfaces';
 
 export const validateBannedUsersGuardStep = async (
     context: ExecutionContext,
     userService: UserService,
-    logger: Logger,
+    logger: PinoLogger,
 ) => {
     const request = context.switchToHttp().getRequest();
 
@@ -18,6 +17,6 @@ export const validateBannedUsersGuardStep = async (
 
     if (isBanned) {
         logger.warn('Banned user tried to access service: %s', userId);
-        throw new UnauthorizedException();
+        throw new ForbiddenException();
     }
 };

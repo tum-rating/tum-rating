@@ -1,5 +1,5 @@
 import { ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
-import { Logger } from 'nestjs-pino';
+import { PinoLogger } from 'nestjs-pino';
 
 import { JWTService } from 'src/utils/jwt/jwt.service';
 import { USER_ID, USER_ROLE } from 'src/utils/headers/context.headers';
@@ -14,8 +14,10 @@ export class AdminGuard {
     constructor(
         protected readonly _jwtService: JWTService,
         protected readonly _userService: UserService,
-        protected readonly _logger: Logger,
-    ) {}
+        protected readonly _logger: PinoLogger,
+    ) {
+        this._logger.setContext(AdminGuard.name);
+    }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         await validateJWTGuardStep(context, this._jwtService);

@@ -7,6 +7,7 @@ import { USER_ID } from 'src/utils/headers/context.headers';
 import { AdminGuard } from 'src/common/guards/admin.guard';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
+import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
 
 import { ReviewProposalService } from './reviewProposal.service';
 import { CreateReviewProposalRequestDto, CreateReviewProposalRequestSchema } from './dto/CreateReviewProposalRequest.dto';
@@ -37,7 +38,7 @@ export class ReviewProposalControllerV1 {
     @ApiBearerAuth()
     @UseGuards(AdminGuard)
     @Get('/:id')
-    public async getReviewProposalById(@Param('id') id: string) {
+    public async getReviewProposalById(@Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string) {
         this._logger.info('Get review proposal with with id: %s', id);
 
         const review = await this._reviewProposalService.getReviewProposalsById(id);
@@ -84,7 +85,7 @@ export class ReviewProposalControllerV1 {
     })
     @UseGuards(AdminGuard)
     @Post('/:id/accept')
-    public async acceptReviewProposal(@Headers(USER_ID) userId: ObjectId, @Param('id') id: string) {
+    public async acceptReviewProposal(@Headers(USER_ID) userId: ObjectId, @Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string) {
         this._logger.info('Accept review proposal with id %s requested by user %s', id, userId);
 
         const createdReview = await this._reviewProposalService.acceptReviewProposalAddingItToReviews(id);
@@ -103,7 +104,7 @@ export class ReviewProposalControllerV1 {
     @ApiBearerAuth()
     @UseGuards(AdminGuard)
     @Delete('/:id')
-    public async deleteReviewProposal(@Param('id') id: string) {
+    public async deleteReviewProposal(@Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string) {
         this._logger.info('Delete review proposal with with id: %s', id);
 
         const review = await this._reviewProposalService.deleteReviewProposal(id);
