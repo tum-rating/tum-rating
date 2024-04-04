@@ -11,6 +11,10 @@ export class UserRepository extends BaseRepository<User> {
         super(_userModel);
     }
 
+    public getAll() {
+        return this._userModel.find().select(['-passwordHash', '-passwordSalt', '-emailDotSuffix']).exec();
+    }
+
     public getByEmail(email: string) {
         return this._userModel.findOne({ email }).exec();
     }

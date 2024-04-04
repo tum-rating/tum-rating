@@ -8,6 +8,7 @@ import { activateUserEmail as activateUserEmailDB, changeUserRole as changeUserR
 import { UserRole } from '@tum-rating/backend/src/database/documents/user';
 
 export const authUrl = baseUrlV1 + '/auth';
+export const userUrl = baseUrlV1 + '/users';
 
 export const signUpRequest = async (request: SignUpRequestDto) => {
     return axios.post(authUrl + '/signup', request);
@@ -69,4 +70,20 @@ export const signInAdminRequestMock = async (request?: Partial<SignUpRequestDto>
         },
         token: signInResponse2.data.token,
     };
+};
+
+export const banUser = async (adminToken: string, userId: string) => {
+    return await axios.post(userUrl + '/' + userId + '/ban', {}, {
+        headers: {
+            Authorization: 'Bearer ' + adminToken,
+        },
+    });
+};
+
+export const unbanUser = async (adminToken: string, userId: string) => {
+    return await axios.delete(userUrl + '/' + userId + '/ban', {
+        headers: {
+            Authorization: 'Bearer ' + adminToken,
+        },
+    });
 };
