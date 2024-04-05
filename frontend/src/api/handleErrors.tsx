@@ -1,3 +1,5 @@
+
+import {notifications} from "@mantine/notifications";
 import {IconInfoHexagon} from "@tabler/icons-react";
 
 import {useSignOutProps} from "@/auth/useSignOut.tsx";
@@ -9,13 +11,12 @@ interface handleAuthErrorsProps {
     callback?: () => void;
 }
 
-export function handleAuthErrors({error, signOut, callback = () => null}: handleAuthErrorsProps) {
+export function handleAuthErrors({error, callback = () => null}: handleAuthErrorsProps) {
     if (error instanceof ResponseError) {
         if (error.response.status === 401) {
-            //TODO o co chodzi z tym errorem
-            signOut({
+            notifications.show({
                 title: 'Error',
-                message: "do sprawdzenia",
+                message: "UNAUTHORIZED",
                 color: 'red',
                 withCloseButton: true,
                 className: 'sign-out-notification',
