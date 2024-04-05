@@ -24,7 +24,7 @@ async function addReview(user: User | null | undefined, newReview: ReviewInput):
             'Content-Type': 'application/json',
             Authorization: `Bearer ${user.token}`,
         },
-        body: JSON.stringify(convertToProperObject(newReview)),
+        body: JSON.stringify(convertToProperObject({...newReview,userId: user.user.id})),
     });
     if (!response.ok) throw new ResponseError('Failed on add review request', response);
 
