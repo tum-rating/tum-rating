@@ -16,6 +16,8 @@ import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
                     return {
                         pinoHttp: {
                             level: 'trace',
+                            ignorePaths: ['/health', '/metrics'],
+                            autoLogging: false,
                             stream: pretty.default({
                                 colorize: true,
                                 sync: true,
@@ -31,6 +33,7 @@ import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
                     pinoHttp: {
                         level: 'info',
                         stream: process.stdout,
+                        autoLogging: false,
                     },
                 };
             },

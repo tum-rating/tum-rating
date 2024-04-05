@@ -22,6 +22,7 @@ import { USER_ID } from 'src/utils/headers/context.headers';
 import { AdminGuard } from 'src/common/guards/admin.guard';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { OptionalIntPipeAtLeast1 } from 'src/common/pipes/OptionalIntAtLeast1.pipe';
+import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
 import { UserService } from 'src/modules/user/user.service';
 
 import { ReviewService } from './review.service';
@@ -30,7 +31,7 @@ import { AddUserReviewRequestDto, AddUserReviewRequestSchema } from './dto/AddUs
 import { PatchUserReviewRequestDto, PatchUserReviewRequestSchema } from './dto/PutUserReviewRequest.dto';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
-import { BadRequestError, AddUserReviewError, AddUserReviewNotFoundError, UserReviewSemesterMismatch, NotFoundError } from 'src/utils/errors/errors';
+import { AddUserReviewError, AddUserReviewNotFoundError, UserReviewSemesterMismatch, NotFoundError } from 'src/utils/errors/errors';
 
 @ApiTags('reviews')
 @Controller('/api/v1/reviews')
@@ -76,7 +77,7 @@ export class ReviewControllerV1 {
     }
 
     @Get('/:id')
-    public async getReviewById(@Param('id') id: string) {
+    public async getReviewById(@Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string) {
         this._logger.info('Get review with id: %s', id);
 
         const review = await this._reviewService.getReviewByIdWihtPopulatedReviewsUser(id);
