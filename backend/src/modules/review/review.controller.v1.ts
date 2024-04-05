@@ -24,6 +24,7 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 import { OptionalIntPipeAtLeast1 } from 'src/common/pipes/OptionalIntAtLeast1.pipe';
 import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
 import { UserService } from 'src/modules/user/user.service';
+import { User } from 'src/database/documents/user';
 
 import { ReviewService } from './review.service';
 import { CreateReviewRequestDto, CreateReviewRequestSchema } from './dto/CreateReviewRequest.dto';
@@ -156,11 +157,17 @@ export class ReviewControllerV1 {
             throw new ForbiddenException();
         }
 
-        const user = await this._userService.getUser(userId);
+        let user: WithId<User>;
 
-        if (!user) {
-            this._logger.warn('User %s does not exist', userId);
-            throw new NotFoundException();
+        try {
+            user = await this._userService.getUser(userId);
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                throw new NotFoundException(error.message);
+            }
+
+            this._logger.error('Get me request failed for user %s', userId);
+            throw error;
         }
 
         const reviewUser = {

@@ -33,13 +33,14 @@ export class UserService {
     }
 
     public async getUsers() {
-        return this._userRepository.findAll();
+        return this._userRepository.getAllAndOmit();
     }
 
     public async getUser(id: string) {
         const user = await this._userRepository.findOneById(id);
-        // if(!user)
-        //     throw {code: GenericErrorCodes.not_found};
+
+        if(!user)
+            throw new NotFoundError(`User with id ${id} not found`);
 
         return user;
     }
