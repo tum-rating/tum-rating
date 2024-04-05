@@ -5,8 +5,8 @@ import {useEffect, useState} from "react";
 
 import {columns} from "./columns.tsx"
 
-import {useCoursesProposals} from "@/admin/useCoursesProposals.ts";
 import {useAcceptProposal} from "@/admin/useAcceptProposal.ts";
+import {useCoursesProposals} from "@/admin/useCoursesProposals.ts";
 
 const AdminCoursesProposalsTable = () => {
     const {data, isFetching, refetch} = useCoursesProposals();
@@ -21,9 +21,7 @@ const AdminCoursesProposalsTable = () => {
             onAccept: (id) => {
                 acceptProposal(id);
             },
-            onRemove: (id) => {
-                console.log('remove', id);
-            },
+            onRemove: (id) => {},
         }))
     }, []);
 
