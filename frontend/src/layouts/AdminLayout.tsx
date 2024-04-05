@@ -18,10 +18,11 @@ const adminTabs = [
 
 export function AdminLayout() {
     const [opened, {toggle}] = useDisclosure();
-    const {error, isFetched, isFetchedAfterMount} = useCoursesProposals();
+    const {error, isFetched, isLoading, isError} = useCoursesProposals();
     const {user} = useUser();
     const navigate = useNavigate();
-    if (!user || isFetchedAfterMount) {
+    if(isLoading) return null
+    if ((!user || (isFetched && isError))) {
         return <PageAdminNotFound/>;
     } else if (!error && isFetched) {
         return (
@@ -43,7 +44,7 @@ export function AdminLayout() {
                                 >
                                     TUM-RATING ADMIN
                                 </Text>
-                            </Flex>lkk
+                            </Flex>
                             <Group ml="xl" gap={0} visibleFrom="sm">
                                 <Group gap={0}>
                                     {adminTabs.map((tab, index) => (
