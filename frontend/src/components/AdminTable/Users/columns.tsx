@@ -1,49 +1,70 @@
-import {ActionIcon, Center, Flex, Group, Pill} from '@mantine/core';
-import {IconCircleCheckFilled, IconClick, IconEdit} from "@tabler/icons-react";
+import {ActionIcon, Badge, Center, Group} from '@mantine/core';
+import {IconCircleCheckFilled, IconEdit} from "@tabler/icons-react";
 
 export const columns = [
     {
-        accessor: 'course',
-        title: 'Course name',
+        accessor: 'email',
+        title: 'Email',
         sortable: true,
+        ellipsis: true,
+width: 300,
+        resizable: true
     },
     {
-        accessor: 'offeredInSemesters',
-        title: 'Semester',
+        accessor: 'username',
+        title: 'Username',
         sortable: true,
-        render: (element) => {
-            return (
-                <>
-                    <Flex align="center" gap="xs">
-                        {element.offeredInSemesters.map((x) => <Pill>{x}</Pill>)}
-                    </Flex>
-                </>
-            )
-        },
+        ellipsis: true,
+        resizable: true
     },
     {
-        title: 'Lecturer',
-        accessor: 'otherLecturers',
+        accessor: 'id',
+        title: 'ID',
         sortable: true,
-        render: (element) => {
-            return (
-                <>
-                    <Flex align="center" gap="xs">
-                        {element.otherLecturers.map((x) => <Pill>{x}</Pill>)}
-                    </Flex>
-                </>
-            )
-        },
+        hidden: true,
+        resizable: true
+    },
+    {
+        accessor: 'role',
+        title: 'Role',
+        sortable: true,
+        render: ({role}) => {
+            if (role === 0) {
+                return <Badge color="blue">User</Badge>
+            }
+            if (role === 1) {
+                return <Badge color="gold">Admin</Badge>
+            }
+            return <Badge color="gray">{role}</Badge>
+        }
+    },
+    {
+        accessor: 'isBanned',
+        title: 'Banned',
+        sortable: true,
+        render: ({isBanned}) => {
+            return <Badge color={isBanned ? 'red' : 'green'}>{isBanned ? 'Yes' : 'No'}</Badge>
+        }
+        ,
+    },
+    {
+        accessor: 'isEmailActivated',
+        title: 'Activation',
+        sortable: true,
+        ellipsis: true,
+        render: ({isEmailActivated}) => {
+            return <Badge color={isEmailActivated ? 'green' : 'red'}>{isEmailActivated ? 'Yes' : 'No'}</Badge>
+        }
     },
     {
         accessor: 'actions',
         title: (
             <Center>
-                <IconClick size={16} />
+                <IconEdit size={16}/>
             </Center>
         ),
         width: '0%', // 👈 use minimal width
-        render: ()=> (
+        render: () => (
             <Group gap={4} justify="right" wrap="nowrap">
                 <ActionIcon
                     size="sm"
@@ -51,10 +72,9 @@ export const columns = [
                     color="green"
                     onClick={(e) => {
                         e.stopPropagation(); // 👈 prevent triggering the row click function
-
                     }}
                 >
-                    <IconCircleCheckFilled size={16} />
+                    <IconCircleCheckFilled size={16}/>
                 </ActionIcon>
                 <ActionIcon
                     size="sm"
@@ -63,10 +83,9 @@ export const columns = [
                         e.stopPropagation(); // 👈 prevent triggering the row click function
                     }}
                 >
-                    <IconEdit size={16} />
+                    <IconEdit size={16}/>
                 </ActionIcon>
             </Group>
         ),
     },
 ];
-

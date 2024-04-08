@@ -1,20 +1,29 @@
-import {Text, Flex} from "@mantine/core";
+import {Badge, Flex,  Skeleton, Text} from "@mantine/core";
 
-import {useUser} from "@/auth/useUser.tsx";
+import {useAllUsers} from "@/admin/useAllUsers.ts";
+import {useCoursesProposals} from "@/admin/useCoursesProposals.ts";
 
 const Admin = () => {
-    const user = useUser();
+    const {data:proposals, isFetching: isCoursesProposalsFetching} = useCoursesProposals();
+    const {data:users, isFetching: isUsersFetching} = useAllUsers();
     return (
         <Flex direction="column">
-            <h1>Admin Page</h1>
-                {Object.entries(user).map(([key, value]) => {
-                    return (
-                        <div key={key}>
-                            <Text>{key} :</Text>
-                            <Text maw={200} truncate>{JSON.stringify(value)}</Text>
-                        </div>
-                    );
-                })}
+            <h2>Admin Page</h2>
+            <Flex direction="column" gap="xs">
+                <Flex gap="xs">
+                    <Text>Active Proposals: </Text>
+                    {isCoursesProposalsFetching ? (
+                        <Skeleton width={30} height={20}/>
+                    ) : <Badge>{proposals?.length}</Badge>}
+
+                </Flex>   
+                <Flex gap="xs">
+                    <Text>Active Users: </Text>
+                    {isUsersFetching ? (
+                        <Skeleton width={30} height={20}/>
+                    ) : <Badge>{users?.users.length}</Badge>}
+                </Flex>
+            </Flex>
         </Flex>
     );
 }

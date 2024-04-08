@@ -1,4 +1,4 @@
-import {ActionIcon, Affix, Badge, Box, Button, Card, Code, Flex, rem, Text, Transition} from "@mantine/core";
+import {ActionIcon, Affix, Badge, Box, Button, Card,Flex, rem, Text, Transition} from "@mantine/core";
 import {IconRefresh} from "@tabler/icons-react";
 import {DataTable, DataTableProps} from "mantine-datatable";
 import {useEffect, useState} from "react";
@@ -8,30 +8,24 @@ import {columns} from "./columns.tsx"
 import {useAllUsers} from "@/admin/useAllUsers.ts";
 
 const AdminUsersTable = () => {
-    const {data, isFetching, refetch} = useAllUsers();
-    const [coursesProposals, setCoursesProposals] = useState([]);
+    const {data, isFetching, refetch, isFetched} = useAllUsers();
+    const [users, setUsers] = useState([]);
     const [selectedRecords, setSelectedRecords] = useState([]);
 
     useEffect(() => {
-        if (data) {
-            setCoursesProposals(data);
+        if (isFetched && data?.users){
+            console.log(1)
+            setUsers(data.users || []);
         }
     }, [data]);
 
 
     const rowExpansion: DataTableProps<any>['rowExpansion'] = {
         allowMultiple: true,
-        content: ({record}) => {
+        content: () => {
             return (
                 <Flex direction="column" p="xs" pl={rem(50)}>
-                    {Object.entries(record).map(([key, value]) => {
-                        return (
-                            <Flex key={key} align="center">
-                                <Code>{key} :</Code>
-                                <Code>{JSON.stringify(value)}</Code>
-                            </Flex>
-                        );
-                    })}
+                    witem
                 </Flex>
             )
         },
@@ -45,10 +39,10 @@ const AdminUsersTable = () => {
             <Flex justify="space-between" align="center" h={50} pr="xs">
                 <Flex gap="xs">
                     <Text size="sm" fw={500}>
-                        All Proposals:
+                        All Users:
                     </Text>
                     <Text size="sm" fw={800}>
-                        {coursesProposals.length}
+                        {users.length}
                     </Text>
                 </Flex>
                 <ActionIcon
@@ -70,7 +64,7 @@ const AdminUsersTable = () => {
                 pinLastColumn
                 columns={columns}
                 fetching={isFetching}
-                records={data}
+                records={users}
                 selectedRecords={selectedRecords}
                 onSelectedRecordsChange={setSelectedRecords}
                 rowExpansion={rowExpansion}
