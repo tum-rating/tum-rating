@@ -1,4 +1,4 @@
-import {ActionIcon, Affix, Badge, Box, Button, Card, Code, Flex, rem, Text, Transition} from "@mantine/core";
+import {ActionIcon, Affix, Badge, Box, Button, Card, Flex, Text, Transition} from "@mantine/core";
 import {IconRefresh} from "@tabler/icons-react";
 import {DataTable, DataTableProps} from "mantine-datatable";
 import {useEffect, useState} from "react";
@@ -7,6 +7,7 @@ import {columns} from "./columns.tsx"
 
 import {useAcceptProposal} from "@/admin/useAcceptProposal.ts";
 import {useCoursesProposals} from "@/admin/useCoursesProposals.ts";
+import {ProposalExpansion} from "@/components/AdminTable/CoursesProposals/ProposalExpansion.tsx";
 
 const AdminCoursesProposalsTable = () => {
     const {data, isFetching, refetch} = useCoursesProposals();
@@ -21,7 +22,8 @@ const AdminCoursesProposalsTable = () => {
             onAccept: (id) => {
                 acceptProposal(id);
             },
-            onRemove: (id) => {},
+            onRemove: (id) => {
+            },
         }))
     }, []);
 
@@ -35,21 +37,8 @@ const AdminCoursesProposalsTable = () => {
 
     const rowExpansion: DataTableProps<any>['rowExpansion'] = {
         allowMultiple: true,
-        content: ({record}) => {
-            return (
-                <Flex direction="column" p="xs" pl={rem(50)}>
-                    {Object.entries(record).map(([key, value]) => {
-                        return (
-                            <Flex key={key} align="center">
-                                <Code>{key} :</Code>
-                                <Code>{JSON.stringify(value)}</Code>
-                            </Flex>
-                        );
-                    })}
-                </Flex>
-            )
-        },
-    };
+        content: ({record}) => <ProposalExpansion proposal={record} editing={false}/>
+    }
 
     return (
         <Box h="calc(100vh - 240px)">
