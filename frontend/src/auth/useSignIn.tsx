@@ -5,12 +5,19 @@ import { useMutation } from '@tanstack/react-query';
 import { User } from './useUser.tsx';
 
 import { endpoints } from '@/api';
+import {USER_LOCAL_STORAGE_KEY} from "@/auth/user.localstore.ts";
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { queryClient } from '@/react-query/client.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 
-async function signIn({ email, password }: LoginInput): Promise<User> {
+interface LoggedUser {
+    token: string;
+    user: User;
+}
+
+
+async function signIn({ email, password }: LoginInput): Promise<LoggedUser> {
     const response = await fetch(endpoints.signin, {
         method: 'POST',
         headers: {
@@ -31,7 +38,9 @@ export function useSignIn() {
     return useMutation({
         mutationFn: async ({ email, password }: LoginInput) => await signIn({ email, password }),
         onSuccess: (data) => {
-            queryClient.setQueryData([QUERY_KEY.user], data);
+            queryClient.setQueryData([QUERY_KEY.user], data.token);
+            queryClient.setQueryData([QUERY_KEY.user_details], data.user);
+            localStorage.setItem(USER_LOCAL_STORAGE_KEY, data.token);
             notifications.show({
                 message: 'Sign in successful!',
                 color: 'green',

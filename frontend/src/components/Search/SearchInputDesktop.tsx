@@ -36,7 +36,7 @@ const SearchInputDesktop = () => {
     const [empty, setEmpty] = useState(false);
     const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 150);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const {user} = useUser()
+    const user = useUser()
     const smallerMode = useMediaQuery('(max-width: 48em)');
     const navigate = useNavigate();
     const location = useLocation();

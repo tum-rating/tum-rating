@@ -33,7 +33,7 @@ const HEADER_HEIGHT = 54;
 const MAX_SITE_WIDTH = 1320;
 
 export const MainLayout = ({ children }: PropsWithChildren) => {
-    const { user } = useUser();
+    const {data:user, isLoading}  = useUser();
     const navigate = useNavigate();
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -61,10 +61,10 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     <Flex gap={20}>
                         {!user ? (
                             <>
-                                <Button data-testid="cypress-open-sign-in-modal-btn" size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
+                                <Button loading={!user && isLoading} data-testid="cypress-open-sign-in-modal-btn" size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
                                     Sign In
                                 </Button>
-                                <Button
+                                <Button loading={!user && isLoading}
                                     data-testid="cypress-open-sign-up-modal-btn"
                                     size="xs"
                                     variant="primary-gradient"

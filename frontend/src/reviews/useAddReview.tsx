@@ -4,7 +4,6 @@ import { IconCheck } from '@tabler/icons-react';
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
 import {endpoints, useMutationWithAuth} from '@/api';
-import { User } from '@/auth/useUser.tsx';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 
@@ -16,15 +15,15 @@ const convertToProperObject = (obj: any) => {
     return newObj;
 };
 
-async function addReview(user: User | null | undefined, newReview: ReviewInput): Promise<string | null> {
-    if (!user) return null;
+async function addReview(token: string | null, newReview: ReviewInput): Promise<string | null> {
+    if (!token) return null;
     const response = await fetch(endpoints.postReviewProposal, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(convertToProperObject({...newReview,userId: user.user.id})),
+        body: JSON.stringify(convertToProperObject({...newReview})),
     });
     if (!response.ok) throw new ResponseError('Failed on add review request', response);
 
@@ -40,10 +39,9 @@ export interface ReviewInput {
 }
 
 export function useAddReview(): any {
-    const user = userLocalStorage.getUser();
-    // const queryClient = useQueryClient();
+    const userFromLocalStorage = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: async (newReview: ReviewInput) => addReview(user, newReview),
+        mutationFn: async (newReview: ReviewInput) => addReview(userFromLocalStorage, newReview),
         onSuccess: () => {
             notifications.show({
                 title: 'Success',
@@ -51,7 +49,6 @@ export function useAddReview(): any {
                 color: 'green',
                 icon: <IconCheck />,
             });
-            // queryClient.invalidateQueries([QUERY_KEY.reviews]);
         },
     });
 }

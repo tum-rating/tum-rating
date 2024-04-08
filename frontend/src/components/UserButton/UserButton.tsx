@@ -10,7 +10,7 @@ interface UserButtonProps {
 
 export function UserButton({ withoutDropdown = false }: UserButtonProps) {
     const signOut = useSignOut();
-    const { user } = useUser();
+    const {data: user} = useUser();
     if (!user) return null;
     if (withoutDropdown) {
         return (
@@ -21,10 +21,10 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                     </ThemeIcon>
                     <Stack gap={0}>
                         <Text truncate="end" size="sm" fw={500}>
-                            {user.user.username}
+                            {user.username}
                         </Text>
                         <Text truncate="end" c="dimmed" size="xs">
-                            {user.user.email}
+                            {user.email}
                         </Text>
                     </Stack>
                 </Group>
@@ -46,10 +46,10 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                             </ThemeIcon>
                             <Stack gap={0}>
                                 <Text w={120} truncate="end" size="sm" fw={500}>
-                                    {user.user.username}
+                                    {user.username}
                                 </Text>
                                 <Text w={120} truncate="end" c="dimmed" size="xs">
-                                    {user.user.email}
+                                    {user.email}
                                 </Text>
                             </Stack>
                         </Group>

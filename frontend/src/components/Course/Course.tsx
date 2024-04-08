@@ -19,7 +19,7 @@ import {getPath, Paths} from '@/routes/paths.ts';
 
 const Course = () => {
     const {id} = useParams();
-    const {user} = useUser();
+    const user = useUser();
     const navigate = useNavigate();
     const {data, isLoading, isError} = useDetailReview(id || '');
     useEffect(() => {
@@ -33,8 +33,8 @@ const Course = () => {
     let reviews = data?.reviews;
 
     if (user) {
-        userReview = reviews?.find((review) => review.userId === user.user.id);
-        reviews = reviews?.filter((review) => review.userId !== user.user.id);
+        userReview = reviews?.find((review) => review.userId === user.id);
+        reviews = reviews?.filter((review) => review.userId !== user.id);
     }
 
     return (

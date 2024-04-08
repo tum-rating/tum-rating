@@ -18,6 +18,7 @@ export function useSignOut(): IUseSignOut {
     const navigate = useNavigate();
     return useCallback((notification) => {
         queryClient.setQueryData([QUERY_KEY.user], null);
+        queryClient.setQueryData([QUERY_KEY.user_details], null);
         userLocalStorage.removeUser()
         notifications.show({
             message: 'Sign out successful!',
