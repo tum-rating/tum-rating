@@ -19,9 +19,9 @@ const adminTabs = [
 export function AdminLayout() {
     const [opened, {toggle}] = useDisclosure();
     const {error, isFetched, isLoading, isError} = useCoursesProposals();
-    const {user} = useUser();
+    const {data: user, isFetched: userFetched} = useUser();
     const navigate = useNavigate();
-    if(isLoading) return null
+    if (isLoading || !userFetched) return null
     if ((!user || (isFetched && isError))) {
         return <PageAdminNotFound/>;
     } else if (!error && isFetched) {
