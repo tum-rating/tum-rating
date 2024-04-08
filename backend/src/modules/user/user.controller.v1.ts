@@ -8,9 +8,12 @@ import { AdminGuard } from 'src/common/guards/admin.guard';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
 import { NotFoundError, DuplicateError } from 'src/utils/errors/errors';
+import { User } from 'src/database/documents/user';
 
 import { UserService } from './user.service';
-import { UserResponseDto } from './dto/UserResponse.dto';
+import { GetUserPublicResponseDto } from './dto/GetUserPublicResponse.dto';
+import { GetUserAdminResponseDto } from './dto/GetUserAdminResponse.dto';
+import { GetUsersAdminResponseDto } from './dto/GetUsersAdminResponse.dto';
 
 @ApiTags('users')
 @Controller('api/v1/users')
@@ -25,7 +28,7 @@ export class UserControllerV1 {
     @ApiBearerAuth()
     @ApiResponse({
         status: 200,
-        type: UserResponseDto,
+        type: GetUserPublicResponseDto,
     })
     @ApiParam({
         name: 'user-id',
@@ -34,14 +37,19 @@ export class UserControllerV1 {
     })
     @UseGuards(AuthGuard)
     @Get('/me')
-    public async getMe(@Headers(USER_ID) userId: string): Promise<UserResponseDto> {
+    public async getMe(@Headers(USER_ID) userId: string): Promise<GetUserPublicResponseDto> {
         this._logger.info('Get me request received from user %s', userId);
+        let user: WithId<User>;
 
-        const user = await this._userService.getUser(userId);
+        try {
+            user = await this._userService.getUser(userId);
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                throw new NotFoundException(error.message);
+            }
 
-        if (!user) {
-            this._logger.error('Get me request failed, not found user %s', userId);
-            throw new UnauthorizedException();
+            this._logger.error('Get me request failed for user %s', userId);
+            throw error;
         }
 
         this._logger.info('Get me request completed from user %s', userId);
@@ -58,16 +66,63 @@ export class UserControllerV1 {
         throw new NotImplementedException();
     }
 
+    @ApiBearerAuth('admin')
+    @ApiResponse({
+        status: 200,
+        type: GetUsersAdminResponseDto,
+    })
+    @UseGuards(AdminGuard)
     @Get()
-    public async getUsers() {
-        
+    public async getUsers(): Promise<GetUsersAdminResponseDto> {
+        this._logger.info('Get users request received');
+
+        const users = await this._userService.getUsers();
+
+        this._logger.info('Get users request completed');
+
+        return {
+            users
+        };
     }
 
+    @ApiBearerAuth('admin')
+    @ApiResponse({
+        status: 200,
+        type: GetUserAdminResponseDto,
+    })
+    @UseGuards(AdminGuard)
     @Get(':id')
-    public async getUser() {
-        throw new NotImplementedException();
+    public async getUser(
+        @Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) userId: string,
+    ): Promise<GetUserAdminResponseDto> {
+        this._logger.info('Get user request received for user %s', userId);
+
+        let user: WithId<User>;
+
+        try {
+            user = await this._userService.getUser(userId);
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                throw new NotFoundException(error.message);
+            }
+
+            this._logger.error('Get me request failed for user %s', userId);
+            throw error;
+        } 
+
+        this._logger.info('Get user request completed for user %s', userId);
+
+        return {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            isEmailActivated: user.isEmailActivated,
+            isBanned: user.isBanned,
+            role: user.role,
+        };
     }
 
+    @UseGuards(AdminGuard)
     @Delete(':id')
     public async deleteUser() {
         throw new NotImplementedException();

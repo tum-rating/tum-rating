@@ -1,7 +1,5 @@
 import { ClientSession, Model } from 'mongoose';
 
-export type CreateReturn<T> = T & { id: string };
-
 export abstract class BaseRepository<T> {
     private model: Model<T>;
 
@@ -15,15 +13,15 @@ export abstract class BaseRepository<T> {
         return savedModel;
     }
 
-    public async findOneById(id: string, session?: ClientSession): Promise<CreateReturn<T>> {
+    public async findOneById(id: string, session?: ClientSession): Promise<WithId<T>> {
         return this.model.findById(id, undefined, { session });
     }
 
-    public async findAll(): Promise<CreateReturn<T>[]> {
+    public async findAll(): Promise<WithId<T>[]> {
         return this.model.find();
     }
 
-    public async updateOneById(id: string, data: Partial<T>, session?: ClientSession): Promise<CreateReturn<T>> {
+    public async updateOneById(id: string, data: Partial<T>, session?: ClientSession): Promise<WithId<T>> {
         return this.model.findByIdAndUpdate(id, data, { new: true, session });
     }
 
