@@ -3,19 +3,18 @@ import {notifications} from '@mantine/notifications';
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
 import {endpoints, useMutationWithAuth} from '@/api';
-import {User} from '@/auth/useUser.tsx';
 import {queryClient} from '@/react-query/client.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 
-async function acceptProposal(user: User | null, proposalId: string): Promise<any> {
-    if (!user) return null;
+async function acceptProposal(token:string, proposalId: string): Promise<any> {
+    if (!token) return null;
     const endpoint = endpoints.acceptProposal(proposalId);
     const response = await fetch(endpoint, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${token}`,
         },
     });
     const responseData = await response.json();
@@ -25,9 +24,9 @@ async function acceptProposal(user: User | null, proposalId: string): Promise<an
 
 
 export function useAcceptProposal(): any {
-    const user = userLocalStorage.getUser();
+    const token = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: async (proposalId: string) => acceptProposal(user, proposalId),
+        mutationFn: async (proposalId: string) => acceptProposal(token, proposalId),
         onSuccess: () => {
             notifications.show({
                 title: 'Success',

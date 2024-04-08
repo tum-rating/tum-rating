@@ -19,7 +19,7 @@ import {getPath, Paths} from '@/routes/paths.ts';
 
 const Course = () => {
     const {id} = useParams();
-    const user = useUser();
+    const {data: user} = useUser();
     const navigate = useNavigate();
     const {data, isLoading, isError} = useDetailReview(id || '');
     useEffect(() => {

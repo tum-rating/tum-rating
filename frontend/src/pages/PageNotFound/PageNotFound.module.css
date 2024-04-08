@@ -5,7 +5,7 @@
 
 .whereAreYouGoing {
     transition: transform .1s;
-    animation: zoom-move 20s linear both;
+    animation: zoom-move 25s linear both;
 }
 
 @keyframes zoom-move {

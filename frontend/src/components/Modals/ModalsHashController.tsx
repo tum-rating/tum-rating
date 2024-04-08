@@ -22,9 +22,6 @@ export const ModalsHashController = (_: PropsWithChildren) => {
             navigate('#');
         },
         fullScreen: isMobile,
-        transitionProps:{
-            duration: 150,
-        },
         overlayProps: {
             backgroundOpacity: 0.55,
             blur: 3,

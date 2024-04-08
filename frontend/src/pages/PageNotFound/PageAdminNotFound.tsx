@@ -12,8 +12,8 @@ export function PageAdminNotFound() {
             <Center h="100%">
                 <Flex justify="center" align="center" direction="column" gap="xs">
                     <Image className={classes.whereAreYouGoing} src={wh}/>
-                    <Text c="dimmed" fw="500">
-                        Where are you going? 🤔
+                    <Text fw="500" style={{zIndex: 1}}>
+                        Admin? 🤔
                     </Text>
                     <Button onClick={() => navigate('/')}>Go back to home</Button>
                 </Flex>
