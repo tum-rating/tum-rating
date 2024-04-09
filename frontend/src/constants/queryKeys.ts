@@ -4,4 +4,5 @@ export const QUERY_KEY = {
     reviews: 'reviews',
     proposals: 'proposals',
     all_users: 'all_users',
+    admin_user_details: 'admin_user_details',
 };
