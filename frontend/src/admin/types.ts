@@ -3,9 +3,19 @@ type CourseProposal = {
     courseNumber: string,
     professor: string,
     otherLecturers: string[],
+    userId: string,
     course: string,
     offeredInSemesters: string[]
 }
 
+type User = {
+    id: string,
+    email: string,
+    username: string,
+    isEmailActivated: boolean,
+    isBanned: boolean,
+    role: number
+}
 
-export type { CourseProposal }
+
+export type { CourseProposal, User }
