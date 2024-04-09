@@ -1,7 +1,7 @@
 import {ActionIcon, Affix, Badge, Box, Button, Card,Flex, rem, Text, Transition} from "@mantine/core";
 import {IconRefresh} from "@tabler/icons-react";
 import {DataTable, DataTableProps} from "mantine-datatable";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 
 import {columns} from "./columns.tsx"
 
@@ -20,15 +20,17 @@ const AdminUsersTable = () => {
     }, [data]);
 
 
+    const rowExpansionContent = useMemo(() => {
+        return (
+            <Flex direction="column" p="xs" pl={rem(50)}>
+                witem
+            </Flex>
+        );
+    }, []);
+
     const rowExpansion: DataTableProps<any>['rowExpansion'] = {
         allowMultiple: true,
-        content: () => {
-            return (
-                <Flex direction="column" p="xs" pl={rem(50)}>
-                    witem
-                </Flex>
-            )
-        },
+        content: () => rowExpansionContent,
     };
 
     return (
