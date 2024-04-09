@@ -1,32 +1,48 @@
 import {ActionIcon, Affix, Badge, Box, Button, Card, Flex, Text, Transition} from "@mantine/core";
 import {IconRefresh} from "@tabler/icons-react";
-import {DataTable, DataTableProps} from "mantine-datatable";
+import sortBy from 'lodash/sortBy';
+import {DataTable, DataTableProps, DataTableSortStatus} from "mantine-datatable";
 import {useEffect, useState} from "react";
 
 import {columns} from "./columns.tsx"
 
+import {CourseProposal} from "@/admin/types.ts";
 import {useAcceptProposal} from "@/admin/useAcceptProposal.ts";
 import {useCoursesProposals} from "@/admin/useCoursesProposals.ts";
 import {ProposalExpansion} from "@/components/AdminTable/CoursesProposals/ProposalExpansion.tsx";
 
 const AdminCoursesProposalsTable = () => {
     const {data, isFetching, refetch} = useCoursesProposals();
-    const {mutate: acceptProposal} = useAcceptProposal();
+    const {mutateAsync: acceptProposal, isPending, isPaused, isSuccess} = useAcceptProposal();
     const [coursesProposals, setCoursesProposals] = useState([]);
     const [selectedRecords, setSelectedRecords] = useState([]);
     const [proposalsColumns, setProposalsColumns] = useState([]);
+    const [serverMutationProgressOpen, setServerMutationProgressOpen] = useState(false);
+    
+    const [sortStatus, setSortStatus] = useState<DataTableSortStatus<CourseProposal>>(null);
 
+    useEffect(() => {
+        if(data && sortStatus){
+
+            const sortedData = sortBy(data, item => {
+                const value = item[sortStatus.columnAccessor];
+                if (Array.isArray(value)) {
+                    // Change this line to your preferred array comparison logic
+                    return value.join('');
+                }
+                return value;
+            }) as CourseProposal[];
+            setCoursesProposals(sortStatus.direction === 'desc' ? sortedData.reverse() : sortedData);
+        }
+    }, [sortStatus]);
 
     useEffect(() => {
         setProposalsColumns(columns({
             onAccept: (id) => {
                 acceptProposal(id);
             },
-            onRemove: (id) => {
-            },
         }))
     }, []);
-
 
     useEffect(() => {
         if (data) {
@@ -63,7 +79,6 @@ const AdminCoursesProposalsTable = () => {
             </Flex>
             <DataTable
                 withTableBorder
-                highlightOnHover
                 borderRadius="sm"
                 withColumnBorders
                 idAccessor='_id'
@@ -72,10 +87,12 @@ const AdminCoursesProposalsTable = () => {
                 pinLastColumn
                 columns={proposalsColumns}
                 fetching={isFetching}
-                records={data}
+                records={coursesProposals}
                 selectedRecords={selectedRecords}
                 onSelectedRecordsChange={setSelectedRecords}
                 rowExpansion={rowExpansion}
+                sortStatus={sortStatus}
+                onSortStatusChange={setSortStatus}
             />
             <Affix position={{bottom: 20, right: "50%"}}>
                 <Transition transition="slide-up" duration={0} mounted={selectedRecords.length > 0}>
@@ -92,7 +109,13 @@ const AdminCoursesProposalsTable = () => {
 
                                     {selectedRecords.length}
                                 </Badge>
-                                <Button color="green" size="xs">
+                                <Button color="green" size="xs" onClick={()=>{
+                                    setServerMutationProgressOpen(true)
+                                    console.log(selectedRecords)
+                                    selectedRecords.forEach((record) => {
+                                        // acceptProposal(record._id)
+                                    })
+                                }}>
                                     Approve selected
                                 </Button>
                                 <Button size="xs" variant="danger">
