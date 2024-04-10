@@ -18,7 +18,7 @@ async function acceptProposal(token:string, proposalId: string): Promise<any> {
         },
     });
     const responseData = await response.json();
-    if (!response.ok) throw new ResponseError('Failed on get paginated reviews request', response);
+    if (!response.ok) throw new ResponseError(  "error", response);
     return responseData;
 }
 
@@ -28,11 +28,6 @@ export function useAcceptProposal(): any {
     return useMutationWithAuth({
         mutationFn: async (proposalId: string) => acceptProposal(token, proposalId),
         onSuccess: () => {
-            notifications.show({
-                title: 'Success',
-                message: 'Proposal accepted !',
-                color: 'green',
-            });
             queryClient.invalidateQueries({
                 queryKey: ['proposals'],
             });

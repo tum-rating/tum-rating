@@ -11,14 +11,19 @@ import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 
 async function getUser(token: string | null): Promise<User | null> {
-    if (!token) return null;
-    const response = await fetch(endpoints.user, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    if (!response.ok) throw new ResponseError('Failed on get user request', response);
-    return response.json();
+    try{
+        if (!token) return null;
+        const response = await fetch(endpoints.user, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (!response.ok) throw new ResponseError('Failed on get user request', response);
+        return response.json();
+    }
+    catch (error) {
+        throw error;
+    }
 }
 
 
@@ -37,17 +42,19 @@ export function useUser() {
         refetchIntervalInBackground: false,
         refetchOnMount: false,
         refetchOnReconnect: false,
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
+        retry: false,
     });
 
     const {isError, error} = reseponse;
 
     useEffect(() => {
+        console.log(isError)
         if (isError) {
             handleAuthErrors({error, signOut}); // handle the error
             userLocalStorage.removeUser(); // remove user from localStorage if there is an error
         }
-    }, [isError, error]);
+    }, [isError]);
 
     return reseponse
 }

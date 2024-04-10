@@ -18,6 +18,7 @@ export function handleAuthErrors({error, callback = () => null}: handleAuthError
                 title: 'Error',
                 message: "UNAUTHORIZED",
                 color: 'red',
+                id: 'unauthorized',
                 withCloseButton: true,
                 className: 'sign-out-notification',
                 icon: <IconInfoHexagon/>,
