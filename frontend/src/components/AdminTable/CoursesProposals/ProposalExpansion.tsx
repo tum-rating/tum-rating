@@ -17,7 +17,7 @@ const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExp
     const [editing, setEditing] = useState(IEditing);
     const [newLecturer, setNewLecturer] = useState('');
     return (
-        <Flex px="42" pt="lg" pb="xl" gap="md" style={{
+        <Flex  wrap={{base: "wrap", sm: "nowrap"}} px="42" pt="lg" pb="xl" gap="md" style={{
             background: "var(--striped-background)"
         }}>
             <Flex direction="column" w="80%" gap="xs">
@@ -33,7 +33,6 @@ const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExp
                                 <Button px={4} m={0} h={20} variant="subtle" fz="xs" fw="600"
                                         c="blue">{proposal.userId}</Button>
                             </UserInfoAction>
-
                         </Flex>
                         <Flex align="center" gap="3">
                             <Text style={{whiteSpace: "nowrap"}} fz="xs" fw="bold">Course ID: </Text>

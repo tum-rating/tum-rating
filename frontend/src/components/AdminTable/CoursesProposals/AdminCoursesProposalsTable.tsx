@@ -10,19 +10,25 @@ import {CourseProposal} from "@/admin/types.ts";
 import {useAcceptProposal} from "@/admin/useAcceptProposal.ts";
 import {useCoursesProposals} from "@/admin/useCoursesProposals.ts";
 import {ProposalExpansion} from "@/components/AdminTable/CoursesProposals/ProposalExpansion.tsx";
+import {
+    ServerMutationProgressDialog
+} from "@/components/AdminTable/Shared/ServerMutationProgressCard/ServerMutationProgressDialog.tsx";
 
 const AdminCoursesProposalsTable = () => {
     const {data, isFetching, refetch} = useCoursesProposals();
-    const {mutateAsync: acceptProposal, isPending, isPaused, isSuccess} = useAcceptProposal();
+    const acceptProposalMutation = useAcceptProposal();
+    const {mutateAsync: acceptProposal, status, variables} = acceptProposalMutation;
+    const [activeMutation, setActiveMutation] = useState<CourseProposal>(null);
+    const [activeMutations, setActiveMutations] = useState<any[]>([]);
     const [coursesProposals, setCoursesProposals] = useState([]);
     const [selectedRecords, setSelectedRecords] = useState([]);
     const [proposalsColumns, setProposalsColumns] = useState([]);
     const [serverMutationProgressOpen, setServerMutationProgressOpen] = useState(false);
-    
-    const [sortStatus, setSortStatus] = useState<DataTableSortStatus<CourseProposal>>(null);
 
+    const [sortStatus, setSortStatus] = useState<DataTableSortStatus<CourseProposal>>(null);
+    console.log(variables,status,"<f")
     useEffect(() => {
-        if(data && sortStatus){
+        if (data && sortStatus) {
 
             const sortedData = sortBy(data, item => {
                 const value = item[sortStatus.columnAccessor];
@@ -109,12 +115,15 @@ const AdminCoursesProposalsTable = () => {
 
                                     {selectedRecords.length}
                                 </Badge>
-                                <Button color="green" size="xs" onClick={()=>{
+                                <Button color="green" size="xs" onClick={async () => {
                                     setServerMutationProgressOpen(true)
+                                    setActiveMutations(selectedRecords.map((record) => ({...record, mutationType: "accept-proposal"})))
                                     console.log(selectedRecords)
-                                    selectedRecords.forEach((record) => {
-                                        // acceptProposal(record._id)
-                                    })
+                                    for (const record of selectedRecords) {
+                                        await acceptProposal(record._id).then(()=>{
+                                            console.log("done")
+                                        })
+                                    }
                                 }}>
                                     Approve selected
                                 </Button>
@@ -126,6 +135,24 @@ const AdminCoursesProposalsTable = () => {
                     )}
                 </Transition>
             </Affix>
+            <button onClick={() => {
+                setServerMutationProgressOpen(true)
+                setActiveMutations(selectedRecords.map((record) => ({...record, mutationType: "accept-proposal"})))
+            }}>no witam
+            </button>
+            <ServerMutationProgressDialog
+                open={serverMutationProgressOpen}
+                mutations={activeMutations}
+                activeMutation={acceptProposalMutation}
+                mutationInfoRenderer={(mutation) => (
+                    <Flex gap={1} direction="column">
+                        <Text maw="360px" truncate style={{whiteSpace: "nowrap"}} fz="sm" fw="bold">{mutation.course} </Text>
+                        <Badge radius="xs" size="xs" color={mutation.mutationType === "accept-proposal" ? "green" : "red"}>
+                            {mutation.mutationType}
+                        </Badge>
+                    </Flex>
+                )}
+            />
         </Box>
     );
 }
