@@ -5,7 +5,8 @@ type CourseProposal = {
     otherLecturers: string[],
     userId: string,
     course: string,
-    offeredInSemesters: string[]
+    offeredInSemesters: string[],
+    _id: string,
 }
 
 type User = {

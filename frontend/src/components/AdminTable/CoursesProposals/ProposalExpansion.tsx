@@ -2,10 +2,10 @@ import {Autocomplete, Button, Divider, Flex, Pill, PillsInput, Stack, Text, Text
 import {IconCircleCheck, IconEditCircle, IconTrashX} from "@tabler/icons-react";
 import {useState} from "react";
 
-
 import {CourseProposal} from "@/admin/types.ts";
+import {useAcceptProposal} from "@/admin/useAcceptProposal.ts";
+import {useRemoveProposal} from "@/admin/useRemoveProposal.ts";
 import {UserInfoAction} from "@/components/AdminTable/Shared/UserInfoAction";
-
 
 interface ProposalExpansionProps {
     proposal: CourseProposal;
@@ -16,6 +16,8 @@ const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExp
     const [proposal, setProposal] = useState(IProposal);
     const [editing, setEditing] = useState(IEditing);
     const [newLecturer, setNewLecturer] = useState('');
+    const {mutate: acceptProposal} = useAcceptProposal();
+    const {mutate: removeProposal} = useRemoveProposal();
     return (
         <Flex  wrap={{base: "wrap", sm: "nowrap"}} px="42" pt="lg" pb="xl" gap="md" style={{
             background: "var(--striped-background)"
@@ -113,8 +115,8 @@ const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExp
                 </Flex>
                 <Stack gap="xs">
                     <Divider variant="dashed" size="sm"/>
-                    <Button leftSection={<IconCircleCheck width={16}/>} color="green">Accept Proposal</Button>
-                    <Button leftSection={<IconTrashX width={16}/>} color="red">Remove Proposal</Button>
+                    <Button onClick={()=>{acceptProposal(proposal._id)}} leftSection={<IconCircleCheck width={16}/>} color="green">Accept Proposal</Button>
+                    <Button onClick={()=>{removeProposal(proposal._id)}} leftSection={<IconTrashX width={16}/>} color="red">Remove Proposal</Button>
                     <Button color="green" disabled leftSection={<IconEditCircle width={16}/>} onClick={() => {
                         if (editing) {
                             setEditing(false)
@@ -124,12 +126,6 @@ const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExp
                     }} variant="default">{!editing ? "Edit Proposal" : "Save Proposal"}</Button>
                 </Stack>
             </Flex>
-            {/*<Flex>*/}
-            {/*    <code>*/}
-            {/*        {JSON.stringify(proposal)}*/}
-            {/*    </code>*/}
-            {/*</Flex>*/}
-
         </Flex>
     );
 };
