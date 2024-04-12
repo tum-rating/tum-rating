@@ -16,6 +16,8 @@ const adminTabs = [
     {label: 'Users', link: getPath(Paths.adminUsers)},
 ];
 
+const HEADER_HEIGHT = 60;
+
 export function AdminLayout() {
     const [opened, {toggle}] = useDisclosure();
     const {error, isFetched, isLoading, isError} = useCoursesProposals();
@@ -27,9 +29,13 @@ export function AdminLayout() {
     } else if (!error && isFetched) {
         return (
             <AppShell
-                header={{height: 60}}
+                header={{height: HEADER_HEIGHT}}
                 navbar={{width: 300, breakpoint: 'sm', collapsed: {desktop: true, mobile: !opened}}}
                 padding="md"
+                style={{
+                    height: "100vh",
+                    overflow: "hidden"
+                }}
             >
                 <AppShell.Header>
                     <Group h="100%" px="md">
@@ -65,15 +71,13 @@ export function AdminLayout() {
                         </UnstyledButton>
                     ))}
                 </AppShell.Navbar>
-                <AppShell.Main style={{background: "var(--primary-light-gradient)"}}>
+                <AppShell.Main pt={HEADER_HEIGHT} style={{background: "var(--primary-light-gradient)"}}>
                     {
                         user ? (
                             <Outlet/>
                         ) : null
                     }
                 </AppShell.Main>
-
-
             </AppShell>
         );
     }

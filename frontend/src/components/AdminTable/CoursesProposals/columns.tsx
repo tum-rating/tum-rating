@@ -13,13 +13,14 @@ export const columns = ({onAccept}: CoursesProposalsTableColumnsProps) => [
     {
         accessor: 'course',
         title: 'Course name',
-        sortable: true,
-
+        noWrap: false,
+        width: "50%"
     },
     {
         accessor: 'offeredInSemesters',
         title: 'Semester',
         sortable: true,
+        ellipsis: true,
         render: (element: CourseProposal) => {
             return (
                 <>
@@ -34,6 +35,8 @@ export const columns = ({onAccept}: CoursesProposalsTableColumnsProps) => [
         title: 'Lecturer',
         accessor: 'otherLecturers',
         sortable: true,
+        resizable: true,
+        ellipsis: true,
         render: (element: CourseProposal) => {
             return (
                 <>

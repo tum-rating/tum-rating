@@ -7,11 +7,11 @@ import {queryClient} from '@/react-query/client.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 
-async function acceptProposal(token:string, proposalId: string): Promise<any> {
+async function removeProposal(token:string, proposalId: string): Promise<any> {
     if (!token) return null;
-    const endpoint = endpoints.acceptProposal(proposalId);
+    const endpoint = endpoints.removeProposal(proposalId);
     const response = await fetch(endpoint, {
-        method: "POST",
+        method: "DELETE",
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -22,7 +22,7 @@ async function acceptProposal(token:string, proposalId: string): Promise<any> {
         notifications.update({
             id: proposalId,
             title: 'Error',
-            message: 'Failed to accept proposal: ' + responseData.message,
+            message: 'Failed' + responseData.message,
             autoClose: false,
             withCloseButton: true,
             color: 'red',
@@ -35,16 +35,16 @@ async function acceptProposal(token:string, proposalId: string): Promise<any> {
 }
 
 
-export function useAcceptProposal(): any {
+export function useRemoveProposal(): any {
     const token = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: async (proposalId: string) => acceptProposal(token, proposalId),
+        mutationFn: async (proposalId: string) => removeProposal(token, proposalId),
         onMutate: (variables) => {
             notifications.show({
                 id: variables,
                 loading: true,
-                title: 'Accepting proposal',
-                message: 'Your proposal is being accepted',
+                title: 'Removing proposal',
+                message: 'Your proposal is being removed',
                 autoClose: false,
                 withCloseButton: false,
             })
@@ -57,7 +57,7 @@ export function useAcceptProposal(): any {
             notifications.update({
                 id: variables._id,
                 title: 'Success',
-                message: 'Proposal accepted',
+                message: 'Proposal removed',
                 autoClose: true,
                 withCloseButton: true,
                 color: 'green',
