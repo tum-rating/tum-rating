@@ -2,10 +2,10 @@ import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
-import { CreateCourseRequestDto } from '@tum-rating/backend/src/modules/review/dto/CreateReviewRequest.dto';
+import { CreateCourseRequestDto } from '@tum-rating/backend/src/modules/course/dto/CreateCourseRequest.dto';
 import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
 import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNumberOfLenght';
-import { reviewUrl } from '@tum-rating/backend/test/utils/api-client/review';
+import { courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
 
 beforeAll(async () => {
     await connectMongo();
@@ -15,8 +15,8 @@ afterAll(async () => {
     mongoose.disconnect();
 });
 
-describe('Create Course Review', () => {
-    it('should create course review', async () => {
+describe('Create Course', () => {
+    it('should create course', async () => {
         const signInResponse = await signInAdminRequestMock();
 
         const requestBody: CreateCourseRequestDto = {
@@ -27,7 +27,7 @@ describe('Create Course Review', () => {
             offeredInSemesters: ['SS 2023', 'WS 2023'],
         };
 
-        return supertest(reviewUrl)
+        return supertest(courseUrl)
             .post('/')
             .send(requestBody)
             .set('Authorization', 'Bearer ' + signInResponse.token)
@@ -48,7 +48,7 @@ describe('Create Course Review', () => {
             offeredInSemesters: ['SS 2023', 'WS 2023'],
         };
 
-        return supertest(reviewUrl)
+        return supertest(courseUrl)
             .post('/')
             .send(requestBody)
             .set('Authorization', 'Bearer ' + signInResponse.token)
