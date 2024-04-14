@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class AddUserReviewRequestDto {
+export class AddReviewRequestDto {
     @ApiProperty()
     howInterestingRating: number;
 
@@ -15,7 +15,7 @@ export class AddUserReviewRequestDto {
     semester: string;
 }
 
-export const AddUserReviewRequestSchema = Joi.object<AddUserReviewRequestDto>({
+export const AddReviewRequestSchema = Joi.object<AddReviewRequestDto>({
     howInterestingRating: Joi.number().required().min(0).max(5).precision(2),
     howEasyRating: Joi.number().required().min(0).max(5).precision(2),
     comment: Joi.string(),

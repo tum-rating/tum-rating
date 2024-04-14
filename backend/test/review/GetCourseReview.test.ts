@@ -40,7 +40,7 @@ describe('Get Course Review', () => {
             .expect((response: supertest.Response) => {
                 expect(response.body._id).toEqual(createdReview.id);
                 expect(response.body.courseId).toEqual(createdReview.courseId);
-                expect(response.body.course).toEqual(createdReview.course);
+                expect(response.body.course).toEqual(createdReview.name);
                 expect(response.body.professor).toEqual(createdReview.professor);
                 expect(response.body.courseNumber).toEqual(createdReview.courseNumber);
                 expect(response.body.reviews).toBeDefined();
@@ -50,11 +50,11 @@ describe('Get Course Review', () => {
         const signInResponse = await signInAdminRequestMock();
 
         const createdReview = await createCourseReviewMockRequest(signInResponse.token, {
-            course: faker.string.uuid(),
+            name: faker.string.uuid(),
         });
 
         return supertest(reviewUrl)
-            .get('?search=' + createdReview.course)
+            .get('?search=' + createdReview.name)
             .expect(200)
             .expect((response: supertest.Response) => {
                 expect(response.body).toHaveProperty('reviews');
@@ -67,11 +67,11 @@ describe('Get Course Review', () => {
         const signInResponse = await signInAdminRequestMock();
 
         const createdReview = await createCourseReviewMockRequest(signInResponse.token, {
-            course: faker.string.uuid(),
+            name: faker.string.uuid(),
         });
 
         return supertest(reviewUrl)
-            .get('?search=' + createdReview.course)
+            .get('?search=' + createdReview.name)
             .expect(200)
             .expect((response: supertest.Response) => {
                 expect(response.body).toHaveProperty('reviews');
@@ -111,15 +111,15 @@ describe('Get Course Review', () => {
         const signInResponse = await signInAdminRequestMock();
 
         const createdReview1 = await createCourseReviewMockRequest(signInResponse.token, {
-            course: title1,
+            name: title1,
         });
 
         const createdReview2 = await createCourseReviewMockRequest(signInResponse.token, {
-            course: title2,
+            name: title2,
         });
 
         const createdReview3 = await createCourseReviewMockRequest(signInResponse.token, {
-            course: title3,
+            name: title3,
         });
 
         return supertest(reviewUrl)
@@ -147,12 +147,12 @@ describe('Get Course Review', () => {
         const createdReviews = await Promise.all(
             titles.map((title) =>
                 createCourseReviewMockRequest(signInResponse.token, {
-                    course: title,
+                    name: title,
                 }),
             ),
         );
 
-        createdReviews.sort((a, b) => (a.course > b.course ? 1 : a.course < b.course ? -1 : 0));
+        createdReviews.sort((a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0));
 
         const paginationResponse = await supertest(reviewUrl)
             .get(`?search=${commonTitlePart}&page-size=5`)

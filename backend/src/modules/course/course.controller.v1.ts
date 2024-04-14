@@ -25,24 +25,26 @@ import { OptionalIntPipeAtLeast1 } from 'src/common/pipes/OptionalIntAtLeast1.pi
 import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
 import { UserService } from 'src/modules/user/user.service';
 import { User } from 'src/database/documents/user';
+import { Review } from 'src/database/documents/review';
 
-import { ReviewService } from './review.service';
-import { CreateReviewRequestDto, CreateReviewRequestSchema } from './dto/CreateReviewRequest.dto';
-import { AddUserReviewRequestDto, AddUserReviewRequestSchema } from './dto/AddUserReviewRequest.dto';
-import { PatchUserReviewRequestDto, PatchUserReviewRequestSchema } from './dto/PutUserReviewRequest.dto';
+import { CourseService } from './course.service';
+import { CreateCourseRequestDto, CreateCourseRequestSchema } from './dto/CreateCourseRequest.dto';
+import { AddReviewRequestDto, AddReviewRequestSchema } from './dto/AddReviewRequest.dto';
+import { PatchReviewRequestDto, PatchReviewRequestSchema } from './dto/PatchReviewRequest.dto';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
-import { AddUserReviewError, AddUserReviewNotFoundError, UserReviewSemesterMismatch, NotFoundError } from 'src/utils/errors/errors';
+import { CourseReviewSemesterMismatch, NotFoundError } from 'src/utils/errors/errors';
+import { CreateReviewType } from 'src/database/repositories/review.repository';
 
 @ApiTags('reviews')
 @Controller('/api/v1/reviews')
-export class ReviewControllerV1 {
+export class CourseControllerV1 {
     constructor(
-        private readonly _reviewService: ReviewService,
+        private readonly _courseService: CourseService,
         private readonly _userService: UserService,
         private readonly _logger: PinoLogger,
     ) {
-        this._logger.setContext(ReviewControllerV1.name);
+        this._logger.setContext(CourseControllerV1.name);
     }
 
     @Get()
@@ -61,51 +63,51 @@ export class ReviewControllerV1 {
         required: false,
         type: Number,
     })
-    public async getReviews(
+    public async getCourses(
         @Query('page-number', new JoiObjectSchemaPipe(OptionalIntPipeAtLeast1))
         pageNumber: number = 1,
         @Query('page-size', new JoiObjectSchemaPipe(OptionalIntPipeAtLeast1))
         pageSize: number = 100,
         @Query('search') search?: string,
     ) {
-        this._logger.info('Get reviews requested with pageNumber %s, pageSize %d and search %s', pageNumber, pageSize, search);
+        this._logger.info('Get courses requested with pageNumber %s, pageSize %d and search %s', pageNumber, pageSize, search);
 
-        const paginetedResults = await this._reviewService.getReviewsOverviewPaginated(pageNumber, pageSize, search);
+        const paginetedResults = await this._courseService.getCoursesOverviewPaginated(pageNumber, pageSize, search);
 
-        this._logger.info('Successfuly retrieved reviews with count %d', paginetedResults.reviews.length);
+        this._logger.info('Successfuly retrieved courses with count %d', paginetedResults.courses.length);
 
         return paginetedResults;
     }
 
     @Get('/:id')
-    public async getReviewById(@Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string) {
-        this._logger.info('Get review with id: %s', id);
+    public async getCourseById(@Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string) {
+        this._logger.info('Get course with id: %s', id);
 
-        const review = await this._reviewService.getReviewByIdWihtPopulatedReviewsUser(id);
+        const review = await this._courseService.getCourseByIdWihtPopulatedReviews(id);
 
-        this._logger.info('Successfuly retrieved with id: %s', review.id);
+        this._logger.info('Successfuly retrieved course with id: %s', review.id);
 
         return review;
     }
 
-    @Get('/:reviewId/user/me')
+    @Get('/:courseId/user/me')
     @UseGuards(AuthGuard)
-    public async getReviewUser(@Headers(USER_ID) userId: string, @Param('reviewId') reviewId: string) {
-        this._logger.info('Get review %s user %s', reviewId, userId);
+    public async getReview(@Headers(USER_ID) userId: string, @Param('courseId') courseId: string) {
+        this._logger.info('Get review %s user %s', courseId, userId);
 
         try {
-            const review = await this._reviewService.getReviewUser(reviewId, userId);
+            const course = await this._courseService.getReview(courseId, userId);
 
-            this._logger.info('Successfuly retrieved with id: %s', review.id);
+            this._logger.info('Successfuly retrieved with id: %s', course.id);
 
-            return review;
+            return course;
         } catch (error) {
             if (error instanceof NotFoundError) {
-                this._logger.debug('Review %s user %s not found', reviewId, userId);
+                this._logger.debug('Review %s user %s not found', courseId, userId);
                 throw new NotFoundException(error.message);
             }
 
-            this._logger.error('Failed to get review %s user %s: ', reviewId, userId, error);
+            this._logger.error('Failed to get course %s user %s: ', courseId, userId, error);
             throw error;
         }
     }
@@ -118,19 +120,19 @@ export class ReviewControllerV1 {
     })
     @Post()
     @UseGuards(AdminGuard)
-    public async createReview(
+    public async createCourse(
         @Headers(USER_ID) userId: string,
-        @Body(new JoiObjectSchemaPipe(CreateReviewRequestSchema))
-        body: CreateReviewRequestDto,
+        @Body(new JoiObjectSchemaPipe(CreateCourseRequestSchema))
+        body: CreateCourseRequestDto,
     ) {
-        this._logger.info('Create review request received for course: %s, professor: %s', body.course, body.professor);
+        this._logger.info('Create course request received for course: %s, professor: %s', body.name, body.professor);
 
-        const createdReview = await this._reviewService.createReview(body);
+        const createdCourse = await this._courseService.createCourse(body);
 
-        this._logger.info('Successfuly created review for course %s, %s', body.course, body.professor);
+        this._logger.info('Successfuly created course for course %s, %s', body.name, body.professor);
 
         return {
-            id: createdReview.id,
+            id: createdCourse.id,
         };
     }
 
@@ -141,16 +143,16 @@ export class ReviewControllerV1 {
         required: false,
         description: '(Leave empty. It will be extracted from JWT token)',
     })
-    @Post('/:review_id/user/:user_id')
+    @Post('/:course_id/user/:user_id')
     @UseGuards(AuthGuard)
-    public async addReviewUser(
+    public async addReview(
         @Headers(USER_ID) userId: string,
-        @Param('user_id') queryUserId: string,
-        @Param('review_id') reviewId: string,
-        @Body(new JoiObjectSchemaPipe(AddUserReviewRequestSchema))
-        body: AddUserReviewRequestDto,
+        @Param('user_id', new JoiObjectSchemaPipe(MongoIdPipe)) queryUserId: string,
+        @Param('course_id', new JoiObjectSchemaPipe(MongoIdPipe)) courseId: string,
+        @Body(new JoiObjectSchemaPipe(AddReviewRequestSchema))
+        body: AddReviewRequestDto,
     ) {
-        this._logger.info('Add review user: %s to review %s', userId, reviewId);
+        this._logger.info('Add review user: %s to course %s', userId, courseId);
 
         if (userId != queryUserId) {
             this._logger.warn('User id from jwt does not match one in query param');
@@ -170,50 +172,38 @@ export class ReviewControllerV1 {
             throw error;
         }
 
-        const reviewUser = {
+        const review = {
             ...body,
             userId: userId as unknown as ObjectId,
             userName: user.username,
-            reviewId: reviewId as unknown as ObjectId,
+            courseId: courseId as unknown as ObjectId,
         };
 
-        let createdReviewUser: any;
+        let createdReview: Review;
         try {
-            createdReviewUser = await this._reviewService.addReviewUser(reviewUser);
+            createdReview = await this._courseService.addReview(review);
         } catch (error: any) {
             if (error.code == ERROR_MONGO_DUPLICATE_CODE) {
-                this._logger.debug('User %s has already submitted a review for %s', userId, reviewId);
-                throw new ConflictException('User has already submitted a review, use put method to update');
+                this._logger.debug('User %s has already submitted a review for %s', userId, courseId);
+                throw new ConflictException('User has already submitted a review, use patch method to update');
             }
 
-            if (error instanceof AddUserReviewNotFoundError) {
-                this._logger.warn('Review not found, reverting unique user review, user: %s review: %s', userId, reviewId);
+            if (error instanceof CourseReviewSemesterMismatch) {
+                this._logger.debug('Add review error, semester mismatch course %s, semester %s', courseId, body.semester);
 
-                throw new NotFoundException('review not found');
-            }
-
-            if (error instanceof AddUserReviewError) {
-                this._logger.warn('Add review error, reverting unique user review, user: %s review: %s', userId, reviewId);
-
-                throw new InternalServerErrorException();
-            }
-
-            if (error instanceof UserReviewSemesterMismatch) {
-                this._logger.debug('Add review user error, semester mismatch review %s, semester %s', reviewId, body.semester);
-
-                throw new BadRequestException('semester');
+                throw new BadRequestException(error.message);
             }
 
             this._logger.error('User add review error', error);
             throw new InternalServerErrorException();
         }
 
-        await this._reviewService.updateReviewStats(reviewId);
+        await this._courseService.updateCourseStats(courseId);
 
-        this._logger.info('Successfully added review user: %s to review: %s', userId, reviewId);
+        this._logger.info('Successfully added review user: %s to review: %s', userId, courseId);
 
         return {
-            createdReviewUser,
+            createdReviewUser: createdReview,
         };
     }
 
@@ -230,21 +220,21 @@ export class ReviewControllerV1 {
         @Headers(USER_ID) userId: string,
         @Param('user_id') queryUserId: string,
         @Param('review_id') reviewId: string,
-        @Body(new JoiObjectSchemaPipe(PatchUserReviewRequestSchema))
-        body: PatchUserReviewRequestDto,
+        @Body(new JoiObjectSchemaPipe(PatchReviewRequestSchema))
+        body: PatchReviewRequestDto,
     ) {
         this._logger.info('Patch review user: %s to review %s', userId, reviewId);
 
         let updatedReview: any;
         try {
-            updatedReview = await this._reviewService.patchReviewUser(reviewId, userId, body);
+            updatedReview = await this._courseService.patchReview(reviewId, userId, body);
         } catch (error: any) {
             if (error instanceof NotFoundError) {
                 this._logger.warn('Review not found, user: %s review: %s, semester %s', userId, reviewId);
                 throw new NotFoundException('review not found');
             }
 
-            if (error instanceof UserReviewSemesterMismatch) {
+            if (error instanceof CourseReviewSemesterMismatch) {
                 this._logger.debug('Add review user error, semester mismatch review %s, semester %s', reviewId, body.semester);
 
                 throw new BadRequestException('semester');
@@ -254,7 +244,7 @@ export class ReviewControllerV1 {
             throw new InternalServerErrorException();
         }
 
-        await this._reviewService.updateReviewStats(reviewId);
+        await this._courseService.updateCourseStats(reviewId);
 
         this._logger.info('Successfully put review user: %s to review: %s', userId, reviewId);
 

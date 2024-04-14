@@ -38,7 +38,7 @@ describe('Accept Review Proposal', () => {
             .expect(200)
             .expect((response: supertest.Response) => {
                 expect(response.body.courseId).toEqual(createdReviewProposal.courseId);
-                expect(response.body.course).toEqual(createdReviewProposal.course);
+                expect(response.body.course).toEqual(createdReviewProposal.name);
                 expect(response.body.professor).toEqual(createdReviewProposal.professor);
                 expect(response.body.courseNumber).toEqual(createdReviewProposal.courseNumber);
                 expect(response.body.reviews).toBeDefined();
