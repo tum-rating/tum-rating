@@ -34,7 +34,7 @@ export class CourseRepository extends BaseRepository<Course> {
 
         return this._courseModel
             .find(query)
-            .sort({ course: 1 })
+            .sort({ name: 1 })
             .select('-reviews -__v')
             .skip(alignedPageNumber * pageSize)
             .limit(pageSize);

@@ -36,8 +36,8 @@ import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
 import { CourseReviewSemesterMismatch, NotFoundError } from 'src/utils/errors/errors';
 import { CreateReviewType } from 'src/database/repositories/review.repository';
 
-@ApiTags('reviews')
-@Controller('/api/v1/reviews')
+@ApiTags('courses')
+@Controller('/api/v1/courses')
 export class CourseControllerV1 {
     constructor(
         private readonly _courseService: CourseService,
@@ -214,28 +214,33 @@ export class CourseControllerV1 {
         required: false,
         description: '(Leave empty. It will be extracted from JWT token)',
     })
-    @Patch('/:review_id/user/:user_id')
+    @Patch('/:course_id/user/:user_id')
     @UseGuards(AuthGuard)
     public async patchUserReview(
         @Headers(USER_ID) userId: string,
         @Param('user_id') queryUserId: string,
-        @Param('review_id') reviewId: string,
+        @Param('course_id') courseId: string,
         @Body(new JoiObjectSchemaPipe(PatchReviewRequestSchema))
         body: PatchReviewRequestDto,
     ) {
-        this._logger.info('Patch review user: %s to review %s', userId, reviewId);
+        this._logger.info('Patch review user: %s to review %s', userId, courseId);
+
+        if (userId != queryUserId) {
+            this._logger.warn('User id %s from jwt does not match one in query param %s', userId, queryUserId);
+            throw new ForbiddenException();
+        }
 
         let updatedReview: any;
         try {
-            updatedReview = await this._courseService.patchReview(reviewId, userId, body);
+            updatedReview = await this._courseService.patchReview(courseId, userId, body);
         } catch (error: any) {
             if (error instanceof NotFoundError) {
-                this._logger.warn('Review not found, user: %s review: %s, semester %s', userId, reviewId);
+                this._logger.warn('Review not found, user: %s review: %s, semester %s', userId, courseId);
                 throw new NotFoundException('review not found');
             }
 
             if (error instanceof CourseReviewSemesterMismatch) {
-                this._logger.debug('Add review user error, semester mismatch review %s, semester %s', reviewId, body.semester);
+                this._logger.debug('Add review user error, semester mismatch review %s, semester %s', courseId, body.semester);
 
                 throw new BadRequestException('semester');
             }
@@ -244,9 +249,9 @@ export class CourseControllerV1 {
             throw new InternalServerErrorException();
         }
 
-        await this._courseService.updateCourseStats(reviewId);
+        await this._courseService.updateCourseStats(courseId);
 
-        this._logger.info('Successfully put review user: %s to review: %s', userId, reviewId);
+        this._logger.info('Successfully put review user: %s to review: %s', userId, courseId);
 
         return {
             updatedReview,

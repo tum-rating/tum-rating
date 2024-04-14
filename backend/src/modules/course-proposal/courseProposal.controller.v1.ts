@@ -12,8 +12,8 @@ import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
 import { CourseProposalService } from './courseProposal.service';
 import { CreateCourseProposalRequestDto, CreateCourseProposalRequestSchema } from './dto/CreateCourseProposalRequest.dto';
 
-@ApiTags('review-proposals')
-@Controller('/api/v1/review-proposals')
+@ApiTags('course-proposals')
+@Controller('/api/v1/course-proposals')
 export class CourseProposalControllerV1 {
     constructor(
         private readonly _courseProposalService: CourseProposalService,

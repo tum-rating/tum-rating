@@ -48,6 +48,6 @@ export type CourseDocument = Course & Document;
 
 export const CourseSchema = SchemaFactory.createForClass(Course);
 
-CourseSchema.index({ course: 'text', professor: 'text' });
-CourseSchema.index({ course: 1 });
-CourseSchema.index({ course: 1, professor: 1 }, { unique: true });
+CourseSchema.index({ name: 'text', professor: 'text' });
+CourseSchema.index({ name: 1 });
+CourseSchema.index({ name: 1, professor: 1 }, { unique: true });

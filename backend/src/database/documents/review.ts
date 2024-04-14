@@ -45,4 +45,4 @@ export type ReviewDocument = Review & Document;
 
 export const ReviewSchema = SchemaFactory.createForClass(Review);
 
-ReviewSchema.index({ reviewId: 1, userId: 1 }, { unique: true });
+ReviewSchema.index({ courseId: 1, userId: 1 }, { unique: true });
