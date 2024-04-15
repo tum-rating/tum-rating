@@ -1,26 +1,31 @@
-import {ActionIcon, Affix, Badge, Button, Card, Code, Flex, rem, Text, Transition} from "@mantine/core";
+import {ActionIcon, Code, Flex, rem, Text, Box} from "@mantine/core";
+import {useViewportSize} from "@mantine/hooks";
 import {IconRefresh} from "@tabler/icons-react";
 import {DataTable, DataTableProps} from "mantine-datatable";
 import {useEffect, useState} from "react";
 
 import {columns} from "./columns.tsx"
 
-import {useCoursesProposals} from "@/admin/useCoursesProposals.ts";
+import {Review} from "@/reviews/types.ts";
+import {usePaginatedReviews} from "@/reviews/usePaginatedReviews.tsx";
+
 
 const AdminCoursesTable = () => {
     // const {data, isFetching, refetch} = useCoursesProposals();
-    const data = [];
-    const isFetching = false;
-    const refetch = () => {};
-    const [coursesProposals, setCoursesProposals] = useState([]);
-    const [selectedRecords, setSelectedRecords] = useState([]);
+    const { data, fetchNextPage, isFetching,refetch } = usePaginatedReviews();
+    const { height } = useViewportSize();
+    const [records, setRecords] = useState<Review[]>([]);
 
     useEffect(() => {
         if (data) {
-            setCoursesProposals(data);
+            const newRecords = data.pages.map((v) => v.reviews.map((el) => el)).flat();
+            setRecords([...newRecords]);
         }
     }, [data]);
 
+    const loadMoreRecords = () => {
+        fetchNextPage().then(() => {});
+    };
 
     const rowExpansion: DataTableProps<any>['rowExpansion'] = {
         allowMultiple: true,
@@ -41,9 +46,9 @@ const AdminCoursesTable = () => {
     };
 
     return (
-        <div>
+        <Box h={height - 150}>
             <Text fw={600}>
-                Courses Proposals
+                Courses
             </Text>
             <Flex justify="space-between" align="center" h={50} pr="xs">
                 <Flex gap="xs">
@@ -51,7 +56,7 @@ const AdminCoursesTable = () => {
                         All Proposals:
                     </Text>
                     <Text size="sm" fw={800}>
-                        {coursesProposals.length}
+                        {records.length}
                     </Text>
                 </Flex>
                 <ActionIcon
@@ -63,7 +68,7 @@ const AdminCoursesTable = () => {
             </Flex>
             <DataTable
                 withTableBorder
-                highlightOnHover
+                height="100%"
                 borderRadius="sm"
                 withColumnBorders
                 idAccessor='_id'
@@ -72,38 +77,11 @@ const AdminCoursesTable = () => {
                 pinLastColumn
                 columns={columns}
                 fetching={isFetching}
-                records={data}
-                selectedRecords={selectedRecords}
-                onSelectedRecordsChange={setSelectedRecords}
+                records={records}
+                onScrollToBottom={loadMoreRecords}
                 rowExpansion={rowExpansion}
             />
-            <Affix position={{bottom: 20, right: "50%"}}>
-                <Transition transition="slide-up" duration={0} mounted={selectedRecords.length > 0}>
-                    {(transitionStyles) => (
-                        <Card shadow="md" padding="xs" radius="md" withBorder
-                              style={{...transitionStyles, transform: "translateX(50%)"}}>
-                            <Flex gap="xs" align="center">
-                                <Badge
-                                    fw={900}
-                                    variant="light"
-                                    size="xl"
-                                    radius="md"
-                                >
-
-                                    {selectedRecords.length}
-                                </Badge>
-                                <Button size="xs">
-                                    Approve selected
-                                </Button>
-                                <Button size="xs" variant="danger">
-                                    Remove selected
-                                </Button>
-                            </Flex>
-                        </Card>
-                    )}
-                </Transition>
-            </Affix>
-        </div>
+        </Box>
     );
 }
 

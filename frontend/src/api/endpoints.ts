@@ -35,7 +35,7 @@ type ReviewsEndpoints = {
 
 const reviews: ReviewsEndpoints = {
     base: reviewsBase,
-    getAllReviews: reviewsBase ,
+    getAllReviews: reviewsBase,
     postReviewProposal: baseApiUrl + '/review-proposals',
     getSpecificReview: (id: string) => `${reviewsBase}/${id}`,
     postSpecificReview: (courseId: string, userId: string) => `${reviewsBase}/${courseId}/user/${userId}`,
@@ -45,6 +45,7 @@ const reviews: ReviewsEndpoints = {
 };
 
 type AdminEndpoints = {
+    getUser: (userId: string) => string;
     getAllUsers: string;
     getAllProposals: string;
     acceptProposal: (proposalId: string) => string;
@@ -52,6 +53,7 @@ type AdminEndpoints = {
 };
 
 const admin: AdminEndpoints = {
+    getUser: (userId: string) => baseApiUrl + `/users/${userId}`,
     getAllUsers: baseApiUrl + '/users',
     getAllProposals: baseApiUrl + '/review-proposals',
     acceptProposal: (proposalId: string) => `${baseApiUrl}/review-proposals/${proposalId}/accept`,

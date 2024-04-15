@@ -6,8 +6,7 @@ export const columns = [
         accessor: 'email',
         title: 'Email',
         sortable: true,
-        ellipsis: true,
-width: 300,
+        width: 300,
         resizable: true
     },
     {

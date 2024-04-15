@@ -1,32 +1,44 @@
-import {ActionIcon, Affix, Badge, Box, Button, Card, Flex, Text, Transition} from "@mantine/core";
+import {ActionIcon, Box, Flex, Text} from "@mantine/core";
 import {IconRefresh} from "@tabler/icons-react";
-import {DataTable, DataTableProps} from "mantine-datatable";
+import sortBy from 'lodash/sortBy';
+import {DataTable, DataTableProps, DataTableSortStatus} from "mantine-datatable";
 import {useEffect, useState} from "react";
 
 import {columns} from "./columns.tsx"
 
+import {CourseProposal} from "@/admin/types.ts";
 import {useAcceptProposal} from "@/admin/useAcceptProposal.ts";
 import {useCoursesProposals} from "@/admin/useCoursesProposals.ts";
 import {ProposalExpansion} from "@/components/AdminTable/CoursesProposals/ProposalExpansion.tsx";
 
 const AdminCoursesProposalsTable = () => {
     const {data, isFetching, refetch} = useCoursesProposals();
-    const {mutate: acceptProposal} = useAcceptProposal();
+    const acceptProposalMutation = useAcceptProposal();
+    const {mutateAsync: acceptProposal} = acceptProposalMutation;
     const [coursesProposals, setCoursesProposals] = useState([]);
-    const [selectedRecords, setSelectedRecords] = useState([]);
     const [proposalsColumns, setProposalsColumns] = useState([]);
 
+    const [sortStatus, setSortStatus] = useState<DataTableSortStatus<CourseProposal>>(null);
+    useEffect(() => {
+        if (data && sortStatus) {
+            const sortedData = sortBy(data, item => {
+                const value = item[sortStatus.columnAccessor];
+                if (Array.isArray(value)) {
+                    return value.join('');
+                }
+                return value;
+            }) as CourseProposal[];
+            setCoursesProposals(sortStatus.direction === 'desc' ? sortedData.reverse() : sortedData);
+        }
+    }, [sortStatus]);
 
     useEffect(() => {
         setProposalsColumns(columns({
             onAccept: (id) => {
                 acceptProposal(id);
             },
-            onRemove: (id) => {
-            },
         }))
     }, []);
-
 
     useEffect(() => {
         if (data) {
@@ -63,46 +75,52 @@ const AdminCoursesProposalsTable = () => {
             </Flex>
             <DataTable
                 withTableBorder
-                highlightOnHover
                 borderRadius="sm"
                 withColumnBorders
                 idAccessor='_id'
                 striped
-                verticalAlign="top"
                 pinLastColumn
                 columns={proposalsColumns}
                 fetching={isFetching}
-                records={data}
-                selectedRecords={selectedRecords}
-                onSelectedRecordsChange={setSelectedRecords}
+                records={coursesProposals}
                 rowExpansion={rowExpansion}
+                sortStatus={sortStatus}
+                onSortStatusChange={setSortStatus}
             />
-            <Affix position={{bottom: 20, right: "50%"}}>
-                <Transition transition="slide-up" duration={0} mounted={selectedRecords.length > 0}>
-                    {(transitionStyles) => (
-                        <Card shadow="md" padding="xs" radius="md" withBorder
-                              style={{...transitionStyles, transform: "translateX(50%)"}}>
-                            <Flex gap="xs" align="center">
-                                <Badge
-                                    fw={900}
-                                    variant="light"
-                                    size="xl"
-                                    radius="md"
-                                >
+            {/*temporary disabled*/}
+            {/*<Affix position={{bottom: 20, right: "50%"}} style={{display: "none"}}>*/}
+            {/*    <Transition transition="slide-up" duration={0} mounted={selectedRecords.length > 0}>*/}
+            {/*        {(transitionStyles) => (*/}
+            {/*            <Card shadow="md" padding="xs" radius="md" withBorder*/}
+            {/*                  style={{...transitionStyles, transform: "translateX(50%)"}}>*/}
+            {/*                <Flex gap="xs" align="center">*/}
+            {/*                    <Badge*/}
+            {/*                        fw={900}*/}
+            {/*                        variant="light"*/}
+            {/*                        size="xl"*/}
+            {/*                        radius="md"*/}
+            {/*                    >*/}
 
-                                    {selectedRecords.length}
-                                </Badge>
-                                <Button color="green" size="xs">
-                                    Approve selected
-                                </Button>
-                                <Button size="xs" variant="danger">
-                                    Remove selected
-                                </Button>
-                            </Flex>
-                        </Card>
-                    )}
-                </Transition>
-            </Affix>
+            {/*                        {selectedRecords.length}*/}
+            {/*                    </Badge>*/}
+            {/*                    <Button color="green" size="xs" onClick={async () => {*/}
+            {/*                        setServerMutationProgressOpen(true)*/}
+            {/*                        setActiveMutations(selectedRecords.map((record) => ({...record, mutationType: "accept-proposal"})))*/}
+            {/*                        for (const record of selectedRecords) {*/}
+            {/*                            await acceptProposal(record._id).then(()=>{*/}
+            {/*                            })*/}
+            {/*                        }*/}
+            {/*                    }}>*/}
+            {/*                        Approve selected*/}
+            {/*                    </Button>*/}
+            {/*                    <Button size="xs" variant="danger">*/}
+            {/*                        Remove selected*/}
+            {/*                    </Button>*/}
+            {/*                </Flex>*/}
+            {/*            </Card>*/}
+            {/*        )}*/}
+            {/*    </Transition>*/}
+            {/*</Affix>*/}
         </Box>
     );
 }

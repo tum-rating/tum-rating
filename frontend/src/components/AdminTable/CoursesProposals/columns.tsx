@@ -1,5 +1,7 @@
 import {ActionIcon, Center, Flex, Group, Pill} from '@mantine/core';
-import {IconCircleCheckFilled, IconClick, IconEdit} from "@tabler/icons-react";
+import {IconCircleCheck, IconClick, IconEdit} from "@tabler/icons-react";
+
+import {CourseProposal} from "@/admin/types.ts";
 
 
 interface CoursesProposalsTableColumnsProps {
@@ -7,17 +9,19 @@ interface CoursesProposalsTableColumnsProps {
     onRemove?: (id: string) => void;
 }
 
-export const columns = ({onAccept,onRemove}:CoursesProposalsTableColumnsProps) => [
+export const columns = ({onAccept}: CoursesProposalsTableColumnsProps) => [
     {
         accessor: 'course',
         title: 'Course name',
-        sortable: true,
+        noWrap: false,
+        width: "50%"
     },
     {
         accessor: 'offeredInSemesters',
         title: 'Semester',
         sortable: true,
-        render: (element) => {
+        ellipsis: true,
+        render: (element: CourseProposal) => {
             return (
                 <>
                     <Flex align="center" gap="xs">
@@ -31,7 +35,9 @@ export const columns = ({onAccept,onRemove}:CoursesProposalsTableColumnsProps) =
         title: 'Lecturer',
         accessor: 'otherLecturers',
         sortable: true,
-        render: (element) => {
+        resizable: true,
+        ellipsis: true,
+        render: (element: CourseProposal) => {
             return (
                 <>
                     <Flex align="center" gap="xs">
@@ -45,35 +51,33 @@ export const columns = ({onAccept,onRemove}:CoursesProposalsTableColumnsProps) =
         accessor: 'actions',
         title: (
             <Center>
-                <IconClick size={16} />
+                <IconClick size={16}/>
             </Center>
         ),
-        width: '0%', // 👈 use minimal width
-        render: ({_id})=> (
-            <Group gap={4} justify="right" wrap="nowrap">
-                <ActionIcon
-                    size="sm"
-                    variant="transparent"
-                    color="green"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onAccept(_id);
-                    }}
-                >
-                    <IconCircleCheckFilled size={16} />
-                </ActionIcon>
-                <ActionIcon
-                    size="sm"
-                    variant="transparent"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onRemove(_id);
-                    }}
-                >
-                    <IconEdit size={16} />
-                </ActionIcon>
-            </Group>
-        ),
+        width: '0%',
+        render: ({_id}) => {
+            return (
+                <Group gap={4} justify="right" wrap="nowrap">
+                    <ActionIcon
+                        size="sm"
+                        variant="transparent"
+                        color="green"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onAccept(_id);
+                        }}
+                    >
+                        <IconCircleCheck size={16}/>
+                    </ActionIcon>
+                    <ActionIcon
+                        size="sm"
+                        variant="transparent"
+                    >
+                        <IconEdit size={16}/>
+                    </ActionIcon>
+                </Group>
+            )
+        },
     },
 ];
 
