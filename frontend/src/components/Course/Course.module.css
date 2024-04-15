@@ -1,12 +1,15 @@
 .container {
-    margin-top: 15px;
+    position: absolute;
+    bottom: 0;
+    top: 97px;
     border-top-left-radius: var(--mantine-radius-lg);
     border-top-right-radius: var(--mantine-radius-lg);
     width: 100%;
     background: var(--mantine-color-body);
     @media (max-width: $mantine-breakpoint-sm) {
         border-radius: 0;
-        margin-top: 0;
+        bottom: unset;
+        top: 54px;
     }
 }
 

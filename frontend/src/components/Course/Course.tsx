@@ -38,7 +38,7 @@ const Course = () => {
     }
 
     return (
-        <Box className={classes.container}>
+        <Box className={classes.container} maw={1320}>
             {isError ? (
                 <Box h="calc(100vh - 69px)">
                     <Center h="100%">
