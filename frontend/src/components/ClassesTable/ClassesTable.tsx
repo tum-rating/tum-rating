@@ -1,19 +1,19 @@
-import {ActionIcon, Box, Flex, Pill, Text} from '@mantine/core';
-import { useViewportSize } from '@mantine/hooks';
-import {IconDatabaseHeart} from "@tabler/icons-react";
-import { DataTable } from 'mantine-datatable';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { isMobile } from 'react-device-detect';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {ActionIcon, Badge, Box, Flex} from '@mantine/core';
+import {useMediaQuery} from "@mantine/hooks";
+import {DataTable} from 'mantine-datatable';
+import {useEffect, useMemo, useRef, useState} from 'react';
+import {isMobile} from 'react-device-detect';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import classes from './ClassesTable.module.css';
 
-import { columns } from '@/components/ClassesTable/Columns';
-import { useTableScrollContext } from '@/context';
-import { Review } from '@/reviews/types';
-import { usePaginatedReviews } from '@/reviews/usePaginatedReviews';
-import { useSearchReviews } from '@/reviews/useSearchReviews.tsx';
-
+import city from '@/assets/img/city.png';
+import {columns} from '@/components/ClassesTable/Columns';
+import {useTableScrollContext} from '@/context';
+import {Review} from '@/reviews/types';
+import {usePaginatedReviews} from '@/reviews/usePaginatedReviews';
+import {useSearchReviews} from '@/reviews/useSearchReviews.tsx';
+import {IconX} from "@tabler/icons-react";
 
 
 const ClassesTable = () => {
@@ -26,14 +26,14 @@ const ClassesTable = () => {
     const [records, setRecords] = useState<Review[]>([]);
     const [queryRecords, setQueryRecords] = useState<Review[]>([]);
     const [internalLoading, setInternalLoading] = useState(true);
-    const { data, fetchNextPage, isFetching } = usePaginatedReviews();
+    const {data, fetchNextPage, isFetching} = usePaginatedReviews();
     const [query, setQuery] = useState('');
-    const { data: queryData, isFetching: isQueryDataFetching } = useSearchReviews(query);
-    const { height } = useViewportSize();
+    const {data: queryData, isFetching: isQueryDataFetching} = useSearchReviews(query);
     const navigate = useNavigate();
     const location = useLocation();
     const scrollViewportRef = useRef<HTMLDivElement>(null);
-    const { scrollY, setScrollY } = useTableScrollContext();
+    const {scrollY, setScrollY} = useTableScrollContext();
+    const matches = useMediaQuery('(min-width: 48em)');
 
     useEffect(() => {
         if (data) {
@@ -68,7 +68,8 @@ const ClassesTable = () => {
     }, [scrollViewportRef.current]);
 
     const loadMoreRecords = () => {
-        fetchNextPage().then(() => {});
+        fetchNextPage().then(() => {
+        });
     };
 
     const handleRowClick = (record: Review) => {
@@ -84,28 +85,25 @@ const ClassesTable = () => {
 
     return (
         <>
-            <Box className={classes.dataTableContainer} h={height - 250}>
-                <Flex justify="space-between" align="center" className={classes.dataTableInfo}>
-                    <Flex align="center">
+            <Box className={classes.dataTableContainer}>
+                <Flex data-active={!!query} justify="space-between" align="center" className={classes.dataTableInfo}
+                      style={{
+                          backgroundImage: `url(${city})`,
+                          backgroundSize: 'cover',
+                      }}>
+                    <Flex align="center" h="100%">
                         {query ? (
                             <>
-                                <Text fw="500" size="xs">
-                                    Search results for:
-                                </Text>
-                                <Pill ml={4} onRemove={removeQuery} withRemoveButton>
-                                    {query}
-                                </Pill>
+                                <Badge color="red" fw={600} ml={4}>
+                                    <Flex align="center">
+                                        {query}
+                                        <ActionIcon p={0} m={0} variant="transparent" c="white" aria-label="Remove query" loading={isQueryDataFetching}>
+                                            <IconX size={16} onClick={removeQuery}/>
+                                        </ActionIcon>
+                                    </Flex>
+                                </Badge>
                             </>
                         ) : null}
-                    </Flex>
-                    <Flex align="center">
-                        <ActionIcon variant="light" size="xs" onClick={async ()=>{
-                            const response = await fetch('http://localhost:3000/health');
-                            const data = await response.json();
-                            alert(JSON.stringify(data));
-                        }}>
-                            <IconDatabaseHeart/>
-                        </ActionIcon>
                     </Flex>
                 </Flex>
                 <DataTable
@@ -113,20 +111,22 @@ const ClassesTable = () => {
                     highlightOnHover
                     striped
                     verticalSpacing="lg"
-                    height="100%"
                     idAccessor='_id'
+                    data-query={true}
+                    height={!matches && query ? 'calc(100% - 28px)' : '100%'}
                     columns={columnsConfiguration}
                     records={query ? queryRecords : records}
+                    borderRadius={query ? 0 : 'lg'}
                     onScrollToBottom={!query ? loadMoreRecords : null}
                     scrollViewportRef={scrollViewportRef}
                     fetching={isFetching || isQueryDataFetching || internalLoading}
                     className={classes.dataTable}
                     rowClassName={classes.dataTableRow}
-                    onRowClick={({ record }) => handleRowClick(record)}
+                    onRowClick={({record}) => handleRowClick(record)}
                 ></DataTable>
             </Box>
         </>
     );
 };
 
-export { ClassesTable };
+export {ClassesTable};
