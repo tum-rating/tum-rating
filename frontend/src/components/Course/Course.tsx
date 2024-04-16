@@ -14,14 +14,14 @@ import {HowEasyRating} from '@/components/Course/HowEasyRating.tsx';
 import {HowInterestingRating} from '@/components/Course/HowInterestingRating.tsx';
 import {ReviewsBox} from '@/components/Course/ReviewsBox.tsx';
 import {Skeleton} from '@/components/Skeleton';
-import {useDetailReview} from '@/reviews/useReview.tsx';
+import {useDetailCourse} from '@/courses/useCourse.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
 
 const Course = () => {
     const {id} = useParams();
     const {data: user} = useUser();
     const navigate = useNavigate();
-    const {data, isLoading, isError} = useDetailReview(id || '');
+    const {data, isLoading, isError} = useDetailCourse(id || '');
     useEffect(() => {
         const children = document.querySelectorAll('.children-animation > *');
         children.forEach((child: Element, index: number) => {
@@ -74,7 +74,7 @@ const Course = () => {
                                     loading={isLoading}
                                     component={
                                         <Text style={{wordBreak: 'break-word'}} fz={24} fw="700" lineClamp={5}>
-                                            {data?.course}{' '}
+                                            {data?.name}{' '}
                                         </Text>
                                     }
                                 />

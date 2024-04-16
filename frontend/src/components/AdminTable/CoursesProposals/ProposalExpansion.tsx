@@ -45,7 +45,7 @@ const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExp
                         <Flex wrap="wrap" gap="xs" direction="column">
                             <TextInput
                                 disabled={!editing}
-                                value={proposal.course}
+                                value={proposal.name}
                                 label="Course Name"
                                 placeholder="Enter course name"
                                 onChange={(event) => setProposal({...proposal, course: event.currentTarget.value})}/>

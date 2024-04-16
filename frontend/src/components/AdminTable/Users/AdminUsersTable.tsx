@@ -7,9 +7,9 @@ import {useEffect, useState} from "react";
 import {columns} from "./columns.tsx"
 import rowClasses from "../Shared/styles/RowStyles.module.css"
 
-import {useBanUser} from "@/admin/banUser.ts";
 import {User} from "@/admin/types.ts";
 import {useAllUsers} from "@/admin/useAllUsers.ts";
+import {useBanUser} from "@/admin/useBanUser.ts";
 import {useRemoveUser} from "@/admin/useRemoveUser.ts";
 import {UserExpansion} from "@/components/AdminTable/Users/UserExpansion.tsx";
 

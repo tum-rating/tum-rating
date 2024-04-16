@@ -22,8 +22,8 @@ import classes from './SearchInputDesktop.module.css';
 
 import {SearchHighlight} from '@/components/Highlight';
 import {useScrollLock} from "@/hooks/useScrollLock";
-import {Review} from '@/reviews/types.ts';
-import {useSearchReviews} from '@/reviews/useSearchReviews.tsx';
+import {Course} from '@/courses/types.ts';
+import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
 import {getPath, Paths} from "@/routes/paths.ts";
 import {useUser} from "@/auth/useUser.tsx";
 
@@ -55,7 +55,7 @@ const SearchInputDesktop = () => {
         setDebouncedQuery(value);
     }, [value]);
 
-    const {data} = useSearchReviews(debouncedQuery);
+    const {data} = useSearchCourses(debouncedQuery);
 
     const [previousData, setPreviousData] = useState(null);
 
@@ -74,16 +74,16 @@ const SearchInputDesktop = () => {
         }
     }, [isSearchOpen]);
 
-    const groupedActions = useMemo(() => (previousData ? previousData.reviews : []), [previousData]);
+    const groupedActions = useMemo(() => (previousData ? previousData.courses : []), [previousData]);
 
     useEffect(() => {
         setEmpty(groupedActions.length === 0);
     }, [groupedActions]);
 
     const options = useMemo(() => {
-        return (groupedActions || []).map((item: Review) => (
+        return (groupedActions || []).map((item: Course) => (
             <Combobox.Option className={classes.option} value={item._id} key={item.courseId}>
-                <SearchHighlight value={value.split(' ')} text={item.course}/>
+                <SearchHighlight value={value.split(' ')} text={item.name}/>
                 <SearchHighlight
                     value={value.split(' ')}
                     text={item.professor}

@@ -6,19 +6,19 @@ import {useEffect, useState} from "react";
 
 import {columns} from "./columns.tsx"
 
-import {Review} from "@/reviews/types.ts";
-import {usePaginatedReviews} from "@/reviews/usePaginatedReviews.tsx";
+import {Course} from "@/courses/types.ts";
+import {usePaginatedCourses} from "@/courses/usePaginatedCourses.tsx";
 
 
 const AdminCoursesTable = () => {
     // const {data, isFetching, refetch} = useCoursesProposals();
-    const { data, fetchNextPage, isFetching,refetch } = usePaginatedReviews();
+    const { data, fetchNextPage, isFetching,refetch } = usePaginatedCourses();
     const { height } = useViewportSize();
-    const [records, setRecords] = useState<Review[]>([]);
+    const [records, setRecords] = useState<Course[]>([]);
 
     useEffect(() => {
         if (data) {
-            const newRecords = data.pages.map((v) => v.reviews.map((el) => el)).flat();
+            const newRecords = data.pages.map((v) => v.courses.map((el) => el)).flat();
             setRecords([...newRecords]);
         }
     }, [data]);

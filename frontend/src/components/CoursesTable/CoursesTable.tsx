@@ -1,34 +1,34 @@
 import {ActionIcon, Badge, Box, Flex} from '@mantine/core';
 import {useMediaQuery} from "@mantine/hooks";
+import {IconX} from "@tabler/icons-react";
 import {DataTable} from 'mantine-datatable';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {isMobile} from 'react-device-detect';
 import {useLocation, useNavigate} from 'react-router-dom';
 
-import classes from './ClassesTable.module.css';
+import classes from './CoursesTable.module.css';
 
 import city from '@/assets/img/city.png';
-import {columns} from '@/components/ClassesTable/Columns';
+import {columns} from '@/components/CoursesTable/Columns';
 import {useTableScrollContext} from '@/context';
-import {Review} from '@/reviews/types';
-import {usePaginatedReviews} from '@/reviews/usePaginatedReviews';
-import {useSearchReviews} from '@/reviews/useSearchReviews.tsx';
-import {IconX} from "@tabler/icons-react";
+import {Course} from '@/courses/types';
+import {usePaginatedCourses} from '@/courses/usePaginatedCourses';
+import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
 
 
-const ClassesTable = () => {
+const CoursesTable = () => {
     const columnsConfiguration = useMemo(() => {
         if (isMobile) {
             return columns.filter((x) => x.accessor !== 'professor');
         }
         return columns;
     }, []);
-    const [records, setRecords] = useState<Review[]>([]);
-    const [queryRecords, setQueryRecords] = useState<Review[]>([]);
+    const [records, setRecords] = useState<Course[]>([]);
+    const [queryRecords, setQueryRecords] = useState<Course[]>([]);
     const [internalLoading, setInternalLoading] = useState(true);
-    const {data, fetchNextPage, isFetching} = usePaginatedReviews();
+    const {data, fetchNextPage, isFetching} = usePaginatedCourses();
     const [query, setQuery] = useState('');
-    const {data: queryData, isFetching: isQueryDataFetching} = useSearchReviews(query);
+    const {data: queryData, isFetching: isQueryDataFetching} = useSearchCourses(query);
     const navigate = useNavigate();
     const location = useLocation();
     const scrollViewportRef = useRef<HTMLDivElement>(null);
@@ -37,14 +37,14 @@ const ClassesTable = () => {
 
     useEffect(() => {
         if (data) {
-            const newRecords = data.pages.map((v) => v.reviews.map((el) => el)).flat();
+            const newRecords = data.pages.map((v) => v.courses.map((el) => el)).flat();
             setRecords([...newRecords]);
             setInternalLoading(false);
         }
     }, [data]);
     useEffect(() => {
         if (queryData) {
-            const newRecords = queryData.reviews;
+            const newRecords = queryData.courses;
             setQueryRecords([...newRecords]);
             setInternalLoading(false);
         }
@@ -72,7 +72,7 @@ const ClassesTable = () => {
         });
     };
 
-    const handleRowClick = (record: Review) => {
+    const handleRowClick = (record: Course) => {
         const dynamicPath = '/courses/' + record._id;
         setScrollY(scrollViewportRef.current.scrollTop);
         navigate(dynamicPath);
@@ -129,4 +129,4 @@ const ClassesTable = () => {
     );
 };
 
-export {ClassesTable};
+export {CoursesTable};

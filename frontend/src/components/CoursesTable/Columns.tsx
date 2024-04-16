@@ -1,22 +1,22 @@
-import { Flex } from '@mantine/core';
-import { isMobile } from 'react-device-detect';
+import {Flex} from '@mantine/core';
+import {isMobile} from 'react-device-detect';
 
-import { NumberRatingBadge } from '@/components/Course';
-import { Review } from '@/reviews/types.ts';
+import {NumberRatingBadge} from '@/components/Course';
+import {Course} from '@/courses/types.ts';
 
 export const columns = [
     {
         title: 'Course',
         accessor: 'course',
         width: '40%',
-        render: (element: Review) => {
+        render: (element: Course) => {
             return (
                 <>
-                    <span style={{ fontWeight: 500 }}>
-                        {element.course}{' '}
+                    <span style={{fontWeight: 500}}>
+                        {element.name}{' '}
                         {isMobile ? (
                             <>
-                                <br /> <span style={{ color: 'var(--mantine-color-dimmed' }}>{element.professor}</span>
+                                <br/> <span style={{color: 'var(--mantine-color-dimmed'}}>{element.professor}</span>
                             </>
                         ) : null}
                     </span>
@@ -34,11 +34,11 @@ export const columns = [
         accessor: 'howInterestingRatingAverage',
         width: 70,
         ellipsis: true,
-        render: (element: Review) => {
+        render: (element: Course) => {
             return (
                 <>
                     <Flex align="center" gap="xs">
-                        <NumberRatingBadge score={element.howInterestingRatingAverage} />
+                        <NumberRatingBadge score={element.howInterestingRatingAverage}/>
                     </Flex>
                 </>
             );
@@ -49,11 +49,11 @@ export const columns = [
         accessor: 'howEasyRatingAverage',
         ellipsis: true,
         width: 100,
-        render: (element: Review) => {
+        render: (element: Course) => {
             return (
                 <>
                     <Flex align="center" gap="xs">
-                        <NumberRatingBadge score={element.howEasyRatingAverage} />
+                        <NumberRatingBadge score={element.howEasyRatingAverage}/>
                     </Flex>
                 </>
             );

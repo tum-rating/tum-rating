@@ -3,6 +3,7 @@ import {notifications} from '@mantine/notifications';
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
 import {endpoints, useMutationWithAuth} from '@/api';
+import {QUERY_KEY} from "@/constants/queryKeys.ts";
 import {queryClient} from '@/react-query/client.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
@@ -15,6 +16,7 @@ async function banUser(token: string, userId: string, flag: boolean): Promise<an
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
+            body: JSON.stringify({userId: userId}),
         },
     });
     const responseData = await response.json();
@@ -37,6 +39,7 @@ async function banUser(token: string, userId: string, flag: boolean): Promise<an
 
 export function useBanUser(): any {
     const token = userLocalStorage.getUser();
+    console.log(1)
     return useMutationWithAuth({
         mutationFn: async ({userId, flag}: { userId: string, flag: boolean }) => banUser(token, userId, flag),
         onMutate: (variables) => {
@@ -52,7 +55,7 @@ export function useBanUser(): any {
         },
         onSuccess: (variables) => {
             queryClient.invalidateQueries({
-                queryKey: ['users'],
+                queryKey: [QUERY_KEY.all_users],
             });
             notifications.update({
                 id: variables._id,
