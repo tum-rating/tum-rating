@@ -7,8 +7,8 @@ export abstract class BaseRepository<T> {
         this.model = model;
     }
 
-    public async create(data: T, session?: ClientSession) {
-        const savedModel = new this.model(data).save({ session });
+    public async create(data: T, session?: ClientSession): Promise<WithId<T>> {
+        const savedModel = new this.model(data).save({ session }) as unknown as Promise<WithId<T>>;
 
         return savedModel;
     }

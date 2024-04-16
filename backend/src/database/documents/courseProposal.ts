@@ -4,7 +4,7 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 import { User } from './user';
 
 @Schema()
-export class ReviewProposal {
+export class CourseProposal {
     @Prop({ required: true, type: String })
     professor: string;
 
@@ -12,7 +12,7 @@ export class ReviewProposal {
     otherLecturers?: string[];
 
     @Prop({ required: true, type: String })
-    course: string;
+    name: string;
 
     @Prop({ required: true, type: String })
     courseId: string;
@@ -31,6 +31,6 @@ export class ReviewProposal {
     userId: MongooseSchema.Types.ObjectId;
 }
 
-export type ReviewProposalDocument = ReviewProposal & Document;
+export type CourseProposalDocument = CourseProposal & Document;
 
-export const ReviewProposalSchema = SchemaFactory.createForClass(ReviewProposal);
+export const CourseProposalSchema = SchemaFactory.createForClass(CourseProposal);

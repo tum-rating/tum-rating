@@ -1,53 +1,48 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 
-import { ReviewUser } from './reviewUser';
+import { User } from './user';
 
 @Schema()
 export class Review {
+    @Prop({
+        required: true,
+        type: MongooseSchema.Types.ObjectId,
+        ref: User.name,
+    })
+    userId: MongooseSchema.Types.ObjectId;
+
+    @Prop({
+        required: true,
+        type: MongooseSchema.Types.ObjectId,
+        ref: 'course',
+    })
+    courseId: MongooseSchema.Types.ObjectId;
+
+    @Prop({ required: true, type: Number, min: 0, max: 5 })
+    howInterestingRating: number;
+
+    @Prop({ required: true, type: Number, min: 0, max: 5 })
+    howEasyRating: number;
+
     @Prop({ required: true, type: String })
-    professor: string;
+    userName: string;
 
-    @Prop({ type: [String] })
-    otherLecturers: string[];
+    @Prop({ type: String })
+    comment?: string;
 
-    @Prop({ required: true, type: String })
-    course: string;
-
-    @Prop({ required: true, type: String })
-    courseId: string;
-
-    @Prop({ required: true, type: String })
-    courseNumber: string;
-
-    @Prop({ required: true, type: [String] })
-    offeredInSemesters: string[];
+    @Prop({ type: String, required: true })
+    semester: string;
 
     @Prop({ required: true, type: Date, default: new Date() })
     createdAt: Date;
 
     @Prop({ required: true, type: Date, default: new Date() })
     updatedAt: Date;
-
-    @Prop({ type: Number, default: 0, min: 0, max: 100 })
-    howInterestingRatingAverage: number;
-
-    @Prop({ type: Number, default: 0, min: 0, max: 100 })
-    howEasyRatingAverage: number;
-
-    @Prop({ type: Number, default: 0 })
-    votesNumber: number;
-
-    @Prop({
-        type: [{ type: MongooseSchema.Types.ObjectId, ref: ReviewUser.name }],
-    })
-    reviews: string[];
 }
 
 export type ReviewDocument = Review & Document;
 
 export const ReviewSchema = SchemaFactory.createForClass(Review);
 
-ReviewSchema.index({ course: 'text', professor: 'text' });
-ReviewSchema.index({ course: 1 });
-ReviewSchema.index({ course: 1, professor: 1 }, { unique: true });
+ReviewSchema.index({ courseId: 1, userId: 1 }, { unique: true });

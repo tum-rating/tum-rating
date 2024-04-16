@@ -2,10 +2,10 @@ import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
-import { reviewProposalUrl } from '@tum-rating/backend/test/utils/api-client/review-proposal';
+import { courseProposalUrl } from '@tum-rating/backend/test/utils/api-client/course-proposal';
 import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
-import { createReviewProposalMockRequest } from '@tum-rating/backend/test/utils/api-client/review-proposal';
-import { reviewUrl } from '@tum-rating/backend/test/utils/api-client/review';
+import { createCourseProposalMockRequest } from '@tum-rating/backend/test/utils/api-client/course-proposal';
+import { courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
 
 beforeAll(async () => {
     await connectMongo();
@@ -15,16 +15,16 @@ afterAll(async () => {
     mongoose.disconnect();
 });
 
-describe('Accept Review Proposal', () => {
-    it('should accept review proposal', async () => {
+describe('Accept Course Proposal', () => {
+    it('should accept course proposal', async () => {
         const signInResponse = await signInRequestMock();
         const singInAdminResponse = await signInAdminRequestMock();
 
-        const createdReviewProposal = await createReviewProposalMockRequest(signInResponse.token);
+        const createdReviewProposal = await createCourseProposalMockRequest(signInResponse.token);
 
         let createdReviewId: string;
 
-        await supertest(reviewProposalUrl + '/' + createdReviewProposal.id + '/accept')
+        await supertest(courseProposalUrl + '/' + createdReviewProposal.id + '/accept')
             .post('/')
             .set('Authorization', 'Bearer ' + singInAdminResponse.token)
             .expect(201)
@@ -33,12 +33,12 @@ describe('Accept Review Proposal', () => {
                 expect(response.body.createdReview).toBeDefined();
             });
 
-        return supertest(reviewUrl)
+        return supertest(courseUrl)
             .get('/' + createdReviewId)
             .expect(200)
             .expect((response: supertest.Response) => {
                 expect(response.body.courseId).toEqual(createdReviewProposal.courseId);
-                expect(response.body.course).toEqual(createdReviewProposal.course);
+                expect(response.body.name).toEqual(createdReviewProposal.name);
                 expect(response.body.professor).toEqual(createdReviewProposal.professor);
                 expect(response.body.courseNumber).toEqual(createdReviewProposal.courseNumber);
                 expect(response.body.reviews).toBeDefined();
@@ -48,9 +48,9 @@ describe('Accept Review Proposal', () => {
     it('should fail without auth token', async () => {
         const signInResponse = await signInRequestMock();
 
-        const createdReviewProposal = await createReviewProposalMockRequest(signInResponse.token);
+        const createdReviewProposal = await createCourseProposalMockRequest(signInResponse.token);
 
-        await supertest(reviewProposalUrl + '/' + createdReviewProposal.id + '/accept')
+        await supertest(courseProposalUrl + '/' + createdReviewProposal.id + '/accept')
             .post('/')
             .expect(401);
     });
@@ -58,9 +58,9 @@ describe('Accept Review Proposal', () => {
     it('should fail without admin auth token', async () => {
         const signInResponse = await signInRequestMock();
 
-        const createdReviewProposal = await createReviewProposalMockRequest(signInResponse.token);
+        const createdReviewProposal = await createCourseProposalMockRequest(signInResponse.token);
 
-        await supertest(reviewProposalUrl + '/' + createdReviewProposal.id + '/accept')
+        await supertest(courseProposalUrl + '/' + createdReviewProposal.id + '/accept')
             .post('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .expect(403);

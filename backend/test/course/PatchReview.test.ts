@@ -3,9 +3,9 @@ import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
 import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
-import { addUserReviewMockRequest, reviewUrl } from '@tum-rating/backend/test/utils/api-client/review';
-import { createCourseReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
-import { AddUserReviewRequestDto } from '@tum-rating/backend/src/modules/review/dto/AddUserReviewRequest.dto';
+import { addReviewMockRequest, courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
+import { createCourseMockRequest } from '@tum-rating/backend/test/utils/api-client/course';
+import { AddReviewRequestDto } from '@tum-rating/backend/src/modules/course/dto/AddReviewRequest.dto';
 
 beforeAll(async () => {
     await connectMongo();
@@ -15,28 +15,28 @@ afterAll(async () => {
     mongoose.disconnect();
 });
 
-describe('Patch User Review', () => {
+describe('Patch Review', () => {
     it('should patch single user review', async () => {
         const signInResponse = await signInRequestMock();
 
         const signInAdminResponse = await signInAdminRequestMock();
 
-        const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
+        const createdReview = await createCourseMockRequest(signInAdminResponse.token);
 
-        let requestBody: AddUserReviewRequestDto = {
+        let requestBody: AddReviewRequestDto = {
             howInterestingRating: 1,
             howEasyRating: 5,
             comment: faker.word.words(),
             semester: createdReview.offeredInSemesters[0],
         };
 
-        await supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
+        await supertest(`${courseUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
             .post('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .send(requestBody)
             .expect(201);
 
-        await supertest(reviewUrl)
+        await supertest(courseUrl)
             .get('/' + createdReview.id)
             .expect(200)
             .expect((response: supertest.Response) => {
@@ -51,13 +51,13 @@ describe('Patch User Review', () => {
         requestBody.howInterestingRating = 5;
         requestBody.howEasyRating = 2;
 
-        await supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
+        await supertest(`${courseUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
             .patch('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .send(requestBody)
             .expect(200);
 
-        return supertest(reviewUrl)
+        return supertest(courseUrl)
             .get('/' + createdReview.id)
             .expect(200)
             .expect((response: supertest.Response) => {
@@ -69,21 +69,21 @@ describe('Patch User Review', () => {
             });
     });
 
-    it('should fail if user review does not exist', async () => {
+    it('should fail if review does not exist', async () => {
         const signInResponse = await signInRequestMock();
 
         const signInAdminResponse = await signInAdminRequestMock();
 
-        const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
+        const createdReview = await createCourseMockRequest(signInAdminResponse.token);
 
-        const requestBody: AddUserReviewRequestDto = {
+        const requestBody: AddReviewRequestDto = {
             howInterestingRating: 2.3,
             howEasyRating: 1.7,
             comment: faker.word.words(),
             semester: createdReview.offeredInSemesters[0],
         };
 
-        return supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
+        return supertest(`${courseUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
             .patch('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .send(requestBody)
@@ -95,16 +95,16 @@ describe('Patch User Review', () => {
 
         const signInAdminResponse = await signInAdminRequestMock();
 
-        const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
+        const createdReview = await createCourseMockRequest(signInAdminResponse.token);
 
-        const requestBody: AddUserReviewRequestDto = {
+        const requestBody: AddReviewRequestDto = {
             howInterestingRating: 1.3,
             howEasyRating: 4.9,
             comment: faker.word.words(),
             semester: createdReview.offeredInSemesters[0],
         };
 
-        await supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
+        await supertest(`${courseUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
             .post('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .send(requestBody)
@@ -112,7 +112,7 @@ describe('Patch User Review', () => {
 
         requestBody.semester = 'not matching';
 
-        return supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
+        return supertest(`${courseUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
             .patch('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .send(requestBody)
@@ -125,21 +125,21 @@ describe('Patch User Review', () => {
 
         const signInAdminResponse = await signInAdminRequestMock();
 
-        const createdReview = await createCourseReviewMockRequest(signInAdminResponse.token);
+        const createdReview = await createCourseMockRequest(signInAdminResponse.token);
 
-        await addUserReviewMockRequest(signInResponse.token, createdReview.id, signInResponse.user.id, {
+        await addReviewMockRequest(signInResponse.token, createdReview.id, signInResponse.user.id, {
             howInterestingRating: 5,
             howEasyRating: 5,
             semester: createdReview.offeredInSemesters[0],
         });
 
-        await addUserReviewMockRequest(signInResponse2.token, createdReview.id, signInResponse2.user.id, {
+        await addReviewMockRequest(signInResponse2.token, createdReview.id, signInResponse2.user.id, {
             howInterestingRating: 3,
             howEasyRating: 3,
             semester: createdReview.offeredInSemesters[0],
         });
 
-        await supertest(reviewUrl + '/' + createdReview.id)
+        await supertest(courseUrl + '/' + createdReview.id)
             .get('/')
             .expect(200)
             .expect((response: supertest.Response) => {
@@ -151,20 +151,20 @@ describe('Patch User Review', () => {
                 expect(response.body.votesNumber).toBe(2);
             });
 
-        const putRequestBody: AddUserReviewRequestDto = {
+        const putRequestBody: AddReviewRequestDto = {
             howInterestingRating: 2,
             howEasyRating: 2,
             comment: faker.word.words(),
             semester: createdReview.offeredInSemesters[0],
         };
 
-        await supertest(`${reviewUrl}/${createdReview.id}/user/${signInResponse2.user.id}`)
+        await supertest(`${courseUrl}/${createdReview.id}/user/${signInResponse2.user.id}`)
             .patch('/')
             .set('Authorization', 'Bearer ' + signInResponse2.token)
             .send(putRequestBody)
             .expect(200);
 
-        return supertest(reviewUrl + '/' + createdReview.id)
+        return supertest(courseUrl + '/' + createdReview.id)
             .get('/')
             .expect(200)
             .expect((response: supertest.Response) => {
