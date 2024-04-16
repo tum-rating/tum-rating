@@ -8,12 +8,12 @@ import classes from './CourseControls.module.css';
 
 import { User } from '@/auth/useUser.tsx';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { Review } from '@/reviews/types.ts';
+import { Course } from '@/courses/types.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
 
 
 interface CourseControlsProps {
-    data: Review | null;
+    data: Course | null;
     isLoading: boolean;
     userReview: any;
     user: User | null;
@@ -33,7 +33,7 @@ const CourseControls = ({ data, user, userReview, isLoading }: CourseControlsPro
                 <IconArrowLeft size="1.1rem" />
             </ActionIcon>
             <Box className={classes.courseControlsBreadcrumbs}>
-                <Breadcrumbs isLoading={isLoading} courseName={data?.course} />
+                <Breadcrumbs isLoading={isLoading} courseName={data?.name} />
             </Box>
             <Box className={classes.courseControlsBtns}>
                 {!user ? (

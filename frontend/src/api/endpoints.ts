@@ -3,7 +3,7 @@ const api = '/api';
 const apiVersion = '/v1';
 const baseApiUrl = baseDomain + api + apiVersion;
 const authBase = baseApiUrl + '/auth';
-const reviewsBase = baseApiUrl + '/reviews';
+const coursesBase = baseApiUrl + '/courses';
 type AuthEndpoints = {
     base: string;
     signup: string;
@@ -22,26 +22,26 @@ const auth: AuthEndpoints = {
     user: baseApiUrl + '/users/me',
 };
 
-type ReviewsEndpoints = {
+type CoursesEndpoints = {
     base: string;
-    getAllReviews: string;
-    getSpecificReview: (id: string) => string;
+    getAllCourses: string;
+    getSpecificCourse: (id: string) => string;
     postSpecificReview: (courseId: string, userId: string) => string;
-    getPaginatedReviews: (pageNumber: number, pageSize: number) => string;
-    searchReviews: (query: string) => string;
-    postReviewProposal: string;
-    searchReviewsOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => string;
+    getPaginatedCourses: (pageNumber: number, pageSize: number) => string;
+    searchCourses: (query: string) => string;
+    postCourseProposal: string;
+    searchCoursesOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => string;
 };
 
-const reviews: ReviewsEndpoints = {
-    base: reviewsBase,
-    getAllReviews: reviewsBase,
-    postReviewProposal: baseApiUrl + '/review-proposals',
-    getSpecificReview: (id: string) => `${reviewsBase}/${id}`,
-    postSpecificReview: (courseId: string, userId: string) => `${reviewsBase}/${courseId}/user/${userId}`,
-    getPaginatedReviews: (pageNumber: number, pageSize: number) => `${reviewsBase}?page-number=${pageNumber}&page-size=${pageSize}`,
-    searchReviews: (query: string) => `${reviewsBase}?search=${query}`,
-    searchReviewsOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => `${reviewsBase}?page-number=${pageNumber}&page-size=${pageSize}&search=${search}`,
+const Courses: CoursesEndpoints = {
+    base: coursesBase,
+    getAllCourses: coursesBase,
+    postCourseProposal: baseApiUrl + '/course-proposals',
+    getSpecificCourse: (id: string) => `${coursesBase}/${id}`,
+    postSpecificReview: (courseId: string, userId: string) => `${coursesBase}/${courseId}/user/${userId}`,
+    getPaginatedCourses: (pageNumber: number, pageSize: number) => `${coursesBase}?page-number=${pageNumber}&page-size=${pageSize}`,
+    searchCourses: (query: string) => `${coursesBase}?search=${query}`,
+    searchCoursesOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => `${coursesBase}?page-number=${pageNumber}&page-size=${pageSize}&search=${search}`,
 };
 
 type AdminEndpoints = {
@@ -59,15 +59,15 @@ type AdminEndpoints = {
 const admin: AdminEndpoints = {
     getUser: (userId: string) => baseApiUrl + `/users/${userId}`,
     getAllUsers: baseApiUrl + '/users',
-    getAllProposals: baseApiUrl + '/review-proposals',
-    acceptProposal: (proposalId: string) => `${baseApiUrl}/review-proposals/${proposalId}/accept`,
-    removeProposal: (proposalId: string) => `${baseApiUrl}/review-proposals/${proposalId}`,
+    getAllProposals: baseApiUrl + '/course-proposals',
+    acceptProposal: (proposalId: string) => `${baseApiUrl}/course-proposals/${proposalId}/accept`,
+    removeProposal: (proposalId: string) => `${baseApiUrl}/course-proposals/${proposalId}`,
     removeUser: (userId: string) => `${baseApiUrl}/users/${userId}`,
     banUser: (userId: string) => `${baseApiUrl}/users/${userId}/ban`,
 };
 
 export const endpoints = {
     ...auth,
-    ...reviews,
+    ...Courses,
     ...admin
 };

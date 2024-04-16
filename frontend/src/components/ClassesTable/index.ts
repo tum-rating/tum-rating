@@ -1,1 +1,0 @@
-export { ClassesTable } from './ClassesTable.tsx';

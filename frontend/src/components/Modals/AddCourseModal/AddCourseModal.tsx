@@ -15,7 +15,7 @@ import {nanoid} from 'nanoid';
 import {useEffect} from 'react';
 
 import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
-import {ReviewInput, useAddReview} from '@/reviews/useAddReview.tsx';
+import {CourseInput, useAddCourseProposal} from '@/courses/useAddCourseProposal.tsx';
 
 const openAddCourseModal = ({...props}) => {
     modals.openContextModal({
@@ -25,13 +25,13 @@ const openAddCourseModal = ({...props}) => {
 };
 
 const AddCourseModal = ({context, id}: ContextModalProps) => {
-    const {mutate: addReview, status, isLoading: addReviewLoading} = useAddReview();
+    const {mutate: addReview, status, isLoading: addReviewLoading} = useAddCourseProposal();
     const form = useForm({
         initialValues: {
             courseId: nanoid(),
             courseNumber: nanoid(),
             professor: '',
-            course: '',
+            name: '',
             semester: '',
         },
     });
@@ -42,7 +42,7 @@ const AddCourseModal = ({context, id}: ContextModalProps) => {
         }
     }, [context, id, status]);
 
-    const handleSubmit = (form: ReviewInput) => {
+    const handleSubmit = (form: CourseInput) => {
         addReview({...form});
     };
 
@@ -52,8 +52,8 @@ const AddCourseModal = ({context, id}: ContextModalProps) => {
             <form onSubmit={form.onSubmit((e) => handleSubmit(e))}>
                 <Stack>
                     <TextInput data-testid="cypress-add-new-course-name-input" required label="Course name"
-                               placeholder="Course name" value={form.values.course}
-                               onChange={(event) => form.setFieldValue('course', event.currentTarget.value)}
+                               placeholder="Course name" value={form.values.name}
+                               onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}
                                radius="md"/>
                     <TextInput data-testid="cypress-add-new-course-professor-input" required label="Professor"
                                placeholder="Professor" value={form.values.professor}

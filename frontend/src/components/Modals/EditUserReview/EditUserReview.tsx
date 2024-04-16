@@ -8,9 +8,9 @@ import {useUser} from '@/auth/useUser.tsx';
 import {HowEasyEditableRating} from '@/components/Course/HowEasyEditableRating.tsx';
 import {HowInterestingEditableRating} from '@/components/Course/HowInterestingEditableRating.tsx';
 import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
-import {DetailReview} from '@/reviews/types.ts';
-import {useAddUserReview, UserAddReviewInput} from '@/reviews/useAddUserReview.tsx';
-import {useDetailReview} from '@/reviews/useReview.tsx';
+import {DetailCourse} from '@/courses/types.ts';
+import {useAddUserReview, UserAddReviewInput} from '@/courses/useAddUserReview.tsx';
+import {useDetailCourse} from '@/courses/useCourse.tsx';
 
 
 const openEditUserReviewModal = ({courseId, userReview, ...props}) => {
@@ -28,7 +28,7 @@ const EditUserReviewModal = ({context, id, innerProps}: ContextModalProps<{ cour
     const {courseId} = innerProps;
     const {mutate: editUserReview, isSuccess, isLoading} = useAddUserReview(courseId, 'PATCH');
     const {data: user} = useUser();
-    const {data: userReview}: { data: DetailReview } = useDetailReview(courseId, {staleTime: Infinity});
+    const {data: userReview}: { data: DetailCourse } = useDetailCourse(courseId, {staleTime: Infinity});
     const location = useLocation();
     const navigate = useNavigate();
     useEffect(() => {

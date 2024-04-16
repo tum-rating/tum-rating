@@ -1,10 +1,10 @@
 import {useQuery} from '@tanstack/react-query';
 
+import {User} from "@/admin/types.ts";
 import {endpoints} from '@/api';
 import * as userLocalStorage from "@/auth/user.localstore.ts";
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
-import {User} from "@/admin/types.ts";
 
 async function getAllUsers(token: string): Promise<{users: User[]} | null> {
     const response = await fetch(endpoints.getAllUsers,{

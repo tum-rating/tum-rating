@@ -1,7 +1,7 @@
-export interface Review {
+export interface Course {
     _id: string;
     professor: string;
-    course: string;
+    name: string;
     courseId: string;
     courseNumber: string;
     createdAt: string;
@@ -12,7 +12,7 @@ export interface Review {
     offeredInSemesters: string[];
 }
 
-export interface DetailReview {
+export interface DetailCourse {
     _id: string;
     professor: string;
     course: string;

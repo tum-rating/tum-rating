@@ -5,11 +5,12 @@ import * as userLocalStorage from '../auth/user.localstore.ts';
 
 import {endpoints, useMutationWithAuth} from '@/api';
 import { User } from '@/auth/useUser.tsx';
+import {QUERY_KEY} from "@/constants/queryKeys.ts";
 import { queryClient } from '@/react-query/client.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 
-async function addUserReview(user: User | null | undefined, userReview: UserAddReviewInput, courseId: string, type: 'POST' | 'PATCH'): Promise<any> {
+async function deleteUserReview(user: User | null | undefined, userReview: UserAddReviewInput, courseId: string, type: 'POST' | 'PATCH'): Promise<any> {
     if (!user) return null;
     const body = { ...userReview };
     const endpoint = endpoints.postSpecificReview(courseId, String(user.user.id));
@@ -22,7 +23,6 @@ async function addUserReview(user: User | null | undefined, userReview: UserAddR
         body: JSON.stringify(body),
     });
     const responseData = await response.json();
-    console.log(responseData)
     if (!response.ok) throw new ResponseError('Failed on get paginated reviews request', response);
     return responseData;
 }
@@ -34,10 +34,10 @@ export interface UserAddReviewInput {
     semester: string;
 }
 
-export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any {
+export function useDeleteUserReview(courseId: string, type: 'POST' | 'PATCH'): any {
     const user = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: async (newReview: UserAddReviewInput) => addUserReview(user, newReview, courseId, type),
+        mutationFn: async (newReview: UserAddReviewInput) => deleteUserReview(user, newReview, courseId, type),
         onSuccess: () => {
             notifications.show({
                 title: 'Success',
@@ -46,10 +46,10 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any 
                 icon: <IconCheck />,
             });
             queryClient.invalidateQueries({
-                queryKey: ['detailReview', courseId],
+                queryKey: [QUERY_KEY.detail_course, courseId],
             });
             queryClient.invalidateQueries({
-                queryKey: ['courses'],
+                queryKey: [QUERY_KEY.courses],
             });
         },
     });
