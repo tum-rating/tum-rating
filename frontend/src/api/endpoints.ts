@@ -45,11 +45,15 @@ const reviews: ReviewsEndpoints = {
 };
 
 type AdminEndpoints = {
-    getUser: (userId: string) => string;
-    getAllUsers: string;
+    //---PROPOSALS
     getAllProposals: string;
     acceptProposal: (proposalId: string) => string;
     removeProposal: (proposalId: string) => string;
+    //---USER
+    getUser: (userId: string) => string;
+    getAllUsers: string;
+    removeUser: (userId: string) => string;
+    banUser: (userId: string) => string;
 };
 
 const admin: AdminEndpoints = {
@@ -58,6 +62,8 @@ const admin: AdminEndpoints = {
     getAllProposals: baseApiUrl + '/review-proposals',
     acceptProposal: (proposalId: string) => `${baseApiUrl}/review-proposals/${proposalId}/accept`,
     removeProposal: (proposalId: string) => `${baseApiUrl}/review-proposals/${proposalId}`,
+    removeUser: (userId: string) => `${baseApiUrl}/users/${userId}`,
+    banUser: (userId: string) => `${baseApiUrl}/users/${userId}/ban`,
 };
 
 export const endpoints = {

@@ -60,7 +60,6 @@ export const columns = ({onAccept}: CoursesProposalsTableColumnsProps) => [
                 <Group gap={4} justify="right" wrap="nowrap">
                     <ActionIcon
                         size="sm"
-                        variant="transparent"
                         color="green"
                         onClick={(e) => {
                             e.stopPropagation();
@@ -71,7 +70,6 @@ export const columns = ({onAccept}: CoursesProposalsTableColumnsProps) => [
                     </ActionIcon>
                     <ActionIcon
                         size="sm"
-                        variant="transparent"
                     >
                         <IconEdit size={16}/>
                     </ActionIcon>

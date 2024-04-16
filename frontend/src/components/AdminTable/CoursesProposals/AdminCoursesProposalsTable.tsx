@@ -80,12 +80,12 @@ const AdminCoursesProposalsTable = () => {
                 idAccessor='_id'
                 striped
                 pinLastColumn
-                columns={proposalsColumns}
                 fetching={isFetching}
-                records={coursesProposals}
-                rowExpansion={rowExpansion}
                 sortStatus={sortStatus}
                 onSortStatusChange={setSortStatus}
+                rowExpansion={rowExpansion}
+                records={coursesProposals}
+                columns={proposalsColumns}
             />
             {/*temporary disabled*/}
             {/*<Affix position={{bottom: 20, right: "50%"}} style={{display: "none"}}>*/}
