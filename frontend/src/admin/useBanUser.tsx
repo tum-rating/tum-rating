@@ -1,3 +1,4 @@
+import {Text} from '@mantine/core';
 import {notifications} from '@mantine/notifications';
 
 import * as userLocalStorage from '../auth/user.localstore.ts';
@@ -8,22 +9,29 @@ import {queryClient} from '@/react-query/client.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 
-async function acceptProposal(token:string, proposalId: string): Promise<any> {
+async function banUser(token: string, userId: string, flag: boolean): Promise<any> {
     if (!token) return null;
-    const endpoint = endpoints.acceptProposal(proposalId);
+    const endpoint = endpoints.banUser(userId);
     const response = await fetch(endpoint, {
-        method: "POST",
+        method: flag ? "POST" : "DELETE",
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
+            body: JSON.stringify({userId: userId}),
         },
     });
+    if (response.status === 204) {
+        return {
+            _id: userId,
+            isBanned: flag,
+        }
+    }
     const responseData = await response.json();
     if (!response.ok) {
         notifications.update({
-            id: proposalId,
+            id: userId,
             title: 'Error',
-            message: 'Failed to accept proposal: ' + responseData.message,
+            message: <Text size="xs">{responseData.message || 'An error occurred'}</Text>,
             autoClose: false,
             withCloseButton: true,
             color: 'red',
@@ -31,21 +39,21 @@ async function acceptProposal(token:string, proposalId: string): Promise<any> {
         })
         throw new ResponseError("error", response);
     }
-    responseData._id = proposalId;
+    responseData._id = userId;
     return responseData;
 }
 
 
-export function useAcceptProposal(): any {
+export function useBanUser(): any {
     const token = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: async (proposalId: string) => acceptProposal(token, proposalId),
+        mutationFn: async ({userId, flag}: { userId: string, flag: boolean }) => banUser(token, userId, flag),
         onMutate: (variables) => {
             notifications.show({
-                id: variables,
+                id: variables.userId,
                 loading: true,
-                title: 'Accepting proposal',
-                message: 'Your proposal is being accepted',
+                title: variables.flag ? 'Banning user' : 'Unbanning user',
+                message: <Text size="xs">Please wait...</Text>,
                 autoClose: false,
                 withCloseButton: false,
             })
@@ -53,12 +61,12 @@ export function useAcceptProposal(): any {
         },
         onSuccess: (variables) => {
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY.proposals],
+                queryKey: [QUERY_KEY.all_users],
             });
             notifications.update({
                 id: variables._id,
                 title: 'Success',
-                message: 'Proposal accepted',
+                message: <Text size="xs"> {variables.isBanned ? 'User banned' : 'User unbanned'}</Text>,
                 autoClose: true,
                 withCloseButton: true,
                 color: 'green',

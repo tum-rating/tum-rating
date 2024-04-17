@@ -1,4 +1,5 @@
 import {
+    Alert,
     BackgroundImage,
     Button,
     Center,
@@ -11,11 +12,13 @@ import {
 } from '@mantine/core';
 import {useForm} from '@mantine/form';
 import {ContextModalProps, modals} from '@mantine/modals';
+import {IconFaceIdError} from "@tabler/icons-react";
 import {nanoid} from 'nanoid';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 
 import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
 import {CourseInput, useAddCourseProposal} from '@/courses/useAddCourseProposal.tsx';
+
 
 const openAddCourseModal = ({...props}) => {
     modals.openContextModal({
@@ -25,7 +28,13 @@ const openAddCourseModal = ({...props}) => {
 };
 
 const AddCourseModal = ({context, id}: ContextModalProps) => {
-    const {mutate: addReview, status, isLoading: addReviewLoading} = useAddCourseProposal();
+    const {mutate: addReview, status, isLoading: addReviewLoading, error, isError} = useAddCourseProposal();
+    const [apiError, setApiError] = useState(null);
+
+    useEffect(() => {
+        setApiError(isError)
+    }, [isError]);
+
     const form = useForm({
         initialValues: {
             courseId: nanoid(),
@@ -63,6 +72,14 @@ const AddCourseModal = ({context, id}: ContextModalProps) => {
                             value={form.values.semester}
                             onChange={(value: string) => form.setFieldValue('semester', value)}
                             data={[{value: '2023 S', label: '2023 S'}]}/>
+                    {apiError && error && (
+                        <Alert variant="light" color="red" title="Error" icon={<IconFaceIdError/>}
+                               withCloseButton onClose={() => setApiError(false)}>
+                            <Text size="xs">
+                                {error.message || 'An error occurred'}
+                            </Text>
+                        </Alert>
+                    )}
                     <Button loading={addReviewLoading} mt="xs" type="submit" variant="gradient"
                             gradient={{from: 'indigo', to: 'blue', deg: 90}}>
                         Add Course Proposal
