@@ -84,8 +84,8 @@ export class MailerService {
 
     public async sendPasswordRecoveryEmail(to: MailRecipient, recoveryToken: string) {
         const passwordResetLink = `${this._configService.getOrThrow('webapp.url')}/auth/recovery?token=${recoveryToken}`;
-        const username = to[0].name || 'User';
-        const email = to[0].email || 'Email';
+        const username = to.name || 'User';
+        const email = to.email || 'Email';
 
         const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.passwordRecovery, {
             Username: username,
