@@ -1,4 +1,4 @@
-import {ActionIcon, Badge, Center, Group, Tooltip} from '@mantine/core';
+import {ActionIcon, Center, Group, Tooltip} from '@mantine/core';
 import {IconBan, IconEdit, IconHammer, IconHammerOff} from "@tabler/icons-react";
 
 
@@ -18,53 +18,41 @@ export const columns = ({
             accessor: 'email',
             title: 'Email',
             sortable: true,
-            noWrap: false,
-            width: "50%"
+            ellipsis: true,
         },
         {
             accessor: 'username',
             title: 'Username',
             sortable: true,
-            noWrap: false,
+            ellipsis: true,
         },
         {
             accessor: 'id',
             title: 'ID',
             hidden: true,
+            ellipsis: true,
         },
         {
             accessor: 'role',
             title: 'Role',
-            noWrap: false,
             sortable: true,
-            render: ({role}) => {
-                if (role === 0) {
-                    return <Badge color="blue">User</Badge>
-                }
-                if (role === 1) {
-                    return <Badge color="gold">Admin</Badge>
-                }
-                return <Badge color="gray">{role}</Badge>
-            }
+            ellipsis: true,
         },
         {
             accessor: 'isBanned',
             title: 'Banned',
-            noWrap: false,
             sortable: true,
-            render: ({isBanned}) => {
-                return <Badge color={isBanned ? 'red' : 'green'}>{isBanned ? 'Yes' : 'No'}</Badge>
-            }
-            ,
+            // render: ({isBanned}) => {
+            //     return <Badge color={isBanned ? 'red' : 'green'}>{isBanned ? 'Yes' : 'No'}</Badge>
+            // }
         },
         {
             accessor: 'isEmailActivated',
             title: 'Activation',
             sortable: true,
-            noWrap: false,
-            render: ({isEmailActivated}) => {
-                return <Badge color={isEmailActivated ? 'green' : 'red'}>{isEmailActivated ? 'Yes' : 'No'}</Badge>
-            }
+            // render: ({isEmailActivated}) => {
+            //     return <Badge color={isEmailActivated ? 'green' : 'red'}>{isEmailActivated ? 'Yes' : 'No'}</Badge>
+            // }
         },
         {
             accessor: 'actions',

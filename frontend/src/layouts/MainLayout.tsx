@@ -17,7 +17,7 @@ import {
 import {useDisclosure, useHotkeys, useMediaQuery} from '@mantine/hooks';
 import {IconMoonStars, IconSun} from '@tabler/icons-react';
 import {PropsWithChildren} from 'react';
-import {isMobile, isMobileOnly} from 'react-device-detect';
+import {isMobileOnly} from 'react-device-detect';
 import {useNavigate} from 'react-router-dom';
 
 import logo from '@/assets/img/logo.png';
@@ -116,7 +116,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                         </Flex>
                         <Flex direction="column" w="100%" wrap="nowrap" gap="sm">
                             {user ? (
-                                <Button fullWidth size="lg" variant="outline" onClick={() => signOut()}>
+                                <Button fullWidth size="lg" variant="outline" onClick={() => signOut({})}>
                                     Log out
                                 </Button>
                             ) : (

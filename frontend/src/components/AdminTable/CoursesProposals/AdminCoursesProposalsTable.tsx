@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import {columns} from "./columns.tsx"
 
 import {CourseProposal} from "@/admin/types.ts";
-import {useAcceptProposal} from "@/admin/useAcceptProposal.ts";
+import {useAcceptProposal} from "@/admin/useAcceptProposal.tsx";
 import {useCoursesProposals} from "@/admin/useCoursesProposals.ts";
 import {ProposalExpansion} from "@/components/AdminTable/CoursesProposals/ProposalExpansion.tsx";
 
@@ -53,7 +53,7 @@ const AdminCoursesProposalsTable = () => {
     }
 
     return (
-        <Box h="calc(100vh - 240px)">
+        <Box>
             <Text fw={600}>
                 Courses Proposals
             </Text>

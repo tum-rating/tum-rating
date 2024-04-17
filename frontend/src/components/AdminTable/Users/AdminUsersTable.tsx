@@ -9,8 +9,8 @@ import rowClasses from "../Shared/styles/RowStyles.module.css"
 
 import {User} from "@/admin/types.ts";
 import {useAllUsers} from "@/admin/useAllUsers.ts";
-import {useBanUser} from "@/admin/useBanUser.ts";
-import {useRemoveUser} from "@/admin/useRemoveUser.ts";
+import {useBanUser} from "@/admin/useBanUser.tsx";
+import {useRemoveUser} from "@/admin/useRemoveUser.tsx";
 import {UserExpansion} from "@/components/AdminTable/Users/UserExpansion.tsx";
 
 const AdminUsersTable = () => {
@@ -22,7 +22,7 @@ const AdminUsersTable = () => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus<User>>(null);
     useEffect(() => {
         if (data && sortStatus) {
-            const sortedData = sortBy(data, (item: User) => {
+            const sortedData = sortBy(data.users, (item: User) => {
                 const value = item[sortStatus.columnAccessor];
                 if (Array.isArray(value)) {
                     return value.join('');
@@ -54,7 +54,7 @@ const AdminUsersTable = () => {
     }
 
     return (
-        <Box h="calc(100vh - 240px)">
+        <Box>
             <Text fw={600}>
                 Courses Proposals
             </Text>

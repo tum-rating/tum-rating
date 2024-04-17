@@ -11,7 +11,7 @@ interface CoursesProposalsTableColumnsProps {
 
 export const columns = ({onAccept}: CoursesProposalsTableColumnsProps) => [
     {
-        accessor: 'course',
+        accessor: 'name',
         title: 'Course name',
         noWrap: false,
         width: "50%"

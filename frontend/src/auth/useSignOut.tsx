@@ -1,17 +1,16 @@
+import {NotificationData, notifications} from '@mantine/notifications';
+import {useQueryClient} from '@tanstack/react-query';
+import {useCallback} from 'react';
+import {useNavigate} from 'react-router-dom';
 
-import { notifications, NotificationData } from '@mantine/notifications';
-import { IconCheck } from '@tabler/icons-react';
-import { useQueryClient } from '@tanstack/react-query';
-import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import * as userLocalStorage from "@/auth/user.localstore.ts";
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
 
 
 type IUseSignOut = (notification: useSignOutProps) => void;
 
-export interface useSignOutProps extends NotificationData {}
+export interface useSignOutProps extends NotificationData {
+}
 
 export function useSignOut(): IUseSignOut {
     const queryClient = useQueryClient();
@@ -21,11 +20,10 @@ export function useSignOut(): IUseSignOut {
         queryClient.setQueryData([QUERY_KEY.user_details], null);
         userLocalStorage.removeUser()
         notifications.show({
-            message: 'Sign out successful!',
-            color: 'green',
+            color: 'blue',
             withCloseButton: true,
             className: 'sign-out-notification',
-            icon: <IconCheck />,
+            title: 'You have been signed out',
             ...notification,
         });
     }, [navigate, queryClient]);

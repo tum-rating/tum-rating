@@ -1,5 +1,5 @@
+import {Text} from "@mantine/core";
 import { notifications } from '@mantine/notifications';
-import { IconCheck, IconX } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 
@@ -30,17 +30,21 @@ export function useActivate() {
         mutationFn: async () => await activate(token),
         onSuccess: () => {
             notifications.show({
-                message: 'Activation successful!',
+                title: 'Success',
+                id: 'activation',
+                message: <Text size="xs">Activation successful!</Text>,
                 color: 'green',
-                icon: <IconCheck />,
             });
         },
         onError: (error) => {
             const errorMessage = error instanceof ResponseError ? error.message : 'Ops.. Error on sign up. Try again!';
             notifications.show({
-                message: errorMessage,
+                message: <Text size="xs">{errorMessage}</Text>,
+                title: 'Error',
+                id: 'activation-error',
+                withCloseButton: true,
+                autoClose: 10000,
                 color: 'red',
-                icon: <IconX />,
             });
         },
     });

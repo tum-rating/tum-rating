@@ -1,4 +1,5 @@
 import {
+    Alert,
     Anchor,
     Box,
     Button,
@@ -15,7 +16,8 @@ import {
 } from '@mantine/core';
 import {useForm} from '@mantine/form';
 import {ContextModalProps, modals} from '@mantine/modals';
-import {IconMail} from '@tabler/icons-react';
+import {IconFaceIdError, IconMail} from '@tabler/icons-react';
+import {useEffect, useState} from "react";
 import {useNavigate} from 'react-router-dom';
 
 import {useSignUp} from '@/auth/useSignUp.tsx';
@@ -35,8 +37,14 @@ const openSignUpModal = ({...props}: SignUpModalProps) => {
 };
 
 const SignUpModal = () => {
-    const {isSuccess, isPending: isLoading, mutate: signUp} = useSignUp();
+    const {isSuccess, isPending: isLoading, mutate: signUp, error, isError} = useSignUp();
+    const [apiError, setApiError] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setApiError(isError)
+    }, [isError]);
+
     const form = useForm({
         initialValues: {
             email: '',
@@ -51,6 +59,7 @@ const SignUpModal = () => {
         },
 
     });
+
 
     return (
         <Box pos="relative">
@@ -104,6 +113,14 @@ const SignUpModal = () => {
                                 <Text c="red" size="sm">
                                     {form.errors.terms}
                                 </Text>
+                            )}
+                            {apiError && error && (
+                                <Alert variant="light" color="red" title="Error" icon={<IconFaceIdError/>}
+                                       withCloseButton onClose={()=>setApiError(false)}>
+                                    <Text size="xs">
+                                        {error.message || 'An error occurred'}
+                                    </Text>
+                                </Alert>
                             )}
                             <Group>
                                 <Anchor

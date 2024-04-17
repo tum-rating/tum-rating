@@ -49,10 +49,9 @@ export function useUser() {
     const {isError, error} = reseponse;
 
     useEffect(() => {
-        console.log(isError)
         if (isError) {
-            handleAuthErrors({error, signOut}); // handle the error
-            userLocalStorage.removeUser(); // remove user from localStorage if there is an error
+            handleAuthErrors({error, signOut});
+            userLocalStorage.removeUser();
         }
     }, [isError]);
 

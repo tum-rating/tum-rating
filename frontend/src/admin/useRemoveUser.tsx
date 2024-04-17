@@ -1,3 +1,4 @@
+import {Text} from "@mantine/core";
 import {notifications} from '@mantine/notifications';
 
 import * as userLocalStorage from '../auth/user.localstore.ts';
@@ -23,7 +24,7 @@ async function removeUser(token:string, userId: string): Promise<any> {
         notifications.update({
             id: userId,
             title: 'Error',
-            message: 'Failed' + responseData.message,
+            message: <Text size="xs">{responseData.message || 'An error occurred'}</Text>,
             autoClose: false,
             withCloseButton: true,
             color: 'red',
@@ -45,7 +46,7 @@ export function useRemoveUser(): any {
                 id: variables,
                 loading: true,
                 title: 'Removing user',
-                message: 'User is being removed',
+                message: <Text size="xs">User is being removed</Text>,
                 autoClose: false,
                 withCloseButton: false,
             })
@@ -58,7 +59,7 @@ export function useRemoveUser(): any {
             notifications.update({
                 id: variables._id,
                 title: 'Success',
-                message: 'User removed',
+                message: <Text size="xs">User removed</Text>,
                 autoClose: true,
                 withCloseButton: true,
                 color: 'green',
