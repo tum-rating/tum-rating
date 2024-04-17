@@ -1,5 +1,5 @@
 import {Badge, Button, Flex, HoverCard, Text} from "@mantine/core";
-import {PropsWithChildren} from "react";
+import { PropsWithChildren} from "react";
 import {useNavigate} from "react-router-dom";
 
 import {useUser} from "@/admin/useUser.ts";
@@ -18,7 +18,7 @@ const UserInfoAction = (props: UserInfoActionProps) => {
     return (
         <HoverCard width={280} shadow="md">
             <HoverCard.Target>
-                {children}
+                {children(user)}
             </HoverCard.Target>
             <HoverCard.Dropdown>
                 <Flex gap="sm">
