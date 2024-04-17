@@ -3,8 +3,8 @@ import {IconCircleCheck, IconEditCircle, IconTrashX} from "@tabler/icons-react";
 import {useState} from "react";
 
 import {CourseProposal} from "@/admin/types.ts";
-import {useAcceptProposal} from "@/admin/useAcceptProposal.ts";
-import {useRemoveProposal} from "@/admin/useRemoveProposal.ts";
+import {useAcceptProposal} from "@/admin/useAcceptProposal.tsx";
+import {useRemoveProposal} from "@/admin/useRemoveProposal.tsx";
 import {UserInfoAction} from "@/components/AdminTable/Shared/UserInfoAction";
 
 interface ProposalExpansionProps {
@@ -32,8 +32,20 @@ const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExp
                         <Flex align="center" gap="3">
                             <Text style={{whiteSpace: "nowrap"}} fz="xs" fw="bold">User ID: </Text>
                             <UserInfoAction userId={proposal.userId}>
-                                <Button px={4} m={0} h={20} variant="subtle" fz="xs" fw="600"
-                                        c="blue">{proposal.userId}</Button>
+                                {(user) => (
+                                    <Button
+                                        px={4}
+                                        m={0}
+                                        h={20}
+                                        variant="subtle"
+                                        fz="xs"
+                                        fw="600"
+                                        c={user?.isBanned ? "gray" : "blue"}
+                                        style={user?.isBanned ? { textDecorationLine: 'line-through' } : {}}
+                                    >
+                                        {proposal.userId}
+                                    </Button>
+                                )}
                             </UserInfoAction>
                         </Flex>
                         <Flex align="center" gap="3">
@@ -48,7 +60,7 @@ const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExp
                                 value={proposal.name}
                                 label="Course Name"
                                 placeholder="Enter course name"
-                                onChange={(event) => setProposal({...proposal, course: event.currentTarget.value})}/>
+                                onChange={(event) => setProposal({...proposal, name: event.currentTarget.value})}/>
                             <Flex gap="xs" wrap={{base: "wrap", sm: "nowrap"}}>
                                 <Flex direction="column" gap="xs" w={{base: "100%", sm: "40%"}}>
                                     <Autocomplete
