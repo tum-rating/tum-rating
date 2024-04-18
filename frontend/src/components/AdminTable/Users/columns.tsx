@@ -1,4 +1,4 @@
-import {ActionIcon, Center, Group, Tooltip} from '@mantine/core';
+import {ActionIcon, Badge, Center, Group, Tooltip} from '@mantine/core';
 import {IconBan, IconEdit, IconHammer, IconHammerOff} from "@tabler/icons-react";
 
 
@@ -42,17 +42,17 @@ export const columns = ({
             accessor: 'isBanned',
             title: 'Banned',
             sortable: true,
-            // render: ({isBanned}) => {
-            //     return <Badge color={isBanned ? 'red' : 'green'}>{isBanned ? 'Yes' : 'No'}</Badge>
-            // }
+            render: ({isBanned}) => {
+                return isBanned ? <Badge color={'red'}>Ban</Badge> : null;
+            }
         },
         {
             accessor: 'isEmailActivated',
             title: 'Activation',
             sortable: true,
-            // render: ({isEmailActivated}) => {
-            //     return <Badge color={isEmailActivated ? 'green' : 'red'}>{isEmailActivated ? 'Yes' : 'No'}</Badge>
-            // }
+            render: ({isEmailActivated}) => {
+                return isEmailActivated ? '🥨' : '';
+            }
         },
         {
             accessor: 'actions',
@@ -61,7 +61,7 @@ export const columns = ({
                     <IconEdit size={16}/>
                 </Center>
             ),
-            width: '0%', // 👈 use minimal width
+            width: '0%',
             render: (record) => (
                 <Group gap={4} justify="right" wrap="nowrap">
                     {record.isBanned ?
