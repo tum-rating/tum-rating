@@ -24,6 +24,7 @@
     "@tabler/icons-react": "^2.47.0",
     "@tanstack/react-query": "^5.22.2",
     "@tanstack/react-query-devtools": "^5.24.0",
+    "@types/lodash": "^4.17.0",
     "clsx": "^2.1.0",
     "lodash": "^4.17.21",
     "mantine-datatable": "^7.5.1",
