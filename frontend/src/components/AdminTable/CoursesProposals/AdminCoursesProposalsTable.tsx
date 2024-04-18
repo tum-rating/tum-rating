@@ -1,52 +1,16 @@
-import {ActionIcon, Box, Flex, Text} from "@mantine/core";
+import {Badge, Box, Button, Flex, Text} from "@mantine/core";
 import {IconRefresh} from "@tabler/icons-react";
-import sortBy from 'lodash/sortBy';
-import {DataTable, DataTableProps, DataTableSortStatus} from "mantine-datatable";
-import {useEffect, useState} from "react";
+import {DataTable, DataTableProps} from "mantine-datatable";
 
-import {columns} from "./columns.tsx"
+import classes from "../Shared/styles/TableStyles.module.css"
 
-import {CourseProposal} from "@/admin/types.ts";
-import {useAcceptProposal} from "@/admin/useAcceptProposal.tsx";
 import {useCoursesProposals} from "@/admin/useCoursesProposals.ts";
 import {ProposalExpansion} from "@/components/AdminTable/CoursesProposals/ProposalExpansion.tsx";
+import {useProposalsColumns} from "@/components/AdminTable/CoursesProposals/useProposalsColumns.tsx";
 
 const AdminCoursesProposalsTable = () => {
-    const {data, isFetching, refetch} = useCoursesProposals();
-    const acceptProposalMutation = useAcceptProposal();
-    const {mutateAsync: acceptProposal} = acceptProposalMutation;
-    const [coursesProposals, setCoursesProposals] = useState([]);
-    const [proposalsColumns, setProposalsColumns] = useState([]);
-
-    const [sortStatus, setSortStatus] = useState<DataTableSortStatus<CourseProposal>>(null);
-    useEffect(() => {
-        if (data && sortStatus) {
-            const sortedData = sortBy(data, item => {
-                const value = item[sortStatus.columnAccessor];
-                if (Array.isArray(value)) {
-                    return value.join('');
-                }
-                return value;
-            }) as CourseProposal[];
-            setCoursesProposals(sortStatus.direction === 'desc' ? sortedData.reverse() : sortedData);
-        }
-    }, [sortStatus]);
-
-    useEffect(() => {
-        setProposalsColumns(columns({
-            onAccept: (id) => {
-                acceptProposal(id);
-            },
-        }))
-    }, []);
-
-    useEffect(() => {
-        if (data) {
-            setCoursesProposals(data);
-        }
-    }, [data]);
-
-
+    const {isFetching, refetch} = useCoursesProposals();
+    const {data: coursesProposals, sortStatus, setSortStatus, columns} = useProposalsColumns()
     const rowExpansion: DataTableProps<any>['rowExpansion'] = {
         allowMultiple: true,
         content: ({record}) => <ProposalExpansion proposal={record} editing={false}/>
@@ -54,28 +18,26 @@ const AdminCoursesProposalsTable = () => {
 
     return (
         <Box>
-            <Text fw={600}>
-                Courses Proposals
-            </Text>
-            <Flex justify="space-between" align="center" h={50} pr="xs">
-                <Flex gap="xs">
-                    <Text size="sm" fw={500}>
-                        All Proposals:
-                    </Text>
-                    <Text size="sm" fw={800}>
+            <Flex justify="space-between" align="center" h={50} px="xs" bg="gray.1">
+                <Flex gap="4" align="center">
+                    <Badge radius="sm" fw={800} c="white" px={6}>
                         {coursesProposals.length}
+                    </Badge>
+                    <Text fw={600}>
+                        Active proposals
                     </Text>
                 </Flex>
-                <ActionIcon
+                <Button
                     variant="light"
                     size="xs"
+                    rightSection={<IconRefresh size={16}/>}
                     onClick={() => refetch()}>
-                    <IconRefresh size={16}/>
-                </ActionIcon>
+                    Refresh
+                </Button>
             </Flex>
             <DataTable
+                minHeight="calc(100vh-110px)"
                 withTableBorder
-                borderRadius="sm"
                 withColumnBorders
                 idAccessor='_id'
                 striped
@@ -83,9 +45,10 @@ const AdminCoursesProposalsTable = () => {
                 fetching={isFetching}
                 sortStatus={sortStatus}
                 onSortStatusChange={setSortStatus}
+                className={classes.table}
                 rowExpansion={rowExpansion}
                 records={coursesProposals}
-                columns={proposalsColumns}
+                columns={columns}
             />
             {/*temporary disabled*/}
             {/*<Affix position={{bottom: 20, right: "50%"}} style={{display: "none"}}>*/}
