@@ -63,6 +63,9 @@ export function useBanUser(): any {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.all_users],
             });
+            queryClient.invalidateQueries({
+                queryKey: [QUERY_KEY.admin_user_details],
+            });
             notifications.update({
                 id: variables._id,
                 title: 'Success',

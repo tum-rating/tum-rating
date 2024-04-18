@@ -1,19 +1,23 @@
-import {Badge, Button, Flex, HoverCard, Text} from "@mantine/core";
-import { PropsWithChildren} from "react";
+import {Badge, Button, Flex, HoverCard, Stack, Text} from "@mantine/core";
+import {ReactNode} from "react";
 import {useNavigate} from "react-router-dom";
 
+import {User} from "@/admin/types.ts";
+import {useBanUser} from "@/admin/useBanUser.tsx";
 import {useUser} from "@/admin/useUser.ts";
 import {UserAvatar} from "@/components/Avatar";
 import {Skeleton} from "@/components/Skeleton";
 
 
-interface UserInfoActionProps extends PropsWithChildren {
+interface UserInfoActionProps {
     userId: string;
+    children: (user: User | undefined) => ReactNode;
 }
 
 const UserInfoAction = (props: UserInfoActionProps) => {
     const navigate = useNavigate();
     const {userId, children} = props;
+    const {mutate: banUser} = useBanUser();
     const {data: user, isLoading} = useUser(userId);
     return (
         <HoverCard width={280} shadow="md">
@@ -27,12 +31,17 @@ const UserInfoAction = (props: UserInfoActionProps) => {
                     }/>
                     <Flex direction="column" align="flex-start" gap={0}>
                         <Skeleton w={100} h={10} loading={isLoading} component={
-                            <Text ta="center" fz="xs" fw={500} >
+                            <Text ta="center" fz="xs" fw={600}
+                                  style={user?.isBanned ? {textDecorationLine: 'line-through'} : {}}
+                            >
                                 {user?.username}
                             </Text>
                         }/>
                         <Skeleton w={100} h={25} loading={isLoading} component={
-                            <Text mb="xs" ta="center" fz="xs" fw={500}  c="dimmed">
+                            <Text mb="xs" ta="center" fz="xs" fw={500}
+                                  c={user?.isBanned ? "gray" : "dimmed"}
+                                  style={user?.isBanned ? {textDecorationLine: 'line-through'} : {}}
+                            >
                                 {user?.email}
                             </Text>
                         }/>
@@ -45,9 +54,33 @@ const UserInfoAction = (props: UserInfoActionProps) => {
                         </Flex>
                     </Flex>
                 </Flex>
-                <Button loading={isLoading} variant="default" fullWidth mt="md" onClick={() => navigate("/")}>
-                    Details
-                </Button>
+                <Stack gap="4">
+                    <Button size="xs" loading={isLoading} variant="default" fullWidth mt="md" onClick={() => navigate("/")}>
+                        Details
+                    </Button>
+                    {user?.isBanned ?
+                        <Button
+                            fullWidth
+                            size="xs"
+                            color="red"
+                            onClick={() => {
+                                banUser({userId: user.id, flag: false});
+                            }}
+                        >
+                            Unban
+                        </Button>:
+                        <Button
+                            fullWidth
+                            size="xs"
+                            color="red"
+                            onClick={() => {
+                                banUser({userId: user.id, flag: true});
+                            }}
+                        >
+                            Ban
+                        </Button>
+                    }
+                </Stack>
             </HoverCard.Dropdown>
         </HoverCard>
     )
