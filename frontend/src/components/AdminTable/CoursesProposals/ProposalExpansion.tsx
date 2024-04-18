@@ -30,7 +30,7 @@ const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExp
                 <Flex direction="column" gap="xs">
                     <Flex justify="flex-start" gap="xs" wrap="wrap">
                         <Flex align="center" gap="3">
-                            <Text style={{whiteSpace: "nowrap"}} fz="xs" fw="bold">User ID: </Text>
+                            <Text style={{whiteSpace: "nowrap"}} fz="xs" fw="bold">User: </Text>
                             <UserInfoAction userId={proposal.userId}>
                                 {(user) => (
                                     <Button
@@ -41,12 +41,12 @@ const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExp
                                         fz="xs"
                                         fw="600"
                                         c={user?.isBanned ? "gray" : "blue"}
-                                        style={user?.isBanned ? { textDecorationLine: 'line-through' } : {}}
-                                    >
-                                        {proposal.userId}
-                                    </Button>
-                                )}
-                            </UserInfoAction>
+                                            style={user?.isBanned ? { textDecorationLine: 'line-through' } : {}}
+                                            >
+                                        {user?.username}
+                                            </Button>
+                                            )}
+                                    </UserInfoAction>
                         </Flex>
                         <Flex align="center" gap="3">
                             <Text style={{whiteSpace: "nowrap"}} fz="xs" fw="bold">Course ID: </Text>

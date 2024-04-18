@@ -15,7 +15,7 @@ afterAll(async () => {
     mongoose.disconnect();
 });
 
-describe('Add Review', () => {
+describe('Add Course', () => {
     it('should add review', async () => {
         const signInResponse = await signInRequestMock();
 
