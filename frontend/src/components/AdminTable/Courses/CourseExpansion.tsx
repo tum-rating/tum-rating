@@ -15,7 +15,6 @@ import {IconDatabaseX, IconEditCircle, IconTrashX} from "@tabler/icons-react";
 import {useState} from "react";
 
 import {Course} from "@/admin/types.ts";
-import {UserInfoAction} from "@/components/AdminTable/Shared/UserInfoAction";
 import {Skeleton} from "@/components/Skeleton";
 
 interface CourseExpansionProps {
@@ -30,8 +29,8 @@ const CourseExpansion = ({course: ICourse, editing: IEditing}: CourseExpansionPr
     const isLoading = false
     const refetch = () => {
     }
-
     //---
+
     const [courseDetails, setCourseDetails] = useState<Course>(ICourse);
     const [editing] = useState(IEditing);
     const [newLecturer, setNewLecturer] = useState('');
@@ -63,33 +62,6 @@ const CourseExpansion = ({course: ICourse, editing: IEditing}: CourseExpansionPr
                     <Flex direction="column" gap="xs">
                         <Flex justify="flex-start" gap="xs" wrap="wrap">
                             <Flex align="center" gap="3">
-                                <Text style={{whiteSpace: "nowrap"}} fz="xs" fw="bold">User: </Text>
-                                <Skeleton
-                                    width={82}
-                                    height={16}
-                                    radius="sm"
-                                    loading={isLoading}
-                                    component={
-                                        <UserInfoAction userId={courseDetails?.userId}>
-                                            {(user) => (
-                                                <Button
-                                                    px={4}
-                                                    m={0}
-                                                    h={20}
-                                                    variant="subtle"
-                                                    fz="xs"
-                                                    fw="600"
-                                                    c={user?.isBanned ? "gray" : "blue"}
-                                                    style={user?.isBanned ? {textDecorationLine: 'line-through'} : {}}
-                                                >
-                                                    {user?.username}
-                                                </Button>
-                                            )}
-                                        </UserInfoAction>
-                                    }
-                                ></Skeleton>
-                            </Flex>
-                            <Flex align="center" gap="3">
                                 <Text style={{whiteSpace: "nowrap"}} fz="xs" fw="bold">Course ID: </Text>
                                 <Skeleton
                                     width={155}
@@ -98,6 +70,18 @@ const CourseExpansion = ({course: ICourse, editing: IEditing}: CourseExpansionPr
                                     loading={isLoading}
                                     component={
                                         <Text truncate fz="xs" fw="600" c="dimmed">{courseDetails?.courseId}</Text>
+                                    }>
+                                </Skeleton>
+                            </Flex>
+                            <Flex align="center" gap="3">
+                                <Text style={{whiteSpace: "nowrap"}} fz="xs" fw="bold">Created at: </Text>
+                                <Skeleton
+                                    width={155}
+                                    height={16}
+                                    radius="sm"
+                                    loading={isLoading}
+                                    component={
+                                        <Text truncate fz="xs" fw="600" c="dimmed">{new Date(courseDetails?.createdAt).toLocaleString()}</Text>
                                     }>
                                 </Skeleton>
                             </Flex>
