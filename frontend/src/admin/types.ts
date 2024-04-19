@@ -9,6 +9,17 @@ type CourseProposal = {
     _id: string,
 }
 
+type Course = {
+    courseId: string,
+    courseNumber: string,
+    professor: string,
+    otherLecturers: string[],
+    userId: string,
+    name: string,
+    offeredInSemesters: string[],
+    _id: string,
+}
+
 type User = {
     id: string,
     email: string,
@@ -19,4 +30,4 @@ type User = {
 }
 
 
-export type { CourseProposal, User }
+export type { CourseProposal, User, Course }

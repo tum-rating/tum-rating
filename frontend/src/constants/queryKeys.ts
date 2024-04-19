@@ -7,5 +7,6 @@ export const QUERY_KEY = {
     detail_course: 'detail_course',
     search_query: 'search_query',
     admin_user_details: 'admin_user_details',
+    admin_detail_course: 'admin_detail_course',
     admin_course_proposal_details: 'admin_course_proposal_details',
 };
