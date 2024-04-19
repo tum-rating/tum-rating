@@ -5,3 +5,11 @@
             color-mix(in srgb, var(--mantine-color-red-6) 30%, var(--mantine-color-black))
     ) !important;
 }
+
+.goldRow {
+    color: var(--mantine-color-orange-6) !important;
+    background-color: light-dark(
+            color-mix(in srgb, var(--mantine-color-orange-6) 10%, var(--mantine-color-white)),
+            color-mix(in srgb, var(--mantine-color-orange-6) 30%, var(--mantine-color-black))
+    ) !important;
+}

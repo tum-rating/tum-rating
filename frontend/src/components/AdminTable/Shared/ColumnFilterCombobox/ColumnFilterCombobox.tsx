@@ -9,7 +9,7 @@ import {
     ScrollArea,
     useCombobox
 } from "@mantine/core";
-import {IconSearch, IconX} from "@tabler/icons-react";
+import {IconFilterCancel, IconSearch, IconX} from "@tabler/icons-react";
 import {useState} from "react";
 
 
@@ -27,7 +27,7 @@ const ColumnFilterCombobox = (props: ColumnFilterComboboxProps) => {
 
     const values = value.map((item) => (
         <Pill maw={100} key={item} withRemoveButton onRemove={() => handleValueRemove(item)}>
-            {item}
+            {String(item)}
         </Pill>
     ));
 
@@ -38,7 +38,7 @@ const ColumnFilterCombobox = (props: ColumnFilterComboboxProps) => {
                     <Group gap="sm">
                         {value.includes(item) ? <CheckIcon size={12}/> : null}
                         <Group gap={7}>
-                            <span>{item}</span>
+                            <span>{String(item)}</span>
                         </Group>
                     </Group>
                 </Combobox.Option>
@@ -86,6 +86,15 @@ const ColumnFilterCombobox = (props: ColumnFilterComboboxProps) => {
                     </Combobox.Group>
                 </Combobox.Options>
             </div>
+            {
+                values.length > 0 && (
+                    <ActionIcon color="red" variant="subtle" pos="absolute" right="17px" top="15px" onClick={()=>{
+                        onChange([])
+                    }}>
+                        <IconFilterCancel size={18}/>
+                    </ActionIcon>
+                )
+            }
         </Combobox>
     )
 }
