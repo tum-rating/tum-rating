@@ -1,132 +1,175 @@
+import {Badge, Button, Divider, Flex, Stack, Text, TextInput,Alert, Center} from "@mantine/core";
+import {IconDatabaseX, IconEditCircle, IconHammer, IconHammerOff, IconTrashX} from "@tabler/icons-react";
 import {useState} from "react";
 
 import {User} from "@/admin/types.ts";
+import {useBanUser} from "@/admin/useBanUser.tsx";
+import {useRemoveUser} from "@/admin/useRemoveUser.tsx";
+import {useUser} from "@/admin/useUser.ts";
+import {UserAvatar} from "@/components/Avatar";
+import {Skeleton} from "@/components/Skeleton";
+
 interface UserExpansionProps {
     user: User;
     editing: boolean;
 }
 
 const UserExpansion = ({user: IUser, editing: IEditing}: UserExpansionProps) => {
-    const [user, setUser] = useState(IUser);
+    const {data: userDetails, isLoading, error, isError,refetch} = useUser(IUser.id)
+    const [user, setUser] = useState(userDetails);
     const [editing, setEditing] = useState(IEditing);
-    // const {mutate: acceptProposal} = useAcceptProposal();
-    // const {mutate: removeProposal} = useRemoveProposal();
-    console.log(user)
-    const html = JSON.stringify(user)
+    const {mutate: changeBanStatus, isLoading: banLoading} = useBanUser();
+    const {mutate: removeUser, isLoading: userRemoveLoading} = useRemoveUser();
     return (
-        `${html}`
+        <Flex wrap={{base: "wrap", sm: "nowrap"}} px="42" pt="lg" pb="xl" gap="md" style={{
+            background: "var(--striped-background)"
+        }}>
+            {isError ? (
+                <Center h={270}>
+                    <Flex direction="column">
+                        <Text fw={600}>Error occurred - {IUser.id}</Text>
+                        <Alert variant="light" color="red" title="Alert title"
+                               icon={<IconDatabaseX height={120} width={120}/>}>
+                            {error?.message || "An error occurred while fetching the data - error message not provided"}
+                        </Alert>
+                        <Button variant={"white"} c="black" onClick={() => {
+                            refetch()
+                        }}>Refetch</Button>
+                    </Flex>
+                </Center>
+            ) : (
+                <>
+                    <Flex direction="column" w="80%" gap="xs">
+                        <Flex direction="column" w="80%" gap="xs">
+                            <Flex align="center" gap="xs" wrap="wrap">
+                                <Text fz="sm" fw={500}>Details</Text>
+                            </Flex>
+                            <Divider variant="dashed" size="sm"/>
+                            <Flex gap="xs" mb="xs">
+                                <Skeleton
+                                    width={52}
+                                    height={20}
+                                    radius="lg"
+                                    loading={isLoading}
+                                    component={userDetails?.role === 1 ? <Badge color="gold">Admin</Badge> :
+                                        <Badge color="blue">User</Badge>}
+                                ></Skeleton>
+                                <Skeleton
+                                    width={125}
+                                    height={20}
+                                    radius="lg"
+                                    loading={isLoading}
+                                    component={userDetails?.isBanned ? <Badge color="red">Banned</Badge> : null}
+                                ></Skeleton>
+                                <Skeleton
+                                    width={125}
+                                    height={20}
+                                    radius="lg"
+                                    loading={isLoading}
+                                    component={userDetails?.isEmailActivated ?
+                                        <Badge color="green">Email activated</Badge> :
+                                        <Badge color="gray">Email not activated</Badge>}
+                                ></Skeleton>
+                            </Flex>
+                            <Flex gap="lg">
+                                <Skeleton
+                                    width={84}
+                                    height={84}
+                                    radius="lg"
+                                    loading={isLoading}
+                                    component={
+                                        <UserAvatar size="xl"/>
+                                    }
+                                ></Skeleton>
+                                <Flex direction="column" gap="xs">
+                                    <Skeleton
+                                        width={221}
+                                        height={36}
+                                        radius="sm"
+                                        mt={22}
+                                        loading={isLoading}
+                                        component={
+                                            <TextInput
+                                                disabled={!editing}
+                                                value={userDetails?.email}
+                                                label="Email"
+                                                placeholder="Enter user email"
+                                                onChange={(event) => setUser({
+                                                    ...user,
+                                                    email: event.currentTarget.value
+                                                })}/>
+                                        }
+                                    ></Skeleton>
+                                    <Skeleton
+                                        width={221}
+                                        height={36}
+                                        radius="sm"
+                                        mt={22}
+                                        loading={isLoading}
+                                        component={
+                                            <TextInput
+                                                disabled={!editing}
+                                                value={userDetails?.username}
+                                                label="Username"
+                                                placeholder="Enter user username"
+                                                onChange={(event) => setUser({
+                                                    ...user,
+                                                    username: event.currentTarget.value
+                                                })}/>
+                                        }
+                                    ></Skeleton>
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                    </Flex>
+                    <Flex direction="column" gap="xs">
+                        <Flex align="center" gap="xs">
+                            <Text fz="sm" fw={500}>Actions</Text>
+                        </Flex>
+                        <Stack gap="xs">
+                            <Divider variant="dashed" size="sm"/>
+                            {userDetails?.isBanned ? <Button
+                                    size="sm"
+                                    color="black"
+                                    loading={banLoading || isLoading}
+                                    leftSection={<IconHammerOff size={16}/>}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        changeBanStatus({userId: userDetails?.id, flag: false});
+                                    }}
+                                >
+                                    Unban
+                                </Button> :
+                                <Button
+                                    size="sm"
+                                    color="black"
+                                    loading={banLoading || isLoading}
+                                    leftSection={<IconHammer size={16}/>}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        changeBanStatus({userId: userDetails?.id, flag: true});
+                                    }}
+                                >
+                                    Ban
+                                </Button>}
+                            <Button onClick={(e) => {
+                                e.stopPropagation();
+                                removeUser(userDetails?.id);
+                            }} loading={userRemoveLoading || isLoading || banLoading} leftSection={<IconTrashX width={16}/>}
+                                    color="red">Remove
+                                User</Button>
+                            <Button color="green" disabled leftSection={<IconEditCircle width={16}/>} onClick={() => {
+                                if (editing) {
+                                    setEditing(false)
+                                } else {
+                                    setEditing(true)
+                                }
+                            }} variant="default">{!editing ? "Edit User" : "Save User"}</Button>
+                        </Stack>
+                    </Flex></>
+            )}
+        </Flex>
     )
-
-    // return (
-    //     <Flex  wrap={{base: "wrap", sm: "nowrap"}} px="42" pt="lg" pb="xl" gap="md" style={{
-    //         background: "var(--striped-background)"
-    //     }}>
-    //         <Flex direction="column" w="80%" gap="xs">
-    //             <Flex align="center" gap="xs" wrap="wrap">
-    //                 <Text fz="sm" fw={500}>Details</Text>
-    //             </Flex>
-    //             <Divider variant="dashed" size="sm"/>
-    //             <Flex direction="column" gap="xs">
-    //                 <Flex justify="flex-start" gap="xs" wrap="wrap">
-    //                     <Flex align="center" gap="3">
-    //                         <Text style={{whiteSpace: "nowrap"}} fz="xs" fw="bold">User ID: </Text>
-    //                         <UserInfoAction userId={proposal.userId}>
-    //                             <Button px={4} m={0} h={20} variant="subtle" fz="xs" fw="600"
-    //                                     c="blue">{proposal.userId}</Button>
-    //                         </UserInfoAction>
-    //                     </Flex>
-    //                     <Flex align="center" gap="3">
-    //                         <Text style={{whiteSpace: "nowrap"}} fz="xs" fw="bold">Course ID: </Text>
-    //                         <Text truncate fz="xs" fw="600" c="dimmed">{proposal.courseId}</Text>
-    //                     </Flex>
-    //                 </Flex>
-    //                 <form>
-    //                     <Flex wrap="wrap" gap="xs" direction="column">
-    //                         <TextInput
-    //                             disabled={!editing}
-    //                             value={proposal.name}
-    //                             label="Course Name"
-    //                             placeholder="Enter course name"
-    //                             onChange={(event) => setProposal({...proposal, course: event.currentTarget.value})}/>
-    //                         <Flex gap="xs" wrap={{base: "wrap", sm: "nowrap"}}>
-    //                             <Flex direction="column" gap="xs" w={{base: "100%", sm: "40%"}}>
-    //                                 <Autocomplete
-    //                                     disabled={!editing}
-    //                                     label="Semester"
-    //                                     placeholder="Select semester"
-    //                                     data={['2023 S']}
-    //                                     value={proposal.offeredInSemesters[0]}
-    //                                     onChange={(value) => setProposal({...proposal, offeredInSemesters: [value]})}
-    //
-    //                                 />
-    //                                 <TextInput
-    //                                     disabled={!editing}
-    //                                     value={proposal.professor}
-    //                                     label="Main Professor"
-    //                                     placeholder="Enter professor name"
-    //                                     onChange={(event) => setProposal({...proposal, professor: event.currentTarget.value})}
-    //                                 />
-    //                             </Flex>
-    //                             <PillsInput
-    //                                 w={{base: "100%", sm: "100%"}}
-    //                                 disabled={!editing}
-    //                                 multiline
-    //                                 label="Other Professors"
-    //                             >
-    //                                 <Pill.Group h={91} style={{alignItems: "flex-start"}}>
-    //                                     {
-    //                                         proposal.otherLecturers.map((lecturer) => (
-    //                                             <Pill disabled={!editing} key={lecturer} withRemoveButton
-    //                                                   onRemove={() => {
-    //                                                       setProposal({
-    //                                                           ...proposal,
-    //                                                           otherLecturers: proposal.otherLecturers.filter((l) => l !== lecturer)
-    //                                                       });
-    //                                                   }}>{lecturer}</Pill>
-    //                                         ))
-    //                                     }
-    //                                     <PillsInput.Field
-    //                                         disabled={!editing}
-    //                                         onChange={(event) => setNewLecturer(event.currentTarget.value)}
-    //                                         onKeyDown={(event) => {
-    //                                             if (event.key === 'Enter') {
-    //                                                 if (newLecturer.length <= 3) return;
-    //                                                 if (proposal.otherLecturers.includes(newLecturer)) return;
-    //                                                 setProposal({
-    //                                                     ...proposal,
-    //                                                     otherLecturers: [...proposal.otherLecturers, event.currentTarget.value]
-    //                                                 });
-    //                                                 setNewLecturer('');
-    //                                             }
-    //                                         }}
-    //                                         value={newLecturer}
-    //                                         placeholder=""/>
-    //                                 </Pill.Group>
-    //                             </PillsInput>
-    //                         </Flex>
-    //                     </Flex>
-    //                 </form>
-    //             </Flex>
-    //         </Flex>
-    //         <Flex direction="column" gap="xs">
-    //             <Flex align="center" gap="xs">
-    //                 <Text fz="sm" fw={500}>Actions</Text>
-    //             </Flex>
-    //             <Stack gap="xs">
-    //                 <Divider variant="dashed" size="sm"/>
-    //                 <Button onClick={()=>{acceptProposal(proposal._id)}} leftSection={<IconCircleCheck width={16}/>} color="green">Accept Proposal</Button>
-    //                 <Button onClick={()=>{removeProposal(proposal._id)}} leftSection={<IconTrashX width={16}/>} color="red">Remove Proposal</Button>
-    //                 <Button color="green" disabled leftSection={<IconEditCircle width={16}/>} onClick={() => {
-    //                     if (editing) {
-    //                         setEditing(false)
-    //                     } else {
-    //                         setEditing(true)
-    //                     }
-    //                 }} variant="default">{!editing ? "Edit Proposal" : "Save Proposal"}</Button>
-    //             </Stack>
-    //         </Flex>
-    //     </Flex>
-    // );
 };
 
 export {UserExpansion}
