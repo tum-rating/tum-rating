@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 
 import {useTableColumns} from '../Shared/useTableColumns';
 
-
 import {CourseProposal} from "@/admin/types.ts";
 import {useAcceptProposal} from "@/admin/useAcceptProposal.tsx";
 import {useCoursesProposals} from "@/admin/useCoursesProposals.ts";
@@ -14,6 +13,7 @@ import {ColumnFilterCombobox} from "@/components/AdminTable/Shared/ColumnFilterC
 export const useProposalsColumns = () => {
     const {data} = useCoursesProposals();
     const {mutateAsync: acceptProposal} = useAcceptProposal();
+
     const [coursesProposals, setCoursesProposals] = useState<CourseProposal[]>([])
     const [columns, setColumns] = useState([])
     const filterableColumns = ['name', 'offeredInSemesters', 'otherLecturers']
@@ -24,7 +24,8 @@ export const useProposalsColumns = () => {
         filterState,
         setFilter,
         resetFilters,
-        resetSorting
+        resetSorting,
+        isAnyFilterActive
     } = useTableColumns(data, filterableColumns, setCoursesProposals);
 
     useEffect(() => {
@@ -100,7 +101,7 @@ export const useProposalsColumns = () => {
                         <Flex align="center" gap="xs">
                             {element.otherLecturers.map((x) => <Pill>{x}</Pill>)}
                         </Flex>
-                    </>
+                    </  >
                 )
             },
             filtering: filterState?.otherLecturers?.selected.length > 0,
@@ -158,7 +159,9 @@ export const useProposalsColumns = () => {
         sortStatus: sortState,
         setSortStatus: setSortState,
         columns,
+        filterState,
         resetFilters,
-        resetSorting
+        resetSorting,
+        isAnyFilterActive
     }
 };
