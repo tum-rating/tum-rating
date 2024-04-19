@@ -33,6 +33,8 @@ const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExp
     const [newLecturer, setNewLecturer] = useState('');
     const {mutate: acceptProposal} = useAcceptProposal();
     const {mutate: removeProposal} = useRemoveProposal();
+
+    console.log(courseProposalDetails)
     return (
         <Flex wrap={{base: "wrap", sm: "nowrap"}} px="42" pt="lg" pb="xl" gap="md" style={{
             background: "var(--striped-background)"

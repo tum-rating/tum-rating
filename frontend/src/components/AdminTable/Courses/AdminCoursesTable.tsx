@@ -1,12 +1,21 @@
 import {Badge, Box, Button, Flex, Group, Text} from "@mantine/core";
 import {IconFilterX, IconRefresh} from "@tabler/icons-react";
 import {DataTable, DataTableProps} from "mantine-datatable";
+import {useMemo} from "react";
 
 import {useCoursesColumns} from "./useCoursesColumns.tsx"
 import classes from "../Shared/styles/TableStyles.module.css"
 
 import {CourseExpansion} from "@/components/AdminTable/Courses/CourseExpansion.tsx";
 import {usePaginatedCourses} from "@/courses/usePaginatedCourses.tsx";
+
+
+const ExpandedRowContent = ({record, index}) => {
+   // Consider this
+    return useMemo(() => {
+        return <CourseExpansion course={record} editing={false}/>
+    }, [record, index]);
+};
 
 const AdminCoursesTable = () => {
     const {fetchNextPage, isFetching, refetch} = usePaginatedCourses();
@@ -24,7 +33,7 @@ const AdminCoursesTable = () => {
             transitionDuration: 0,
             animateOpacity: false,
         },
-        content: ({record}) => <CourseExpansion course={record} editing={false}/>
+        content: ({record,index}) => <ExpandedRowContent record={record} index={index} />
     };
 
     return (
