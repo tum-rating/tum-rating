@@ -14,6 +14,7 @@ type Course = {
     courseNumber: string,
     professor: string,
     otherLecturers: string[],
+    createdAt: string,
     userId: string,
     name: string,
     offeredInSemesters: string[],
