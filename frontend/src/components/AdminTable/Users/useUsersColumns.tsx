@@ -207,7 +207,6 @@ export const useUsersColumns = () => {
                             <IconBan size={16}/>
                         </ActionIcon>
                     </Tooltip>
-
                 </Group>
             ),
         },

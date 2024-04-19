@@ -1,5 +1,3 @@
-import {ActionIcon, Center, Group} from '@mantine/core';
-import {IconCircleCheckFilled, IconClick, IconEdit} from "@tabler/icons-react";
 import {useEffect, useState} from "react";
 
 import {useTableColumns} from '../Shared/useTableColumns';
@@ -46,39 +44,6 @@ export const useCoursesColumns = () => {
         {
             title: 'Professor',
             accessor: 'professor',
-        },
-        {
-            accessor: 'actions',
-            title: (
-                <Center>
-                    <IconClick size={16} />
-                </Center>
-            ),
-            width: '0%', // 👈 use minimal width
-            render: ()=> (
-                <Group gap={4} justify="right" wrap="nowrap">
-                    <ActionIcon
-                        size="sm"
-                        variant="transparent"
-                        color="green"
-                        onClick={(e) => {
-                            e.stopPropagation(); // 👈 prevent triggering the row click function
-
-                        }}
-                    >
-                        <IconCircleCheckFilled size={16} />
-                    </ActionIcon>
-                    <ActionIcon
-                        size="sm"
-                        variant="transparent"
-                        onClick={(e) => {
-                            e.stopPropagation(); // 👈 prevent triggering the row click function
-                        }}
-                    >
-                        <IconEdit size={16} />
-                    </ActionIcon>
-                </Group>
-            ),
         },
     ];
 

@@ -5,11 +5,10 @@ import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { DetailCourse } from './types.ts';
 
 import { endpoints } from '@/api';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 import {QUERY_KEY} from "@/constants/queryKeys.ts";
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
-
-async function getDetailCourse(_id: string): Promise<DetailCourse | null> {
+async function getDetailCourse(_id: string) {
     const endpoint = endpoints.getSpecificCourse(_id);
     const response = await fetch(endpoint);
     if (!response.ok) throw new ResponseError('Failed on get reviews request', response);
@@ -18,8 +17,10 @@ async function getDetailCourse(_id: string): Promise<DetailCourse | null> {
 
 export function useDetailCourse(_id: string, props?: any): UseQueryResult<DetailCourse | null, unknown> {
     return useQuery({
-        queryKey: [QUERY_KEY.detail_course, _id],
+        queryKey: [QUERY_KEY.admin_detail_course, _id],
         queryFn: async () => getDetailCourse(_id),
+        refetchIntervalInBackground: false,
+        refetchOnMount: false,
         refetchOnWindowFocus: false,
         ...(props || {}),
     });
