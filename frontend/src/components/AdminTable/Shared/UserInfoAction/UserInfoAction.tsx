@@ -1,6 +1,5 @@
 import {Badge, Button, Flex, HoverCard, Stack, Text} from "@mantine/core";
 import {ReactNode} from "react";
-import {useNavigate} from "react-router-dom";
 
 import {User} from "@/admin/types.ts";
 import {useBanUser} from "@/admin/useBanUser.tsx";
@@ -8,14 +7,12 @@ import {useUser} from "@/admin/useUser.ts";
 import {UserAvatar} from "@/components/Avatar";
 import {Skeleton} from "@/components/Skeleton";
 
-
 interface UserInfoActionProps {
     userId: string;
     children: (user: User | undefined) => ReactNode;
 }
 
 const UserInfoAction = (props: UserInfoActionProps) => {
-    const navigate = useNavigate();
     const {userId, children} = props;
     const {mutate: banUser} = useBanUser();
     const {data: user, isLoading} = useUser(userId);
@@ -55,7 +52,9 @@ const UserInfoAction = (props: UserInfoActionProps) => {
                     </Flex>
                 </Flex>
                 <Stack gap="4">
-                    <Button size="xs" loading={isLoading} variant="default" fullWidth mt="md" onClick={() => navigate("/")}>
+                    <Button size="xs" loading={isLoading} variant="default" fullWidth mt="md" onClick={() =>{
+                        //TODO navigate to user details, url or something else
+                    }}>
                         Details
                     </Button>
                     {user?.isBanned ?

@@ -22,6 +22,7 @@ const useTableColumns = (
 ) => {
     const [sortState, setSortState] = useState<SortStateProps | null>(null);
     const [filterState, setFilterState] = useState<FilterStateProps>({});
+    const [isAnyFilterActive, setIsAnyFilterActive] = useState(false);
 
     useEffect(() => {
         const hashMap: FilterStateProps = {};
@@ -44,6 +45,17 @@ const useTableColumns = (
         newFilterState[key].selected = value
         setFilterState(newFilterState);
     }
+
+    useEffect(() => {
+        let active = false;
+        for (let key in filterState) {
+            if (filterState[key].selected.length > 0) {
+                active = true;
+                break;
+            }
+        }
+        setIsAnyFilterActive(active);
+    }, [filterState]);
 
     useEffect(() => {
         if (!initialData) return;
@@ -101,7 +113,7 @@ const useTableColumns = (
         setSortState(null);
     }
 
-    return { sortState, setSortState, filterState, setFilter, data: initialData, resetFilters, resetSorting };
+    return { sortState, setSortState, filterState, setFilter, data: initialData, resetFilters, resetSorting, isAnyFilterActive };
 };
 
 export {useTableColumns,SortStateProps,FilterStateProps};

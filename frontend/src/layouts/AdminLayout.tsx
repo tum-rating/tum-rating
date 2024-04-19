@@ -31,6 +31,10 @@ export function AdminLayout() {
             <AppShell
                 header={{height: HEADER_HEIGHT}}
                 navbar={{width: 300, breakpoint: 'sm', collapsed: {desktop: true, mobile: !opened}}}
+                style={{
+                    overflow: "hidden",
+                    height: "100vh",
+                }}
             >
                 <AppShell.Header>
                     <Group h="100%" px="md">
