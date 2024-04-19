@@ -47,6 +47,7 @@ const Courses: CoursesEndpoints = {
 type AdminEndpoints = {
     //---PROPOSALS
     getAllProposals: string;
+    getSingleProposal: (proposalId: string) => string;
     acceptProposal: (proposalId: string) => string;
     removeProposal: (proposalId: string) => string;
     //---USER
@@ -60,6 +61,7 @@ const admin: AdminEndpoints = {
     getUser: (userId: string) => baseApiUrl + `/users/${userId}`,
     getAllUsers: baseApiUrl + '/users',
     getAllProposals: baseApiUrl + '/course-proposals',
+    getSingleProposal: (proposalId: string) => `${baseApiUrl}/course-proposals/${proposalId}`,
     acceptProposal: (proposalId: string) => `${baseApiUrl}/course-proposals/${proposalId}/accept`,
     removeProposal: (proposalId: string) => `${baseApiUrl}/course-proposals/${proposalId}`,
     removeUser: (userId: string) => `${baseApiUrl}/users/${userId}`,

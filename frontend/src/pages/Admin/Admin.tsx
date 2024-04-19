@@ -21,7 +21,7 @@ const Admin = () => {
                     <Text>Active Users: </Text>
                     {isUsersFetching ? (
                         <Skeleton width={30} height={20}/>
-                    ) : <Badge>{users?.users.length}</Badge>}
+                    ) : <Badge>{users?.length}</Badge>}
                 </Flex>
             </Flex>
         </Flex>

@@ -15,7 +15,7 @@ export interface Course {
 export interface DetailCourse {
     _id: string;
     professor: string;
-    course: string;
+    name: string;
     courseId: string;
     courseNumber: string;
     createdAt: string;
