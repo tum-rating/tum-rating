@@ -20,12 +20,12 @@ import {useLocation, useNavigate} from 'react-router-dom';
 
 import classes from './SearchInputDesktop.module.css';
 
+import {useUser} from "@/auth/useUser.tsx";
 import {SearchHighlight} from '@/components/Highlight';
-import {useScrollLock} from "@/hooks/useScrollLock";
 import {Course} from '@/courses/types.ts';
 import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
+import {useScrollLock} from "@/hooks/useScrollLock";
 import {getPath, Paths} from "@/routes/paths.ts";
-import {useUser} from "@/auth/useUser.tsx";
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
@@ -48,6 +48,11 @@ const SearchInputDesktop = () => {
             setIsSearchOpen(location.hash === '#search');
         } else {
             setIsSearchOpen(false);
+        }
+        const searchParams = new URLSearchParams(location.search);
+        const search = searchParams.get('search');
+        if (search) {
+            setValue(search);
         }
     }, [location]);
 
