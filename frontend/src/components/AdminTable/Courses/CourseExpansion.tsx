@@ -1,18 +1,8 @@
-import {
-    Alert,
-    Autocomplete,
-    Button,
-    Center,
-    Divider,
-    Flex,
-    Pill,
-    PillsInput,
-    Stack,
-    Text,
-    TextInput
-} from "@mantine/core";
+import {Alert, Autocomplete, Button, Center, Divider, Flex, Pill, PillsInput, Stack, Text, TextInput} from "@mantine/core";
 import {IconDatabaseX, IconEditCircle, IconTrashX} from "@tabler/icons-react";
 import {useState} from "react";
+
+import classes from "../Shared/styles/ExpansionStyles.module.css"
 
 import {Course} from "@/admin/types.ts";
 import {Skeleton} from "@/components/Skeleton";
@@ -36,9 +26,7 @@ const CourseExpansion = ({course: ICourse, editing: IEditing}: CourseExpansionPr
     const [newLecturer, setNewLecturer] = useState('');
 
     return (
-        <Flex wrap={{base: "wrap", sm: "nowrap"}} px="42" pt="lg" pb="xl" gap="md" style={{
-            background: "var(--striped-background)"
-        }}>
+        <Flex wrap={{base: "wrap", sm: "nowrap"}} className={classes.expansionContainer} gap="md">
             {isError ? (
                 <Center h={270}>
                     <Flex direction="column">
@@ -54,7 +42,7 @@ const CourseExpansion = ({course: ICourse, editing: IEditing}: CourseExpansionPr
                 </Center>
 
             ) : <>
-                <Flex direction="column" w="80%" gap="xs">
+                <Flex direction="column" gap="xs" className={classes.expansionDetails}>
                     <Flex align="center" gap="xs" wrap="wrap">
                         <Text fz="sm" fw={500}>Details</Text>
                     </Flex>
@@ -81,7 +69,8 @@ const CourseExpansion = ({course: ICourse, editing: IEditing}: CourseExpansionPr
                                     radius="sm"
                                     loading={isLoading}
                                     component={
-                                        <Text truncate fz="xs" fw="600" c="dimmed">{new Date(courseDetails?.createdAt).toLocaleString()}</Text>
+                                        <Text truncate fz="xs" fw="600"
+                                              c="dimmed">{new Date(courseDetails?.createdAt).toLocaleString()}</Text>
                                     }>
                                 </Skeleton>
                             </Flex>
@@ -195,7 +184,7 @@ const CourseExpansion = ({course: ICourse, editing: IEditing}: CourseExpansionPr
                         </form>
                     </Flex>
                 </Flex>
-                <Flex direction="column" gap="xs">
+                <Flex direction="column" gap="xs" className={classes.expansionActions}>
                     <Flex align="center" gap="xs">
                         <Text fz="sm" fw={500}>Actions</Text>
                     </Flex>

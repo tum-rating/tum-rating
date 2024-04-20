@@ -1,4 +1,4 @@
-import {Badge, Box, Button, Flex, Group, Text} from "@mantine/core";
+import {ActionIcon, Badge, Box, Button, Flex, Group, Text} from "@mantine/core";
 import {IconFilterX, IconRefresh} from "@tabler/icons-react";
 import {DataTable, DataTableProps} from "mantine-datatable";
 import {useMemo} from "react";
@@ -11,7 +11,7 @@ import {usePaginatedCourses} from "@/courses/usePaginatedCourses.tsx";
 
 
 const ExpandedRowContent = ({record, index}) => {
-   // Consider this
+    // Consider this
     return useMemo(() => {
         return <CourseExpansion course={record} editing={false}/>
     }, [record, index]);
@@ -33,7 +33,7 @@ const AdminCoursesTable = () => {
             transitionDuration: 0,
             animateOpacity: false,
         },
-        content: ({record,index}) => <ExpandedRowContent record={record} index={index} />
+        content: ({record, index}) => <ExpandedRowContent record={record} index={index}/>
     };
 
     return (
@@ -49,21 +49,43 @@ const AdminCoursesTable = () => {
                 </Flex>
                 <Group>
                     {isAnyFilterActive && (
+                        <>
+                            <Box hiddenFrom="xs">
+                                <Button
+                                    variant="light"
+                                    size="xs"
+                                    rightSection={<IconFilterX size={16}/>}
+                                    onClick={() => resetFilters()}>
+                                    Reset filters
+                                </Button>
+                            </Box>
+                            <Box visibleFrom="xs">
+                                <ActionIcon
+                                    variant="light"
+                                    size="xs"
+                                    onClick={() => resetFilters()}>
+                                    <IconFilterX size={16}/>
+                                </ActionIcon>
+                            </Box>
+                        </>
+                    )}
+                    <Box hiddenFrom="xs">
                         <Button
                             variant="light"
                             size="xs"
-                            rightSection={<IconFilterX size={16}/>}
-                            onClick={() => resetFilters()}>
-                            Reset filters
+                            rightSection={<IconRefresh size={16}/>}
+                            onClick={() => refetch()}>
+                            Refresh
                         </Button>
-                    )}
-                    <Button
-                        variant="light"
-                        size="xs"
-                        rightSection={<IconRefresh size={16}/>}
-                        onClick={() => refetch()}>
-                        Refresh
-                    </Button>
+                    </Box>
+                    <Box visibleFrom="xs">
+                        <ActionIcon
+                            variant="light"
+                            size="xs"
+                            onClick={() => refetch()}>
+                            <IconRefresh size={16}/>
+                        </ActionIcon>
+                    </Box>
                 </Group>
             </Flex>
             <DataTable
@@ -72,7 +94,6 @@ const AdminCoursesTable = () => {
                 withColumnBorders
                 idAccessor='_id'
                 striped
-                pinLastColumn
                 fetching={isFetching}
                 records={courses}
                 className={classes.table}

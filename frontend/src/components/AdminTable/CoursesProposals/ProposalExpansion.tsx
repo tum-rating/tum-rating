@@ -1,4 +1,5 @@
 import {
+    Alert,
     Autocomplete,
     Button,
     Center,
@@ -8,11 +9,12 @@ import {
     PillsInput,
     Stack,
     Text,
-    TextInput,
-    Alert
+    TextInput
 } from "@mantine/core";
 import {IconCircleCheck, IconDatabaseX, IconEditCircle, IconTrashX} from "@tabler/icons-react";
 import {useState} from "react";
+
+import classes from "../Shared/styles/ExpansionStyles.module.css"
 
 import {CourseProposal} from "@/admin/types.ts";
 import {useAcceptProposal} from "@/admin/useAcceptProposal.tsx";
@@ -21,38 +23,37 @@ import {useRemoveProposal} from "@/admin/useRemoveProposal.tsx";
 import {UserInfoAction} from "@/components/AdminTable/Shared/UserInfoAction";
 import {Skeleton} from "@/components/Skeleton";
 
+
 interface ProposalExpansionProps {
     proposal: CourseProposal;
     editing: boolean;
 }
 
 const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExpansionProps) => {
-    const {data: courseProposalDetails, isLoading, error, isError,refetch} = useCourseProposal(IProposal._id)
+    const {data: courseProposalDetails, isLoading, error, isError, refetch} = useCourseProposal(IProposal._id)
     const [proposal, setProposal] = useState(IProposal);
     const [editing, setEditing] = useState(IEditing);
     const [newLecturer, setNewLecturer] = useState('');
     const {mutate: acceptProposal} = useAcceptProposal();
     const {mutate: removeProposal} = useRemoveProposal();
 
-    console.log(courseProposalDetails)
     return (
-        <Flex wrap={{base: "wrap", sm: "nowrap"}} px="42" pt="lg" pb="xl" gap="md" style={{
-            background: "var(--striped-background)"
-        }}>
+        <Flex wrap={{base: "wrap", sm: "nowrap"}} className={classes.expansionContainer} gap="md">
             {isError ? (
                 <Center h={270}>
-                        <Flex direction="column" >
-                            <Text fw={600}>Error occurred - {IProposal._id}</Text>
-                            <Alert variant="light" color="red" title="Alert title" icon={ <IconDatabaseX height={120} width={120}/>}>
-                                {error?.message || "An error occurred while fetching the data - error message not provided"}
-                            </Alert>
-                            <Button variant={"white"} c="black" onClick={() => {
-                                refetch()
-                            }} >Refetch</Button>
-                        </Flex>
+                    <Flex direction="column">
+                        <Text fw={600}>Error occurred - {IProposal._id}</Text>
+                        <Alert variant="light" color="red" title="Alert title"
+                               icon={<IconDatabaseX height={120} width={120}/>}>
+                            {error?.message || "An error occurred while fetching the data - error message not provided"}
+                        </Alert>
+                        <Button variant={"white"} c="black" onClick={() => {
+                            refetch()
+                        }}>Refetch</Button>
+                    </Flex>
                 </Center>
 
-            ) : <><Flex direction="column" w="80%" gap="xs">
+            ) : <><Flex direction="column" gap="xs" className={classes.expansionDetails}>
                 <Flex align="center" gap="xs" wrap="wrap">
                     <Text fz="sm" fw={500}>Details</Text>
                 </Flex>
@@ -207,7 +208,7 @@ const ProposalExpansion = ({proposal: IProposal, editing: IEditing}: ProposalExp
                     </form>
                 </Flex>
             </Flex>
-                <Flex direction="column" gap="xs">
+                <Flex direction="column" gap="xs" className={classes.expansionActions}>
                     <Flex align="center" gap="xs">
                         <Text fz="sm" fw={500}>Actions</Text>
                     </Flex>

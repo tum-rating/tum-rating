@@ -1,4 +1,4 @@
-import {Badge, Box, Button, Flex, Group, Text} from "@mantine/core";
+import {Badge, Box, Button, Flex, Group, Text, ActionIcon} from "@mantine/core";
 import {IconFilterX, IconRefresh} from "@tabler/icons-react";
 import {DataTable, DataTableProps} from "mantine-datatable";
 
@@ -40,24 +40,45 @@ const AdminCoursesProposalsTable = () => {
                 </Flex>
                 <Group>
                     {isAnyFilterActive && (
+                        <>
+                            <Box visibleFrom="xs">
+                                <Button
+                                    variant="light"
+                                    size="xs"
+                                    rightSection={<IconFilterX size={16}/>}
+                                    onClick={() => resetFilters()}>
+                                    Reset filters
+                                </Button>
+                            </Box>
+                            <Box hiddenFrom="xs">
+                                <ActionIcon
+                                    variant="light"
+                                    onClick={() => resetFilters()}>
+                                    <IconFilterX size={16}/>
+                                </ActionIcon>
+                            </Box>
+                        </>
+                    )}
+                    <Box visibleFrom="xs">
                         <Button
                             variant="light"
                             size="xs"
-                            rightSection={<IconFilterX size={16}/>}
-                            onClick={() => resetFilters()}>
-                            Reset filters
+                            rightSection={<IconRefresh size={16}/>}
+                            onClick={() => refetch()}>
+                            Refresh
                         </Button>
-                    )}
-                    <Button
-                        variant="light"
-                        size="xs"
-                        rightSection={<IconRefresh size={16}/>}
-                        onClick={() => refetch()}>
-                        Refresh
-                    </Button>
+                    </Box>
+                    <Box hiddenFrom="xs">
+                        <ActionIcon
+                            variant="light"
+                            onClick={() => refetch()}>
+                            <IconRefresh size={16}/>
+                        </ActionIcon>
+                    </Box>
                 </Group>
             </Flex>
             <DataTable
+                height={100}
                 withTableBorder
                 withColumnBorders
                 idAccessor='_id'
