@@ -116,17 +116,25 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                         </Flex>
                         <Flex direction="column" w="100%" wrap="nowrap" gap="sm">
                             {user ? (
-                                <Button fullWidth size="lg" variant="outline" onClick={() => signOut({})}>
+                                <Button fullWidth size="lg" variant="outline" onClick={() => signOut({
+                                    message: 'You have been signed out',
+                                })}>
                                     Log out
                                 </Button>
                             ) : (
                                 <>
                                     <Button data-testid="cypress-open-sign-in-modal-btn" fullWidth size="md"
-                                            variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
+                                            variant="outline" onClick={() => {
+                                        navigate(getPath(Paths.signIn))
+                                        toggleMobile()
+                                    }}>
                                         Sign In
                                     </Button>
                                     <Button data-testid="cypress-open-sign-up-modal-btn" fullWidth size="md"
-                                            variant="primary-gradient" onClick={() => navigate(getPath(Paths.signUp))}>
+                                            variant="primary-gradient" onClick={() => {
+                                        navigate(getPath(Paths.signUp))
+                                        toggleMobile()
+                                    }}>
                                         Sign Up
                                     </Button>
                                 </>
