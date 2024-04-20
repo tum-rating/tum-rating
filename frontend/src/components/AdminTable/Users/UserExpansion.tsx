@@ -1,6 +1,8 @@
-import {Badge, Button, Divider, Flex, Stack, Text, TextInput,Alert, Center} from "@mantine/core";
+import {Alert, Badge, Button, Center, Divider, Flex, Stack, Text, TextInput} from "@mantine/core";
 import {IconDatabaseX, IconEditCircle, IconHammer, IconHammerOff, IconTrashX} from "@tabler/icons-react";
 import {useState} from "react";
+
+import classes from "../Shared/styles/ExpansionStyles.module.css"
 
 import {User} from "@/admin/types.ts";
 import {useBanUser} from "@/admin/useBanUser.tsx";
@@ -15,15 +17,13 @@ interface UserExpansionProps {
 }
 
 const UserExpansion = ({user: IUser, editing: IEditing}: UserExpansionProps) => {
-    const {data: userDetails, isLoading, error, isError,refetch} = useUser(IUser.id)
+    const {data: userDetails, isLoading, error, isError, refetch} = useUser(IUser.id)
     const [user, setUser] = useState(userDetails);
     const [editing, setEditing] = useState(IEditing);
     const {mutate: changeBanStatus, isLoading: banLoading} = useBanUser();
     const {mutate: removeUser, isLoading: userRemoveLoading} = useRemoveUser();
     return (
-        <Flex wrap={{base: "wrap", sm: "nowrap"}} px="42" pt="lg" pb="xl" gap="md" style={{
-            background: "var(--striped-background)"
-        }}>
+        <Flex wrap={{base: "wrap", sm: "nowrap"}} className={classes.expansionContainer} gap="md">
             {isError ? (
                 <Center h={270}>
                     <Flex direction="column">
@@ -39,90 +39,88 @@ const UserExpansion = ({user: IUser, editing: IEditing}: UserExpansionProps) => 
                 </Center>
             ) : (
                 <>
-                    <Flex direction="column" w="80%" gap="xs">
-                        <Flex direction="column" w="80%" gap="xs">
-                            <Flex align="center" gap="xs" wrap="wrap">
-                                <Text fz="sm" fw={500}>Details</Text>
-                            </Flex>
-                            <Divider variant="dashed" size="sm"/>
-                            <Flex gap="xs" mb="xs">
+                    <Flex direction="column" gap="xs" className={classes.expansionDetails}>
+                        <Flex align="center" gap="xs" wrap="wrap">
+                            <Text fz="sm" fw={500}>Details</Text>
+                        </Flex>
+                        <Divider variant="dashed" size="sm"/>
+                        <Flex gap="xs" mb="xs">
+                            <Skeleton
+                                width={52}
+                                height={20}
+                                radius="lg"
+                                loading={isLoading}
+                                component={userDetails?.role === 1 ? <Badge color="gold">Admin</Badge> :
+                                    <Badge color="blue">User</Badge>}
+                            ></Skeleton>
+                            <Skeleton
+                                width={125}
+                                height={20}
+                                radius="lg"
+                                loading={isLoading}
+                                component={userDetails?.isBanned ? <Badge color="red">Banned</Badge> : null}
+                            ></Skeleton>
+                            <Skeleton
+                                width={125}
+                                height={20}
+                                radius="lg"
+                                loading={isLoading}
+                                component={userDetails?.isEmailActivated ?
+                                    <Badge color="green">Email activated</Badge> :
+                                    <Badge color="gray">Email not activated</Badge>}
+                            ></Skeleton>
+                        </Flex>
+                        <Flex gap="lg">
+                            <Skeleton
+                                width={84}
+                                height={84}
+                                radius="lg"
+                                loading={isLoading}
+                                component={
+                                    <UserAvatar size="xl"/>
+                                }
+                            ></Skeleton>
+                            <Flex direction="column" gap="xs">
                                 <Skeleton
-                                    width={52}
-                                    height={20}
-                                    radius="lg"
-                                    loading={isLoading}
-                                    component={userDetails?.role === 1 ? <Badge color="gold">Admin</Badge> :
-                                        <Badge color="blue">User</Badge>}
-                                ></Skeleton>
-                                <Skeleton
-                                    width={125}
-                                    height={20}
-                                    radius="lg"
-                                    loading={isLoading}
-                                    component={userDetails?.isBanned ? <Badge color="red">Banned</Badge> : null}
-                                ></Skeleton>
-                                <Skeleton
-                                    width={125}
-                                    height={20}
-                                    radius="lg"
-                                    loading={isLoading}
-                                    component={userDetails?.isEmailActivated ?
-                                        <Badge color="green">Email activated</Badge> :
-                                        <Badge color="gray">Email not activated</Badge>}
-                                ></Skeleton>
-                            </Flex>
-                            <Flex gap="lg">
-                                <Skeleton
-                                    width={84}
-                                    height={84}
-                                    radius="lg"
+                                    width={221}
+                                    height={36}
+                                    radius="sm"
+                                    mt={22}
                                     loading={isLoading}
                                     component={
-                                        <UserAvatar size="xl"/>
+                                        <TextInput
+                                            disabled={!editing}
+                                            value={userDetails?.email}
+                                            label="Email"
+                                            placeholder="Enter user email"
+                                            onChange={(event) => setUser({
+                                                ...user,
+                                                email: event.currentTarget.value
+                                            })}/>
                                     }
                                 ></Skeleton>
-                                <Flex direction="column" gap="xs">
-                                    <Skeleton
-                                        width={221}
-                                        height={36}
-                                        radius="sm"
-                                        mt={22}
-                                        loading={isLoading}
-                                        component={
-                                            <TextInput
-                                                disabled={!editing}
-                                                value={userDetails?.email}
-                                                label="Email"
-                                                placeholder="Enter user email"
-                                                onChange={(event) => setUser({
-                                                    ...user,
-                                                    email: event.currentTarget.value
-                                                })}/>
-                                        }
-                                    ></Skeleton>
-                                    <Skeleton
-                                        width={221}
-                                        height={36}
-                                        radius="sm"
-                                        mt={22}
-                                        loading={isLoading}
-                                        component={
-                                            <TextInput
-                                                disabled={!editing}
-                                                value={userDetails?.username}
-                                                label="Username"
-                                                placeholder="Enter user username"
-                                                onChange={(event) => setUser({
-                                                    ...user,
-                                                    username: event.currentTarget.value
-                                                })}/>
-                                        }
-                                    ></Skeleton>
-                                </Flex>
+                                <Skeleton
+                                    width={221}
+                                    height={36}
+                                    radius="sm"
+                                    mt={22}
+                                    loading={isLoading}
+                                    component={
+                                        <TextInput
+                                            disabled={!editing}
+                                            value={userDetails?.username}
+                                            label="Username"
+                                            placeholder="Enter user username"
+                                            onChange={(event) => setUser({
+                                                ...user,
+                                                username: event.currentTarget.value
+                                            })}/>
+                                    }
+                                ></Skeleton>
                             </Flex>
                         </Flex>
                     </Flex>
-                    <Flex direction="column" gap="xs">
+                    <Flex direction="column" gap="xs" className={classes.expansionActions}>
                         <Flex align="center" gap="xs">
                             <Text fz="sm" fw={500}>Actions</Text>
                         </Flex>
@@ -155,7 +153,8 @@ const UserExpansion = ({user: IUser, editing: IEditing}: UserExpansionProps) => 
                             <Button onClick={(e) => {
                                 e.stopPropagation();
                                 removeUser(userDetails?.id);
-                            }} loading={userRemoveLoading || isLoading || banLoading} leftSection={<IconTrashX width={16}/>}
+                            }} loading={userRemoveLoading || isLoading || banLoading}
+                                    leftSection={<IconTrashX width={16}/>}
                                     color="red">Remove
                                 User</Button>
                             <Button color="green" disabled leftSection={<IconEditCircle width={16}/>} onClick={() => {
