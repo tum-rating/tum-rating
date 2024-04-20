@@ -60,7 +60,7 @@ export function AdminLayout() {
                                             ml="4"
                                             fw={500}
                                             pos={'relative'}
-                                            color="dimmed"
+                                            c="dimmed"
                                             top={-6}
                                             size="xs"
                                             variant="italic"
