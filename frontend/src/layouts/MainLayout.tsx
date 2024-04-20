@@ -20,6 +20,7 @@ import {PropsWithChildren} from 'react';
 import {isMobileOnly} from 'react-device-detect';
 import {useNavigate} from 'react-router-dom';
 
+import logoDark from '@/assets/img/logo-dark.png';
 import logo from '@/assets/img/logo.png';
 import {useSignOut} from '@/auth/useSignOut';
 import {useUser} from '@/auth/useUser';
@@ -52,8 +53,11 @@ export const MainLayout = ({children}: PropsWithChildren) => {
             <AppShell.Header maw="100vw">
                 <Flex visibleFrom="sm" h="100%" px="md" justify="space-between" align="center">
                     <Anchor href="/">
-                        <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo}
-                               alt="tum rating logo"/>
+                        {colorScheme === 'light' ?
+                            <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo}
+                                   alt="tum rating logo"/> :
+                            <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark}
+                                   alt="tum rating logo"/>}
                     </Anchor>
                     {!isMobileOnly && !smallerMode && (
                         <Flex maw={580} style={{flexGrow: 1}}>
