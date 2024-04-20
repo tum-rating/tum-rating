@@ -1,31 +1,19 @@
-import {
-    ActionIcon,
-    Button,
-    CloseButton,
-    Combobox,
-    Flex,
-    Loader,
-    ScrollArea,
-    Text,
-    TextInput,
-    ThemeIcon,
-    useCombobox
-} from '@mantine/core';
-import {useDebouncedState, useMediaQuery} from '@mantine/hooks';
-import {IconArrowLeft, IconSearch} from '@tabler/icons-react';
+import { ActionIcon, Button, CloseButton, Combobox, Flex, Loader, ScrollArea, Text, TextInput, ThemeIcon, useCombobox } from '@mantine/core';
+import { useDebouncedState, useMediaQuery } from '@mantine/hooks';
+import { IconArrowLeft, IconSearch } from '@tabler/icons-react';
 import clsx from 'clsx';
-import {FormEvent, useEffect, useMemo, useRef, useState} from 'react';
-import {isMobileOnly} from 'react-device-detect';
-import {useLocation, useNavigate} from 'react-router-dom';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { isMobileOnly } from 'react-device-detect';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import classes from './SearchInputDesktop.module.css';
 
-import {useUser} from "@/auth/useUser.tsx";
-import {SearchHighlight} from '@/components/Highlight';
-import {Course} from '@/courses/types.ts';
-import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
-import {useScrollLock} from "@/hooks/useScrollLock";
-import {getPath, Paths} from "@/routes/paths.ts";
+import { useUser } from '@/auth/useUser.tsx';
+import { SearchHighlight } from '@/components/Highlight';
+import { Course } from '@/courses/types.ts';
+import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
+import { useScrollLock } from '@/hooks/useScrollLock';
+import { getPath, Paths } from '@/routes/paths.ts';
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
@@ -36,11 +24,11 @@ const SearchInputDesktop = () => {
     const [empty, setEmpty] = useState(false);
     const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 150);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const user = useUser()
+    const user = useUser();
     const smallerMode = useMediaQuery('(max-width: 48em)');
     const navigate = useNavigate();
     const location = useLocation();
-    const {lock, unlock} = useScrollLock({autoLock: false})
+    const { lock, unlock } = useScrollLock({ autoLock: false });
     const searchInputRef = useRef(null); // Create a ref for the search input
 
     useEffect(() => {
@@ -60,7 +48,7 @@ const SearchInputDesktop = () => {
         setDebouncedQuery(value);
     }, [value]);
 
-    const {data} = useSearchCourses(debouncedQuery);
+    const { data } = useSearchCourses(debouncedQuery);
 
     const [previousData, setPreviousData] = useState(null);
 
@@ -69,7 +57,6 @@ const SearchInputDesktop = () => {
             setPreviousData(data);
         }
     }, [data]);
-
 
     useEffect(() => {
         if (!isSearchOpen) {
@@ -88,7 +75,7 @@ const SearchInputDesktop = () => {
     const options = useMemo(() => {
         return (groupedActions || []).map((item: Course) => (
             <Combobox.Option className={classes.option} value={item._id} key={item.courseId}>
-                <SearchHighlight value={value.split(' ')} text={item.name}/>
+                <SearchHighlight value={value.split(' ')} text={item.name} />
                 <SearchHighlight
                     value={value.split(' ')}
                     text={item.professor}
@@ -124,7 +111,7 @@ const SearchInputDesktop = () => {
                         }
                     }}
                 >
-                    <IconSearch width={16} height={16}/>
+                    <IconSearch width={16} height={16} />
                 </ActionIcon>
                 {isSearchOpen && (
                     <Combobox
@@ -137,7 +124,7 @@ const SearchInputDesktop = () => {
                         store={combobox}
                     >
                         <Combobox.EventsTarget>
-                            <form style={{width: '100%'}} onSubmit={handleSubmit}>
+                            <form style={{ width: '100%' }} onSubmit={handleSubmit}>
                                 <TextInput
                                     radius={0}
                                     height={100}
@@ -150,7 +137,7 @@ const SearchInputDesktop = () => {
                                                 combobox.closeDropdown();
                                             }}
                                         >
-                                            <IconArrowLeft width={16} height={16}/>
+                                            <IconArrowLeft width={16} height={16} />
                                         </ActionIcon>
                                     }
                                     rightSection={
@@ -185,8 +172,7 @@ const SearchInputDesktop = () => {
                             </form>
                         </Combobox.EventsTarget>
                         <Combobox.Options className={classes.searchInputMobileOptions}>
-                            <ScrollArea.Autosize h="calc(100dvh - 58px)" ref={searchInputRef} type="scroll"
-                                                 className={classes.searchInputMobileScrollArea}>
+                            <ScrollArea.Autosize h="calc(100dvh - 58px)" ref={searchInputRef} type="scroll" className={classes.searchInputMobileScrollArea}>
                                 {empty && <Combobox.Empty>No matching courses for "{value}"</Combobox.Empty>}
                                 {options}
                             </ScrollArea.Autosize>
@@ -202,7 +188,7 @@ const SearchInputDesktop = () => {
         );
     }
 
-    if (smallerMode === undefined) return <Loader size="xs"/>;
+    if (smallerMode === undefined) return <Loader size="xs" />;
 
     return (
         <Combobox
@@ -215,11 +201,11 @@ const SearchInputDesktop = () => {
             store={combobox}
         >
             <Combobox.Target>
-                <form style={{width: '100%'}} onSubmit={handleSubmit}>
+                <form style={{ width: '100%' }} onSubmit={handleSubmit}>
                     <TextInput
                         leftSection={
                             <ThemeIcon variant="light">
-                                <IconSearch width={16} height={16}/>
+                                <IconSearch width={16} height={16} />
                             </ThemeIcon>
                         }
                         rightSection={
@@ -258,20 +244,30 @@ const SearchInputDesktop = () => {
             <Combobox.Dropdown className={classes.searchInputDesktopDropdown} hidden={data === null}>
                 <Combobox.Options>
                     <ScrollArea.Autosize mah="50vh" type="scroll">
-                        {empty &&
+                        {empty && (
                             <Flex direction="column">
                                 <Combobox.Empty>No matching courses for "{value}"</Combobox.Empty>
-                                {user ?
-                                    <Button onClick={() => {
-                                        navigate(getPath(Paths.addCourse))
-                                    }} variant="subtle">Add Course Proposal</Button> :
-                                    <Button onClick={() => {
-                                        navigate(getPath(Paths.signIn))
-                                    }} variant="subtle">
+                                {user ? (
+                                    <Button
+                                        onClick={() => {
+                                            navigate(getPath(Paths.addCourse));
+                                        }}
+                                        variant="subtle"
+                                    >
+                                        Add Course Proposal
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        onClick={() => {
+                                            navigate(getPath(Paths.signIn));
+                                        }}
+                                        variant="subtle"
+                                    >
                                         Sign In to Add Course Proposal
-                                    </Button>}
+                                    </Button>
+                                )}
                             </Flex>
-                        }
+                        )}
                         {options}
                     </ScrollArea.Autosize>
                 </Combobox.Options>
@@ -285,4 +281,4 @@ const SearchInputDesktop = () => {
     );
 };
 
-export {SearchInputDesktop};
+export { SearchInputDesktop };

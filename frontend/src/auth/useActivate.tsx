@@ -1,4 +1,4 @@
-import {Text} from "@mantine/core";
+import { Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useMutation } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';

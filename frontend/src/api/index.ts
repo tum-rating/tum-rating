@@ -1,2 +1,2 @@
 export { endpoints } from './endpoints.ts';
-export {useMutationWithAuth} from './useMutationWithAuth.tsx';
+export { useMutationWithAuth } from './useMutationWithAuth.tsx';

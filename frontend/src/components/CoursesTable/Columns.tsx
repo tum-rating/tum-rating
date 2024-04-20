@@ -1,8 +1,8 @@
-import {Flex} from '@mantine/core';
-import {isMobile} from 'react-device-detect';
+import { Flex } from '@mantine/core';
+import { isMobile } from 'react-device-detect';
 
-import {NumberRatingBadge} from '@/components/Course';
-import {Course} from '@/courses/types.ts';
+import { NumberRatingBadge } from '@/components/Course';
+import { Course } from '@/courses/types.ts';
 
 export const columns = [
     {
@@ -12,11 +12,11 @@ export const columns = [
         render: (element: Course) => {
             return (
                 <>
-                    <span style={{fontWeight: 500}}>
+                    <span style={{ fontWeight: 500 }}>
                         {element.name}{' '}
                         {isMobile ? (
                             <>
-                                <br/> <span style={{color: 'var(--mantine-color-dimmed'}}>{element.professor}</span>
+                                <br /> <span style={{ color: 'var(--mantine-color-dimmed' }}>{element.professor}</span>
                             </>
                         ) : null}
                     </span>
@@ -38,7 +38,7 @@ export const columns = [
             return (
                 <>
                     <Flex align="center" gap="xs">
-                        <NumberRatingBadge score={element.howInterestingRatingAverage}/>
+                        <NumberRatingBadge score={element.howInterestingRatingAverage} />
                     </Flex>
                 </>
             );
@@ -53,7 +53,7 @@ export const columns = [
             return (
                 <>
                     <Flex align="center" gap="xs">
-                        <NumberRatingBadge score={element.howEasyRatingAverage}/>
+                        <NumberRatingBadge score={element.howEasyRatingAverage} />
                     </Flex>
                 </>
             );

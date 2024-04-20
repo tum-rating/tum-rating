@@ -1,19 +1,18 @@
-import {Text} from "@mantine/core";
-import {notifications} from '@mantine/notifications';
+import { Text } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
-import {endpoints, useMutationWithAuth} from '@/api';
-import {QUERY_KEY} from "@/constants/queryKeys.ts";
-import {queryClient} from '@/react-query/client.ts';
-import {ResponseError} from '@/utils/Errors/ResponseError.ts';
+import { endpoints, useMutationWithAuth } from '@/api';
+import { QUERY_KEY } from '@/constants/queryKeys.ts';
+import { queryClient } from '@/react-query/client.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
-
-async function removeProposal(token:string, proposalId: string): Promise<any> {
+async function removeProposal(token: string, proposalId: string): Promise<any> {
     if (!token) return null;
     const endpoint = endpoints.removeProposal(proposalId);
     const response = await fetch(endpoint, {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -29,13 +28,12 @@ async function removeProposal(token:string, proposalId: string): Promise<any> {
             withCloseButton: true,
             color: 'red',
             loading: false,
-        })
-        throw new ResponseError("error", response);
+        });
+        throw new ResponseError('error', response);
     }
     responseData._id = proposalId;
     return responseData;
 }
-
 
 export function useRemoveProposal(): any {
     const token = userLocalStorage.getUser();
@@ -49,7 +47,7 @@ export function useRemoveProposal(): any {
                 message: <Text size="xs">Your proposal is being removed</Text>,
                 autoClose: false,
                 withCloseButton: false,
-            })
+            });
             return variables;
         },
         onSuccess: (variables) => {
@@ -64,7 +62,7 @@ export function useRemoveProposal(): any {
                 withCloseButton: true,
                 color: 'green',
                 loading: false,
-            })
+            });
         },
     });
 }

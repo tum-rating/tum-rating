@@ -1,11 +1,9 @@
-
-
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 
 import { DetailCourse } from './types.ts';
 
 import { endpoints } from '@/api';
-import {QUERY_KEY} from "@/constants/queryKeys.ts";
+import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function getDetailCourse(_id: string) {

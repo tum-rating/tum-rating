@@ -1,1 +1,1 @@
-export {useTableColumns} from "./useTableColumns.tsx"
+export { useTableColumns } from './useTableColumns.tsx';

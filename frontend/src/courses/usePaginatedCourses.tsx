@@ -3,9 +3,8 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { Course } from './types.ts';
 
 import { endpoints } from '@/api';
-import {QUERY_KEY} from "@/constants/queryKeys.ts";
+import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
-
 
 type Courses = {
     courses: Course[];

@@ -1,28 +1,17 @@
-import {
-    ActionIcon,
-    CheckIcon,
-    Combobox,
-    Group,
-    MultiSelectProps,
-    Pill,
-    PillsInput,
-    ScrollArea,
-    useCombobox
-} from "@mantine/core";
-import {IconFilterCancel, IconSearch, IconX} from "@tabler/icons-react";
-import {useState} from "react";
-
+import { ActionIcon, CheckIcon, Combobox, Group, MultiSelectProps, Pill, PillsInput, ScrollArea, useCombobox } from '@mantine/core';
+import { IconFilterCancel, IconSearch, IconX } from '@tabler/icons-react';
+import { useState } from 'react';
 
 interface ColumnFilterComboboxProps extends MultiSelectProps {
-    data: string[]
+    data: string[];
 }
 
 const ColumnFilterCombobox = (props: ColumnFilterComboboxProps) => {
-    const {data, value, placeholder, onChange, label, description} = props;
+    const { data, value, placeholder, onChange, label, description } = props;
     const combobox = useCombobox();
     const [search, setSearch] = useState('');
 
-    const handleValueSelect = (val: string) => onChange(value.includes(val) ? value.filter((v) => v !== val) : [...value, val])
+    const handleValueSelect = (val: string) => onChange(value.includes(val) ? value.filter((v) => v !== val) : [...value, val]);
     const handleValueRemove = (val: string) => onChange(value.filter((v) => v !== val));
 
     const values = value.map((item) => (
@@ -31,12 +20,13 @@ const ColumnFilterCombobox = (props: ColumnFilterComboboxProps) => {
         </Pill>
     ));
 
-    const options = data.filter((item) => String(item).toLowerCase().includes(search.trim().toLowerCase()))
+    const options = data
+        .filter((item) => String(item).toLowerCase().includes(search.trim().toLowerCase()))
         .map((item, index) => {
             return (
                 <Combobox.Option value={item} key={item + index} active={value.includes(item)}>
                     <Group gap="sm">
-                        {value.includes(item) ? <CheckIcon size={12}/> : null}
+                        {value.includes(item) ? <CheckIcon size={12} /> : null}
                         <Group gap={7}>
                             <span>{String(item)}</span>
                         </Group>
@@ -45,18 +35,26 @@ const ColumnFilterCombobox = (props: ColumnFilterComboboxProps) => {
             );
         });
 
-
     return (
         <Combobox store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
             <PillsInput
                 label={label}
                 description={description}
-                leftSection={<IconSearch size={16}/>}
+                leftSection={<IconSearch size={16} />}
                 pointer
                 maw={250}
-                rightSection={search.length ? <ActionIcon variant="white" onClick={() => {
-                    setSearch('');
-                }}><IconX size={16}/></ActionIcon> : null}
+                rightSection={
+                    search.length ? (
+                        <ActionIcon
+                            variant="white"
+                            onClick={() => {
+                                setSearch('');
+                            }}
+                        >
+                            <IconX size={16} />
+                        </ActionIcon>
+                    ) : null
+                }
             >
                 <Combobox.EventsTarget>
                     <PillsInput.Field
@@ -71,9 +69,7 @@ const ColumnFilterCombobox = (props: ColumnFilterComboboxProps) => {
             </PillsInput>
             <Pill.Group size="xs" maw={250} my="xs">
                 <ScrollArea.Autosize mah={50} type="scroll">
-                    {values.length > 0 && (
-                        values
-                    )}
+                    {values.length > 0 && values}
                 </ScrollArea.Autosize>
             </Pill.Group>
 
@@ -86,17 +82,22 @@ const ColumnFilterCombobox = (props: ColumnFilterComboboxProps) => {
                     </Combobox.Group>
                 </Combobox.Options>
             </div>
-            {
-                values.length > 0 && (
-                    <ActionIcon color="red" variant="subtle" pos="absolute" right="17px" top="15px" onClick={()=>{
-                        onChange([])
-                    }}>
-                        <IconFilterCancel size={18}/>
-                    </ActionIcon>
-                )
-            }
+            {values.length > 0 && (
+                <ActionIcon
+                    color="red"
+                    variant="subtle"
+                    pos="absolute"
+                    right="17px"
+                    top="15px"
+                    onClick={() => {
+                        onChange([]);
+                    }}
+                >
+                    <IconFilterCancel size={18} />
+                </ActionIcon>
+            )}
         </Combobox>
-    )
-}
+    );
+};
 
-export {ColumnFilterCombobox}
+export { ColumnFilterCombobox };

@@ -1,28 +1,27 @@
-import {Anchor, AppShell, Burger, Button, Flex, Group, NavLink, Text} from '@mantine/core';
-import {useDisclosure} from '@mantine/hooks';
-import {useEffect, useState} from "react";
-import {Outlet, useLocation, useNavigate} from "react-router-dom";
+import { Anchor, AppShell, Burger, Button, Flex, Group, NavLink, Text } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import {useCoursesProposals} from "@/admin/useCoursesProposals.ts";
-import {useUser} from "@/auth/useUser.tsx";
-import {PageAdminNotFound} from "@/pages/PageNotFound";
-import {getPath, Paths} from "@/routes/paths.ts";
-
+import { useCoursesProposals } from '@/admin/useCoursesProposals.ts';
+import { useUser } from '@/auth/useUser.tsx';
+import { PageAdminNotFound } from '@/pages/PageNotFound';
+import { getPath, Paths } from '@/routes/paths.ts';
 
 const adminTabs = [
-    {label: 'Dashboard', link: getPath(Paths.admin)},
-    {label: 'Proposals', link: getPath(Paths.adminCoursesProposals)},
-    {label: 'Courses', link: getPath(Paths.adminCourses)},
-    {label: 'Users', link: getPath(Paths.adminUsers)},
+    { label: 'Dashboard', link: getPath(Paths.admin) },
+    { label: 'Proposals', link: getPath(Paths.adminCoursesProposals) },
+    { label: 'Courses', link: getPath(Paths.adminCourses) },
+    { label: 'Users', link: getPath(Paths.adminUsers) },
 ];
 
 const HEADER_HEIGHT = 60;
 
 export function AdminLayout() {
-    const [opened, {toggle}] = useDisclosure();
+    const [opened, { toggle }] = useDisclosure();
     const [active, setActive] = useState(adminTabs[0].link);
-    const {error, isFetched, isLoading, isError} = useCoursesProposals();
-    const {data: user, isFetched: userFetched} = useUser();
+    const { error, isFetched, isLoading, isError } = useCoursesProposals();
+    const { data: user, isFetched: userFetched } = useUser();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -34,47 +33,40 @@ export function AdminLayout() {
         }
     }, [location]);
 
-    if (isLoading || !userFetched) return null
-    if ((!user || (isFetched && isError))) {
-        return <PageAdminNotFound/>;
+    if (isLoading || !userFetched) return null;
+    if (!user || (isFetched && isError)) {
+        return <PageAdminNotFound />;
     } else if (!error && isFetched) {
         return (
             <AppShell
-                header={{height: HEADER_HEIGHT}}
-                navbar={{width: 300, breakpoint: 'sm', collapsed: {desktop: true, mobile: !opened}}}
+                header={{ height: HEADER_HEIGHT }}
+                navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: true, mobile: !opened } }}
                 style={{
-                    overflow: "hidden",
-                    height: "100vh",
+                    overflow: 'hidden',
+                    height: '100vh',
                 }}
             >
                 <AppShell.Header>
                     <Group h="100%" px="md">
-                        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm"/>
-                        <Group justify="space-between" style={{flex: 1}}>
+                        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+                        <Group justify="space-between" style={{ flex: 1 }}>
                             <Flex align="flex-end">
                                 <Anchor underline="never" href={getPath(Paths.admin)}>
                                     <Flex align="flex-end">
-                                        <Text
-                                            size="xl"
-                                            fw={900}
-                                            p={0}
-                                            m={0}
-                                            variant="white"
-                                        >
+                                        <Text size="xl" fw={900} p={0} m={0} variant="white">
                                             TUM-RATING
                                         </Text>
                                         <Text
                                             ml="4"
                                             fw={500}
-                                            pos={"relative"}
+                                            pos={'relative'}
                                             color="dimmed"
                                             top={-6}
                                             size="xs"
                                             variant="italic"
                                             style={{
-                                                fontFamily: "monospace",
+                                                fontFamily: 'monospace',
                                             }}
-
                                         >
                                             ADMIN
                                         </Text>
@@ -96,12 +88,7 @@ export function AdminLayout() {
                                         </Button>
                                     ))}
                                 </Button.Group>
-                                <Button
-                                    size="xs"
-                                    ml="sm"
-                                    color="gray"
-                                    onClick={() => navigate("/")}
-                                    variant="outline">
+                                <Button size="xs" ml="sm" color="gray" onClick={() => navigate('/')} variant="outline">
                                     Back to app
                                 </Button>
                             </Group>
@@ -116,23 +103,15 @@ export function AdminLayout() {
                             active={active === link.link}
                             label={link.label}
                             onClick={() => {
-                                navigate(link.link)
-                                toggle()
+                                navigate(link.link);
+                                toggle();
                             }}
                         />
                     ))}
-                    <NavLink
-                        href="#required-for-focus"
-                        label="Back to app"
-                        onClick={() => navigate("/")}>
-                    </NavLink>
+                    <NavLink href="#required-for-focus" label="Back to app" onClick={() => navigate('/')}></NavLink>
                 </AppShell.Navbar>
-                <AppShell.Main pt={HEADER_HEIGHT} style={{background: "var(--primary-light-gradient)"}}>
-                    {
-                        user ? (
-                            <Outlet/>
-                        ) : null
-                    }
+                <AppShell.Main pt={HEADER_HEIGHT} style={{ background: 'var(--primary-light-gradient)' }}>
+                    {user ? <Outlet /> : null}
                 </AppShell.Main>
             </AppShell>
         );

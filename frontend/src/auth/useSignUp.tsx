@@ -1,23 +1,23 @@
-import {Text} from "@mantine/core";
-import {notifications} from '@mantine/notifications';
-import {useMutation} from '@tanstack/react-query';
+import { Text } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { useMutation } from '@tanstack/react-query';
 
-import {endpoints} from '@/api';
-import {ResponseError} from '@/utils/Errors/ResponseError.ts';
+import { endpoints } from '@/api';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
-async function signUp({email, password, username}: RegisterInput): Promise<{ success: boolean }> {
+async function signUp({ email, password, username }: RegisterInput): Promise<{ success: boolean }> {
     const response = await fetch(endpoints.signup, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email, password, username}),
+        body: JSON.stringify({ email, password, username }),
     });
     if (!response.ok) {
         const errorData = await response.json();
         throw new ResponseError(errorData.message, response);
     }
-    return {success: true};
+    return { success: true };
 }
 
 type RegisterInput = {
@@ -28,7 +28,7 @@ type RegisterInput = {
 
 export function useSignUp() {
     return useMutation({
-        mutationFn: async ({email, password, username}: RegisterInput) => await signUp({email, password, username}),
+        mutationFn: async ({ email, password, username }: RegisterInput) => await signUp({ email, password, username }),
         onSuccess: () => {
             notifications.show({
                 title: 'Success',

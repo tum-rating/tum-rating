@@ -1,20 +1,19 @@
-import {ActionIcon, Badge, Box, Flex} from '@mantine/core';
-import {useMediaQuery} from "@mantine/hooks";
-import {IconX} from "@tabler/icons-react";
-import {DataTable} from 'mantine-datatable';
-import {useEffect, useMemo, useRef, useState} from 'react';
-import {isMobile} from 'react-device-detect';
-import {useLocation, useNavigate} from 'react-router-dom';
+import { ActionIcon, Badge, Box, Flex } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import { IconX } from '@tabler/icons-react';
+import { DataTable } from 'mantine-datatable';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { isMobile } from 'react-device-detect';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import classes from './CoursesTable.module.css';
 
 import city from '@/assets/img/city.png';
-import {columns} from '@/components/CoursesTable/Columns';
-import {useTableScrollContext} from '@/context';
-import {Course} from '@/courses/types';
-import {usePaginatedCourses} from '@/courses/usePaginatedCourses';
-import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
-
+import { columns } from '@/components/CoursesTable/Columns';
+import { useTableScrollContext } from '@/context';
+import { Course } from '@/courses/types';
+import { usePaginatedCourses } from '@/courses/usePaginatedCourses';
+import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
 
 const CoursesTable = () => {
     const columnsConfiguration = useMemo(() => {
@@ -26,13 +25,13 @@ const CoursesTable = () => {
     const [records, setRecords] = useState<Course[]>([]);
     const [queryRecords, setQueryRecords] = useState<Course[]>([]);
     const [internalLoading, setInternalLoading] = useState(true);
-    const {data, fetchNextPage, isFetching} = usePaginatedCourses();
+    const { data, fetchNextPage, isFetching } = usePaginatedCourses();
     const [query, setQuery] = useState('');
-    const {data: queryData, isFetching: isQueryDataFetching} = useSearchCourses(query);
+    const { data: queryData, isFetching: isQueryDataFetching } = useSearchCourses(query);
     const navigate = useNavigate();
     const location = useLocation();
     const scrollViewportRef = useRef<HTMLDivElement>(null);
-    const {scrollY, setScrollY} = useTableScrollContext();
+    const { scrollY, setScrollY } = useTableScrollContext();
     const matches = useMediaQuery('(min-width: 48em)');
 
     useEffect(() => {
@@ -68,8 +67,7 @@ const CoursesTable = () => {
     }, [scrollViewportRef.current]);
 
     const loadMoreRecords = () => {
-        fetchNextPage().then(() => {
-        });
+        fetchNextPage().then(() => {});
     };
 
     const handleRowClick = (record: Course) => {
@@ -86,11 +84,16 @@ const CoursesTable = () => {
     return (
         <>
             <Box className={classes.dataTableContainer}>
-                <Flex data-active={!!query} justify="space-between" align="center" className={classes.dataTableInfo}
-                      style={{
-                          backgroundImage: `url(${city})`,
-                          backgroundSize: 'cover',
-                      }}>
+                <Flex
+                    data-active={!!query}
+                    justify="space-between"
+                    align="center"
+                    className={classes.dataTableInfo}
+                    style={{
+                        backgroundImage: `url(${city})`,
+                        backgroundSize: 'cover',
+                    }}
+                >
                     <Flex align="center" h="100%">
                         {query ? (
                             <>
@@ -98,7 +101,7 @@ const CoursesTable = () => {
                                     <Flex align="center">
                                         {query}
                                         <ActionIcon p={0} m={0} variant="transparent" c="white" aria-label="Remove query" loading={isQueryDataFetching}>
-                                            <IconX size={16} onClick={removeQuery}/>
+                                            <IconX size={16} onClick={removeQuery} />
                                         </ActionIcon>
                                     </Flex>
                                 </Badge>
@@ -107,11 +110,12 @@ const CoursesTable = () => {
                     </Flex>
                 </Flex>
                 <DataTable
+                    withTableBorder={false}
                     withRowBorders={false}
                     highlightOnHover
                     striped
                     verticalSpacing="lg"
-                    idAccessor='_id'
+                    idAccessor="_id"
                     data-query={true}
                     height={!matches && query ? 'calc(100% - 28px)' : '100%'}
                     columns={columnsConfiguration}
@@ -122,11 +126,11 @@ const CoursesTable = () => {
                     fetching={isFetching || isQueryDataFetching || internalLoading}
                     className={classes.dataTable}
                     rowClassName={classes.dataTableRow}
-                    onRowClick={({record}) => handleRowClick(record)}
+                    onRowClick={({ record }) => handleRowClick(record)}
                 ></DataTable>
             </Box>
         </>
     );
 };
 
-export {CoursesTable};
+export { CoursesTable };

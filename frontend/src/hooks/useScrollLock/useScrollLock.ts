@@ -1,20 +1,20 @@
-import {useLayoutEffect, useRef} from 'react'
+import { useLayoutEffect, useRef } from 'react';
 
 interface UseScrollLockOptions {
-    autoLock: boolean
-    lockTarget: HTMLElement | string
-    widthReflow: boolean
+    autoLock: boolean;
+    lockTarget: HTMLElement | string;
+    widthReflow: boolean;
 }
 
 interface UseScrollLockResult {
-    lock: () => void
-    unlock: () => void
+    lock: () => void;
+    unlock: () => void;
 }
 
 type OriginalStyle = {
-    overflow: CSSStyleDeclaration['overflow']
-    paddingRight: CSSStyleDeclaration['paddingRight']
-}
+    overflow: CSSStyleDeclaration['overflow'];
+    paddingRight: CSSStyleDeclaration['paddingRight'];
+};
 
 /**
  * A custom hook for auto/manual locking and unlocking scroll.
@@ -45,60 +45,53 @@ type OriginalStyle = {
  *  )
  * }
  */
-export function useScrollLock(
-    options: Partial<UseScrollLockOptions> = {},
-): UseScrollLockResult {
-    const {autoLock = true, lockTarget, widthReflow = true} = options
-    const target = useRef<HTMLElement | null>(null)
-    const originalStyle = useRef<OriginalStyle | null>(null)
+export function useScrollLock(options: Partial<UseScrollLockOptions> = {}): UseScrollLockResult {
+    const { autoLock = true, lockTarget, widthReflow = true } = options;
+    const target = useRef<HTMLElement | null>(null);
+    const originalStyle = useRef<OriginalStyle | null>(null);
 
     const lock = () => {
         if (target.current) {
-            const {overflow, paddingRight} = window.getComputedStyle(target.current)
+            const { overflow, paddingRight } = window.getComputedStyle(target.current);
 
             // Save the original styles
-            originalStyle.current = {overflow, paddingRight}
+            originalStyle.current = { overflow, paddingRight };
 
             // Lock the scroll
-            target.current.style.overflow = 'hidden'
+            target.current.style.overflow = 'hidden';
 
             // prevent width reflow
             if (widthReflow) {
-                const scrollbarWidth =
-                    target.current.offsetWidth - target.current.scrollWidth
-                target.current.style.paddingRight = `${scrollbarWidth}px`
+                const scrollbarWidth = target.current.offsetWidth - target.current.scrollWidth;
+                target.current.style.paddingRight = `${scrollbarWidth}px`;
             }
         }
-    }
+    };
 
     const unlock = () => {
         if (target.current && originalStyle.current) {
-            target.current.style.overflow = originalStyle.current.overflow
-            target.current.style.paddingRight = originalStyle.current.paddingRight
+            target.current.style.overflow = originalStyle.current.overflow;
+            target.current.style.paddingRight = originalStyle.current.paddingRight;
         }
-    }
+    };
 
     useLayoutEffect(() => {
         if (lockTarget) {
-            target.current =
-                typeof lockTarget === 'string'
-                    ? document.querySelector(lockTarget)
-                    : lockTarget
+            target.current = typeof lockTarget === 'string' ? document.querySelector(lockTarget) : lockTarget;
         }
 
         if (!target.current) {
-            target.current = document.body
+            target.current = document.body;
         }
 
         if (autoLock) {
-            lock()
+            lock();
         }
 
         return () => {
-            unlock()
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [autoLock, lockTarget, widthReflow])
+            unlock();
+        };
+    }, [autoLock, lockTarget, widthReflow]);
 
-    return {lock, unlock}
+    return { lock, unlock };
 }

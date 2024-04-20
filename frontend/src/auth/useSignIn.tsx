@@ -1,27 +1,27 @@
-import {Text} from "@mantine/core";
-import {notifications} from '@mantine/notifications';
-import {useMutation} from '@tanstack/react-query';
+import { Text } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { useMutation } from '@tanstack/react-query';
 
-import {User} from './useUser.tsx';
+import { User } from './useUser.tsx';
 
-import {endpoints} from '@/api';
-import {USER_LOCAL_STORAGE_KEY} from "@/auth/user.localstore.ts";
-import {QUERY_KEY} from '@/constants/queryKeys.ts';
-import {queryClient} from '@/react-query/client.ts';
-import {ResponseError} from '@/utils/Errors/ResponseError.ts';
+import { endpoints } from '@/api';
+import { USER_LOCAL_STORAGE_KEY } from '@/auth/user.localstore.ts';
+import { QUERY_KEY } from '@/constants/queryKeys.ts';
+import { queryClient } from '@/react-query/client.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 interface LoggedUser {
     token: string;
     user: User;
 }
 
-async function signIn({email, password}: LoginInput): Promise<LoggedUser> {
+async function signIn({ email, password }: LoginInput): Promise<LoggedUser> {
     const response = await fetch(endpoints.signin, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email, password}),
+        body: JSON.stringify({ email, password }),
     });
     if (!response.ok) throw new ResponseError('Failed on sign in request', response);
     return await response.json();
@@ -34,7 +34,7 @@ export type LoginInput = {
 
 export function useSignIn() {
     return useMutation({
-        mutationFn: async ({email, password}: LoginInput) => await signIn({email, password}),
+        mutationFn: async ({ email, password }: LoginInput) => await signIn({ email, password }),
         onSuccess: (data) => {
             queryClient.setQueryData([QUERY_KEY.user], data.token);
             queryClient.setQueryData([QUERY_KEY.user_details], data.user);

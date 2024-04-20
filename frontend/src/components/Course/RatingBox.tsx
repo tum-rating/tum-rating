@@ -4,7 +4,6 @@ import classes from './RatingBox.module.css';
 
 import { Skeleton } from '@/components/Skeleton';
 
-
 interface RatingBoxProps {
     label: string;
     score: number;

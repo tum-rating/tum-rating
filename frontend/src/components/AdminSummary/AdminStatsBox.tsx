@@ -1,8 +1,8 @@
-import {Flex, Paper, Text, ThemeIcon} from "@mantine/core";
-import {ReactNode} from "react";
-import {useNavigate} from "react-router-dom";
+import { Flex, Paper, Text, ThemeIcon } from '@mantine/core';
+import { ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import classes from "./AdminStatsBox.module.css"
+import classes from './AdminStatsBox.module.css';
 
 interface AdminStatsBoxProps {
     value: number;
@@ -12,27 +12,30 @@ interface AdminStatsBoxProps {
     link: string;
 }
 
-const AdminStatsBox = ({value, title, icon, description, link}: AdminStatsBoxProps) => {
+const AdminStatsBox = ({ value, title, icon, description, link }: AdminStatsBoxProps) => {
     const navigate = useNavigate();
     return (
-        <Paper tabIndex={0} withBorder p="md" radius="md" key={title} className={classes.box} onClick={() => {
-            navigate(link)
-        }}>
+        <Paper
+            tabIndex={0}
+            withBorder
+            p="md"
+            radius="md"
+            key={title}
+            className={classes.box}
+            onClick={() => {
+                navigate(link);
+            }}
+        >
             <Flex justify="space-between">
                 <div>
                     <Text c="dimmed" tt="uppercase" fw={700} fz="xs">
                         {title}
                     </Text>
                     <Text fw={700} fz="xl">
-                        {value || "-"}
+                        {value || '-'}
                     </Text>
                 </div>
-                <ThemeIcon
-                    color="gray"
-                    variant="light"
-                    size={38}
-                    radius="md"
-                >
+                <ThemeIcon color="gray" variant="light" size={38} radius="md">
                     {icon}
                 </ThemeIcon>
             </Flex>
@@ -40,7 +43,7 @@ const AdminStatsBox = ({value, title, icon, description, link}: AdminStatsBoxPro
                 {description}
             </Text>
         </Paper>
-    )
-}
+    );
+};
 
-export {AdminStatsBox}
+export { AdminStatsBox };
