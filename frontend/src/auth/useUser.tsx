@@ -10,18 +10,14 @@ import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function getUser(token: string | null): Promise<User | null> {
-    try {
-        if (!token) return null;
-        const response = await fetch(endpoints.user, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        if (!response.ok) throw new ResponseError('Failed on get user request', response);
-        return response.json();
-    } catch (error) {
-        throw error;
-    }
+    if (!token) return null;
+    const response = await fetch(endpoints.user, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!response.ok) throw new ResponseError('Failed on get user request', response);
+    return response.json();
 }
 
 export interface User {
