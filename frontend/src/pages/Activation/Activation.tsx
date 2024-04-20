@@ -8,7 +8,6 @@ import { useActivate } from '@/auth/useActivate.tsx';
 import { ActivationImg } from '@/pages/Activation/ActivationImg.tsx';
 import { getPath, Paths } from '@/routes/paths.ts';
 
-
 export const Activation = () => {
     const { mutate, isError } = useActivate();
     const navigate = useNavigate();

@@ -1,6 +1,7 @@
 import { openModal } from 'cypress/e2e/shared';
-import { endpoints } from '@/api';
 import { openGlobalSearchWithNothingFoundPanel } from 'cypress/e2e/shared/OpenGlobalSearchWithNothingFoundPanel';
+
+import { endpoints } from '@/api';
 
 describe('Reviews', () => {
     beforeEach(() => {
@@ -9,7 +10,6 @@ describe('Reviews', () => {
 
     it('Reviews: Add new course', () => {
         cy.intercept('POST', endpoints.postReviewProposal).as('addNewCourseRequest');
-        console.log(endpoints.postReviewProposal);
         openGlobalSearchWithNothingFoundPanel();
         openModal('add-new-course');
         cy.get("[data-testid='cypress-add-new-course-name-input']", { withinSubject: null }).type('Test Course');

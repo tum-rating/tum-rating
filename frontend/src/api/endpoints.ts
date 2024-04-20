@@ -71,5 +71,5 @@ const admin: AdminEndpoints = {
 export const endpoints = {
     ...auth,
     ...Courses,
-    ...admin
+    ...admin,
 };

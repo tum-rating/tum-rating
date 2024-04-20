@@ -1,14 +1,13 @@
-import {notifications} from '@mantine/notifications';
-import {IconCheck} from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons-react';
 
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
-import {endpoints, useMutationWithAuth} from '@/api';
-import {ResponseError} from '@/utils/Errors/ResponseError.ts';
-
+import { endpoints, useMutationWithAuth } from '@/api';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 const convertToProperObject = (obj: any) => {
-    const newObj = {...obj};
+    const newObj = { ...obj };
     newObj.offeredInSemesters = [obj.semester];
     newObj.otherLecturers = [obj.professor];
     delete newObj.semester;
@@ -23,7 +22,7 @@ async function addReview(token: string | null, courseReview: CourseInput): Promi
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(convertToProperObject({...courseReview})),
+        body: JSON.stringify(convertToProperObject({ ...courseReview })),
     });
     if (!response.ok) throw new ResponseError('Failed on add review request', response);
 
@@ -47,7 +46,7 @@ export function useAddCourseProposal(): any {
                 title: 'Success',
                 message: 'Course proposal has been added successfully',
                 color: 'green',
-                icon: <IconCheck/>,
+                icon: <IconCheck />,
             });
         },
     });

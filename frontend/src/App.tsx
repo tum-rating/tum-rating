@@ -6,7 +6,6 @@ import { Notifications } from '@mantine/notifications';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-
 import buttonClasses from './customStyles/Buttons.module.css';
 import { queryClient } from './react-query/client.ts';
 import { RoutesApp } from './routes';

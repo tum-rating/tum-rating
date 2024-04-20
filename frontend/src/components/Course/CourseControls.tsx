@@ -11,7 +11,6 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Course } from '@/courses/types.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
 
-
 interface CourseControlsProps {
     data: Course | null;
     isLoading: boolean;

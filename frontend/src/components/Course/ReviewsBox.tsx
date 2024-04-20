@@ -5,7 +5,6 @@ import classes from './RatingBox.module.css';
 
 import { Skeleton } from '@/components/Skeleton';
 
-
 interface ReviewsBoxProps {
     votes: number;
     isLoading: boolean;

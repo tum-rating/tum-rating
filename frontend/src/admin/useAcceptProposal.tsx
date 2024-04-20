@@ -1,19 +1,18 @@
-import {Text} from '@mantine/core';
-import {notifications} from '@mantine/notifications';
+import { Text } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
-import {endpoints, useMutationWithAuth} from '@/api';
-import {QUERY_KEY} from "@/constants/queryKeys.ts";
-import {queryClient} from '@/react-query/client.ts';
-import {ResponseError} from '@/utils/Errors/ResponseError.ts';
-
+import { endpoints, useMutationWithAuth } from '@/api';
+import { QUERY_KEY } from '@/constants/queryKeys.ts';
+import { queryClient } from '@/react-query/client.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function acceptProposal(token: string, proposalId: string): Promise<any> {
     if (!token) return null;
     const endpoint = endpoints.acceptProposal(proposalId);
     const response = await fetch(endpoint, {
-        method: "POST",
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -29,13 +28,12 @@ async function acceptProposal(token: string, proposalId: string): Promise<any> {
             withCloseButton: true,
             color: 'red',
             loading: false,
-        })
-        throw new ResponseError("error", response);
+        });
+        throw new ResponseError('error', response);
     }
     responseData._id = proposalId;
     return responseData;
 }
-
 
 export function useAcceptProposal(): any {
     const token = userLocalStorage.getUser();
@@ -49,7 +47,7 @@ export function useAcceptProposal(): any {
                 message: <Text size="xs">Your proposal is being accepted</Text>,
                 autoClose: false,
                 withCloseButton: false,
-            })
+            });
             return variables;
         },
         onSuccess: (variables) => {
@@ -64,7 +62,7 @@ export function useAcceptProposal(): any {
                 withCloseButton: true,
                 color: 'green',
                 loading: false,
-            })
+            });
         },
     });
 }

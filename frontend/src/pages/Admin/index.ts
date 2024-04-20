@@ -1,1 +1,1 @@
-export {Admin} from "./Admin.tsx"
+export { Admin } from './Admin.tsx';

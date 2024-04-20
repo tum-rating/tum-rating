@@ -1,24 +1,17 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from 'react';
 
-import {useTableColumns} from '../Shared/useTableColumns';
+import { useTableColumns } from '../Shared/useTableColumns';
 
-import {Course} from "@/courses/types.ts";
-import {usePaginatedCourses} from "@/courses/usePaginatedCourses.tsx";
+import { Course } from '@/courses/types.ts';
+import { usePaginatedCourses } from '@/courses/usePaginatedCourses.tsx';
 
 export const useCoursesColumns = () => {
-    const {data} = usePaginatedCourses();
+    const { data } = usePaginatedCourses();
     const [courses, setCourses] = useState<Course[]>([]);
     const [columns, setColumns] = useState([]);
-    const filterableColumns = ['course', 'offeredInSemesters', 'otherLecturers']
+    const filterableColumns = ['course', 'offeredInSemesters', 'otherLecturers'];
 
-    const {
-        sortState,
-        setSortState,
-        filterState,
-        resetFilters,
-        resetSorting,
-        isAnyFilterActive
-    } = useTableColumns(courses, filterableColumns, setCourses);
+    const { sortState, setSortState, filterState, resetFilters, resetSorting, isAnyFilterActive } = useTableColumns(courses, filterableColumns, setCourses);
 
     useEffect(() => {
         if (data) {
@@ -27,10 +20,9 @@ export const useCoursesColumns = () => {
         }
     }, [data]);
 
-
     useEffect(() => {
         setColumns(columnsTemplate());
-    }, [filterState, sortState])
+    }, [filterState, sortState]);
 
     const columnsTemplate = () => [
         {
@@ -54,6 +46,6 @@ export const useCoursesColumns = () => {
         columns,
         resetFilters,
         resetSorting,
-        isAnyFilterActive
-    }
+        isAnyFilterActive,
+    };
 };

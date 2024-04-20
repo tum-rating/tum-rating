@@ -1,13 +1,13 @@
-import {Flex} from "@mantine/core";
+import { Flex } from '@mantine/core';
 
-import {AdminSummary} from "@/components/AdminSummary/AdminSummary.tsx";
+import { AdminSummary } from '@/components/AdminSummary/AdminSummary.tsx';
 
 const Admin = () => {
     return (
         <Flex direction="column" p="xs" pt="lg">
-            <AdminSummary/>
+            <AdminSummary />
         </Flex>
     );
-}
+};
 
-export {Admin};
+export { Admin };

@@ -1,5 +1,5 @@
-import {MantineComponent, Skeleton as SkeletonLoader, SkeletonProps as SkeletonLoaderProps} from '@mantine/core';
-import { forwardRef} from 'react';
+import { MantineComponent, Skeleton as SkeletonLoader, SkeletonProps as SkeletonLoaderProps } from '@mantine/core';
+import { forwardRef } from 'react';
 
 interface SkeletonProps extends SkeletonLoaderProps {
     loading: boolean;

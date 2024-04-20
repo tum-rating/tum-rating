@@ -10,7 +10,7 @@ interface UserButtonProps {
 
 export function UserButton({ withoutDropdown = false }: UserButtonProps) {
     const signOut = useSignOut();
-    const {data: user} = useUser();
+    const { data: user } = useUser();
     if (!user) return null;
     if (withoutDropdown) {
         return (
@@ -57,7 +57,9 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                     <Menu.Label>Application</Menu.Label>
                     <Menu.Item
                         onClick={() => {
-                            signOut();
+                            signOut({
+                                message: 'Logged out successfully!',
+                            });
                         }}
                         leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}
                     >

@@ -6,7 +6,6 @@ import classes from './Breadcrumbs.module.css';
 
 import { Skeleton } from '@/components/Skeleton';
 
-
 interface BreadcrumbsProps {
     courseName: ReactNode;
     isLoading: boolean;
