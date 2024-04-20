@@ -102,9 +102,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                                     size="lg"
                                     variant="outline"
                                     onClick={() =>
-                                        signOut({
-                                            message: 'You have been signed out',
-                                        })
+                                        signOut()
                                     }
                                 >
                                     Log out
