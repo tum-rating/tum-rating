@@ -7,10 +7,11 @@ import * as userLocalStorage from "@/auth/user.localstore.ts";
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 
 
-type IUseSignOut = (notification: useSignOutProps) => void;
-
 export interface useSignOutProps extends NotificationData {
 }
+
+type IUseSignOut = (notification: useSignOutProps) => void;
+
 
 export function useSignOut(): IUseSignOut {
     const queryClient = useQueryClient();
