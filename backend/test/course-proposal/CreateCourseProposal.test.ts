@@ -1,12 +1,10 @@
-import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
 import { CreateCourseProposalRequestDto } from '@tum-rating/backend/src/modules/course-proposal/dto/CreateCourseProposalRequest.dto';
 
-import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNumberOfLenght';
 import { courseProposalUrl } from '@tum-rating/backend/test/utils/api-client/course-proposal';
-import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
+import { connectMongo, signInRequestMock, } from '@tum-rating/backend/test/utils';
 
 beforeAll(async () => {
     await connectMongo();
@@ -21,17 +19,57 @@ describe('Create Course Proposal', () => {
         const signInResponse = await signInRequestMock();
 
         const requestBody: CreateCourseProposalRequestDto = {
-            courseId: fakeNumberOfLenght(9),
-            courseNumber: fakeNumberOfLenght(8),
-            name: faker.word.words(faker.number.int({ min: 2, max: 10 })),
-            professor: faker.word.words(2),
-            offeredInSemesters: ['SS 2023', 'WS 2023'],
+            url: 'https://campus.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses/950733269?$scrollTo=toc_overview'
         };
 
         return supertest(`${courseProposalUrl}`)
             .post('/')
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .send(requestBody)
-            .expect(201);
+            .expect(201)
+            .then((response) => {
+                expect(response.body.id).toBeDefined();
+            });
+    });
+
+    it('should fail with invalid url - wrong domain', async () => {
+        const signInResponse = await signInRequestMock();
+
+        const requestBody: CreateCourseProposalRequestDto = {
+            url: 'https://invalid.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses'
+        };
+
+        return supertest(`${courseProposalUrl}`)
+            .post('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send(requestBody)
+            .expect(400);
+    });
+
+    it('should fail with invalid url - no specific course', async () => {
+        const signInResponse = await signInRequestMock();
+
+        const requestBody: CreateCourseProposalRequestDto = {
+            url: 'https://campus.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses/'
+        };
+
+        return supertest(`${courseProposalUrl}`)
+            .post('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send(requestBody)
+            .expect(400);
+    });
+
+
+    it('should fail without auth token', async () => {
+
+        const requestBody: CreateCourseProposalRequestDto = {
+            url: 'https://invalid.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses/'
+        };
+
+        return supertest(`${courseProposalUrl}`)
+            .post('/')
+            .send(requestBody)
+            .expect(401);
     });
 });

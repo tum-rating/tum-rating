@@ -9,15 +9,11 @@ export const courseProposalUrl = baseUrlV1 + '/course-proposals';
 
 export const createCourseProposalMockRequest = async (token: string, reviewProposal?: Partial<CreateCourseProposalRequestDto>) => {
     const requestBody: CreateCourseProposalRequestDto = {
-        courseId: fakeNumberOfLenght(9),
-        courseNumber: fakeNumberOfLenght(8),
-        name: faker.word.words(faker.number.int({ min: 2, max: 10 })),
-        professor: faker.word.words(2),
-        offeredInSemesters: ['SS 2023', 'WS 2023'],
+        url: 'https://campus.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses/' + fakeNumberOfLenght(9),
         ...reviewProposal,
     };
 
-    const addUserReviewResponse = await axios.post(`${courseProposalUrl}`, requestBody, {
+    const addCourseProposalResponse = await axios.post(`${courseProposalUrl}`, requestBody, {
         headers: {
             Authorization: 'Bearer ' + token,
         },
@@ -25,6 +21,6 @@ export const createCourseProposalMockRequest = async (token: string, reviewPropo
 
     return {
         ...requestBody,
-        id: addUserReviewResponse.data.id,
+        id: addCourseProposalResponse.data.id,
     };
 };
