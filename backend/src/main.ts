@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { PinoLogger } from 'nestjs-pino';
+import { PinoLogger, Logger } from 'nestjs-pino';
 
 import { AppModule } from './app.module';
 import { initOpenApi } from './utils/openapi/openapi';
@@ -9,6 +9,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     const configService = app.get(ConfigService);
+    app.useLogger(app.get(Logger));
     const loggerServivce = await app.resolve(PinoLogger);
     loggerServivce.setContext('bootstrap');
 
