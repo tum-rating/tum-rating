@@ -36,7 +36,7 @@ describe('Create Course Proposal', () => {
         const signInResponse = await signInRequestMock();
 
         const requestBody: CreateCourseProposalRequestDto = {
-            url: 'https://invalid.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses'
+            url: 'https://invalid.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses/'
         };
 
         return supertest(`${courseProposalUrl}`)
@@ -50,7 +50,7 @@ describe('Create Course Proposal', () => {
         const signInResponse = await signInRequestMock();
 
         const requestBody: CreateCourseProposalRequestDto = {
-            url: 'https://campus.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses/'
+            url: 'https://campus.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses'
         };
 
         return supertest(`${courseProposalUrl}`)
