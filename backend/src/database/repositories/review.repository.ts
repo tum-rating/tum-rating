@@ -54,6 +54,14 @@ export class ReviewRepository extends BaseRepository<Review> {
                     count: { $sum: 1 },
                 },
             },
+            { 
+                $project: { 
+                    _id: 1, 
+                    howInterestingRating: { $round: ['$howInterestingRating', 2] }, 
+                    howEasyRating: { $round: ['$howEasyRating', 2] }, 
+                    count: 1 
+                } 
+            }
         ]);
 
         return {
