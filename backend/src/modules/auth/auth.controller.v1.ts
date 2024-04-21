@@ -68,7 +68,11 @@ export class AuthControllerV1 {
 
             const activationToken = await this._jwtService.signJWTActivate(createdUser.id);
 
-            await this._mailerService.sendEmailActivationEmail({ email: body.email, name: body.username }, activationToken);
+            try {
+                await this._mailerService.sendEmailActivationEmail({ email: body.email, name: body.username }, activationToken);
+            } catch (error) {
+                this._logger.error('Failed to send activation email for %s: %s', body.email, error);
+            }
 
             this._userService.getUsersWithMatchingEmailSuffix(body.email)
                 .then(possibleDuplicates => {
