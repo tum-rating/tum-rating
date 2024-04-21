@@ -25,7 +25,7 @@ export abstract class BaseRepository<T> {
         return this.model.findByIdAndUpdate(id, data, { new: true, session });
     }
 
-    public async deleteOneById(id: string, session?: ClientSession) {
+    public async deleteOneById(id: string, session?: ClientSession): Promise<WithId<T>> {
         return this.model.findByIdAndDelete(id, { session });
     }
 }

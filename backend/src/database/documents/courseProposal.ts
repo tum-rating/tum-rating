@@ -5,23 +5,11 @@ import { User } from './user';
 
 @Schema()
 export class CourseProposal {
-    @Prop({ required: true, type: String })
-    professor: string;
-
-    @Prop({ type: [String] })
-    otherLecturers?: string[];
-
-    @Prop({ required: true, type: String })
-    name: string;
-
-    @Prop({ required: true, type: String })
-    courseId: string;
-
-    @Prop({ required: true, type: String })
-    courseNumber: string;
-
-    @Prop({ required: true, type: [String] })
-    offeredInSemesters: string[];
+    @Prop({
+        required: true,
+        type: String,
+    })
+    url: string;
 
     @Prop({
         required: true,
@@ -29,6 +17,13 @@ export class CourseProposal {
         ref: User.name,
     })
     userId: MongooseSchema.Types.ObjectId;
+
+    @Prop({
+        required: true,
+        type: Date,
+        default: Date.now,
+    })
+    createdAt: Date;
 }
 
 export type CourseProposalDocument = CourseProposal & Document;

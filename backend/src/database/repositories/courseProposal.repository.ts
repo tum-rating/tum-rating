@@ -12,4 +12,8 @@ export class CourseProposalRepository extends BaseRepository<CourseProposal> {
     ) {
         super(_courseProposalModel);
     }
+
+    create(courseProposal: Omit<CourseProposal, 'createdAt'>) {
+        return super.create(courseProposal as CourseProposal);
+    }
 }
