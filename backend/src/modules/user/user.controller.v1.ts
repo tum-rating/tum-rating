@@ -112,20 +112,35 @@ export class UserControllerV1 {
 
         this._logger.info('Get user request completed for user %s', userId);
 
-        return {
-            id: user.id,
-            email: user.email,
-            username: user.username,
-            isEmailActivated: user.isEmailActivated,
-            isBanned: user.isBanned,
-            role: user.role,
-        };
+        return new GetUserAdminResponseDto(user);
     }
 
+    @ApiBearerAuth('admin')
+    @ApiResponse({
+        status: 200,
+        type: GetUserAdminResponseDto,
+    })
     @UseGuards(AdminGuard)
     @Delete(':id')
-    public async deleteUser() {
-        throw new NotImplementedException();
+    public async deleteUser(
+        @Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) userId: string,
+        @Headers(USER_ID) adminId: string
+    ): Promise<GetUserAdminResponseDto> {
+        this._logger.info('Delete user request received for user %s, by admin %s', userId, adminId);
+
+        try {
+            const deletedUser = await this._userService.deleteUser(userId);
+
+            this._logger.info('Delete user request completed for user %s, by admin %s', userId, adminId);
+            return new GetUserAdminResponseDto(deletedUser);
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                throw new NotFoundException(error.message);
+            }
+
+            this._logger.error('Delete user request failed for user %s, by admin %s', userId, adminId);
+            throw error;
+        }
     }
 
     @ApiBearerAuth('admin')
