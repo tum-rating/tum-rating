@@ -2,14 +2,13 @@ import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
-import { CreateCourseRequestDto } from '@tum-rating/backend/src/modules/course/dto/CreateCourseRequest.dto';
+import { PatchCourseRequestDto } from '@tum-rating/backend/src/modules/course/dto/PatchCourseRequest.dto';
+import { MONGO_ZERO_ID } from '@tum-rating/backend/src/utils/const';
+
 import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
 import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNumberOfLenght';
 import { courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
 import { createCourseMockRequest } from '@tum-rating/backend/test/utils/api-client/course';
-import { PatchCourseRequestDto } from 'src/modules/course/dto/PatchCourseRequest.dto';
-import e from 'express';
-
 
 beforeAll(async () => {
     await connectMongo();
@@ -92,5 +91,20 @@ describe('Patch Course', () => {
             .send(requestBody)
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .expect(403);
+    });
+
+    it('should fail with 404 if course not found', async () => {
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const requestBody: PatchCourseRequestDto = {
+            courseNumber: fakeNumberOfLenght(8),
+            name: faker.word.words(faker.number.int({ min: 2, max: 10 })),
+        };
+
+        return supertest(courseUrl)
+            .patch(`/` + MONGO_ZERO_ID)
+            .send(requestBody)
+            .set('Authorization', 'Bearer ' + signInAdminResponse.token)
+            .expect(404);
     });
 });

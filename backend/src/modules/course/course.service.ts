@@ -69,7 +69,11 @@ export class CourseService {
     }
 
     public async updateCourse(id: string, course: Partial<Course>) {
-        return this._courseRepository.updateOneById(id, course);
+        const upadatedCourse = await this._courseRepository.updateOneById(id, course);
+
+        if (upadatedCourse === null) throw new NotFoundError('course not found');
+
+        return upadatedCourse
     }
 
     public async patchReview(courseId: string, userId: string, patchUser: PatchReviewType) {
@@ -88,6 +92,10 @@ export class CourseService {
     }
 
     public async deleteCourse(id: string) {
-        return this._courseRepository.deleteOneById(id);
+        const deletedCourse = await this._courseRepository.deleteOneById(id);
+
+        if (deletedCourse === null) throw new NotFoundError('course not found');
+
+        return deletedCourse;
     }
 }
