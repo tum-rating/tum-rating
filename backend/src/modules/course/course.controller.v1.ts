@@ -15,7 +15,7 @@ import {
     BadRequestException,
 } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
-import { ApiBearerAuth, ApiTags, ApiQuery, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiQuery, ApiParam, ApiResponse, ApiOkResponse } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
@@ -26,15 +26,15 @@ import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
 import { UserService } from 'src/modules/user/user.service';
 import { User } from 'src/database/documents/user';
 import { Review } from 'src/database/documents/review';
+import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
+import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
+import { CourseReviewSemesterMismatch, NotFoundError } from 'src/utils/errors/errors';
 
 import { CourseService } from './course.service';
 import { CreateCourseRequestDto, CreateCourseRequestSchema } from './dto/CreateCourseRequest.dto';
 import { AddReviewRequestDto, AddReviewRequestSchema } from './dto/AddReviewRequest.dto';
 import { PatchReviewRequestDto, PatchReviewRequestSchema } from './dto/PatchReviewRequest.dto';
-import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
-import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
-import { CourseReviewSemesterMismatch, NotFoundError } from 'src/utils/errors/errors';
-import { CreateReviewType } from 'src/database/repositories/review.repository';
+import { PatchCourseRequestDto, PatchCourseRequestSchema, PatchCourseResponseDto } from './dto/PatchCourseRequest.dto';
 
 @ApiTags('courses')
 @Controller('/api/v1/courses')
@@ -92,15 +92,18 @@ export class CourseControllerV1 {
 
     @Get('/:courseId/user/me')
     @UseGuards(AuthGuard)
-    public async getReview(@Headers(USER_ID) userId: string, @Param('courseId') courseId: string) {
+    public async getReview(
+        @Headers(USER_ID) userId: string,
+        @Param('courseId', new JoiObjectSchemaPipe(MongoIdPipe)) courseId: string
+    ) {
         this._logger.info('Get review %s user %s', courseId, userId);
 
         try {
-            const course = await this._courseService.getReview(courseId, userId);
+            const review = await this._courseService.getReview(courseId, userId);
 
-            this._logger.info('Successfuly retrieved with id: %s', course.id);
+            this._logger.info('Successfuly retrieved with id: %s', review.id);
 
-            return course;
+            return review;
         } catch (error) {
             if (error instanceof NotFoundError) {
                 this._logger.debug('Review %s user %s not found', courseId, userId);
@@ -134,6 +137,32 @@ export class CourseControllerV1 {
         return {
             id: createdCourse.id,
         };
+    }
+
+    @ApiBearerAuth()
+    @ApiParam({
+        name: 'user-id',
+        required: false,
+        description: '(Leave empty. It will be extracted from JWT token)',
+    })
+    @ApiOkResponse({
+        status: 200,
+        type: PatchCourseResponseDto,
+    })
+    @Patch('/:course_id')
+    @UseGuards(AdminGuard)
+    public async patchCourse(
+        @Headers(USER_ID) userId: string,
+        @Param('course_id', new JoiObjectSchemaPipe(MongoIdPipe)) courseId: string,
+        @Body(new JoiObjectSchemaPipe(PatchCourseRequestSchema)) body: PatchCourseRequestDto,
+    ): Promise<PatchCourseResponseDto> {
+        this._logger.info('Patch course request received for course: %s, professor: %s', body.name, body.professor);
+
+        const createdCourse = await this._courseService.updateCourse(courseId, body);
+
+        this._logger.info('Successfuly patched course for course %s, %s', body.name, body.professor);
+
+        return new PatchCourseResponseDto(createdCourse);
     }
 
     @ApiBearerAuth()
@@ -218,8 +247,8 @@ export class CourseControllerV1 {
     @UseGuards(AuthGuard)
     public async patchUserReview(
         @Headers(USER_ID) userId: string,
-        @Param('user_id') queryUserId: string,
-        @Param('course_id') courseId: string,
+        @Param('user_id', new JoiObjectSchemaPipe(MongoIdPipe)) queryUserId: string,
+        @Param('course_id', new JoiObjectSchemaPipe(MongoIdPipe)) courseId: string,
         @Body(new JoiObjectSchemaPipe(PatchReviewRequestSchema))
         body: PatchReviewRequestDto,
     ) {
