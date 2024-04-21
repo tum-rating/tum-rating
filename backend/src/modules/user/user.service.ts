@@ -76,7 +76,11 @@ export class UserService {
     }
 
     public async deleteUser(id: string) {
-        return this._userRepository.deleteOneById(id);
+        const deletedUser = await this._userRepository.deleteOneById(id);
+
+        if(!deletedUser) throw new NotFoundError(`User with id ${id} not found`);
+
+        return deletedUser;
     }
 
     public async activateEmail(id: string) {
