@@ -1,16 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { KeyObject, createSecretKey } from 'crypto';
 import { SignJWT, jwtVerify } from 'jose';
 
 import { JWTSignOptions, TokenType, UserRole } from './jwt.interfaces';
 
 @Injectable()
 export class JWTService {
-    private readonly _jwtSecret: Uint8Array;
+    private readonly _jwtSecret: KeyObject;
+    private readonly _jwtExpiration: string;
 
     constructor(private readonly _configService: ConfigService) {
         const jwtSecretString = this._configService.getOrThrow('jwt.secret');
-        this._jwtSecret = new TextEncoder().encode(jwtSecretString);
+        const jwtExpiration = this._configService.getOrThrow('jwt.expiration');
+
+        this._jwtSecret = createSecretKey(jwtSecretString);
+        this._jwtExpiration = jwtExpiration || '1d';
     }
 
     public async signJWTAccess(userId: string, userRole = UserRole.user) {
@@ -39,7 +44,7 @@ export class JWTService {
 
     private async _signJWT(userId: string, tokenType: TokenType, options?: Partial<JWTSignOptions>) {
         const defaultJWTSignOptions: JWTSignOptions = {
-            expiration: '1d',
+            expiration: this._jwtExpiration,
             userRole: UserRole.user,
             ...options,
         };
