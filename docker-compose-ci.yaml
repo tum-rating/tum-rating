@@ -20,7 +20,7 @@ services:
 
       #JWT
       JWT_SECRET: jwt-secret 
-      JWT_EXPIRATION: 
+      JWT_EXPIRATION: 1d 
 
       #MAILER
       MAILER_HOST: mailer
