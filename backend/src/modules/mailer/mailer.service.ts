@@ -17,6 +17,15 @@ interface EmailTemplates {
     emailAlreadyExists: string;
 }
 
+interface MailerConfig {
+    host: string;
+    port: number;
+    auth?: {
+        user: string;
+        pass: string;
+    };
+}
+
 const emailTemplatesDir = '../../../assets/mail-templates';
 const emailActivationTemplateFile = 'activation.html';
 const emailRecoveryTemplateFile = 'recovery.html';
@@ -34,10 +43,19 @@ export class MailerService {
     ) {
         this._logger.setContext(MailerService.name);
 
-        this._transporter = NodeMailer.createTransport({
-            host: this._configService.getOrThrow('mailer.host'),
-            port: this._configService.getOrThrow('mailer.port'),
-        });
+        const mailerConfig: MailerConfig = {
+            host: this._configService.get('mailer.host'),
+            port: this._configService.get('mailer.port'),
+        };
+
+        if (this._configService.get('app.env') !== 'development') {
+            mailerConfig.auth ={
+                user: this._configService.get('mailer.user'),
+                pass: this._configService.get('mailer.pass')
+            }
+        }
+
+        this._transporter = NodeMailer.createTransport(mailerConfig);
 
         this._sender = this._configService.getOrThrow('mailer.sender');
         this._templates = this._initTemplates();
@@ -51,9 +69,6 @@ export class MailerService {
             to: this._formatRecipient(to),
             subject,
             html: html,
-            headers: {
-                'Content-Type': 'text/html; charset=utf-8',
-            },
             text
         });
 
