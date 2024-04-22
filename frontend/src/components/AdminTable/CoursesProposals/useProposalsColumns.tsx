@@ -1,23 +1,29 @@
-import { ActionIcon, Center, Flex, Group, Pill } from '@mantine/core';
-import { IconCircleCheck, IconClick, IconEdit, IconSearch } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import {IconSearch} from '@tabler/icons-react';
+import {useEffect, useState} from 'react';
 
-import { useTableColumns } from '../Shared/useTableColumns';
+import {useTableColumns} from '../Shared/useTableColumns';
 
-import { CourseProposal } from '@/admin/types.ts';
-import { useAcceptProposal } from '@/admin/useAcceptProposal.tsx';
-import { useCoursesProposals } from '@/admin/useCoursesProposals.ts';
-import { ColumnFilterCombobox } from '@/components/AdminTable/Shared/ColumnFilterCombobox';
+import {CourseProposal} from '@/admin/types.ts';
+// import { useAcceptProposal } from '@/admin/useAcceptProposal.tsx';
+import {useCoursesProposals} from '@/admin/useCoursesProposals.ts';
+import {ColumnFilterCombobox} from '@/components/AdminTable/Shared/ColumnFilterCombobox';
 
 export const useProposalsColumns = () => {
-    const { data } = useCoursesProposals();
-    const { mutateAsync: acceptProposal } = useAcceptProposal();
-
+    const {data} = useCoursesProposals();
+    // const { mutateAsync: acceptProposal } = useAcceptProposal();
     const [coursesProposals, setCoursesProposals] = useState<CourseProposal[]>([]);
     const [columns, setColumns] = useState([]);
-    const filterableColumns = ['name', 'offeredInSemesters', 'otherLecturers'];
+    const filterableColumns = ['userId', 'createdAt'];
 
-    const { sortState, setSortState, filterState, setFilter, resetFilters, resetSorting, isAnyFilterActive } = useTableColumns(data, filterableColumns, setCoursesProposals);
+    const {
+        sortState,
+        setSortState,
+        filterState,
+        setFilter,
+        resetFilters,
+        resetSorting,
+        isAnyFilterActive
+    } = useTableColumns(data, filterableColumns, setCoursesProposals);
 
     useEffect(() => {
         if (data) {
@@ -32,21 +38,21 @@ export const useProposalsColumns = () => {
 
     const columnsTemplate = () => [
         {
-            accessor: 'name',
-            title: 'Course name',
+            accessor: 'userId',
+            title: 'User Id',
             noWrap: false,
             width: '50%',
-            filtering: filterState?.name?.selected.length > 0,
+            filtering: filterState?.userId?.selected.length > 0,
             sortable: true,
             filter: (
                 <ColumnFilterCombobox
-                    label="Courses proposals"
-                    description="Filter by course proposals names"
-                    data={filterState?.name?.records || []}
-                    value={filterState?.name?.selected || []}
-                    placeholder="Search proposals…"
+                    label="Id of the user"
+                    description="Filter by user id"
+                    data={filterState?.userId?.records || []}
+                    value={filterState?.userId?.selected || []}
+                    placeholder="Search user id…"
                     onChange={(value) => {
-                        setFilter('name', value);
+                        setFilter('userId', value);
                     }}
                     clearable
                     searchable
@@ -54,98 +60,32 @@ export const useProposalsColumns = () => {
             ),
         },
         {
-            accessor: 'offeredInSemesters',
-            title: 'Semester',
+            title: 'Created at',
+            accessor: 'createdAt',
             render: (element: CourseProposal) => {
                 return (
                     <>
-                        <Flex align="center" gap="xs">
-                            {element.offeredInSemesters.map((x) => (
-                                <Pill>{x}</Pill>
-                            ))}
-                        </Flex>
+                        {new Date(element.createdAt).toLocaleString()}{' '}
                     </>
                 );
             },
-            sortable: true,
-            filtering: filterState?.offeredInSemesters?.selected.length > 0,
-            filter: () => {
-                return (
-                    <ColumnFilterCombobox
-                        label="Semesters"
-                        description="Filter by semesters"
-                        data={filterState?.offeredInSemesters?.records || []}
-                        value={filterState?.offeredInSemesters?.selected || []}
-                        placeholder="Search semesters…"
-                        onChange={(value) => {
-                            setFilter('offeredInSemesters', value);
-                        }}
-                        leftSection={<IconSearch size={16} />}
-                        clearable
-                        searchable
-                    />
-                );
-            },
-        },
-        {
-            title: 'Lecturer',
-            accessor: 'otherLecturers',
-            render: (element: CourseProposal) => {
-                return (
-                    <>
-                        <Flex align="center" gap="xs">
-                            {element.otherLecturers.map((x) => (
-                                <Pill>{x}</Pill>
-                            ))}
-                        </Flex>
-                    </>
-                );
-            },
-            filtering: filterState?.otherLecturers?.selected.length > 0,
+            filtering: filterState?.createdAt?.selected.length > 0,
             sortable: true,
             filter: (
                 <ColumnFilterCombobox
-                    label="Lecturers"
-                    description="Filter by lecturers names"
-                    data={filterState?.otherLecturers?.records || []}
-                    value={filterState?.otherLecturers?.selected || []}
-                    placeholder="Search lecturers…"
+                    label="Created at"
+                    description="Filter by created at date"
+                    data={filterState?.createdAt?.records || []}
+                    value={filterState?.createdAt?.selected || []}
+                    placeholder="Search created at…"
                     onChange={(value) => {
-                        setFilter('otherLecturers', value);
+                        setFilter('createdAt', value);
                     }}
-                    leftSection={<IconSearch size={16} />}
+                    leftSection={<IconSearch size={16}/>}
                     clearable
                     searchable
                 />
             ),
-        },
-        {
-            accessor: 'actions',
-            title: (
-                <Center>
-                    <IconClick size={16} />
-                </Center>
-            ),
-            width: '0%',
-            render: ({ _id }) => {
-                return (
-                    <Group gap={4} justify="right" wrap="nowrap">
-                        <ActionIcon
-                            size="sm"
-                            color="green"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                acceptProposal(_id);
-                            }}
-                        >
-                            <IconCircleCheck size={16} />
-                        </ActionIcon>
-                        <ActionIcon size="sm">
-                            <IconEdit size={16} />
-                        </ActionIcon>
-                    </Group>
-                );
-            },
         },
     ];
 

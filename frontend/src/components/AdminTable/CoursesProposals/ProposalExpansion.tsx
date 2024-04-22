@@ -1,36 +1,98 @@
-import { Alert, Autocomplete, Button, Center, Divider, Flex, Pill, PillsInput, Stack, Text, TextInput } from '@mantine/core';
-import { IconCircleCheck, IconDatabaseX, IconEditCircle, IconTrashX } from '@tabler/icons-react';
-import { useState } from 'react';
+import {
+    Alert,
+    Autocomplete,
+    Box,
+    Button,
+    Center,
+    Divider,
+    Flex, Loader,
+    Pill,
+    PillsInput,
+    Stack,
+    Text,
+    TextInput
+} from '@mantine/core';
+import {IconDatabaseX, IconMasksTheater, IconMoodCheck, IconTrashX} from '@tabler/icons-react';
+import {useEffect, useState} from 'react';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
-import { CourseProposal } from '@/admin/types.ts';
-import { useAcceptProposal } from '@/admin/useAcceptProposal.tsx';
-import { useCourseProposal } from '@/admin/useCourseProposal.tsx';
-import { useRemoveProposal } from '@/admin/useRemoveProposal.tsx';
-import { UserInfoAction } from '@/components/AdminTable/Shared/UserInfoAction';
-import { Skeleton } from '@/components/Skeleton';
+import {CourseProposal} from '@/admin/types.ts';
+import {useCourseProposal} from '@/admin/useCourseProposal.tsx';
+import {useRemoveProposal} from '@/admin/useRemoveProposal.tsx';
+import {useCourseScraper} from "@/admin/useCourseScraper.tsx";
+import {UserInfoAction} from '@/components/AdminTable/Shared/UserInfoAction';
+import {Skeleton} from '@/components/Skeleton';
+import {useAddCourseProposal} from "@/admin/useAddCourseProposal.tsx";
+import {notifications} from "@mantine/notifications";
 
 interface ProposalExpansionProps {
     proposal: CourseProposal;
-    editing: boolean;
 }
 
-const ProposalExpansion = ({ proposal: IProposal, editing: IEditing }: ProposalExpansionProps) => {
-    const { data: courseProposalDetails, isLoading, error, isError, refetch } = useCourseProposal(IProposal._id);
-    const [proposal, setProposal] = useState(IProposal);
-    const [editing, setEditing] = useState(IEditing);
+const ProposalExpansion = ({proposal: IProposal}: ProposalExpansionProps) => {
+    const {data: courseProposalDetails, isLoading, error, isError, refetch} = useCourseProposal(IProposal.id);
+    const {
+        refetch: scrapeCourse,
+        data: scrapedData,
+        isLoading: scraperIsLoading,
+        // isError: scraperIsError,
+        isSuccess: scraperIsSuccess
+    } = useCourseScraper(IProposal.url || "");
     const [newLecturer, setNewLecturer] = useState('');
-    const { mutate: acceptProposal } = useAcceptProposal();
-    const { mutate: removeProposal } = useRemoveProposal();
+    const [fetchedProposal, setFetchedProposal] = useState({
+        courseId: "",
+        courseNumber: "",
+        name: "",
+        professor: "",
+        otherLecturers: [],
+        offeredInSemesters: []
+    });
+    const {mutate: acceptProposal, isPending: acceptProposalPending, isSuccess:acceptProposalSuccess} = useAddCourseProposal();
+    const {mutate: removeProposal} = useRemoveProposal();
+
+
+    useEffect(() => {
+        if(acceptProposalSuccess){
+            removeProposal(courseProposalDetails.id);
+        }
+    }, [acceptProposalSuccess]);
+
+    useEffect(() => {
+        if (scraperIsSuccess) {
+            console.log(scrapedData)
+            setFetchedProposal(scrapedData);
+        }
+    }, [scraperIsSuccess]);
+
 
     return (
-        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md">
+        <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md">
+           <button onClick={()=>{
+               notifications.show({
+                   title: 'Accepting proposal',
+                   message: <Flex direction="column">
+                       <Flex align="center" gap="3">
+                           <Loader size="13" />
+                           <Text size="xs">Accepting proposal</Text>
+                       </Flex>
+                       <Flex align="center" gap="3">
+                           <Box size="xs" w={13} h={13} bg="gray.3" style={{borderRadius: '50%'}}/>
+                           <Text size="xs">Remove accepted proposal</Text>
+
+                       </Flex>
+
+                   </Flex>,
+                   autoClose: false,
+                   withCloseButton: false,
+               });
+           }}></button>
             {isError ? (
                 <Center h={270}>
                     <Flex direction="column">
-                        <Text fw={600}>Error occurred - {IProposal._id}</Text>
-                        <Alert variant="light" color="red" title="Alert title" icon={<IconDatabaseX height={120} width={120} />}>
+                        <Text fw={600}>Error occurred - {IProposal.id}</Text>
+                        <Alert variant="light" color="red" title="Alert title"
+                               icon={<IconDatabaseX height={120} width={120}/>}>
                             {error?.message || 'An error occurred while fetching the data - error message not provided'}
                         </Alert>
                         <Button
@@ -52,11 +114,11 @@ const ProposalExpansion = ({ proposal: IProposal, editing: IEditing }: ProposalE
                                 Details
                             </Text>
                         </Flex>
-                        <Divider variant="dashed" size="sm" />
+                        <Divider variant="dashed" size="sm"/>
                         <Flex direction="column" gap="xs">
                             <Flex justify="flex-start" gap="xs" wrap="wrap">
                                 <Flex align="center" gap="3">
-                                    <Text style={{ whiteSpace: 'nowrap' }} fz="xs" fw="bold">
+                                    <Text style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold">
                                         User:{' '}
                                     </Text>
                                     <Skeleton
@@ -67,7 +129,9 @@ const ProposalExpansion = ({ proposal: IProposal, editing: IEditing }: ProposalE
                                         component={
                                             <UserInfoAction userId={courseProposalDetails?.userId}>
                                                 {(user) => (
-                                                    <Button px={4} m={0} h={20} variant="subtle" fz="xs" fw="600" c={user?.isBanned ? 'gray' : 'blue'} style={user?.isBanned ? { textDecorationLine: 'line-through' } : {}}>
+                                                    <Button px={4} m={0} h={20} variant="subtle" fz="xs" fw="600"
+                                                            c={user?.isBanned ? 'gray' : 'blue'}
+                                                            style={user?.isBanned ? {textDecorationLine: 'line-through'} : {}}>
                                                         {user?.username}
                                                     </Button>
                                                 )}
@@ -76,7 +140,7 @@ const ProposalExpansion = ({ proposal: IProposal, editing: IEditing }: ProposalE
                                     ></Skeleton>
                                 </Flex>
                                 <Flex align="center" gap="3">
-                                    <Text style={{ whiteSpace: 'nowrap' }} fz="xs" fw="bold">
+                                    <Text style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold">
                                         Course ID:{' '}
                                     </Text>
                                     <Skeleton
@@ -86,125 +150,151 @@ const ProposalExpansion = ({ proposal: IProposal, editing: IEditing }: ProposalE
                                         loading={isLoading}
                                         component={
                                             <Text truncate fz="xs" fw="600" c="dimmed">
-                                                {courseProposalDetails?.courseId}
+                                                {courseProposalDetails?.id}
                                             </Text>
                                         }
                                     ></Skeleton>
                                 </Flex>
-                            </Flex>
-                            <form>
-                                <Flex wrap="wrap" gap="xs" direction="column">
+                                <Flex align="center" gap="3">
+                                    <Text style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold">
+                                        Created at:{' '}
+                                    </Text>
                                     <Skeleton
-                                        height={36}
+                                        width={155}
+                                        height={16}
                                         radius="sm"
-                                        mt={22}
                                         loading={isLoading}
                                         component={
-                                            <TextInput
-                                                disabled={!editing}
-                                                value={courseProposalDetails?.name}
-                                                label="Course Name"
-                                                placeholder="Enter course name"
-                                                onChange={(event) =>
-                                                    setProposal({
-                                                        ...proposal,
-                                                        name: event.currentTarget.value,
-                                                    })
-                                                }
-                                            />
+                                            <Text truncate fz="xs" fw="600" c="dimmed">
+                                                {new Date(courseProposalDetails?.createdAt).toLocaleString()}
+                                            </Text>
                                         }
                                     ></Skeleton>
-                                    <Flex gap="xs" wrap={{ base: 'wrap', sm: 'nowrap' }}>
-                                        <Flex direction="column" gap="xs" w={{ base: '100%', sm: '40%' }}>
-                                            <Skeleton
-                                                height={36}
-                                                radius="sm"
-                                                mt={22}
-                                                loading={isLoading}
-                                                component={
-                                                    <Autocomplete
-                                                        disabled={!editing}
-                                                        label="Semester"
-                                                        placeholder="Select semester"
-                                                        data={['2023 S']}
-                                                        value={courseProposalDetails?.offeredInSemesters[0]}
-                                                        onChange={(value) =>
-                                                            setProposal({
-                                                                ...proposal,
-                                                                offeredInSemesters: [value],
-                                                            })
-                                                        }
-                                                    />
-                                                }
-                                            ></Skeleton>
-                                            <Skeleton
-                                                height={36}
-                                                radius="sm"
-                                                mt={22}
-                                                loading={isLoading}
-                                                component={
-                                                    <TextInput
-                                                        disabled={!editing}
-                                                        value={courseProposalDetails?.professor}
-                                                        label="Main Professor"
-                                                        placeholder="Enter professor name"
-                                                        onChange={(event) =>
-                                                            setProposal({
-                                                                ...proposal,
-                                                                professor: event.currentTarget.value,
-                                                            })
-                                                        }
-                                                    />
-                                                }
-                                            ></Skeleton>
-                                        </Flex>
+                                </Flex>
+                                <Flex w="100%">
+                                    <TextInput
+                                        w="100%"
+                                        label="Course URL"
+                                        value={courseProposalDetails?.url}
+                                        description="This is the course URL provided by the user"
+                                        readOnly
+                                        disabled
+                                        placeholder="Enter course URL"
+                                    />
+                                </Flex>
+
+                            </Flex>
+                            {fetchedProposal &&
+                                <form>
+                                    <Flex wrap="wrap" gap="xs" direction="column">
                                         <Skeleton
-                                            height={104}
+                                            height={36}
                                             radius="sm"
                                             mt={22}
                                             loading={isLoading}
                                             component={
-                                                <PillsInput w={{ base: '100%', sm: '100%' }} disabled={!editing} multiline label="Other Professors">
-                                                    <Pill.Group h={91} style={{ alignItems: 'flex-start' }}>
-                                                        {courseProposalDetails?.otherLecturers.map((lecturer: string) => (
-                                                            <Pill
-                                                                disabled={!editing}
-                                                                key={lecturer}
-                                                                withRemoveButton
-                                                                onRemove={() => {
-                                                                    setProposal({
-                                                                        ...proposal,
-                                                                        otherLecturers: proposal.otherLecturers.filter((l) => l !== lecturer),
-                                                                    });
-                                                                }}
-                                                            >
-                                                                {lecturer}
-                                                            </Pill>
-                                                        ))}
-                                                        <PillsInput.Field
-                                                            disabled={!editing}
-                                                            onChange={(event) => setNewLecturer(event.currentTarget.value)}
-                                                            onKeyDown={(event) => {
-                                                                if (event.key === 'Enter') {
-                                                                    if (newLecturer.length <= 3) return;
-                                                                    if (proposal.otherLecturers.includes(newLecturer)) return;
-                                                                    setProposal({
-                                                                        ...proposal,
-                                                                        otherLecturers: [...proposal.otherLecturers, event.currentTarget.value],
-                                                                    });
-                                                                    setNewLecturer('');
-                                                                }
-                                                            }}
-                                                            value={newLecturer}
-                                                            placeholder=""
-                                                        />
-                                                    </Pill.Group>
-                                                </PillsInput>
+                                                <TextInput
+                                                    value={fetchedProposal?.name}
+                                                    label="Course Name"
+                                                    placeholder="Enter course name"
+                                                    onChange={(event) =>
+                                                        setFetchedProposal({
+                                                            ...fetchedProposal,
+                                                            name: event.currentTarget.value,
+                                                        })
+                                                    }
+                                                />
                                             }
                                         ></Skeleton>
+                                        <Flex gap="xs" wrap={{base: 'wrap', sm: 'nowrap'}}>
+                                            <Flex direction="column" gap="xs" w={{base: '100%', sm: '40%'}}>
+                                                <Skeleton
+                                                    height={36}
+                                                    radius="sm"
+                                                    mt={22}
+                                                    loading={isLoading}
+                                                    component={
+                                                        <Autocomplete
+                                                            label="Semester"
+                                                            placeholder="Select semester"
+                                                            data={['2023 S']}
+                                                            value={fetchedProposal?.offeredInSemesters[0]}
+                                                            onChange={(value) =>
+                                                                setFetchedProposal({
+                                                                    ...fetchedProposal,
+                                                                    offeredInSemesters: [value],
+                                                                })
+                                                            }
+                                                        />
+                                                    }
+                                                ></Skeleton>
+                                                <Skeleton
+                                                    height={36}
+                                                    radius="sm"
+                                                    mt={22}
+                                                    loading={isLoading}
+                                                    component={
+                                                        <TextInput
+                                                            value={fetchedProposal?.professor}
+                                                            label="Main Professor"
+                                                            placeholder="Enter professor name"
+                                                            onChange={(event) =>
+                                                                setFetchedProposal({
+                                                                    ...fetchedProposal,
+                                                                    professor: event.currentTarget.value,
+                                                                })
+                                                            }
+                                                        />
+                                                    }
+                                                ></Skeleton>
+                                            </Flex>
+                                            <Skeleton
+                                                height={104}
+                                                radius="sm"
+                                                mt={22}
+                                                loading={isLoading}
+                                                component={
+                                                    <PillsInput w={{base: '100%', sm: '100%'}}
+                                                                multiline
+                                                                label="Other Professors">
+                                                        <Pill.Group h={91} style={{alignItems: 'flex-start'}}>
+                                                            {fetchedProposal?.otherLecturers.map((lecturer: string) => (
+                                                                <Pill
+                                                                    key={lecturer}
+                                                                    withRemoveButton
+                                                                    onRemove={() => {
+                                                                        setFetchedProposal({
+                                                                            ...fetchedProposal,
+                                                                            otherLecturers: fetchedProposal.otherLecturers.filter((l) => l !== lecturer),
+                                                                        });
+                                                                    }}
+                                                                >
+                                                                    {lecturer}
+                                                                </Pill>
+                                                            ))}
+                                                            <PillsInput.Field
+                                                                onChange={(event) => setNewLecturer(event.currentTarget.value)}
+                                                                onKeyDown={(event) => {
+                                                                    if (event.key === 'Enter') {
+                                                                        if (newLecturer.length <= 3) return;
+                                                                        if (fetchedProposal.otherLecturers.includes(newLecturer)) return;
+                                                                        setFetchedProposal({
+                                                                            ...fetchedProposal,
+                                                                            otherLecturers: [...fetchedProposal.otherLecturers, event.currentTarget.value],
+                                                                        });
+                                                                        setNewLecturer('');
+                                                                    }
+                                                                }}
+                                                                value={newLecturer}
+                                                                placeholder=""
+                                                            />
+                                                        </Pill.Group>
+                                                    </PillsInput>
+                                                }
+                                            ></Skeleton>
+                                        </Flex>
                                     </Flex>
-                                </Flex>
-                            </form>
+                                </form>}
                         </Flex>
                     </Flex>
                     <Flex direction="column" gap="xs" className={classes.expansionActions}>
@@ -214,39 +304,40 @@ const ProposalExpansion = ({ proposal: IProposal, editing: IEditing }: ProposalE
                             </Text>
                         </Flex>
                         <Stack gap="xs">
-                            <Divider variant="dashed" size="sm" />
+                            <Divider variant="dashed" size="sm"/>
                             <Button
                                 onClick={() => {
-                                    acceptProposal(proposal._id);
+                                    if (scrapedData) {
+                                        setFetchedProposal(scrapedData);
+                                    } else {
+                                        scrapeCourse();
+                                    }
                                 }}
-                                leftSection={<IconCircleCheck width={16} />}
-                                color="green"
+                                loading={scraperIsLoading}
+                                leftSection={<IconMasksTheater width={16}/>}
+                            >
+                                Scrape Course
+                            </Button>
+
+                            <Divider variant="dashed" size="sm"/>
+                            <Button onClick={() => {
+                                acceptProposal(fetchedProposal)
+                            }}
+                                    loading={acceptProposalPending || scraperIsLoading}
+                                    color="green"
+                                    leftSection={<IconMoodCheck width={16}/>}
                             >
                                 Accept Proposal
                             </Button>
                             <Button
                                 onClick={() => {
-                                    removeProposal(proposal._id);
+                                    removeProposal(courseProposalDetails.id);
                                 }}
-                                leftSection={<IconTrashX width={16} />}
+                                loading={acceptProposalPending || scraperIsLoading}
+                                leftSection={<IconTrashX width={16}/>}
                                 color="red"
                             >
                                 Remove Proposal
-                            </Button>
-                            <Button
-                                color="green"
-                                disabled
-                                leftSection={<IconEditCircle width={16} />}
-                                onClick={() => {
-                                    if (editing) {
-                                        setEditing(false);
-                                    } else {
-                                        setEditing(true);
-                                    }
-                                }}
-                                variant="default"
-                            >
-                                {!editing ? 'Edit Proposal' : 'Save Proposal'}
                             </Button>
                         </Stack>
                     </Flex>
@@ -256,4 +347,4 @@ const ProposalExpansion = ({ proposal: IProposal, editing: IEditing }: ProposalE
     );
 };
 
-export { ProposalExpansion };
+export {ProposalExpansion};

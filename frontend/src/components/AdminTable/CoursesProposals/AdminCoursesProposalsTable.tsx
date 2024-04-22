@@ -17,7 +17,9 @@ const AdminCoursesProposalsTable = () => {
             animateOpacity: false,
             transitionTimingFunction: 'ease-out',
         },
-        content: ({ record }) => <ProposalExpansion proposal={record} editing={false} />,
+        content: ({ record }) => {
+            return <ProposalExpansion proposal={record} />
+        },
     };
     const { data: coursesProposals, sortStatus, setSortStatus, columns, resetFilters, isAnyFilterActive } = useProposalsColumns();
     return (
@@ -56,7 +58,7 @@ const AdminCoursesProposalsTable = () => {
                     </Box>
                 </Group>
             </Flex>
-            <DataTable height={100} withTableBorder withColumnBorders idAccessor="_id" striped pinLastColumn fetching={isFetching} sortStatus={sortStatus} onSortStatusChange={setSortStatus} className={classes.table} rowExpansion={rowExpansion} records={coursesProposals} columns={columns} />
+            <DataTable height={100} withTableBorder withColumnBorders idAccessor="id" striped pinLastColumn fetching={isFetching} sortStatus={sortStatus} onSortStatusChange={setSortStatus} className={classes.table} rowExpansion={rowExpansion} records={coursesProposals} columns={columns} />
         </Box>
     );
 };
