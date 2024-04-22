@@ -3,7 +3,7 @@ import { endpoints } from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
-import {useQueryWithAuth} from "@/api/useQueryWithAuth.tsx";
+import { useQueryWithAuth } from "@/api/useQueryWithAuth.tsx";
 
 async function getCoursesProposals(token: string): Promise<CourseProposal[] | null> {
     const response = await fetch(endpoints.getAllProposals, {
@@ -25,5 +25,4 @@ export function useCoursesProposals() {
         refetchInterval: 1000 * 60 * 5, // 5 minutes
         retry: 0,
     });
-
 }

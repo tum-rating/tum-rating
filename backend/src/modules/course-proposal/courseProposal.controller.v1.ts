@@ -10,7 +10,10 @@ import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
 
 import { CourseProposalService } from './courseProposal.service';
-import { CreateCourseProposalRequestDto, CreateCourseProposalRequestSchema } from './dto/CreateCourseProposalRequest.dto';
+import { CreateCourseProposalRequestDto, CreateCourseProposalRequestSchema, CreateCourseProposalResponseDto } from './dto/CreateCourseProposalRequest.dto';
+import { GetCourseProposalResponseDto } from './dto/GetCourseProposalRequest.dto';
+import { DeleteCourseProposalResponseDto } from './dto/DeleteCourseProposalRequest.dto';
+import { GetAllCourseProposalsResponseDto } from './dto/GetAllCourseProposalsRequest.dto';
 
 @ApiTags('course-proposals')
 @Controller('/api/v1/course-proposals')
@@ -25,20 +28,22 @@ export class CourseProposalControllerV1 {
     @ApiBearerAuth()
     @UseGuards(AdminGuard)
     @Get()
-    public async getCourseProposals() {
+    public async getCourseProposals(): Promise<GetAllCourseProposalsResponseDto> {
         this._logger.info('Get course proposal requested');
 
         const courseProposals = await this._courseProposalService.getAllCourseProposals();
 
         this._logger.info('Successfuly retrieved all course proposal with count %d', courseProposals.length);
 
-        return courseProposals;
+        return new GetAllCourseProposalsResponseDto(courseProposals);
     }
 
     @ApiBearerAuth()
     @UseGuards(AdminGuard)
     @Get('/:id')
-    public async getCourseProposalById(@Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string) {
+    public async getCourseProposalById(
+        @Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string
+    ): Promise<GetCourseProposalResponseDto> {
         this._logger.info('Get course proposal with with id: %s', id);
 
         const courseProposal = await this._courseProposalService.getCourseProposalsById(id);
@@ -47,7 +52,7 @@ export class CourseProposalControllerV1 {
 
         this._logger.info('Successfuly retrieved course proposal with id: %s', courseProposal.id);
 
-        return courseProposal;
+        return new GetCourseProposalResponseDto(courseProposal);
     }
 
     @ApiBearerAuth()
@@ -62,15 +67,15 @@ export class CourseProposalControllerV1 {
         @Headers(USER_ID) userId: ObjectId,
         @Body(new JoiObjectSchemaPipe(CreateCourseProposalRequestSchema))
         body: CreateCourseProposalRequestDto,
-    ) {
-        this._logger.info('Create course proposal request received for %s, %s, by user %s', body.name, body.professor, userId);
+    ): Promise<CreateCourseProposalResponseDto> {
+        this._logger.info('Create course proposal request received for by user %s', userId);
 
         const createdCourseProposal = await this._courseProposalService.createCourseProposal({
             ...body,
             userId,
         });
 
-        this._logger.info('Successfuly created course proposal for course %s, %s', body.name, body.professor);
+        this._logger.info('Successfuly created course proposal');
 
         return {
             id: createdCourseProposal.id,
@@ -78,39 +83,17 @@ export class CourseProposalControllerV1 {
     }
 
     @ApiBearerAuth()
-    @ApiParam({
-        name: 'user-id',
-        required: false,
-        description: '(Leave empty. It will be extracted from JWT token)',
-    })
-    @UseGuards(AdminGuard)
-    @Post('/:id/accept')
-    public async acceptCourseProposal(@Headers(USER_ID) userId: ObjectId, @Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string) {
-        this._logger.info('Accept course proposal with id %s requested by user %s', id, userId);
-
-        const createdCourse = await this._courseProposalService.acceptCourseProposalAddingItToCourses(id);
-
-        this._logger.info('Successfuly accepted course proposal with id %s, created review with id %s', id, createdCourse.id);
-
-        await this._courseProposalService.deleteCourseProposal(id);
-
-        this._logger.info('Successfuly deleted course proposal %s, after acceptance', id);
-
-        return {
-            createdReview: createdCourse.id,
-        };
-    }
-
-    @ApiBearerAuth()
     @UseGuards(AdminGuard)
     @Delete('/:id')
-    public async deleteCourseProposal(@Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string) {
+    public async deleteCourseProposal(
+        @Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string
+    ): Promise<DeleteCourseProposalResponseDto> {
         this._logger.info('Delete course proposal with with id: %s', id);
 
         const courseProposal = await this._courseProposalService.deleteCourseProposal(id);
 
         this._logger.info('Successfuly deleted course proposal with id: %s', courseProposal.id);
 
-        return courseProposal;
+        return new DeleteCourseProposalResponseDto(courseProposal);
     }
 }

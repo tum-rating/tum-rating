@@ -1,3 +1,18 @@
-import { CreateCourseRequestDto, CreateCourseRequestSchema } from 'src/modules/course/dto/CreateCourseRequest.dto';
+import * as Joi from 'joi';
+import { ApiProperty } from '@nestjs/swagger';
 
-export { CreateCourseRequestDto as CreateCourseProposalRequestDto, CreateCourseRequestSchema as CreateCourseProposalRequestSchema };
+const createCourseProposalRegex = /^https:\/\/campus\.tum\.de.*courses\/.*/;
+
+export class CreateCourseProposalRequestDto {
+    @ApiProperty()
+    url: string;
+}
+
+export const CreateCourseProposalRequestSchema = Joi.object<CreateCourseProposalRequestDto>({
+    url: Joi.string().regex(createCourseProposalRegex).required(),
+});
+
+export class CreateCourseProposalResponseDto {
+    @ApiProperty()
+    id: string;
+}

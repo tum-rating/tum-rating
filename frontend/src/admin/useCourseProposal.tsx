@@ -1,5 +1,4 @@
 import { notifications } from '@mantine/notifications';
-
 import { endpoints } from '@/api';
 import {useQueryWithAuth} from "@/api/useQueryWithAuth.tsx";
 import * as userLocalStorage from '@/auth/user.localstore.ts';

@@ -1,7 +1,21 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Course, CourseDocument } from 'src/database/documents/course';
+import { Review } from 'src/database/documents/review';
 import { BaseRepository } from './base.repository';
+
+export interface CourseWithReviews {
+    courseId: string;
+    courseNumber: string;
+    professor: string;
+    otherLecturers: string[];
+    name: string;
+    offeredInSemesters: string[];
+    howEasyRatingAverage: number;
+    howInterestingRatingAverage: number;
+    votesNumber: number;
+    reviews: WithId<Review>[];
+}
 
 export class CourseRepository extends BaseRepository<Course> {
     constructor(
@@ -40,7 +54,7 @@ export class CourseRepository extends BaseRepository<Course> {
             .limit(pageSize);
     }
 
-    public async findOneByIdWithPopulatedReviews(id: string) {
+    public async findOneByIdWithPopulatedReviews(id: string): Promise<WithId<CourseWithReviews>> {
         return this._courseModel.findById(id).populate('reviews', '-__v').select('-__v');
     }
 

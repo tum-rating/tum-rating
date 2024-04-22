@@ -20,12 +20,14 @@ services:
 
       #JWT
       JWT_SECRET: jwt-secret 
-      JWT_EXPIRATION: 
+      JWT_EXPIRATION: 1d 
 
       #MAILER
       MAILER_HOST: mailer
       MAILER_PORT: 1025
-      MAILER_SENDER: TUM REVIEW<tumreview@gmail.com>
+      MAILER_USER: user
+      MAILER_PASS: pass
+      MAILER_SENDER: TUM RATING<tumreview@gmail.com>
       MAILER_ADMIN_EMAILS: admin@email.com
 
       #SIGNUP
