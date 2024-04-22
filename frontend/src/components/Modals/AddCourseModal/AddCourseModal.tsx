@@ -2,7 +2,6 @@ import { Alert, BackgroundImage, Button, Center, Container, LoadingOverlay, Sele
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
 import { IconFaceIdError } from '@tabler/icons-react';
-import { nanoid } from 'nanoid';
 import { useEffect, useState } from 'react';
 
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
@@ -25,8 +24,8 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
 
     const form = useForm({
         initialValues: {
-            courseId: nanoid(),
-            courseNumber: nanoid(),
+            courseId: '',
+            courseNumber: '',
             professor: '',
             name: '',
             semester: '',
