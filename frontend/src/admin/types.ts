@@ -1,12 +1,8 @@
 type CourseProposal = {
-    courseId: string;
-    courseNumber: string;
-    professor: string;
-    otherLecturers: string[];
+    url: string;
+    createdAt: string;
+    id: string;
     userId: string;
-    name: string;
-    offeredInSemesters: string[];
-    _id: string;
 };
 
 type Course = {
