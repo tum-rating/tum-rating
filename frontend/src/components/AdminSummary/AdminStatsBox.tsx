@@ -1,19 +1,24 @@
-import { Flex, Paper, Text, ThemeIcon } from '@mantine/core';
-import { ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Flex, Paper, Text, ThemeIcon} from '@mantine/core';
+import {ReactNode} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import classes from './AdminStatsBox.module.css';
 
 interface AdminStatsBoxProps {
-    value: number;
+    options: {
+        value: number;
+        diffInPercent: number;
+        diffValue: number;
+    }
     title: string;
     icon: ReactNode;
     description: string;
     link: string;
 }
 
-const AdminStatsBox = ({ value, title, icon, description, link }: AdminStatsBoxProps) => {
+const AdminStatsBox = ({options, title, icon, description, link}: AdminStatsBoxProps) => {
     const navigate = useNavigate();
+    const {value, diffInPercent, diffValue} = options;
     return (
         <Paper
             tabIndex={0}
@@ -33,6 +38,28 @@ const AdminStatsBox = ({ value, title, icon, description, link }: AdminStatsBoxP
                     </Text>
                     <Text fw={700} fz="xl">
                         {value || '-'}
+                        {
+                            diffValue !== null && (
+                                <Text
+                                    component="span"
+                                    c={'green'}
+                                    ml="xs"
+                                    size="sm"
+                                    fw={700}
+                                >
+                                    +{diffValue}
+                                    <Text
+                                        ml="3"
+                                        display="inline"
+                                        c={'green'}
+                                        fw={700}
+                                        size="xs"
+                                    >
+                                        ({diffInPercent ? `+${diffInPercent}%` : ""} in last 12h)
+                                    </Text>
+                                </Text>
+                            )
+                        }
                     </Text>
                 </div>
                 <ThemeIcon color="gray" variant="light" size={38} radius="md">
@@ -46,4 +73,4 @@ const AdminStatsBox = ({ value, title, icon, description, link }: AdminStatsBoxP
     );
 };
 
-export { AdminStatsBox };
+export {AdminStatsBox};
