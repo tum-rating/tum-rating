@@ -1,9 +1,10 @@
 import {Anchor, AppShell, Burger, Button, Flex, Group, NavLink, Text} from '@mantine/core';
 import {useDisclosure} from '@mantine/hooks';
-import {useEffect, useState} from 'react';
-import {Outlet, useLocation, useNavigate} from 'react-router-dom';
+import {PropsWithChildren, useEffect, useState} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import classes from "./AdminLayout.module.css"
+
 import {useCoursesProposals} from '@/admin/useCoursesProposals.ts';
 import {useUser} from '@/auth/useUser.tsx';
 import {PageAdminNotFound} from '@/pages/PageNotFound';
@@ -19,7 +20,7 @@ const adminTabs = [
 
 const HEADER_HEIGHT = 60;
 
-export function AdminLayout() {
+export function AdminLayout({children}: PropsWithChildren) {
     const [opened, {toggle}] = useDisclosure();
     const [active, setActive] = useState(adminTabs[0].link);
     const {error, isFetched, isLoading, isError} = useCoursesProposals();
@@ -75,7 +76,7 @@ export function AdminLayout() {
                                     </Flex>
                                 </Anchor>
                             </Flex>
-                            <Group ml="xl" gap={0} visibleFrom="sm" >
+                            <Group ml="xl" gap={0} visibleFrom="sm">
                                 <Button.Group className={classes.desktopNavigation}>
                                     {adminTabs.map((link) => (
                                         <Button
@@ -114,7 +115,7 @@ export function AdminLayout() {
                     <NavLink href="#required-for-focus" label="Back to app" onClick={() => navigate('/')}></NavLink>
                 </AppShell.Navbar>
                 <AppShell.Main pt={HEADER_HEIGHT} style={{background: 'var(--primary-light-gradient)'}}>
-                    {user ? <Outlet/> : null}
+                    {user ? children : null}
                 </AppShell.Main>
             </AppShell>
         );
