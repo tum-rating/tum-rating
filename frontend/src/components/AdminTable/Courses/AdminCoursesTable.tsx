@@ -1,27 +1,28 @@
-import { ActionIcon, Badge, Box, Button, Flex, Group, Text } from '@mantine/core';
-import { IconFilterX, IconRefresh } from '@tabler/icons-react';
-import { DataTable, DataTableProps } from 'mantine-datatable';
-import { useMemo } from 'react';
+import {ActionIcon, Badge, Box, Flex, Group, Text, Tooltip} from '@mantine/core';
+import {IconFilterX, IconRefresh} from '@tabler/icons-react';
+import {DataTable, DataTableProps} from 'mantine-datatable';
+import {useMemo} from 'react';
 
-import { useCoursesColumns } from './useCoursesColumns.tsx';
+import {useCoursesColumns} from './useCoursesColumns.tsx';
 import classes from '../Shared/styles/TableStyles.module.css';
 
-import { CourseExpansion } from '@/components/AdminTable/Courses/CourseExpansion.tsx';
-import { usePaginatedCourses } from '@/courses/usePaginatedCourses.tsx';
+import {useCourses} from "@/admin/useCourses.tsx";
+import {CourseExpansion} from '@/components/AdminTable/Courses/CourseExpansion.tsx';
 
-const ExpandedRowContent = ({ record, index }) => {
+const ExpandedRowContent = ({record, index}) => {
     // Consider this
     return useMemo(() => {
-        return <CourseExpansion course={record} editing={false} />;
+        return <CourseExpansion course={record} editing={false}/>;
     }, [record, index]);
 };
 
 const AdminCoursesTable = () => {
-    const { fetchNextPage, isFetching, refetch } = usePaginatedCourses();
-    const { data: courses, columns, resetFilters, isAnyFilterActive } = useCoursesColumns();
+    const {fetchNextPage, isFetching, refetch} = useCourses();
+    const {data: courses, columns, resetFilters, isAnyFilterActive} = useCoursesColumns();
 
     const loadMoreRecords = () => {
-        fetchNextPage().then(() => {});
+        fetchNextPage().then(() => {
+        });
     };
 
     const rowExpansion: DataTableProps<any>['rowExpansion'] = {
@@ -30,7 +31,7 @@ const AdminCoursesTable = () => {
             transitionDuration: 0,
             animateOpacity: false,
         },
-        content: ({ record, index }) => <ExpandedRowContent record={record} index={index} />,
+        content: ({record, index}) => <ExpandedRowContent record={record} index={index}/>,
     };
 
     return (
@@ -44,34 +45,23 @@ const AdminCoursesTable = () => {
                 </Flex>
                 <Group>
                     {isAnyFilterActive && (
-                        <>
-                            <Box hiddenFrom="xs">
-                                <Button variant="light" size="xs" rightSection={<IconFilterX size={16} />} onClick={() => resetFilters()}>
-                                    Reset filters
-                                </Button>
-                            </Box>
-                            <Box visibleFrom="xs">
-                                <ActionIcon variant="light" size="xs" onClick={() => resetFilters()}>
-                                    <IconFilterX size={16} />
-                                </ActionIcon>
-                            </Box>
-                        </>
+                        <Tooltip label="Clear all filters" openDelay={400}><ActionIcon variant="light"
+                                                                                       onClick={() => resetFilters()}>
+                            <IconFilterX size={16}/>
+                        </ActionIcon></Tooltip>
                     )}
-                    <Box hiddenFrom="xs">
-                        <Button variant="light" size="xs" rightSection={<IconRefresh size={16} />} onClick={() => refetch()}>
-                            Refresh
-                        </Button>
-                    </Box>
-                    <Box visibleFrom="xs">
-                        <ActionIcon variant="light" size="xs" onClick={() => refetch()}>
-                            <IconRefresh size={16} />
+                    <Tooltip label="Refresh proposals" openDelay={400}>
+                        <ActionIcon variant="light" onClick={() => refetch()}>
+                            <IconRefresh size={16}/>
                         </ActionIcon>
-                    </Box>
+                    </Tooltip>
                 </Group>
             </Flex>
-            <DataTable height={100} withTableBorder withColumnBorders idAccessor="_id" striped fetching={isFetching} records={courses} className={classes.table} onScrollToBottom={loadMoreRecords} rowExpansion={rowExpansion} columns={columns} />
+            <DataTable height={100} withTableBorder withColumnBorders idAccessor="_id" striped fetching={isFetching}
+                       records={courses} className={classes.table} onScrollToBottom={loadMoreRecords}
+                       rowExpansion={rowExpansion} columns={columns}/>
         </Box>
     );
 };
 
-export { AdminCoursesTable };
+export {AdminCoursesTable};

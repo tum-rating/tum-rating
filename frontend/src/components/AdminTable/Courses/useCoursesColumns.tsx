@@ -1,17 +1,23 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 
-import { useTableColumns } from '../Shared/useTableColumns';
+import {useTableColumns} from '../Shared/useTableColumns';
 
-import { Course } from '@/courses/types.ts';
-import { usePaginatedCourses } from '@/courses/usePaginatedCourses.tsx';
+import {useCourses} from "@/admin/useCourses.tsx";
+import {Course} from '@/courses/types.ts';
 
 export const useCoursesColumns = () => {
-    const { data } = usePaginatedCourses();
+    const {data} = useCourses();
     const [courses, setCourses] = useState<Course[]>([]);
     const [columns, setColumns] = useState([]);
     const filterableColumns = ['course', 'offeredInSemesters', 'otherLecturers'];
-
-    const { sortState, setSortState, filterState, resetFilters, resetSorting, isAnyFilterActive } = useTableColumns(courses, filterableColumns, setCourses);
+    const {
+        sortState,
+        setSortState,
+        filterState,
+        resetFilters,
+        resetSorting,
+        isAnyFilterActive
+    } = useTableColumns(courses, filterableColumns, setCourses);
 
     useEffect(() => {
         if (data) {

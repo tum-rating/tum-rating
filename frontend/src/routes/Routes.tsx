@@ -72,7 +72,12 @@ const RoutesApp = () => {
         {
             path: getPath(Paths.admin),
             errorElement: <PageNotFound />,
-            element: <AdminLayout />,
+            element: <AdminLayout>
+                <ModalsProvider modals={modals}>
+                    <ModalsHashController />
+                    <Outlet/>
+                </ModalsProvider>
+            </AdminLayout>,
             children: [
                 {
                     path: getPath(Paths.admin),

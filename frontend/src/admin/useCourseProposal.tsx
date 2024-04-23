@@ -1,7 +1,6 @@
 import { notifications } from '@mantine/notifications';
-import { useQuery } from '@tanstack/react-query';
-
 import { endpoints } from '@/api';
+import {useQueryWithAuth} from "@/api/useQueryWithAuth.tsx";
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
@@ -32,7 +31,7 @@ const getCourseProposal = async (token: string, courseProposalId: string) => {
 
 const useCourseProposal = (courseProposalId: string) => {
     const token = userLocalStorage.getUser();
-    return useQuery({
+    return useQueryWithAuth({
         queryKey: [QUERY_KEY['admin_course_proposal_details'], courseProposalId],
         queryFn: async () => getCourseProposal(token, courseProposalId),
         refetchIntervalInBackground: false,

@@ -6,15 +6,8 @@ import * as userLocalStorage from '../auth/user.localstore.ts';
 import { endpoints, useMutationWithAuth } from '@/api';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
-const convertToProperObject = (obj: any) => {
-    const newObj = { ...obj };
-    newObj.offeredInSemesters = [obj.semester];
-    newObj.otherLecturers = [obj.professor];
-    delete newObj.semester;
-    return newObj;
-};
 
-async function addReview(token: string | null, courseReview: CourseInput): Promise<string | null> {
+async function addCourseProposal(token: string | null, courseReview: CourseInput): Promise<string | null> {
     if (!token) return null;
     const response = await fetch(endpoints.postCourseProposal, {
         method: 'POST',
@@ -22,7 +15,7 @@ async function addReview(token: string | null, courseReview: CourseInput): Promi
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(convertToProperObject({ ...courseReview })),
+        body: JSON.stringify({ ...courseReview }),
     });
     if (!response.ok) throw new ResponseError('Failed on add review request', response);
 
@@ -30,17 +23,13 @@ async function addReview(token: string | null, courseReview: CourseInput): Promi
 }
 
 export interface CourseInput {
-    courseId: string;
-    courseNumber: string;
-    professor: string;
-    name: string;
-    semester: string;
+    url: string;
 }
 
 export function useAddCourseProposal(): any {
     const userFromLocalStorage = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: async (newReview: CourseInput) => addReview(userFromLocalStorage, newReview),
+        mutationFn: async (newReview: CourseInput) => addCourseProposal(userFromLocalStorage, newReview),
         onSuccess: () => {
             notifications.show({
                 title: 'Success',

@@ -45,6 +45,9 @@ const Courses: CoursesEndpoints = {
 };
 
 type AdminEndpoints = {
+    //---COURSES
+    addCourse: string;
+    editCourse: (courseId: string) => string;
     //---PROPOSALS
     getAllProposals: string;
     getSingleProposal: (proposalId: string) => string;
@@ -66,10 +69,21 @@ const admin: AdminEndpoints = {
     removeProposal: (proposalId: string) => `${baseApiUrl}/course-proposals/${proposalId}`,
     removeUser: (userId: string) => `${baseApiUrl}/users/${userId}`,
     banUser: (userId: string) => `${baseApiUrl}/users/${userId}/ban`,
+    addCourse: `${baseApiUrl}/courses`,
+    editCourse: (courseId: string) => `${baseApiUrl}/courses/${courseId}`,
+};
+
+type AdminScraperEndpoints = {
+    scrapeCourse: (id: string) => string
+}
+
+const adminScraper: AdminScraperEndpoints = {
+    scrapeCourse: (id: string) => `https://campus.tum.de/tumonline/ee/rest/slc.tm.cp/student/courses/${id}`,
 };
 
 export const endpoints = {
     ...auth,
     ...Courses,
     ...admin,
+    ...adminScraper
 };

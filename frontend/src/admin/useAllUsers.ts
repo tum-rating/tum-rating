@@ -1,7 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-
 import { User } from '@/admin/types.ts';
 import { endpoints } from '@/api';
+import { useQueryWithAuth } from "@/api/useQueryWithAuth.tsx";
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
@@ -19,7 +18,7 @@ async function getAllUsers(token: string): Promise<User[] | undefined> {
 
 export function useAllUsers() {
     const token = userLocalStorage.getUser();
-    return useQuery({
+    return useQueryWithAuth({
         queryKey: [QUERY_KEY.all_users],
         initialData: [],
         queryFn: async () => getAllUsers(token),
