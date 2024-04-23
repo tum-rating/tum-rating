@@ -6,7 +6,6 @@ import {useNavigate} from "react-router-dom";
 import {handleAuthErrors} from "@/api/handleErrors.tsx";
 import {useSignOut} from "@/auth/useSignOut.tsx";
 
-
 export function useQueryWithAuth<
     TQueryFnData = unknown,
     TError = DefaultError,
@@ -16,7 +15,7 @@ export function useQueryWithAuth<
     options: UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
 ): UseQueryResult<TData, TError> {
     const signOut = useSignOut();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const query = useQuery({
         ...options,
     });

@@ -16,7 +16,7 @@ export function handleAuthErrors({error, callback = () => null, signOut, navigat
     if (error instanceof ResponseError) {
         if (error.response.status === 401) {
             signOut({
-                title: `You have been signed out`,
+                title: error.response.statusText,
                 icon: null,
                 message: (
                     <Flex align="center" gap={4}>
@@ -27,7 +27,7 @@ export function handleAuthErrors({error, callback = () => null, signOut, navigat
                             size="xs"
                             variant="transparent"
                             onClick={() => {
-                                navigate(getPath(Paths.signIn));
+                                navigate("/" + getPath(Paths.signIn));
                                 notifications.hide('unauthorized-sign-out');
                             }}
                         >

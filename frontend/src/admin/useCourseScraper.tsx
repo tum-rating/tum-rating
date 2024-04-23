@@ -1,6 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 
 import {endpoints} from "@/api";
+import {QUERY_KEY} from "@/constants/queryKeys.ts";
 import {ResponseError} from "@/utils/Errors/ResponseError.ts";
 
 const courseParser = async (course: any) => {
@@ -59,12 +60,12 @@ const scrapeCourse = async (idFromURL: string) => {
     return await courseParser(data.resource[0]);
 }
 
-const useCourseScraper = (url:string) => {
+const useCourseScraper = (url: string) => {
     const idFromURL = url.match(/\/courses\/(\d+)/)[1]
 
     return useQuery({
         queryFn: async () => scrapeCourse(idFromURL),
-        queryKey: ['scrapeCourse', idFromURL],
+        queryKey: [QUERY_KEY.scrape_course, idFromURL],
         enabled: false
     })
 }

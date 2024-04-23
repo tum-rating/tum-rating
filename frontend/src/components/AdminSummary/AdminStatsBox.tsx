@@ -39,7 +39,7 @@ const AdminStatsBox = ({options, title, icon, description, link}: AdminStatsBoxP
                     <Text fw={700} fz="xl">
                         {value || '-'}
                         {
-                            diffValue !== null && (
+                            diffValue ? (
                                 <Text
                                     component="span"
                                     c={'green'}
@@ -58,7 +58,7 @@ const AdminStatsBox = ({options, title, icon, description, link}: AdminStatsBoxP
                                         ({diffInPercent ? `+${diffInPercent}%` : ""} in last 12h)
                                     </Text>
                                 </Text>
-                            )
+                            ) : null
                         }
                     </Text>
                 </div>
