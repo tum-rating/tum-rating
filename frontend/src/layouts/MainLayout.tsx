@@ -22,7 +22,6 @@ import {useNavigate} from 'react-router-dom';
 
 import logoDark from '@/assets/img/logo-dark.png';
 import logo from '@/assets/img/logo.png';
-import {useIsAdminCheck} from "@/auth/useIsAdminCheck.tsx";
 import {useSignOut} from '@/auth/useSignOut';
 import {useUser} from '@/auth/useUser';
 import {SearchInputDesktop} from '@/components/Search';
@@ -34,7 +33,8 @@ const MAX_SITE_WIDTH = 1320;
 
 export const MainLayout = ({children}: PropsWithChildren) => {
     const {data: user, isLoading} = useUser();
-    const isAdmin = useIsAdminCheck();
+    //--temporarily set isAdmin to false--//
+    const isAdmin = false
     const navigate = useNavigate();
     const [mobileOpened, {toggle: toggleMobile}] = useDisclosure();
     const {colorScheme, toggleColorScheme} = useMantineColorScheme();

@@ -41,6 +41,7 @@ const ProposalExpansion = ({proposal: IProposal}: ProposalExpansionProps) => {
         isError: scraperIsError,
         isSuccess: scraperIsSuccess
     } = useCourseScraper(IProposal.url || "");
+
     const [fetchedProposal, setFetchedProposal] = useState({
         courseId: "",
         courseNumber: "",
@@ -54,6 +55,7 @@ const ProposalExpansion = ({proposal: IProposal}: ProposalExpansionProps) => {
         isPending: acceptProposalPending,
         isSuccess: acceptProposalSuccess
     } = useAddCourseProposal();
+
     const {mutate: removeProposal} = useRemoveProposal();
 
 

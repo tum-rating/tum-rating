@@ -4,6 +4,7 @@ import {notifications} from '@mantine/notifications';
 import {useSignOutProps} from '@/auth/useSignOut.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
+import * as userLocalStorage from "@/auth/user.localstore.ts";
 
 interface handleAuthErrorsProps {
     error: any;
@@ -15,36 +16,39 @@ interface handleAuthErrorsProps {
 export function handleAuthErrors({error, callback = () => null, signOut, navigate}: handleAuthErrorsProps) {
     if (error instanceof ResponseError) {
         if (error.response.status === 401) {
-            signOut({
-                title: error.response.statusText,
-                icon: null,
-                message: (
-                    <Flex align="center" gap={4}>
-                        <Button
-                            h={24}
-                            p={0}
-                            m={0}
-                            size="xs"
-                            variant="transparent"
-                            onClick={() => {
-                                navigate("/" + getPath(Paths.signIn));
-                                notifications.hide('unauthorized-sign-out');
-                            }}
-                        >
-                            Sign in again
-                        </Button>
-                    </Flex>
-                ),
-                color: 'red',
-                id: 'unauthorized-sign-out',
-                withCloseButton: true,
-                autoClose: false,
-            });
+            const userFromLocalStorage = userLocalStorage.getUser();
+            if (userFromLocalStorage) {
+                signOut({
+                    title: error.response.statusText,
+                    icon: null,
+                    message: (
+                        <Flex align="center" gap={4}>
+                            <Button
+                                h={24}
+                                p={0}
+                                m={0}
+                                size="xs"
+                                variant="transparent"
+                                onClick={() => {
+                                    navigate("/" + getPath(Paths.signIn));
+                                    notifications.hide('unauthorized-sign-out');
+                                }}
+                            >
+                                Sign in again
+                            </Button>
+                        </Flex>
+                    ),
+                    color: 'red',
+                    id: 'unauthorized-sign-out',
+                    withCloseButton: true,
+                    autoClose: false,
+                });
+            }
             callback && callback();
         }
         if (error.response.status === 403) {
             notifications.show({
-                title: 'Error',
+                title: 'Error:403',
                 message: <Text size="xs">{error.response.statusText}</Text>,
                 color: 'red',
                 id: 'unauthorized',

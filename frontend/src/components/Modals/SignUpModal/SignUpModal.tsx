@@ -64,9 +64,6 @@ const SignUpModal = () => {
                             </Text>
                             for instructions to activate your account.
                         </Text>
-                        <Button variant="subtle" color="indigo" mt="xl">
-                            Resend email
-                        </Button>
                     </Flex>
                 ) : (
                     <form

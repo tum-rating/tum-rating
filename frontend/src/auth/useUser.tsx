@@ -32,5 +32,6 @@ export function useUser() {
         refetchOnReconnect: false,
         refetchOnWindowFocus: false,
         retry: false,
+        throwOnError: !!userFromLocalStorage,
     });
 }

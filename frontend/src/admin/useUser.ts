@@ -24,5 +24,7 @@ export function useUser(userId: string) {
         refetchIntervalInBackground: false,
         refetchOnMount: false,
         refetchOnWindowFocus: false,
+        staleTime: Infinity,
+        retry: false,
     });
 }

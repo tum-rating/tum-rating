@@ -1,37 +1,64 @@
-import { Alert, Autocomplete, Button, Center, Divider, Flex, Pill, PillsInput, Stack, Text, TextInput } from '@mantine/core';
-import { IconDatabaseX, IconEditCircle, IconTrashX } from '@tabler/icons-react';
-import { useState } from 'react';
+import {Alert, Button, Center, Divider, Flex, Stack, TagsInput, Text, TextInput} from '@mantine/core';
+import {useForm} from "@mantine/form";
+import {IconDatabaseX, IconEditCircle, IconTrashX} from '@tabler/icons-react';
+import {useEffect, useState} from 'react';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
-import { Course } from '@/admin/types.ts';
-import { Skeleton } from '@/components/Skeleton';
+import {Course} from '@/admin/types.ts';
+import {useEditCourse} from "@/admin/useEditCourse.tsx";
+import {Skeleton} from '@/components/Skeleton';
+import {useDetailCourse} from "@/courses/useCourse.tsx";
 
 interface CourseExpansionProps {
     course: Course;
-    editing: boolean;
+    editing?: boolean;
 }
 
-const CourseExpansion = ({ course: ICourse, editing: IEditing }: CourseExpansionProps) => {
-    // Temporary values - no endpoint for this
-    const isError = false;
-    const error = { message: '' };
-    const isLoading = false;
-    const refetch = () => {};
-    //---
+const CourseExpansion = ({course: ICourse}: CourseExpansionProps) => {
 
-    const [courseDetails, setCourseDetails] = useState<Course>(ICourse);
-    const [editing] = useState(IEditing);
-    const [newLecturer, setNewLecturer] = useState('');
+    const {data: courseDetails, isLoading, isError, refetch} = useDetailCourse(ICourse._id);
+
+    const {mutate: editCourse} = useEditCourse();
+    const [editing, setEditing] = useState(false);
+
+
+    useEffect(() => {
+        if (courseDetails) {
+            ["_id","courseId", "courseNumber", "name", "professor", "otherLecturers", "offeredInSemesters"].forEach((x) => {
+                form.setFieldValue(x, courseDetails[x])
+            })
+        }
+    }, [courseDetails]);
+
+    const form = useForm({
+        initialValues: {
+            courseId: "",
+            courseNumber: "",
+            name: "",
+            professor: "",
+            otherLecturers: [],
+            offeredInSemesters: [],
+            _id: ""
+        },
+        validate: {
+            courseId: (value) => !value && 'Course ID is required',
+            courseNumber: (value) => !value && 'Course Number is required',
+            name: (value) => !value && 'Course Name is required',
+            professor: (value) => !value && 'Main Professor is required',
+            offeredInSemesters: (value) => !value.length && 'Semester is required'
+        },
+    });
 
     return (
-        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md">
+        <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md">
             {isError ? (
                 <Center h={270}>
                     <Flex direction="column">
                         <Text fw={600}>Error occurred - {ICourse._id}</Text>
-                        <Alert variant="light" color="red" title="Alert title" icon={<IconDatabaseX height={120} width={120} />}>
-                            {error?.message || 'An error occurred while fetching the data - error message not provided'}
+                        <Alert variant="light" color="red" title="Alert title"
+                               icon={<IconDatabaseX height={120} width={120}/>}>
+                            {'An error occurred while fetching the data - error message not provided'}
                         </Alert>
                         <Button
                             variant={'white'}
@@ -52,11 +79,11 @@ const CourseExpansion = ({ course: ICourse, editing: IEditing }: CourseExpansion
                                 Details
                             </Text>
                         </Flex>
-                        <Divider variant="dashed" size="sm" />
+                        <Divider variant="dashed" size="sm"/>
                         <Flex direction="column" gap="xs">
                             <Flex justify="flex-start" gap="xs" wrap="wrap">
                                 <Flex align="center" gap="3">
-                                    <Text style={{ whiteSpace: 'nowrap' }} fz="xs" fw="bold">
+                                    <Text style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold">
                                         Course ID:{' '}
                                     </Text>
                                     <Skeleton
@@ -64,6 +91,7 @@ const CourseExpansion = ({ course: ICourse, editing: IEditing }: CourseExpansion
                                         height={16}
                                         radius="sm"
                                         loading={isLoading}
+
                                         component={
                                             <Text truncate fz="xs" fw="600" c="dimmed">
                                                 {courseDetails?.courseId}
@@ -72,7 +100,7 @@ const CourseExpansion = ({ course: ICourse, editing: IEditing }: CourseExpansion
                                     ></Skeleton>
                                 </Flex>
                                 <Flex align="center" gap="3">
-                                    <Text style={{ whiteSpace: 'nowrap' }} fz="xs" fw="bold">
+                                    <Text style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold">
                                         Created at:{' '}
                                     </Text>
                                     <Skeleton
@@ -80,6 +108,7 @@ const CourseExpansion = ({ course: ICourse, editing: IEditing }: CourseExpansion
                                         height={16}
                                         radius="sm"
                                         loading={isLoading}
+
                                         component={
                                             <Text truncate fz="xs" fw="600" c="dimmed">
                                                 {new Date(courseDetails?.createdAt).toLocaleString()}
@@ -95,107 +124,129 @@ const CourseExpansion = ({ course: ICourse, editing: IEditing }: CourseExpansion
                                         radius="sm"
                                         mt={22}
                                         loading={isLoading}
+
                                         component={
                                             <TextInput
-                                                disabled={!editing}
-                                                value={courseDetails?.name}
                                                 label="Course Name"
+                                                disabled={!editing}
                                                 placeholder="Enter course name"
+                                                value={form.values.name}
+                                                error={form.errors.name}
                                                 onChange={(event) =>
-                                                    setCourseDetails({
-                                                        ...courseDetails,
-                                                        name: event.currentTarget.value,
-                                                    })
+                                                    form.setFieldValue('name', event.currentTarget.value)
                                                 }
                                             />
                                         }
                                     ></Skeleton>
-                                    <Flex gap="xs" wrap={{ base: 'wrap', sm: 'nowrap' }}>
-                                        <Flex direction="column" gap="xs" w={{ base: '100%', sm: '40%' }}>
-                                            <Skeleton
-                                                height={36}
-                                                radius="sm"
-                                                mt={22}
-                                                loading={isLoading}
-                                                component={
-                                                    <Autocomplete
-                                                        disabled={!editing}
-                                                        label="Semester"
-                                                        placeholder="Select semester"
-                                                        data={['2023 S']}
-                                                        value={courseDetails?.offeredInSemesters[0]}
-                                                        onChange={(value) =>
-                                                            setCourseDetails({
-                                                                ...courseDetails,
-                                                                offeredInSemesters: [value],
-                                                            })
-                                                        }
-                                                    />
-                                                }
-                                            ></Skeleton>
-                                            <Skeleton
-                                                height={36}
-                                                radius="sm"
-                                                mt={22}
-                                                loading={isLoading}
-                                                component={
-                                                    <TextInput
-                                                        disabled={!editing}
-                                                        value={courseDetails?.professor}
-                                                        label="Main Professor"
-                                                        placeholder="Enter professor name"
-                                                        onChange={(event) =>
-                                                            setCourseDetails({
-                                                                ...courseDetails,
-                                                                professor: event.currentTarget.value,
-                                                            })
-                                                        }
-                                                    />
-                                                }
-                                            ></Skeleton>
-                                        </Flex>
+                                    <Flex gap="xs" wrap={{base: 'wrap', sm: 'nowrap'}} w="100%">
+                                        <Skeleton
+                                            height={36}
+                                            radius="sm"
+                                            mt={22}
+                                            loading={isLoading}
+
+                                            component={
+                                                <TextInput
+                                                    w={{base: '100%', sm: '50%'}}
+                                                    disabled={!editing}
+                                                    label="Course ID"
+                                                    placeholder="Enter course id"
+                                                    value={form.values.courseId}
+                                                    error={form.errors.courseId}
+                                                    onChange={(event) =>
+                                                        form.setFieldValue('courseId', event.currentTarget.value)
+                                                    }
+
+                                                />
+                                            }
+                                        ></Skeleton>
+                                        <Skeleton
+                                            height={36}
+                                            radius="sm"
+                                            mt={22}
+                                            loading={isLoading}
+
+                                            component={
+                                                <TextInput
+                                                    w={{base: '100%', sm: '50%'}}
+                                                    disabled={!editing}
+                                                    label="Course Number"
+                                                    placeholder="Enter course number"
+                                                    value={form.values.courseNumber}
+                                                    error={form.errors.courseNumber}
+                                                    onChange={(event) =>
+                                                        form.setFieldValue('courseNumber', event.currentTarget.value)
+                                                    }
+                                                />
+                                            }
+                                        ></Skeleton>
+                                    </Flex>
+
+                                    <Flex direction="column" gap="xs" w="100%">
+                                        <Skeleton
+                                            height={36}
+                                            radius="sm"
+                                            mt={22}
+                                            loading={isLoading}
+                                            component={
+                                                <TextInput
+                                                    label="Main Professor"
+                                                    disabled={!editing}
+                                                    placeholder="Enter professor name"
+                                                    value={form.values.professor}
+                                                    error={form.errors.professor}
+                                                    onChange={(event) =>
+                                                        form.setFieldValue('professor', event.currentTarget.value)
+                                                    }
+                                                />
+                                            }
+                                        ></Skeleton>
+                                    </Flex>
+                                    <Flex gap="xs" wrap={{base: 'wrap', sm: 'nowrap'}} w="100%">
                                         <Skeleton
                                             height={104}
                                             radius="sm"
                                             mt={22}
                                             loading={isLoading}
+
                                             component={
-                                                <PillsInput w={{ base: '100%', sm: '100%' }} disabled={!editing} multiline label="Other Professors">
-                                                    <Pill.Group h={91} style={{ alignItems: 'flex-start' }}>
-                                                        {courseDetails?.otherLecturers.map((lecturer: string) => (
-                                                            <Pill
-                                                                disabled={!editing}
-                                                                key={lecturer}
-                                                                withRemoveButton
-                                                                onRemove={() => {
-                                                                    setCourseDetails({
-                                                                        ...courseDetails,
-                                                                        otherLecturers: courseDetails.otherLecturers.filter((l) => l !== lecturer),
-                                                                    });
-                                                                }}
-                                                            >
-                                                                {lecturer}
-                                                            </Pill>
-                                                        ))}
-                                                        <PillsInput.Field
-                                                            disabled={!editing}
-                                                            onChange={(event) => setNewLecturer(event.currentTarget.value)}
-                                                            onKeyDown={(event) => {
-                                                                if (event.key === 'Enter') {
-                                                                    if (newLecturer.length <= 3) return;
-                                                                    if (courseDetails.otherLecturers.includes(newLecturer)) return;
-                                                                    setCourseDetails({
-                                                                        ...courseDetails,
-                                                                        otherLecturers: [...courseDetails.otherLecturers, event.currentTarget.value],
-                                                                    });
-                                                                    setNewLecturer('');
-                                                                }
-                                                            }}
-                                                            value={newLecturer}
-                                                            placeholder=""
-                                                        />
-                                                    </Pill.Group>
-                                                </PillsInput>
+                                                <TagsInput
+                                                    w={{base: '100%', sm: '50%'}}
+                                                    disabled={!editing}
+                                                    label="Semester"
+                                                    error={form.errors.offeredInSemesters}
+                                                    placeholder="Click enter to add semester"
+                                                    value={form.values.offeredInSemesters}
+                                                    onRemove={(value) => {
+                                                        form.setFieldValue('offeredInSemesters', form.values.offeredInSemesters.filter((v) => v !== value));
+                                                    }}
+                                                    onOptionSubmit={(value) => {
+                                                        form.setFieldValue('offeredInSemesters', [...form.values.offeredInSemesters, value]);
+                                                    }}
+                                                />
+                                            }
+                                        ></Skeleton>
+                                        <Skeleton
+                                            height={104}
+                                            radius="sm"
+                                            mt={22}
+                                            loading={isLoading}
+
+                                            component={
+                                                <TagsInput
+                                                    w={{base: '100%', sm: '50%'}}
+                                                    disabled={!editing}
+                                                    label="Other professors"
+                                                    placeholder="Click enter to add other professors"
+                                                    value={form.values.otherLecturers}
+                                                    error={form.errors.otherLecturers}
+                                                    onRemove={(value) => {
+                                                        form.setFieldValue('otherLecturers', form.values.otherLecturers.filter((v) => v !== value));
+                                                    }}
+                                                    onOptionSubmit={(value) => {
+                                                        form.setFieldValue('otherLecturers', [...form.values.otherLecturers, value]);
+                                                    }}
+                                                />
                                             }
                                         ></Skeleton>
                                     </Flex>
@@ -210,11 +261,20 @@ const CourseExpansion = ({ course: ICourse, editing: IEditing }: CourseExpansion
                             </Text>
                         </Flex>
                         <Stack gap="xs">
-                            <Button disabled onClick={() => {}} leftSection={<IconTrashX width={16} />} color="red">
-                                Remove Course
-                            </Button>
-                            <Button color="green" disabled leftSection={<IconEditCircle width={16} />} onClick={() => {}} variant="default">
+                            <Button color="green" leftSection={<IconEditCircle width={16}/>} onClick={() => {
+                                if (editing) {
+                                    editCourse({course: form.values, type: "PATCH"});
+                                    setEditing(false);
+                                } else {
+                                    setEditing(true);
+                                }
+                            }} variant="default">
                                 {!editing ? 'Edit Course' : 'Save Course'}
+                            </Button>
+                            <Button onClick={() => {
+                                editCourse({course: form.values, type: "DELETE"});
+                            }} leftSection={<IconTrashX width={16}/>} color="red">
+                                Remove Course
                             </Button>
                         </Stack>
                     </Flex>
@@ -224,4 +284,4 @@ const CourseExpansion = ({ course: ICourse, editing: IEditing }: CourseExpansion
     );
 };
 
-export { CourseExpansion };
+export {CourseExpansion};

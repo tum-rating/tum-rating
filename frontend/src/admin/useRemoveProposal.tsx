@@ -9,7 +9,6 @@ import { queryClient } from '@/react-query/client.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function removeProposal(token: string, proposalId: string): Promise<any> {
-    console.log(proposalId)
     if (!token) return null;
     const endpoint = endpoints.removeProposal(proposalId);
     const response = await fetch(endpoint, {
