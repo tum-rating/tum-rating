@@ -8,18 +8,22 @@ import { AdminGuard } from 'src/common/guards/admin.guard';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
+import { ClientService } from 'src/modules/client/client.service';
+import { NotFoundError } from 'src/utils/errors/errors';
 
 import { CourseProposalService } from './courseProposal.service';
 import { CreateCourseProposalRequestDto, CreateCourseProposalRequestSchema, CreateCourseProposalResponseDto } from './dto/CreateCourseProposalRequest.dto';
 import { GetCourseProposalResponseDto } from './dto/GetCourseProposalRequest.dto';
 import { DeleteCourseProposalResponseDto } from './dto/DeleteCourseProposalRequest.dto';
 import { GetAllCourseProposalsResponseDto } from './dto/GetAllCourseProposalsRequest.dto';
+import { GetScrapedCourseProposalResponseDto } from './dto/GetScrapedCourseProposalRequest.dto';
 
 @ApiTags('course-proposals')
 @Controller('/api/v1/course-proposals')
 export class CourseProposalControllerV1 {
     constructor(
         private readonly _courseProposalService: CourseProposalService,
+        private readonly _clientService: ClientService,
         private readonly _logger: PinoLogger,
     ) {
         this._logger.setContext(CourseProposalControllerV1.name);
@@ -46,13 +50,48 @@ export class CourseProposalControllerV1 {
     ): Promise<GetCourseProposalResponseDto> {
         this._logger.info('Get course proposal with with id: %s', id);
 
-        const courseProposal = await this._courseProposalService.getCourseProposalsById(id);
+        try {
+            const courseProposal = await this._courseProposalService.getCourseProposalsById(id);
+    
+            this._logger.info('Successfuly retrieved course proposal with id: %s', courseProposal.id);
+    
+            return new GetCourseProposalResponseDto(courseProposal);
+        } catch(error) {
+            if (error instanceof NotFoundError) {
+                throw new NotFoundException(error.message);
+            }
 
-        if (courseProposal === null) throw new NotFoundException();
+            throw error;
+        }
+    }
 
-        this._logger.info('Successfuly retrieved course proposal with id: %s', courseProposal.id);
+    @ApiBearerAuth()
+    @UseGuards(AdminGuard)
+    @Get('/:id/scrape')
+    public async scrapeCourseProposalById(
+        @Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string
+    ): Promise<GetScrapedCourseProposalResponseDto> {
+        this._logger.info('Scrape course proposal with with id: %s', id);
 
-        return new GetCourseProposalResponseDto(courseProposal);
+        let courseTUMID: string;
+        try {
+            const courseProposal = await this._courseProposalService.getCourseProposalsById(id);
+
+            courseTUMID = this._courseProposalService.getCourseTUMId(courseProposal);
+
+        } catch(error) {
+            if (error instanceof NotFoundError) {
+                throw new NotFoundException(error.message);
+            }
+
+            throw error;
+        }
+
+        const scrapedCourse = await this._clientService.getTUMCourse(courseTUMID);
+
+        this._logger.info('Successfuly scraped course proposal with id: %s', id);
+
+        return scrapedCourse;
     }
 
     @ApiBearerAuth()

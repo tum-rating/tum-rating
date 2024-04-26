@@ -14,7 +14,7 @@ export class CourseService {
     ) {}
 
     public async createCourse(course: Partial<Course>) {
-        return this._courseRepository.create(course as Course);
+        return  this._courseRepository.create(course as Course);
     }
 
     public async getCoursesOverviewPaginated(pageNumber: number, pageSize: number, search?: string) {

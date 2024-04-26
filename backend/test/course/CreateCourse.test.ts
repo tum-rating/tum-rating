@@ -54,4 +54,31 @@ describe('Create Course', () => {
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .expect(403);
     });
+
+    it('should fail with conflict if duplicated valuse', async () => {
+        const signInResponse = await signInAdminRequestMock();
+
+        const requestBody: CreateCourseRequestDto = {
+            courseId: fakeNumberOfLenght(9),
+            courseNumber: fakeNumberOfLenght(8),
+            name: faker.word.words(faker.number.int({ min: 2, max: 10 })),
+            professor: faker.word.words(2),
+            offeredInSemesters: ['SS 2023', 'WS 2023'],
+        };
+
+        await supertest(courseUrl)
+            .post('/')
+            .send(requestBody)
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .expect(201)
+            .expect((response: supertest.Response) => {
+                expect(response.body).toHaveProperty('id');
+            });
+
+        await supertest(courseUrl)
+            .post('/')
+            .send(requestBody)
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .expect(409);
+    });
 });

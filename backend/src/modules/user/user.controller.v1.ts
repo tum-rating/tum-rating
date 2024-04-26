@@ -8,7 +8,7 @@ import { AdminGuard } from 'src/common/guards/admin.guard';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
 import { NotFoundError, DuplicateError } from 'src/utils/errors/errors';
-import { User } from 'src/database/documents/user';
+import { User, UserRole } from 'src/database/documents/user';
 
 import { UserService } from './user.service';
 import { GetUserPublicResponseDto } from './dto/GetUserPublicResponse.dto';
@@ -54,11 +54,12 @@ export class UserControllerV1 {
 
         this._logger.info('Get me request completed from user %s', userId);
 
-        return {
-            id: user.id,
-            email: user.email,
-            username: user.username,
-        };
+        return new GetUserPublicResponseDto(
+            user.id,
+            user.email,
+            user.username,
+            user.role === UserRole.admin ?? undefined
+        );
     }
 
     @Patch('/me')
