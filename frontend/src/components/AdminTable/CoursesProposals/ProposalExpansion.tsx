@@ -13,17 +13,18 @@ import {
 } from '@mantine/core';
 import {IconDatabaseX, IconExternalLink, IconMasksTheater, IconMoodCheck, IconTrashX} from '@tabler/icons-react';
 import {useEffect, useState} from 'react';
+import {useForm} from "@mantine/form";
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
 import {CourseProposal} from '@/admin/types.ts';
 import {useCourseProposal} from '@/admin/useCourseProposal.tsx';
 import {useRemoveProposal} from '@/admin/useRemoveProposal.tsx';
-import {useCourseScraper} from "@/admin/useCourseScraper.tsx";
+import {useGetScrapedCourseProposal} from "@/admin/useCourseScraper.tsx";
 import {UserInfoAction} from '@/components/AdminTable/Shared/UserInfoAction';
 import {Skeleton} from '@/components/Skeleton';
 import {useAddCourseProposal} from "@/admin/useAddCourseProposal.tsx";
-import {useForm} from "@mantine/form";
+import {Course} from "@/admin/types.ts";
 
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {queryClient} from '@/react-query/client.ts';
@@ -40,9 +41,9 @@ const ProposalExpansion = ({proposal: IProposal}: ProposalExpansionProps) => {
         isLoading: scraperIsLoading,
         isError: scraperIsError,
         isSuccess: scraperIsSuccess
-    } = useCourseScraper(IProposal.url || "");
+    } = useGetScrapedCourseProposal(IProposal.id);
 
-    const [fetchedProposal, setFetchedProposal] = useState({
+    const [fetchedProposal, setFetchedProposal] = useState<Partial<Course>>({
         courseId: "",
         courseNumber: "",
         name: "",
@@ -50,6 +51,8 @@ const ProposalExpansion = ({proposal: IProposal}: ProposalExpansionProps) => {
         otherLecturers: [],
         offeredInSemesters: []
     });
+
+    // TODO handle 401 conflict error
     const {
         mutate: acceptProposal,
         isPending: acceptProposalPending,
@@ -67,8 +70,7 @@ const ProposalExpansion = ({proposal: IProposal}: ProposalExpansionProps) => {
 
     useEffect(() => {
         if (scraperIsSuccess) {
-            console.log(scrapedData)
-            setFetchedProposal(scrapedData);
+            setFetchedProposal(scrapedData.course);
         }
     }, [scraperIsSuccess]);
 
@@ -188,9 +190,14 @@ const ProposalExpansion = ({proposal: IProposal}: ProposalExpansionProps) => {
                                         value={courseProposalDetails?.url}
                                         description="This is the course URL provided by the user"
                                         readOnly
-                                        disabled
                                         placeholder="Enter course URL"
                                         error={scraperIsError ? error?.message || "scraper error" : undefined}
+                                        onClick={() => {
+                                            if (courseProposalDetails?.url) {
+                                                window.open(courseProposalDetails?.url, '_blank');
+                                            }
+                                        }}
+                                        pointer={courseProposalDetails?.url}
                                     />
                                     <Flex pos="absolute" right={0} top={0}>
                                         <Tooltip label="Open in new tab">
@@ -344,9 +351,8 @@ const ProposalExpansion = ({proposal: IProposal}: ProposalExpansionProps) => {
                             <Divider variant="dashed" size="sm"/>
                             <Button
                                 onClick={() => {
-                                    console.log(scrapedData)
                                     if (scrapedData) {
-                                        setFetchedProposal(scrapedData);
+                                        setFetchedProposal(scrapedData.course);
                                     } else {
                                         scrapeCourse();
                                     }
@@ -373,13 +379,12 @@ const ProposalExpansion = ({proposal: IProposal}: ProposalExpansionProps) => {
                                     color="red"
                                 >
                                     Clear Scraped Data
-
                                 </Button>
                             )}
                             <Divider variant="dashed" size="sm"/>
                             <Button onClick={() => {
                                 const validate = form.validate();
-                                if (!validate.hasErrors) acceptProposal(fetchedProposal)
+                                if (!validate.hasErrors) acceptProposal(form.values)
                             }}
                                     loading={acceptProposalPending || scraperIsLoading}
                                     color="green"

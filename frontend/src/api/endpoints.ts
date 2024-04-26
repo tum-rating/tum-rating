@@ -51,7 +51,7 @@ type AdminEndpoints = {
     //---PROPOSALS
     getAllProposals: string;
     getSingleProposal: (proposalId: string) => string;
-    acceptProposal: (proposalId: string) => string;
+    getScrapedProposal: (proposalId: string) => string;
     removeProposal: (proposalId: string) => string;
     //---USER
     getUser: (userId: string) => string;
@@ -65,7 +65,7 @@ const admin: AdminEndpoints = {
     getAllUsers: baseApiUrl + '/users',
     getAllProposals: baseApiUrl + '/course-proposals',
     getSingleProposal: (proposalId: string) => `${baseApiUrl}/course-proposals/${proposalId}`,
-    acceptProposal: (proposalId: string) => `${baseApiUrl}/course-proposals/${proposalId}/accept`,
+    getScrapedProposal: (proposalId: string) => `${baseApiUrl}/course-proposals/${proposalId}/scrape`,
     removeProposal: (proposalId: string) => `${baseApiUrl}/course-proposals/${proposalId}`,
     removeUser: (userId: string) => `${baseApiUrl}/users/${userId}`,
     banUser: (userId: string) => `${baseApiUrl}/users/${userId}/ban`,
@@ -73,17 +73,8 @@ const admin: AdminEndpoints = {
     editCourse: (courseId: string) => `${baseApiUrl}/courses/${courseId}`,
 };
 
-type AdminScraperEndpoints = {
-    scrapeCourse: (id: string) => string
-}
-
-const adminScraper: AdminScraperEndpoints = {
-    scrapeCourse: (id: string) => `https://campus.tum.de/tumonline/ee/rest/slc.tm.cp/student/courses/${id}`,
-};
-
 export const endpoints = {
     ...auth,
     ...Courses,
     ...admin,
-    ...adminScraper
 };
