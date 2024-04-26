@@ -1,73 +1,36 @@
 import {useQuery} from "@tanstack/react-query";
 
+import * as userLocalStorage from '@/auth/user.localstore.ts';
 import {endpoints} from "@/api";
 import {QUERY_KEY} from "@/constants/queryKeys.ts";
 import {ResponseError} from "@/utils/Errors/ResponseError.ts";
+import {Course} from "./types";
 
-const courseParser = async (course: any) => {
-    const courseId = course.content.cpCourseDetailDto.cpCourseDto.id;
-    const courseTitleTranslations =
-        course.content.cpCourseDetailDto.cpCourseDto.courseTitle.translations.translation.reduce(
-            (acc, translation) => {
-                acc[translation.lang] = translation.value;
-                return acc;
-            },
-            {},
-        );
-
-    const semester = course.content.cpCourseDetailDto.cpCourseDto.semesterDto.shortName.value;
-    const mainLecturers = [];
-    const otherLecturers = [];
-
-    course.content.cpCourseDetailDto.cpCourseDto.lectureships.forEach((lecturer, index) => {
-        const firstName = lecturer.identityLibDto.firstName;
-        const lastName = lecturer.identityLibDto.lastName;
-        const lecturerName = `${firstName} ${lastName}`;
-        const lecturerInfo = {
-            name: lecturerName,
-            businessCardLink: lecturer.identityLibDto.businessCardLink
-                ? lecturer.identityLibDto.businessCardLink.href
-                : null,
-        };
-        if (
-            lecturer.teachingFunction.key === "L" ||
-            (index === 0 && mainLecturers.length === 0)
-        ) {
-            mainLecturers.push(lecturerInfo);
-        } else {
-            otherLecturers.push(lecturerInfo);
-        }
-    });
-    return {
-        courseId: String(courseId),
-        courseNumber: course.content.cpCourseDetailDto.cpCourseDto.courseNumber.databaseValue,
-        name: courseTitleTranslations.en || courseTitleTranslations.de,
-        professor: mainLecturers[0].name,
-        otherLecturers: otherLecturers.length ? otherLecturers.map(x => x.name) : [],
-        offeredInSemesters: [semester],
-    };
+interface ScrapedCourseProposal {
+    statusCode: number;
+    course: Partial<Course> | null;
+    error: any | null;
 }
 
-
-const scrapeCourse = async (idFromURL: string) => {
-    const response = await fetch(endpoints.scrapeCourse(idFromURL), {
+const getScrapedCourseProposal = async (token: string, proposalId: string): Promise<ScrapedCourseProposal> => {
+    const response = await fetch(endpoints.getScrapedProposal(proposalId), {
         headers: {
-            'Accept': 'application/json'
-        }
+            Authorization: `Bearer ${token}`,
+        },
     });
     if (!response.ok) throw new ResponseError('Failed on get reviews request', response);
     const data = await response.json();
-    return await courseParser(data.resource[0]);
+    return data;
 }
 
-const useCourseScraper = (url: string) => {
-    const idFromURL = url.match(/\/courses\/(\d+)/)[1]
+const useGetScrapedCourseProposal = (proposalId: string) => {
+    const token = userLocalStorage.getUser();
 
     return useQuery({
-        queryFn: async () => scrapeCourse(idFromURL),
-        queryKey: [QUERY_KEY.scrape_course, idFromURL],
+        queryFn: async () => getScrapedCourseProposal(token, proposalId),
+        queryKey: [QUERY_KEY.scrape_course, proposalId],
         enabled: false
     })
 }
 
-export {useCourseScraper}
+export {useGetScrapedCourseProposal}

@@ -20,18 +20,19 @@ export interface User {
     username: string;
     email: string;
     id: number;
+    isAdmin?: boolean;
 }
 
 export function useUser() {
-    const userFromLocalStorage = userLocalStorage.getUser();
+    const userTokenFromLocalStorage = userLocalStorage.getUser();
     return useQueryWithAuth({
         queryKey: [QUERY_KEY.user_details],
-        queryFn: async () => getUser(userFromLocalStorage),
+        queryFn: async () => getUser(userTokenFromLocalStorage),
         refetchIntervalInBackground: false,
         refetchOnMount: false,
         refetchOnReconnect: false,
         refetchOnWindowFocus: false,
         retry: false,
-        throwOnError: !!userFromLocalStorage,
+        throwOnError: !!userTokenFromLocalStorage,
     });
 }
