@@ -8,6 +8,7 @@ import { MongoModule } from 'src/database/mongo.module';
 import { LoggerModule } from 'src/utils/logger/logger.module';
 
 import { AuthModule } from './modules/auth/auth.module';
+import { ClientModule } from './modules/client/client.module';
 import { FrontendModule } from './modules/frontend-serve/frontendServe.module';
 import { HealthModule } from './modules/health/health.module';
 import { UserModule } from './modules/user/user.module';
@@ -22,6 +23,7 @@ import { CourseProposalModule } from './modules/course-proposal/courseProposal.m
         LoggerModule,
         
         AuthModule,
+        ClientModule,
         FrontendModule,
         HealthModule,
         UserModule,

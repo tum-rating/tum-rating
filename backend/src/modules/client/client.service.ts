@@ -16,8 +16,6 @@ export class ClientService {
         try {
             const response = await this._httpService.axiosRef.get('https://campus.tum.de/tumonline/ee/rest/slc.tm.cp/student/courses/' + tumCourseId);
 
-            console.log(response.data)
-
             const course = this.parseTUMResponse(response.data);
 
             return new GetTUMCourse(200, course, null);

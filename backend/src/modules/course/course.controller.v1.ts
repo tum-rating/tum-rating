@@ -28,11 +28,10 @@ import { UserService } from 'src/modules/user/user.service';
 import { User } from 'src/database/documents/user';
 import { Review } from 'src/database/documents/review';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
-import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
-import { CourseReviewSemesterMismatch, NotFoundError } from 'src/utils/errors/errors';
+import { CourseReviewSemesterMismatch, DuplicateError, NotFoundError } from 'src/utils/errors/errors';
 
 import { CourseService } from './course.service';
-import { CreateCourseRequestDto, CreateCourseRequestSchema } from './dto/CreateCourseRequest.dto';
+import { CreateCourseRequestDto, CreateCourseRequestSchema, CreateCourseResponseDto } from './dto/CreateCourseRequest.dto';
 import { AddReviewRequestDto, AddReviewRequestSchema } from './dto/AddReviewRequest.dto';
 import { PatchReviewRequestDto, PatchReviewRequestSchema } from './dto/PatchReviewRequest.dto';
 import { PatchCourseRequestDto, PatchCourseRequestSchema, PatchCourseResponseDto } from './dto/PatchCourseRequest.dto';
@@ -104,16 +103,25 @@ export class CourseControllerV1 {
         @Headers(USER_ID) userId: string,
         @Body(new JoiObjectSchemaPipe(CreateCourseRequestSchema))
         body: CreateCourseRequestDto,
-    ) {
+    ): Promise<CreateCourseResponseDto> {
         this._logger.info('Create course request received for course: %s, professor: %s', body.name, body.professor);
 
-        const createdCourse = await this._courseService.createCourse(body);
+        try {
+            const createdCourse = await this._courseService.createCourse(body);
+    
+            this._logger.info('Successfuly created course for course %s, %s', body.name, body.professor);
+    
+            return new CreateCourseResponseDto(createdCourse);
+        } catch(error) {
+            if (error instanceof DuplicateError) {
+                if (error.isConflictingKey('name') && error.isConflictingKey('professor')) {
+                    this._logger.debug('Course already exists with name %s and professor %s', body.name, body.professor);
+                    throw new ConflictException('Course already exists');
+                }
+            }
 
-        this._logger.info('Successfuly created course for course %s, %s', body.name, body.professor);
-
-        return {
-            id: createdCourse.id,
-        };
+            throw error;
+        }
     }
 
     @ApiBearerAuth()
@@ -260,9 +268,11 @@ export class CourseControllerV1 {
         try {
             createdReview = await this._courseService.addReview(review);
         } catch (error: any) {
-            if (error.code == ERROR_MONGO_DUPLICATE_CODE) {
-                this._logger.debug('User %s has already submitted a review for %s', userId, courseId);
-                throw new ConflictException('User has already submitted a review, use patch method to update');
+            if (error instanceof DuplicateError) {
+                if (error.isConflictingKey('userId') && error.isConflictingKey('courseId')) {
+                    this._logger.debug('User %s has already submitted a review for %s', userId, courseId);
+                    throw new ConflictException('User has already submitted a review, use patch method to update');
+                }
             }
 
             if (error instanceof CourseReviewSemesterMismatch) {
