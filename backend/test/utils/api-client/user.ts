@@ -67,6 +67,7 @@ export const signInAdminRequestMock = async (request?: Partial<SignUpRequestDto>
         user: {
             ...signInResponse2.data,
             id: signInResponse2.data.user.id,
+            password: signInResponse.user.password,
         },
         token: signInResponse2.data.token,
     };
