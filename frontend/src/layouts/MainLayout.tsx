@@ -26,10 +26,9 @@ import {useSignOut} from '@/auth/useSignOut';
 import {useUser} from '@/auth/useUser';
 import {SearchInputDesktop} from '@/components/Search';
 import {UserButton} from '@/components/UserButton';
+import {HEADER_HEIGHT, MAX_SITE_WIDTH} from "@/constants/styles.ts";
 import {getPath, Paths} from '@/routes/paths.ts';
 
-const HEADER_HEIGHT = 54;
-const MAX_SITE_WIDTH = 1320;
 
 export const MainLayout = ({children}: PropsWithChildren) => {
     const {data: user, isLoading} = useUser();
@@ -40,8 +39,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
     const {colorScheme, toggleColorScheme} = useMantineColorScheme();
     const smallerMode = useMediaQuery('(max-width: 48em)');
     const signOut = useSignOut();
-    const matches = useMediaQuery('(min-width: 48em)');
-    const hDiff = !matches ? 0 : 28;
+
     useHotkeys([['/', () => navigate(getPath(Paths.spotlight))]]);
 
     return (
@@ -191,7 +189,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                         </Flex>
                     </Stack>
                 </Drawer>
-                <Flex justify="center" pt={HEADER_HEIGHT} mx="auto" h={`calc(100vh - ${hDiff}px)`} maw={MAX_SITE_WIDTH}>
+                <Flex justify="center" pt={HEADER_HEIGHT} mx="auto" h={`calc(100vh)`}  maw={MAX_SITE_WIDTH}>
                     {children}
                 </Flex>
             </AppShell.Main>

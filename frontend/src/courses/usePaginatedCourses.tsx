@@ -23,9 +23,11 @@ export function usePaginatedCourses() {
     return useInfiniteQuery({
         queryKey: [QUERY_KEY.courses],
         refetchOnWindowFocus: false,
+        refetchOnMount: false,
         staleTime: Infinity,
         queryFn: getPaginatedCourses,
         getNextPageParam: (lastPage) => lastPage.nextPageNumber,
+
         initialPageParam: 1,
     });
 }

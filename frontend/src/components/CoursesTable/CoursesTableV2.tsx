@@ -1,0 +1,227 @@
+import {ActionIcon, Badge, Box, Flex, Loader, Transition} from "@mantine/core";
+import {useCallback, useEffect, useRef, useState} from 'react'
+import {useLocation, useNavigate} from "react-router-dom";
+
+import classes from './CoursesTable.module.css';
+import {CONTENT_TOP_SPACING, MAX_SITE_WIDTH} from "@/constants";
+import {Course} from "@/courses/types.ts";
+import {usePaginatedCourses} from "@/courses/usePaginatedCourses.tsx";
+import {MantineReactTable, MRT_RowVirtualizer, useMantineReactTable} from "mantine-react-table";
+import {useSearchCourses} from "@/courses/useSearchCourses.tsx";
+import {useCoursesTableColumns} from "@/components/CoursesTable/useCoursesTableColumns.tsx";
+import city from "@/assets/img/city.png";
+import {IconX} from "@tabler/icons-react";
+import {useTableScrollContext} from "@/context";
+
+function CoursesTable() {
+
+    const [contentTopSpacing, setContentTopSpacing] = useState<number>(CONTENT_TOP_SPACING);
+
+    const {scrollIndex, setScrollIndex} = useTableScrollContext();
+
+    const tableContainerRef = useRef<HTMLDivElement>(null); //we can get access to the underlying TableContainer element and react to its scroll events
+    const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null); //we can get access to the underlying Virtualizer instance and call its scrollToIndex method
+
+    const [records, setRecords] = useState<Course[]>([]);
+    const [queryRecords, setQueryRecords] = useState<Course[]>([]);
+
+    const [internalLoading, setInternalLoading] = useState(false);
+
+    const {
+        data,
+        fetchNextPage,
+        isFetching,
+        isLoading,
+        isError,
+        isFetched,
+        isFetchingNextPage
+    } = usePaginatedCourses();
+    const [query, setQuery] = useState('');
+    const {data: queryData, isFetching: isQueryDataFetching} = useSearchCourses(query);
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const {columns} = useCoursesTableColumns();
+
+    useEffect(() => {
+        const spacingTopBarDiff = !!query ? 0 : 15;
+        setContentTopSpacing(spacingTopBarDiff)
+    }, [query]);
+
+    useEffect(() => {
+        if (data) {
+            const newRecords = data.pages.map((v) => v.courses.map((el) => el)).flat();
+            setRecords([...newRecords]);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        if (queryData) {
+            const newRecords = queryData.courses;
+            setQueryRecords([...newRecords]);
+        }
+    }, [queryData]);
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const searchParam = params.get('search');
+        if (searchParam) {
+            const decodedSearchParam = decodeURIComponent(searchParam);
+            setQuery(decodedSearchParam);
+        } else {
+            setQuery('');
+        }
+    }, [location]);
+
+    const fetchMoreOnBottomReached = useCallback(
+        (containerRefElement?: HTMLDivElement | null) => {
+            if (containerRefElement) {
+                const {scrollHeight, scrollTop, clientHeight} = containerRefElement;
+                console.log(clientHeight)
+                //once the user has scrolled within 400px of the bottom of the table, fetch more data if we can
+                if (
+                    scrollHeight - scrollTop - clientHeight < clientHeight - contentTopSpacing - 100 && !isFetching
+                ) {
+                    fetchNextPage()
+                }
+            }
+        },
+        [fetchNextPage, isFetching],
+    );
+
+
+    //a check on mount to see if the table is already scrolled to the bottom and immediately needs to fetch more data
+    useEffect(() => {
+        fetchMoreOnBottomReached(tableContainerRef.current);
+    }, [fetchMoreOnBottomReached]);
+
+    useEffect(() => {
+        if (rowVirtualizerInstanceRef.current) {
+            if (scrollIndex && records.length) {
+                rowVirtualizerInstanceRef.current?.scrollToIndex(scrollIndex, {
+                    align: 'start',
+                });
+                setScrollIndex(0);
+            }
+        }
+    }, [rowVirtualizerInstanceRef.current, records]);
+
+    const handleRowClick = (record: Course) => {
+        const dynamicPath = '/courses/' + record._id;
+        console.log(rowVirtualizerInstanceRef)
+        setScrollIndex(rowVirtualizerInstanceRef.current.range.startIndex);
+        navigate(dynamicPath);
+    };
+
+    const removeQuery = () => {
+        setQuery('');
+        navigate('/');
+    };
+
+    const table = useMantineReactTable({
+        columns,
+        data: query ? queryRecords : records,
+        mantinePaperProps: {
+            style: {
+                marginTop: CONTENT_TOP_SPACING + 'px',
+            }
+        },
+        mantineTableBodyRowProps: ({row}) => ({
+            onClick: () => {
+                handleRowClick(row.original as Course)
+            },
+            style: {
+                cursor: !records.length ? 'not-allowed' : 'pointer',
+            },
+        }),
+        mantineTableHeadCellProps: {
+            className: classes.tableHeadRow,
+        },
+        mantineTableBodyCellProps: {
+            className: classes.tableCellRow,
+        },
+        enablePagination: false,
+        enableFilters: false,
+        enableFullScreenToggle: false,
+        enableTopToolbar: !!query,
+        enableGlobalFilterModes: false,
+        enableBottomToolbar: false,
+        enableGlobalFilter: false,
+        enableColumnActions: false,
+        enableColumnFilters: false,
+        enableSorting: false,
+        manualFiltering: true,
+        enableRowVirtualization: true,
+        mantineTableContainerProps: {
+            // ref: tableContainerRef, //get access to the table container element
+            style: {
+                maxHeight: 'calc(100% - ' + ((CONTENT_TOP_SPACING - contentTopSpacing)) + 'px)',
+                maxWidth: MAX_SITE_WIDTH + 'px',
+                width: '100vw',
+            }, //give the table a max height
+            onScroll: (
+                // @ts-ignore
+                event: UIEvent<HTMLDivElement>, //add an event listener to the table container element
+            ) => fetchMoreOnBottomReached(event.target as HTMLDivElement),
+        },
+        mantineToolbarAlertBannerProps: {
+            color: 'red',
+            children: 'Error loading data',
+        },
+
+        mantineTableProps: {
+            highlightOnHover: true,
+            striped: 'odd',
+            withColumnBorders: true,
+            withRowBorders: true,
+            withTableBorder: true,
+        },
+        renderTopToolbar: () => {
+            return (
+                <Flex
+                    data-active={!!query}
+                    justify="space-between"
+                    align="center"
+                    className={classes.dataTableInfo}
+                    style={{
+                        backgroundImage: `url(${city})`,
+                        backgroundSize: 'cover',
+                    }}
+                >
+                    <Flex align="center" h="100%">
+                        {query ? (
+                            <>
+                                <Badge color="red" fw={600} ml={4}>
+                                    <Flex align="center">
+                                        {query}
+                                        <ActionIcon p={0} m={0} variant="transparent" c="white"
+                                                    aria-label="Remove query" loading={isQueryDataFetching}>
+                                            <IconX size={16} onClick={removeQuery}/>
+                                        </ActionIcon>
+                                    </Flex>
+                                </Badge>
+                            </>
+                        ) : null}
+                    </Flex>
+                </Flex>
+            )
+        },
+        state: {
+            showAlertBanner: isError,
+            isLoading: isLoading,
+            showSkeletons: records.length === 0,
+            showLoadingOverlay: isFetching,
+            showProgressBars: isFetching
+        },
+        rowVirtualizerInstanceRef,
+        rowVirtualizerOptions: {overscan: 25},
+    });
+
+    return <>
+        <MantineReactTable table={table}/>
+    </>
+
+}
+
+export {CoursesTable}

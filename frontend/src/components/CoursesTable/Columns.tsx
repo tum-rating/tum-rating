@@ -36,7 +36,7 @@ export const columns = [
         ellipsis: true,
         render: (element: Course) => {
             return (
-                <>
+                <>jig
                     <Flex align="center" gap="xs">
                         <NumberRatingBadge score={element.howInterestingRatingAverage} />
                     </Flex>

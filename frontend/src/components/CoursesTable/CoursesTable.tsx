@@ -41,6 +41,7 @@ const CoursesTable = () => {
             setInternalLoading(false);
         }
     }, [data]);
+
     useEffect(() => {
         if (queryData) {
             const newRecords = queryData.courses;
