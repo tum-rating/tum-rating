@@ -13,7 +13,6 @@ async function getCoursesProposals(token: string): Promise<CourseProposal[] | nu
     });
     if (!response.ok) throw new ResponseError('Failed on get reviews request', response);
     const data = await response.json();
-    console.log(data)
     return await data.courseProposals;
 }
 

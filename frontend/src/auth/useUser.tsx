@@ -22,6 +22,7 @@ async function getUser(token: string | null): Promise<User | null> {
 }
 
 export interface User {
+    role?: string;
     username: string;
     email: string;
     id: number;

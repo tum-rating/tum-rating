@@ -37,7 +37,10 @@ export function useSignIn() {
         mutationFn: async ({ email, password }: LoginInput) => await signIn({ email, password }),
         onSuccess: (data) => {
             queryClient.setQueryData([QUERY_KEY.user], data.token);
-            queryClient.setQueryData([QUERY_KEY.user_details], data.user);
+            queryClient.setQueryData([QUERY_KEY.user_details], {
+                ...data.user,
+                isAdmin: data.user?.role === "admin",
+            });
             localStorage.setItem(USER_LOCAL_STORAGE_KEY, data.token);
             notifications.show({
                 title: 'Success',

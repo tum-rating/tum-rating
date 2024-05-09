@@ -32,7 +32,6 @@ import {getPath, Paths} from '@/routes/paths.ts';
 
 export const MainLayout = ({children}: PropsWithChildren) => {
     const {data: user, isLoading} = useUser();
-    //--temporarily set isAdmin to false--//
     const isAdmin = isLoading ? false : user?.isAdmin;
     const navigate = useNavigate();
     const [mobileOpened, {toggle: toggleMobile}] = useDisclosure();
