@@ -1,7 +1,18 @@
-import { Badge, Button, Container, Flex, Divider, LoadingOverlay, Select, Stack, Text, Textarea } from '@mantine/core';
+import {
+    Badge,
+    Button,
+    Container,
+    Flex,
+    Divider,
+    LoadingOverlay,
+    Select,
+    Stack,
+    Text,
+    Textarea,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
-import { useEffect } from 'react';
+import {useEffect, useMemo} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUser } from '@/auth/useUser.tsx';
@@ -11,6 +22,8 @@ import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { useAddUserReview, UserAddReviewInput } from '@/courses/useAddUserReview.tsx';
 import classes from '@/pages/PageNotFound/PageNotFound.module.css';
 import { Paths } from '@/routes/paths.ts';
+import {useDetailCourse} from "@/courses/useCourse.tsx";
+import {Skeleton} from "@/components/Skeleton";
 
 const openAddUserReviewModal = ({ courseId, ...props }) => {
     modals.openContextModal({
@@ -28,8 +41,13 @@ const AddUserReviewModal = ({
 }>) => {
     const { courseId } = innerProps;
     const { mutate: addUserReview, isSuccess, isLoading } = useAddUserReview(courseId, 'POST');
+    const {data: courseData, isLoading:courseDetailsLoading, isError:courseDetailsError} = useDetailCourse(courseId || '');
     const { data: user } = useUser();
     const navigate = useNavigate();
+
+    const offeredInSemesters = useMemo(()=> courseData.offeredInSemesters.map((semester)=>{
+        return {value: semester, label: semester}
+    }),[courseData])
 
     useEffect(() => {
         if (isSuccess) {
@@ -62,6 +80,17 @@ const AddUserReviewModal = ({
         context.closeModal(id);
     };
 
+    if(courseDetailsError){
+        return (
+            <Stack>
+                <Text fw="600" c="red" >Unexpected error - course not found</Text>
+                <Button onClick={()=>{
+                    context.closeModal(id);
+                }}>Back to Course</Button>
+            </Stack>
+        )
+    }
+
     if (!user) {
         return (
             <Flex direction="column" gap="xs" h="100%" justify="center" align="center" py="md">
@@ -91,7 +120,10 @@ const AddUserReviewModal = ({
             >
                 <Flex direction="column" gap="xs" h="100%">
                     <Textarea autosize minRows={6} maxRows={6} placeholder="Your comment" label="Your comment" h="auto" value={form.values.comment} {...form.getInputProps('comment')} onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)} />
-                    <Select {...form.getInputProps('semester')} label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={[{ value: '2023 S', label: '2023 S' }]} />
+                    <Skeleton h={36} loading={courseDetailsLoading} component={
+                        <Select {...form.getInputProps('semester')} label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={offeredInSemesters} />
+                    }/>
+
                     <Flex w="100%" gap="lg" direction="column" wrap="wrap" mt="md" mb="md">
                         <Stack>
                             <HowEasyEditableRating onChange={(value) => form.setFieldValue('howEasyRating', value)} score={form.values.howEasyRating} />
