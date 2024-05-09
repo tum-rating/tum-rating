@@ -57,5 +57,45 @@ export function handleAuthErrors({error, callback = () => null, signOut, navigat
             });
             callback && callback();
         }
+        if(error.response.status === 404) {
+            const userFromLocalStorage = userLocalStorage.getUser();
+            if (userFromLocalStorage) {
+                signOut({
+                    title: error.response.statusText,
+                    icon: null,
+                    message: (
+                        <Flex align="center" gap={4}>
+                            <Button
+                                h={24}
+                                p={0}
+                                m={0}
+                                size="xs"
+                                variant="transparent"
+                                onClick={() => {
+                                    navigate("/" + getPath(Paths.signIn));
+                                    notifications.hide('unauthorized-sign-out');
+                                }}
+                            >
+                                Sign in again
+                            </Button>
+                        </Flex>
+                    ),
+                    color: 'red',
+                    id: 'unauthorized-sign-out',
+                    withCloseButton: true,
+                    autoClose: false,
+                });
+            }else{
+                notifications.show({
+                    title: 'Error:404',
+                    message: <Text size="xs">{error.response.statusText}</Text>,
+                    color: 'red',
+                    id: 'not-found',
+                    withCloseButton: true,
+                    className: 'not-found-notification',
+                });
+            }
+            callback && callback();
+        }
     }
 }
