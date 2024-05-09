@@ -2,8 +2,6 @@
 .dataTableContainer {
     margin-top: 15px;
     width: 100%;
-    border-top-left-radius: 50%;
-    border-top-right-radius: var(--mantine-radius-lg);
     @media (max-width: $mantine-breakpoint-sm) {
         min-height: calc(100vh - 148px);
         border-radius: 0;
@@ -16,10 +14,8 @@
 
 .dataTableInfo {
     height: 18px;
-    padding: 0 var(--mantine-spacing-xs);
+    padding: 0;
     background: var(--mantine-color-body);
-    border-top-left-radius: var(--mantine-radius-lg);
-    border-top-right-radius: var(--mantine-radius-lg);
     opacity: 0;
     @media (max-width: $mantine-breakpoint-sm) {
         border-radius: 0;
@@ -51,14 +47,26 @@
     }
 }
 
+.tablePaper{
+    @media (max-width: $mantine-breakpoint-sm) {
+        border-radius: 0;
+    }
+}
+
+
+
 .tableHeadRow{
     font-size: var(--mantine-font-size-xs);
     @media (max-width: $mantine-breakpoint-sm) {
         font-size: 10px;
-        white-space: break-spaces;
-        padding-top: 4px;
-        padding-bottom: 4px;
-        display: inline-block;
+        padding: 2px 8px;
+        height: 50px;
+        border-radius: 0;
+        :global(.mrt-table-head-cell-content-wrapper){
+            white-space: pre-wrap;
+            overflow: auto;
+
+        }
     }
 }
 

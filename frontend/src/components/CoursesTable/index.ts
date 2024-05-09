@@ -1,1 +1,1 @@
-export { CoursesTable } from './CoursesTableV2.tsx';
+export { CoursesTable } from './CoursesTable.tsx';
