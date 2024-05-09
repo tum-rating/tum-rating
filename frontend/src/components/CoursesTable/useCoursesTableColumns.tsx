@@ -1,11 +1,10 @@
 import {Course} from "@/courses/types.ts";
-import {isMobile} from "react-device-detect";
-import {Flex} from "@mantine/core";
-import {NumberRatingBadge} from "@/components/Course";
-import {MRT_Column, MRT_ColumnDef} from "mantine-react-table";
+import {MRT_ColumnDef} from "mantine-react-table";
+import {useMemo} from "react";
 
-const useCoursesTableColumns = () =>{
-    const columns: MRT_ColumnDef<Course>[] = [
+const useCoursesTableColumns = () => {
+
+    const columns: MRT_ColumnDef<Course>[] = useMemo(() => [
         {
             header: 'Course',
             accessorKey: 'name',
@@ -58,7 +57,8 @@ const useCoursesTableColumns = () =>{
             //     );
             // },
         },
-    ];
+    ], [])
+
 
     return {columns}
 }

@@ -1,9 +1,9 @@
-import {ActionIcon, Badge, Box, Flex, Loader, Transition} from "@mantine/core";
+import {ActionIcon, Badge, Flex} from "@mantine/core";
 import {useCallback, useEffect, useRef, useState} from 'react'
 import {useLocation, useNavigate} from "react-router-dom";
 
 import classes from './CoursesTable.module.css';
-import {CONTENT_TOP_SPACING, MAX_SITE_WIDTH} from "@/constants";
+import {CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH} from "@/constants";
 import {Course} from "@/courses/types.ts";
 import {usePaginatedCourses} from "@/courses/usePaginatedCourses.tsx";
 import {MantineReactTable, MRT_RowVirtualizer, useMantineReactTable} from "mantine-react-table";
@@ -25,16 +25,12 @@ function CoursesTable() {
     const [records, setRecords] = useState<Course[]>([]);
     const [queryRecords, setQueryRecords] = useState<Course[]>([]);
 
-    const [internalLoading, setInternalLoading] = useState(false);
-
     const {
         data,
         fetchNextPage,
         isFetching,
         isLoading,
         isError,
-        isFetched,
-        isFetchingNextPage
     } = usePaginatedCourses();
     const [query, setQuery] = useState('');
     const {data: queryData, isFetching: isQueryDataFetching} = useSearchCourses(query);
@@ -74,14 +70,13 @@ function CoursesTable() {
         }
     }, [location]);
 
+
     const fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
             if (containerRefElement) {
                 const {scrollHeight, scrollTop, clientHeight} = containerRefElement;
-                console.log(clientHeight)
-                //once the user has scrolled within 400px of the bottom of the table, fetch more data if we can
                 if (
-                    scrollHeight - scrollTop - clientHeight < clientHeight - contentTopSpacing - 100 && !isFetching
+                    scrollHeight - scrollTop - clientHeight < clientHeight - contentTopSpacing - HEADER_HEIGHT && !isFetching
                 ) {
                     fetchNextPage()
                 }
@@ -121,7 +116,8 @@ function CoursesTable() {
 
     const table = useMantineReactTable({
         columns,
-        data: query ? queryRecords : records,
+        // data: query ? queryRecords : records,
+        data: records,
         mantinePaperProps: {
             style: {
                 marginTop: CONTENT_TOP_SPACING + 'px',

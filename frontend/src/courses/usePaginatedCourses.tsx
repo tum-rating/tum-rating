@@ -22,12 +22,14 @@ async function getPaginatedCourses({ pageParam = 1 }): Promise<Courses> {
 export function usePaginatedCourses() {
     return useInfiniteQuery({
         queryKey: [QUERY_KEY.courses],
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        staleTime: Infinity,
         queryFn: getPaginatedCourses,
         getNextPageParam: (lastPage) => lastPage.nextPageNumber,
-
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
         initialPageParam: 1,
+        placeholderData: (previousData, previousQuery) => {
+            console.log(previousData,previousQuery)
+           return  previousData
+        },
     });
 }

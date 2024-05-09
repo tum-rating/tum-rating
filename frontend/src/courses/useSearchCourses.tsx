@@ -19,6 +19,7 @@ export async function getReviews(query: string): Promise<Courses | null> {
 }
 
 export function useSearchCourses(query: string) {
+    if (!query) return { data: null, isFetching: false };
     return useQuery({
         queryKey: [QUERY_KEY.search_query, query],
         queryFn: async () => getReviews(query),
