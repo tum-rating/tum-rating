@@ -26,6 +26,7 @@ const RoutesApp = () => {
         {
             path: '/',
             errorElement: <PageNotFound />,
+
             element: (
                 <MainLayout>
                     <ModalsProvider modals={modals}>

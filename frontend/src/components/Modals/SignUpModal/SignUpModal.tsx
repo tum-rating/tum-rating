@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSignUp } from '@/auth/useSignUp.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
+import {notifications} from "@mantine/notifications";
 
 interface SignUpModalProps extends ContextModalProps {}
 
@@ -23,6 +24,10 @@ const SignUpModal = () => {
     const { isSuccess, isPending: isLoading, mutate: signUp, error, isError } = useSignUp();
     const [apiError, setApiError] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        notifications.clean();
+    }, []);
 
     useEffect(() => {
         setApiError(isError);

@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginInput, useSignIn } from '@/auth/useSignIn.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
+import {notifications} from "@mantine/notifications";
 
 interface SignInModalProps extends ContextModalProps {}
 
@@ -27,6 +28,10 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
     useEffect(() => {
         setApiError(isError);
     }, [isError]);
+
+    useEffect(() => {
+        notifications.clean();
+    }, []);
 
     const form = useForm({
         initialValues: {

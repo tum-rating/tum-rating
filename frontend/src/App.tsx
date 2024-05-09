@@ -1,23 +1,19 @@
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
-
-
 import 'mantine-datatable/styles.css';
+import '@mantine/dates/styles.css';
+import 'mantine-react-table/styles.css';
 
-import '@mantine/core/styles.css'; //import Mantine V7 styles needed by MRT
-import '@mantine/dates/styles.css'; //if using mantine date picker features
-import 'mantine-react-table/styles.css'; //import MRT styles
-
-import { Button, CSSVariablesResolver, MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import {Button, CSSVariablesResolver, MantineProvider} from '@mantine/core';
+import {Notifications} from '@mantine/notifications';
+import {QueryClientProvider} from '@tanstack/react-query';
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 
 import buttonClasses from './customStyles/Buttons.module.css';
-import { queryClient } from './react-query/client.ts';
-import { RoutesApp } from './routes';
+import {queryClient} from './react-query/client.ts';
+import {RoutesApp} from './routes';
 
-import { TableScrollProvider } from '@/context';
+import {TableScrollProvider} from '@/context';
 
 const resolver: CSSVariablesResolver = () => ({
     variables: {
@@ -53,10 +49,10 @@ export default function App() {
             }}
         >
             <QueryClientProvider client={queryClient}>
-                <ReactQueryDevtools initialIsOpen={false} />
-                <Notifications />
+                <ReactQueryDevtools initialIsOpen={false}/>
+                <Notifications/>
                 <TableScrollProvider>
-                    <RoutesApp />
+                    <RoutesApp/>
                 </TableScrollProvider>
             </QueryClientProvider>
         </MantineProvider>

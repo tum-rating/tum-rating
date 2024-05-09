@@ -7,18 +7,15 @@ import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function getUser(token: string | null): Promise<User | null> {
     if (!token) return null;
-    try {
-        const response = await fetch(endpoints.user, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        if (!response.ok) throw new ResponseError('Failed on get user request', response);
-        return response.json();
-    } catch (error) {
-        console.error(error);
-        return null;
+    const response = await fetch(endpoints.user, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!response.ok) {
+        throw new ResponseError('Failed to get user details', response);
     }
+    return response.json();
 }
 
 export interface User {
@@ -33,18 +30,11 @@ export function useUser() {
     const userTokenFromLocalStorage = userLocalStorage.getUser();
     return useQueryWithAuth({
         queryKey: [QUERY_KEY.user_details],
-        queryFn: async () => {
-            try {
-                return await getUser(userTokenFromLocalStorage);
-            } catch (error) {
-                return null;
-            }
-        },
+        queryFn: async () => await getUser(userTokenFromLocalStorage),
         refetchIntervalInBackground: false,
         refetchOnMount: false,
         refetchOnReconnect: false,
         refetchOnWindowFocus: false,
         retry: false,
-        throwOnError: !!userTokenFromLocalStorage,
     });
 }
