@@ -4,8 +4,8 @@ const baseUrl =
     "https://campus.tum.de/tumonline/ee/rest/slc.tm.cp/student/courses";
 const queryParams =
     "$filter=courseNormKey-eq=LVEAB;orgId-eq=1;termId-eq=198&$orderBy=title=ascnf";
-const pageSize = 1;
-const totalPages = 1;
+const pageSize = 45;
+const totalPages = 10;
 
 const fetchPage = async (page) => {
     console.log(`Fetching page ${page}...`);

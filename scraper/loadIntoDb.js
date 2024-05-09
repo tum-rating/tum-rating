@@ -3,7 +3,7 @@ import fs from 'fs';
 
 
 const adminToken = 'eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjAsInVzZXJSb2xlIjowLCJzdWIiOiI2NTQ0YWQwM2Q0MTgxNjE4YTg1MzdkYmEiLCJleHAiOjE2OTkwODU5Njd9.MsBqx4hMNGl24H_oA8IAV441TN4atmNqDIHPVheHlDg';
-const backendEndpoint = 'http://localhost:3000/api/v1/reviews';
+const backendEndpoint = 'http://localhost:3000/api/v1/courses';
 const inputFile = 'output.json';
 
 
@@ -20,7 +20,7 @@ const inputFile = 'output.json';
 
         parsedCourseForApi.courseId = course.courseId.toString();
         parsedCourseForApi.courseNumber = course.courseNumber.databaseValue;
-        parsedCourseForApi.course = course.courseTitleTranslations.en;
+        parsedCourseForApi.name = course.courseTitleTranslations.en;
         parsedCourseForApi.professor = (course.mainLecturers[0] || {}).name;
         parsedCourseForApi.otherLecturers = [];
 
