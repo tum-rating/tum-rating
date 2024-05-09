@@ -45,7 +45,7 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any 
         onSuccess: () => {
             notifications.show({
                 title: 'Success',
-                message: 'Success !',
+                message: type === 'POST' ? 'Review added' : 'Review updated',
                 color: 'green',
                 icon: <IconCheck />,
             });
