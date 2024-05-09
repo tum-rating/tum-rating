@@ -10,7 +10,7 @@ import { AddCourseModal } from '@/components/Modals/AddCourseModal/AddCourseModa
 import { AddUserReviewModal } from '@/components/Modals/AddUserReview/AddUserReview.tsx';
 import { EditUserReviewModal } from '@/components/Modals/EditUserReview';
 import { AdminLayout, MainLayout } from '@/layouts';
-import { Activation, Admin, Course, Home, PageNotFound, Recovery } from '@/pages';
+import { Activation, Admin, Course, Home, ErrorBoundary, Recovery } from '@/pages';
 
 const modals = {
     signIn: SignInModal,
@@ -25,8 +25,7 @@ const RoutesApp = () => {
     const routes = [
         {
             path: '/',
-            errorElement: <PageNotFound />,
-
+            errorElement: <ErrorBoundary />,
             element: (
                 <MainLayout>
                     <ModalsProvider modals={modals}>
@@ -72,7 +71,7 @@ const RoutesApp = () => {
         },
         {
             path: getPath(Paths.admin),
-            errorElement: <PageNotFound />,
+            errorElement: <ErrorBoundary />,
             element: <AdminLayout>
                 <ModalsProvider modals={modals}>
                     <ModalsHashController />
