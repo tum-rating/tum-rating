@@ -39,7 +39,6 @@ export const MainLayout = ({children}: PropsWithChildren) => {
     const {colorScheme, toggleColorScheme} = useMantineColorScheme();
     const smallerMode = useMediaQuery('(max-width: 48em)');
     const signOut = useSignOut();
-
     useHotkeys([['/', () => navigate(getPath(Paths.spotlight))]]);
 
     return (
@@ -106,8 +105,11 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                 <Group hiddenFrom="sm" h="100%" px="md" justify="space-between" pos="relative">
                     <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm"/>
                     <Anchor href="/">
-                        <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo}
-                               alt="tum rating logo"/>
+                        {colorScheme === 'light' ?
+                            <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo}
+                                   alt="tum rating logo"/> :
+                            <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark}
+                                   alt="tum rating logo"/>}
                     </Anchor>
                     <SearchInputDesktop/>
                 </Group>
@@ -117,8 +119,11 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                     style={{zIndex: 6}}
                     title={
                         <Anchor href="/">
-                            <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo}
-                                   alt="tum rating logo"/>
+                            {colorScheme === 'light' ?
+                                <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo}
+                                       alt="tum rating logo"/> :
+                                <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark}
+                                       alt="tum rating logo"/>}
                         </Anchor>
                     }
                     opened={mobileOpened}
