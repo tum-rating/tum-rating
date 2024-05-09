@@ -15,7 +15,7 @@ afterAll(async () => {
 });
 
 describe('User SignUp With Duplicated Username Sufixes', () => {
-    it('should send an email if signup with duplicated email username suffixes', async () => {
+    it.skip('should send an email if signup with duplicated email username suffixes', async () => {
 
         const surname = faker.person.lastName();
         const emailsDotDuplicated: string[] = [

@@ -17,7 +17,8 @@ import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { UserService } from 'src/modules/user/user.service';
 import { JWTService } from 'src/utils/jwt/jwt.service';
 import { MailerService } from 'src/modules/mailer/mailer.service';
-import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
+import { UserRole } from 'src/database/documents/user';
+import { DuplicateError } from 'src/utils/errors/errors';
 
 import { AuthService } from './auth.service';
 import { SignUpRequestDto, SignUpRequestSchema } from './dto/SignUpRequest.dto';
@@ -25,7 +26,6 @@ import { SignInRequestDto, SignInRequestSchema } from './dto/SignInRequest.dto';
 import { SignInResponseDto } from './dto/SignInResponse.dto';
 import { ActivateUserEmailRequestDto, ActivateUserEmailRequestSchema } from './dto/ActivateUserEmail.dto';
 import { PasswordRecoveryRequestDto, PasswordRecoveryRequestSchema } from './dto/PasswordRecovery.dto';
-import { UserRole } from 'src/database/documents/user';
 
 @ApiTags('auth')
 @Controller('api/v1/auth')
@@ -91,9 +91,9 @@ export class AuthControllerV1 {
             this._logger.info('Signup local request completed user created with email %s, id %s', body.email, createdUser.id);
         } catch (error) {
             this._logger.error('Signup local error: %o', error);
-            if (error.code == ERROR_MONGO_DUPLICATE_CODE) {
+            if (error instanceof DuplicateError) {
                 let errorMessage;
-                if (Object.keys(error.keyPattern).includes('email')) {
+                if (error.isConflictingKey('email')) {
                     errorMessage = 'Email already exists';
 
                     const user = await this._userService.getUserByEmail(body.email);
@@ -116,7 +116,7 @@ export class AuthControllerV1 {
 
                     return;
                 }
-                else if (Object.keys(error.keyPattern).includes('username')) errorMessage = 'Username already exists';
+                else if (error.isConflictingKey('username')) errorMessage = 'Username already exists';
 
                 this._logger.info('Signup duplicate "%s" already exists %s, %s', errorMessage, body.username, body.email);
                 throw new ConflictException(errorMessage);

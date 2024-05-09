@@ -1,7 +1,18 @@
 export class DuplicateError extends Error {
-    constructor(message) {
+    public conflictKey: string | string[];
+
+    constructor(message, conflictKey: string | string[] = []) {
         super(message);
         this.name = 'Duplicate error';
+        this.conflictKey = conflictKey;
+    }
+
+    public isConflictingKey(key: string): boolean {
+        if (Array.isArray(this.conflictKey)) {
+            return this.conflictKey.includes(key);
+        } else {
+            return this.conflictKey === key;
+        }
     }
 }
 

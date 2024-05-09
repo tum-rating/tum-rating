@@ -247,7 +247,7 @@ const SearchInputDesktop = () => {
                         {empty && (
                             <Flex direction="column">
                                 <Combobox.Empty>No matching courses for "{value}"</Combobox.Empty>
-                                {user ? (
+                                {user.data ? (
                                     <Button
                                         onClick={() => {
                                             navigate(getPath(Paths.addCourse));
@@ -271,6 +271,7 @@ const SearchInputDesktop = () => {
                         {options}
                     </ScrollArea.Autosize>
                 </Combobox.Options>
+                {/* TODO extract it to separate component, use year from get date */}
                 <Combobox.Footer>
                     <Text fz="xs" c="dimmed">
                         TUM-RATING © 2024

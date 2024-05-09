@@ -6,7 +6,7 @@ import { User } from 'src/database/documents/user';
 import { UserBanRepository } from 'src/database/repositories/userBan.repository';
 import { NotFoundError } from 'src/utils/errors/errors';
 import { UserBan } from 'src/database/documents/userBan';
-import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
+import { DuplicateError } from 'src/utils/errors/errors';
 
 import { CreateUserDto } from './dto/CreateUser.dto';
 
@@ -102,7 +102,7 @@ export class UserService {
             try {
                 await this._userBanRepository.create({ userId } as unknown as UserBan);
             } catch(error) {
-                if(error.code != ERROR_MONGO_DUPLICATE_CODE) {
+                if (!(error instanceof DuplicateError && error.isConflictingKey('userId'))) {
                     throw error;
                 }
             }

@@ -5,12 +5,14 @@ import { CourseProposal, CourseProposalSchema } from 'src/database/documents/cou
 import { CourseModule } from 'src/modules/course/course.module';
 import { UserModule } from 'src/modules/user/user.module';
 import { CourseProposalRepository } from 'src/database/repositories/courseProposal.repository';
+import { ClientModule } from 'src/modules/client/client.module';
 
 import { CourseProposalControllerV1 } from './courseProposal.controller.v1';
 import { CourseProposalService } from './courseProposal.service';
 
 @Module({
     imports: [
+        ClientModule,
         CourseModule,
         UserModule, 
         MongooseModule.forFeature([
