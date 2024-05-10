@@ -17,23 +17,24 @@ import {useForm} from "@mantine/form";
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
-import {CourseProposal} from '@/admin/types.ts';
+import {Course, CourseProposal} from '@/admin/types.ts';
 import {useCourseProposal} from '@/admin/useCourseProposal.tsx';
 import {useRemoveProposal} from '@/admin/useRemoveProposal.tsx';
 import {useGetScrapedCourseProposal} from "@/admin/useCourseScraper.tsx";
 import {UserInfoAction} from '@/components/AdminTable/Shared/UserInfoAction';
 import {Skeleton} from '@/components/Skeleton';
 import {useAddCourseProposal} from "@/admin/useAddCourseProposal.tsx";
-import {Course} from "@/admin/types.ts";
 
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {queryClient} from '@/react-query/client.ts';
+import {MRT_Row} from 'mantine-react-table';
 
 interface ProposalExpansionProps {
     proposal: CourseProposal;
+    row: MRT_Row<CourseProposal>
 }
 
-const ProposalExpansion = ({proposal: IProposal}: ProposalExpansionProps) => {
+const ProposalExpansion = ({proposal: IProposal, row}: ProposalExpansionProps) => {
     const {data: courseProposalDetails, isLoading, error, isError, refetch} = useCourseProposal(IProposal.id);
     const {
         refetch: scrapeCourse,
@@ -98,7 +99,7 @@ const ProposalExpansion = ({proposal: IProposal}: ProposalExpansionProps) => {
     });
 
     return (
-        <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md">
+        <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md" w="100%">
             {isError ? (
                 <Center h={270}>
                     <Flex direction="column">
@@ -384,7 +385,15 @@ const ProposalExpansion = ({proposal: IProposal}: ProposalExpansionProps) => {
                             <Divider variant="dashed" size="sm"/>
                             <Button onClick={() => {
                                 const validate = form.validate();
-                                if (!validate.hasErrors) acceptProposal(form.values)
+                                if (!validate.hasErrors) {
+                                    try {
+                                        acceptProposal(form.values);
+                                    } catch (e) {
+
+                                    } finally {
+                                        row.toggleExpanded();
+                                    }
+                                }
                             }}
                                     loading={acceptProposalPending || scraperIsLoading}
                                     color="green"

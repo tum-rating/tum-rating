@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { User } from '@/admin/types.ts';
 import { useBanUser } from '@/admin/useBanUser.tsx';
 import { useUser } from '@/admin/useUser.ts';
+import {useUser as useLoggedUser} from '@/auth/useUser.tsx';
 import { UserAvatar } from '@/components/Avatar';
 import { Skeleton } from '@/components/Skeleton';
 
@@ -15,6 +16,7 @@ interface UserInfoActionProps {
 const UserInfoAction = (props: UserInfoActionProps) => {
     const { userId, children } = props;
     const { mutate: banUser } = useBanUser();
+    const { data: loggedUser} = useLoggedUser();
     const { data: user, isLoading } = useUser(userId);
     return (
         <HoverCard width={280} shadow="md">
@@ -69,10 +71,11 @@ const UserInfoAction = (props: UserInfoActionProps) => {
                     {user?.isBanned ? (
                         <Button
                             fullWidth
+                            disabled={user?.id === String(loggedUser?.id)}
                             size="xs"
                             color="red"
                             onClick={() => {
-                                banUser({ userId: user.id, flag: false });
+                                banUser({ userId: user?.id, flag: false });
                             }}
                         >
                             Unban
@@ -80,10 +83,11 @@ const UserInfoAction = (props: UserInfoActionProps) => {
                     ) : (
                         <Button
                             fullWidth
+                            disabled={user?.id === String(loggedUser?.id)}
                             size="xs"
                             color="red"
                             onClick={() => {
-                                banUser({ userId: user.id, flag: true });
+                                banUser({ userId: user?.id, flag: true });
                             }}
                         >
                             Ban
