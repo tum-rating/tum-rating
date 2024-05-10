@@ -7,8 +7,8 @@ import classes from "./AdminLayout.module.css"
 
 import {useCoursesProposals} from '@/admin/useCoursesProposals.ts';
 import {useUser} from '@/auth/useUser.tsx';
-import {PageAdminNotFound} from '@/pages/PageNotFound';
 import {getPath, Paths} from '@/routes/paths.ts';
+import {AdminErrorBoundary} from "@/pages/PageNotFound";
 
 
 const adminTabs = [
@@ -37,8 +37,9 @@ export function AdminLayout({children}: PropsWithChildren) {
     }, [location]);
 
     if (isLoading || !userFetched) return null;
+
     if (!user || (isFetched && isError)) {
-        return <PageAdminNotFound/>;
+        return <AdminErrorBoundary/>;
     } else if (!error && isFetched) {
         return (
             <AppShell

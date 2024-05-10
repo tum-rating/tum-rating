@@ -181,7 +181,6 @@ function CoursesTable() {
             color: 'red',
             children: 'Error loading data',
         },
-
         mantineTableProps: {
             highlightOnHover: true,
             striped: 'odd',

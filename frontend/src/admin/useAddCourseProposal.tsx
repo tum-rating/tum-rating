@@ -8,12 +8,12 @@ import {QUERY_KEY} from "@/constants/queryKeys.ts";
 import {queryClient} from "@/react-query/client.ts";
 import {ResponseError} from "@/utils/Errors/ResponseError.ts";
 
-const addCourseProposal = async (token:string,courseProposal: ReadyCourseProposal) => {
-    if(!token){
+const addCourseProposal = async (token: string, courseProposal: ReadyCourseProposal) => {
+    if (!token) {
         return null;
     }
     const endpoint = endpoints.addCourse;
-    const response = await fetch(endpoint,{
+    const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -32,7 +32,8 @@ const addCourseProposal = async (token:string,courseProposal: ReadyCourseProposa
             color: 'red',
             loading: false,
         });
-        throw new ResponseError('error', response);
+        const data = await response.json();
+        if (!response.ok) throw new ResponseError(data.message, response, courseProposal.courseId);
     }
     return courseProposal;
 }
@@ -41,7 +42,7 @@ const addCourseProposal = async (token:string,courseProposal: ReadyCourseProposa
 const useAddCourseProposal = () => {
     const token = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: (courseProposal: ReadyCourseProposal) => addCourseProposal(token,courseProposal),
+        mutationFn: (courseProposal: ReadyCourseProposal) => addCourseProposal(token, courseProposal),
         onMutate: (variables) => {
             notifications.show({
                 id: variables.courseId,

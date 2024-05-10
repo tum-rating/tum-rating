@@ -71,7 +71,6 @@ const RoutesApp = () => {
         },
         {
             path: getPath(Paths.admin),
-            errorElement: <ErrorBoundary />,
             element: <AdminLayout>
                 <ModalsProvider modals={modals}>
                     <ModalsHashController />

@@ -1,10 +1,10 @@
-import {Button, Flex, Text} from '@mantine/core';
+import {Button, Flex} from '@mantine/core';
 import {notifications} from '@mantine/notifications';
 
+import * as userLocalStorage from "@/auth/user.localstore.ts";
 import {useSignOutProps} from '@/auth/useSignOut.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
-import * as userLocalStorage from "@/auth/user.localstore.ts";
 
 interface handleAuthErrorsProps {
     error: any;
@@ -15,87 +15,83 @@ interface handleAuthErrorsProps {
 
 export function handleAuthErrors({error, callback = () => null, signOut, navigate}: handleAuthErrorsProps) {
     if (error instanceof ResponseError) {
-        if (error.response.status === 401) {
-            const userFromLocalStorage = userLocalStorage.getUser();
-            if (userFromLocalStorage) {
-                signOut({
-                    title: error.response.statusText,
-                    icon: null,
-                    message: (
-                        <Flex align="center" gap={4}>
-                            <Button
-                                h={24}
-                                p={0}
-                                m={0}
-                                size="xs"
-                                variant="transparent"
-                                onClick={() => {
-                                    navigate("/" + getPath(Paths.signIn));
-                                    notifications.hide('unauthorized-sign-out');
-                                }}
-                            >
-                                Sign in again
-                            </Button>
-                        </Flex>
-                    ),
-                    color: 'red',
-                    id: 'unauthorized-sign-out',
-                    withCloseButton: true,
-                    autoClose: false,
-                });
-            }
-            callback && callback();
+        const initialErrorConfig = {
+            id: error.errorId,
+            title: error.status,
+            message: error.message,
+            loading: false,
+            withCloseButton: true,
         }
-        if (error.response.status === 403) {
-            notifications.show({
-                title: 'Error:403',
-                message: <Text size="xs">{error.response.statusText}</Text>,
-                color: 'red',
-                id: 'unauthorized',
-                withCloseButton: true,
-                className: 'sign-out-notification',
-            });
-            callback && callback();
-        }
-        if(error.response.status === 404) {
-            const userFromLocalStorage = userLocalStorage.getUser();
-            if (userFromLocalStorage) {
-                signOut({
-                    title: error.response.statusText,
-                    icon: null,
-                    message: (
-                        <Flex align="center" gap={4}>
-                            <Button
-                                h={24}
-                                p={0}
-                                m={0}
-                                size="xs"
-                                variant="transparent"
-                                onClick={() => {
-                                    navigate("/" + getPath(Paths.signIn));
-                                    notifications.hide('unauthorized-sign-out');
-                                }}
-                            >
-                                Sign in again
-                            </Button>
-                        </Flex>
-                    ),
-                    color: 'red',
-                    id: 'unauthorized-sign-out',
-                    withCloseButton: true,
-                    autoClose: false,
-                });
-            }else{
+        switch (error.status) {
+            case 400:
                 notifications.show({
-                    title: 'Error:404',
-                    message: <Text size="xs">{error.response.statusText}</Text>,
+                    ...initialErrorConfig,
                     color: 'red',
-                    id: 'not-found',
+                    withCloseButton: true,
+                    className: 'bad-request-notification',
+                });
+                callback && callback();
+                break;
+            case 401:
+                const userFromLocalStorage = userLocalStorage.getUser();
+                if (userFromLocalStorage) {
+                    signOut({
+                        ...initialErrorConfig,
+                        title: error.message,
+                        icon: null,
+                        message: (
+                            <Flex align="center" gap={4}>
+                                <Button
+                                    h={24}
+                                    p={0}
+                                    m={0}
+                                    size="xs"
+                                    variant="transparent"
+                                    onClick={() => {
+                                        navigate("/" + getPath(Paths.signIn));
+                                        notifications.hide('unauthorized-sign-out');
+                                    }}
+                                >
+                                    Sign in again
+                                </Button>
+                            </Flex>
+                        ),
+                        color: 'red',
+                        withCloseButton: true,
+                        autoClose: false,
+                    });
+                }else{
+                    notifications.show({
+                        ...initialErrorConfig,
+                        color: 'red',
+                        withCloseButton: true,
+                        className: 'unauthorized-sign-out',
+                    });
+                }
+                callback && callback();
+                break;
+            case 403:
+                notifications.show({
+                    ...initialErrorConfig,
+                    color: 'red',
+                    withCloseButton: true,
+                    className: 'sign-out-notification',
+                });
+                callback && callback();
+                break;
+
+            case 404:
+                notifications.show({
+                    ...initialErrorConfig,
+                    color: 'red',
                     withCloseButton: true,
                     className: 'not-found-notification',
                 });
-            }
-            callback && callback();
+                callback && callback();
+                break;
+            default:
+                break;
+
         }
     }
 }

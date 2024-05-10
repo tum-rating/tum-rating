@@ -12,10 +12,11 @@ async function getUser(token: string | null): Promise<User | null> {
             Authorization: `Bearer ${token}`,
         },
     });
+    const data = await response.json();
     if (!response.ok) {
-        throw new ResponseError('Failed to get user details', response);
+        throw new ResponseError(data.message, response, "user-details");
     }
-    return response.json();
+    return data;
 }
 
 export interface User {

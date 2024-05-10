@@ -1,2 +1,2 @@
 export { ErrorBoundary } from './ErrorBoundary.tsx';
-export { PageAdminNotFound } from './PageAdminNotFound.tsx';
+export { AdminErrorBoundary } from './AdminErrorBoundary.tsx';

@@ -1,12 +1,12 @@
-import { Text } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
+import {Text} from '@mantine/core';
+import {notifications} from '@mantine/notifications';
 
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
-import { endpoints, useMutationWithAuth } from '@/api';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { queryClient } from '@/react-query/client.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {endpoints, useMutationWithAuth} from '@/api';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {queryClient} from '@/react-query/client.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function banUser(token: string, userId: string, flag: boolean): Promise<any> {
     if (!token) return null;
@@ -16,7 +16,7 @@ async function banUser(token: string, userId: string, flag: boolean): Promise<an
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
-            body: JSON.stringify({ userId: userId }),
+            body: JSON.stringify({userId: userId}),
         },
     });
     if (response.status === 204) {
@@ -25,27 +25,18 @@ async function banUser(token: string, userId: string, flag: boolean): Promise<an
             isBanned: flag,
         };
     }
-    const responseData = await response.json();
+    const data = await response.json();
     if (!response.ok) {
-        notifications.update({
-            id: userId,
-            title: 'Error',
-            message: <Text size="xs">{responseData.message || 'An error occurred'}</Text>,
-            autoClose: false,
-            withCloseButton: true,
-            color: 'red',
-            loading: false,
-        });
-        throw new ResponseError('error', response);
+        throw new ResponseError(data.message, response, userId);
     }
-    responseData._id = userId;
-    return responseData;
+    data._id = userId;
+    return data;
 }
 
 export function useBanUser(): any {
     const token = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: async ({ userId, flag }: { userId: string; flag: boolean }) => banUser(token, userId, flag),
+        mutationFn: async ({userId, flag}: { userId: string; flag: boolean }) => banUser(token, userId, flag),
         onMutate: (variables) => {
             notifications.show({
                 id: variables.userId,

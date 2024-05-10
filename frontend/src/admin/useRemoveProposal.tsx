@@ -1,12 +1,12 @@
-import { Text } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
+import {Text} from '@mantine/core';
+import {notifications} from '@mantine/notifications';
 
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
-import { endpoints, useMutationWithAuth } from '@/api';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { queryClient } from '@/react-query/client.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {endpoints, useMutationWithAuth} from '@/api';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {queryClient} from '@/react-query/client.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function removeProposal(token: string, proposalId: string): Promise<any> {
     if (!token) return null;
@@ -18,21 +18,12 @@ async function removeProposal(token: string, proposalId: string): Promise<any> {
             Authorization: `Bearer ${token}`,
         },
     });
-    const responseData = await response.json();
+    const data = await response.json();
     if (!response.ok) {
-        notifications.update({
-            id: proposalId,
-            title: 'Error',
-            message: <Text size="xs">{responseData.message || 'An error occurred'}</Text>,
-            autoClose: false,
-            withCloseButton: true,
-            color: 'red',
-            loading: false,
-        });
-        throw new ResponseError('error', response);
+        throw new ResponseError(data.message, response, proposalId);
     }
-    responseData._id = proposalId;
-    return responseData;
+    data._id = proposalId;
+    return data;
 }
 
 export function useRemoveProposal(): any {

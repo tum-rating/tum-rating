@@ -1,15 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
+import {useQuery} from '@tanstack/react-query';
 
-import { Course } from './types.ts';
+import {Course} from './types.ts';
 
-import { endpoints } from '@/api';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {endpoints} from '@/api';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function getCourses(): Promise<Course[] | null> {
     const response = await fetch(endpoints.getAllCourses);
-    if (!response.ok) throw new ResponseError('Failed on get reviews request', response);
-    return await response.json();
+    const data = await response.json()
+    if (!response.ok) throw new ResponseError(data.message, response, "courses");
+    return data;
 }
 
 export function useCourses() {

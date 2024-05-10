@@ -21,9 +21,9 @@ async function deleteUserReview(user: User | null | undefined, userReview: UserA
         },
         body: JSON.stringify(body),
     });
-    const responseData = await response.json();
-    if (!response.ok) throw new ResponseError('Failed on get paginated reviews request', response);
-    return responseData;
+    const data = await response.json();
+    if (!response.ok) throw new ResponseError(data.message, response, courseId);
+    return data;
 }
 
 export interface UserAddReviewInput {

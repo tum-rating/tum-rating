@@ -1,9 +1,9 @@
-import { User } from '@/admin/types.ts';
-import { endpoints } from '@/api';
-import { useQueryWithAuth } from "@/api/useQueryWithAuth.tsx";
+import {User} from '@/admin/types.ts';
+import {endpoints} from '@/api';
+import {useQueryWithAuth} from "@/api/useQueryWithAuth.tsx";
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function getUser(token: string, userId: string): Promise<User | null> {
     const response = await fetch(endpoints.getUser(userId), {
@@ -11,8 +11,8 @@ async function getUser(token: string, userId: string): Promise<User | null> {
             Authorization: `Bearer ${token}`,
         },
     });
-    if (!response.ok) throw new ResponseError('Failed on get reviews request', response);
     const data = await response.json();
+    if (!response.ok) throw new ResponseError(data.message, response, userId);
     return await data;
 }
 

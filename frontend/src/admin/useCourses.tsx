@@ -1,6 +1,7 @@
 import {useInfiniteQuery} from '@tanstack/react-query';
 
 import {endpoints} from '@/api';
+import {PAGE_SIZE} from "@/constants";
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {Course} from '@/courses/types.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
@@ -11,11 +12,12 @@ type Courses = {
 };
 
 async function getPaginatedCourses({pageParam = 1}): Promise<Courses> {
-    const PAGE_SIZE = 45;
     const response = await fetch(endpoints.getPaginatedCourses(pageParam, PAGE_SIZE));
-    const responseData = await response.json();
-    if (!response.ok) throw new ResponseError('Failed on get paginated reviews request', response);
-    return responseData;
+    const data = await response.json();
+    if (!response.ok) {
+        throw new ResponseError(data.message, response, 'courses');
+    }
+    return data;
 }
 
 export function useCourses() {

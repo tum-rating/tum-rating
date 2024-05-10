@@ -22,18 +22,9 @@ async function editCourse(token: string, course: Course, type: Method): Promise<
         },
         body: JSON.stringify(body),
     });
-    const responseData = await response.json();
+    const data = await response.json();
     if (!response.ok) {
-        notifications.update({
-            id: course._id,
-            title: 'Error',
-            message: <Text size="xs">{responseData.message || 'An error occurred'}</Text>,
-            autoClose: false,
-            withCloseButton: true,
-            color: 'red',
-            loading: false,
-        });
-        throw new ResponseError('error', response);
+        if (!response.ok) throw new ResponseError(data.message, response, course._id);
     }
     return {course, type};
 }

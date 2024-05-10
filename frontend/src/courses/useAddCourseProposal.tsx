@@ -17,9 +17,9 @@ async function addCourseProposal(token: string | null, courseReview: CourseInput
         },
         body: JSON.stringify({ ...courseReview }),
     });
-    if (!response.ok) throw new ResponseError('Failed on add review request', response);
-
-    return await response.json();
+    const data = await response.json();
+    if (!response.ok) throw new ResponseError(data.message, response,courseReview.url);
+    return data;
 }
 
 export interface CourseInput {

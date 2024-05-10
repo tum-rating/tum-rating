@@ -22,6 +22,7 @@ export function useQueryWithAuth<
     const {isError, error} = query;
     useEffect(() => {
         if (isError) {
+            console.log(error,isError)
             handleAuthErrors({error, signOut, navigate});
         }
     }, [isError]);

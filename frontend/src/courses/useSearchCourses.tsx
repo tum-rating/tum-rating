@@ -1,10 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import {useQuery} from '@tanstack/react-query';
 
-import { Course } from './types.ts';
+import {Course} from './types.ts';
 
-import { endpoints } from '@/api';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {endpoints} from '@/api';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 type Courses = {
     courses: Course[];
@@ -14,8 +14,9 @@ type Courses = {
 export async function getReviews(query: string): Promise<Courses | null> {
     const endpoint = endpoints.searchCourses(query);
     const response = await fetch(endpoint);
-    if (!response.ok) throw new ResponseError('Failed on get reviews request', response);
-    return await response.json();
+    const data = await response.json();
+    if (!response.ok) throw new ResponseError(data.message, response, query);
+    return data;
 }
 
 export function useSearchCourses(query: string) {
