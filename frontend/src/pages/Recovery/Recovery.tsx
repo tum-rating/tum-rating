@@ -85,7 +85,7 @@ export const Recovery = () => {
                     >
                         <LoadingOverlay visible={recoveryLoading} />
                         <Stack>
-                            <PasswordInput data-testid="cypress-login-password-input" autoComplete="on" required label="Password" placeholder="Password" value={form.values.password} onChange={(event) => form.setFieldValue('password', event.currentTarget.value)} error={form.errors.password} />
+                            <PasswordInput autoFocus data-autofocus data-testid="cypress-login-password-input" autoComplete="on" required label="Password" placeholder="Password" value={form.values.password} onChange={(event) => form.setFieldValue('password', event.currentTarget.value)} error={form.errors.password} />
                             <PasswordInput data-testid="cypress-login-confirm-password-input" autoComplete="on" required label="Confirm Password" placeholder="Confirm Password" value={form.values.confirmPassword} onChange={(event) => form.setFieldValue('confirmPassword', event.currentTarget.value)} error={form.errors.confirmPassword} />
                             {apiError && error && (
                                 <Alert variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>

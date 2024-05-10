@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 
-export interface useSignOutProps extends NotificationData {
+export interface useSignOutProps extends Partial<NotificationData> {
 }
 
 export interface IUseSignOut {
@@ -21,15 +21,13 @@ export function useSignOut(): IUseSignOut {
             queryClient.setQueryData([QUERY_KEY.user], null);
             queryClient.setQueryData([QUERY_KEY.user_details], null);
             userLocalStorage.removeUser();
-            if (notification) {
-                notifications.show({
-                    color: 'blue',
-                    withCloseButton: true,
-                    className: 'sign-out-notification',
-                    title: 'You have been signed out',
-                    ...notification,
-                });
-            }
+            notifications.show({
+                color: 'blue',
+                withCloseButton: true,
+                className: 'sign-out-notification',
+                message: 'You have been signed out.',
+                ...notification,
+            });
         },
         [navigate, queryClient],
     );

@@ -45,7 +45,7 @@ const AddUserReviewModal = ({
     const { data: user } = useUser();
     const navigate = useNavigate();
 
-    const offeredInSemesters = useMemo(()=> courseData.offeredInSemesters.map((semester)=>{
+    const offeredInSemesters = useMemo(()=> courseData?.offeredInSemesters.map((semester)=>{
         return {value: semester, label: semester}
     }),[courseData])
 
@@ -119,12 +119,12 @@ const AddUserReviewModal = ({
                 })}
             >
                 <Flex direction="column" gap="xs" h="100%">
-                    <Textarea autosize minRows={6} maxRows={6} placeholder="Your comment" label="Your comment" h="auto" value={form.values.comment} {...form.getInputProps('comment')} onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)} />
+                    <Textarea autoFocus data-autofocus autosize minRows={6} maxRows={6} placeholder="Your comment" label="Your comment" h="auto" value={form.values.comment} {...form.getInputProps('comment')} onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)} />
                     <Skeleton h={36} loading={courseDetailsLoading} component={
                         <Select {...form.getInputProps('semester')} label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={offeredInSemesters} />
                     }/>
 
-                    <Flex w="100%" gap="lg" direction="column" wrap="wrap" mt="md" mb="md">
+                    <Flex w="100%" gap="xl" direction="row" justify="center" wrap="wrap" mt="md" mb="md">
                         <Stack>
                             <HowEasyEditableRating onChange={(value) => form.setFieldValue('howEasyRating', value)} score={form.values.howEasyRating} />
                             {form.errors.howEasyRating && (
@@ -143,7 +143,7 @@ const AddUserReviewModal = ({
                         </Stack>
                     </Flex>
 
-                    <Flex mt="auto" justify="space-between">
+                    <Flex mt="auto" justify="space-between" mb="xs">
                         <Button onClick={() => context.closeModal(id)} color={'gray'} variant={'subtle'}>
                             Cancel
                         </Button>

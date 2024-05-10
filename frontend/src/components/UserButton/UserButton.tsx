@@ -56,11 +56,7 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                     </Box>
                     <Menu.Label>Application</Menu.Label>
                     <Menu.Item
-                        onClick={() => {
-                            signOut({
-                                message: 'Logged out successfully!',
-                            });
-                        }}
+                        onClick={() => signOut()}
                         leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}
                     >
                         Logout

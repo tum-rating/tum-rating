@@ -73,7 +73,7 @@ const RecoveryModal = () => {
                 </Flex>
             ) : (
                 <Stack>
-                    <TextInput leftSection={<IconAt size="1.1rem" />} data-testid="cypress-login-email-input" required label="Email" placeholder="Email" radius="md" {...form.getInputProps('email')} />
+                    <TextInput autoFocus data-autofocus leftSection={<IconAt size="1.1rem" />} data-testid="cypress-login-email-input" required label="Email" placeholder="Email" radius="sm" {...form.getInputProps('email')} />
                     {apiError && error && (
                         <Alert variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
                             <Text size="xs">{error.message || 'An error occurred'}</Text>
