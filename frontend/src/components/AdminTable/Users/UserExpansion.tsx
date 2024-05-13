@@ -1,10 +1,11 @@
 import { Alert, Badge, Button, Center, Divider, Flex, Stack, Text, TextInput } from '@mantine/core';
 import { IconDatabaseX, IconEditCircle, IconHammer, IconHammerOff, IconTrashX } from '@tabler/icons-react';
+import {MRT_Row} from "mantine-react-table";
 import { useState } from 'react';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
-import { User } from '@/admin/types.ts';
+import { User} from '@/admin/types.ts';
 import { useBanUser } from '@/admin/useBanUser.tsx';
 import { useRemoveUser } from '@/admin/useRemoveUser.tsx';
 import { useUser } from '@/admin/useUser.ts';
@@ -13,17 +14,17 @@ import { Skeleton } from '@/components/Skeleton';
 
 interface UserExpansionProps {
     user: User;
-    editing: boolean;
+    row: MRT_Row<User>
 }
 
-const UserExpansion = ({ user: IUser, editing: IEditing }: UserExpansionProps) => {
+const UserExpansion = ({ user: IUser, row }: UserExpansionProps) => {
     const { data: userDetails, isLoading, error, isError, refetch } = useUser(IUser.id);
     const [user, setUser] = useState(userDetails);
-    const [editing, setEditing] = useState(IEditing);
+    const [editing, setEditing] = useState(false);
     const { mutate: changeBanStatus, isLoading: banLoading } = useBanUser();
     const { mutate: removeUser, isLoading: userRemoveLoading } = useRemoveUser();
     return (
-        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md">
+        <Flex w="100%" wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md">
             {isError ? (
                 <Center h={270}>
                     <Flex direction="column">
@@ -142,7 +143,13 @@ const UserExpansion = ({ user: IUser, editing: IEditing }: UserExpansionProps) =
                             <Button
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    removeUser(userDetails?.id);
+                                    try {
+                                        removeUser(userDetails?.id);
+                                    } catch (e) {
+
+                                    } finally {
+                                        row.toggleExpanded();
+                                    }
                                 }}
                                 loading={userRemoveLoading || isLoading || banLoading}
                                 leftSection={<IconTrashX width={16} />}
