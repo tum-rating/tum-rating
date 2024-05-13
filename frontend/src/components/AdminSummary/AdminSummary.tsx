@@ -6,6 +6,7 @@ import {useAllUsers} from '@/admin/useAllUsers.ts';
 import {useCoursesProposals} from '@/admin/useCoursesProposals.ts';
 import {AdminStatsBox} from '@/components/AdminSummary/AdminStatsBox.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
+import {AdminUsersSummaryChart} from "@/components/AdminSummary/AdminUsersSummaryChart.tsx";
 
 function calculatePercentageIncrease(items: CourseProposal[], hours: number): {
     diffInPercent: number,
@@ -43,6 +44,7 @@ const AdminSummary = () => {
                     diffValue: null
                 }} title="Users" link={getPath(Paths.adminUsers)} icon={<IconUser/>}
                                description="Total number of users"/>
+                <AdminUsersSummaryChart/>
             </Flex>
         </Box>
     );
