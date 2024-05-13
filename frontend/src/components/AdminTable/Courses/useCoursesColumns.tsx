@@ -1,57 +1,64 @@
-import {useEffect, useState} from 'react';
+import {Flex} from "@mantine/core";
+import {MRT_ColumnDef} from "mantine-react-table";
 
-import {useTableColumns} from '../Shared/useTableColumns';
-
-import {useCourses} from "@/admin/useCourses.tsx";
+import {NumberRatingBadge} from "@/components/Course";
 import {Course} from '@/courses/types.ts';
 
 export const useCoursesColumns = () => {
-    const {data} = useCourses();
-    const [courses, setCourses] = useState<Course[]>([]);
-    const [columns, setColumns] = useState([]);
-    const filterableColumns = ['course', 'offeredInSemesters', 'otherLecturers'];
-    const {
-        sortState,
-        setSortState,
-        filterState,
-        resetFilters,
-        resetSorting,
-        isAnyFilterActive
-    } = useTableColumns(courses, filterableColumns, setCourses);
+    const columns: MRT_ColumnDef<Course | null>[] = [
+            {
+                header: 'Course',
+                accessorKey: 'name',
 
-    useEffect(() => {
-        if (data) {
-            const newRecords = data.pages.map((v) => v.courses.map((el) => el)).flat();
-            setCourses([...newRecords]);
-        }
-    }, [data]);
-
-    useEffect(() => {
-        setColumns(columnsTemplate());
-    }, [filterState, sortState]);
-
-    const columnsTemplate = () => [
-        {
-            accessor: 'name',
-            title: 'Course name',
-        },
-        {
-            accessor: 'offeredInSemesters',
-            title: 'Semester',
-        },
-        {
-            title: 'Professor',
-            accessor: 'professor',
-        },
-    ];
-
-    return {
-        data: courses,
-        sortStatus: sortState,
-        setSortStatus: setSortState,
-        columns,
-        resetFilters,
-        resetSorting,
-        isAnyFilterActive,
-    };
-};
+                size: 200,
+                mantineTableBodyCellProps: () => ({
+                    style: {
+                        fontWeight: "500",
+                    }
+                }),
+                Cell: ({row}) => {
+                    return (
+                        <>
+                    <span>
+                        {row.original.name}{' '}
+                    </span>
+                        </>
+                    );
+                },
+            },
+            {
+                header: 'Professor',
+                accessorKey: 'professor',
+                size: 80,
+            },
+            {
+                header: 'How interesting',
+                accessorKey: 'howInterestingRatingAverage',
+                size: 60,
+                Cell: ({row}) => {
+                    return (
+                        <>
+                            <Flex align="center" gap="xs">
+                                <NumberRatingBadge score={row.original.howInterestingRatingAverage}/>
+                            </Flex>
+                        </>
+                    );
+                },
+            },
+            {
+                header: 'How easy',
+                accessorKey: 'howEasyRatingAverage',
+                size: 50,
+                Cell: ({row}) => {
+                    return (
+                        <>
+                            <Flex align="center" gap="xs">
+                                <NumberRatingBadge score={row.original.howEasyRatingAverage}/>
+                            </Flex>
+                        </>
+                    );
+                },
+            },
+        ]
+    return {columns}
+}

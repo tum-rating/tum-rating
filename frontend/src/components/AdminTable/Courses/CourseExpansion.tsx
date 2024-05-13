@@ -1,6 +1,7 @@
 import {Alert, Button, Center, Divider, Flex, Stack, TagsInput, Text, TextInput} from '@mantine/core';
 import {useForm} from "@mantine/form";
 import {IconDatabaseX, IconEditCircle, IconTrashX} from '@tabler/icons-react';
+import {MRT_Row} from "mantine-react-table";
 import {useEffect, useState} from 'react';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
@@ -12,10 +13,10 @@ import {useDetailCourse} from "@/courses/useCourse.tsx";
 
 interface CourseExpansionProps {
     course: Course;
-    editing?: boolean;
+    row: MRT_Row<Course>
 }
 
-const CourseExpansion = ({course: ICourse}: CourseExpansionProps) => {
+const CourseExpansion = ({course: ICourse, row}: CourseExpansionProps) => {
 
     const {data: courseDetails, isLoading, isError, refetch} = useDetailCourse(ICourse._id);
 
@@ -25,7 +26,7 @@ const CourseExpansion = ({course: ICourse}: CourseExpansionProps) => {
 
     useEffect(() => {
         if (courseDetails) {
-            ["_id","courseId", "courseNumber", "name", "professor", "otherLecturers", "offeredInSemesters"].forEach((x) => {
+            ["_id", "courseId", "courseNumber", "name", "professor", "otherLecturers", "offeredInSemesters"].forEach((x) => {
                 form.setFieldValue(x, courseDetails[x])
             })
         }
@@ -51,7 +52,7 @@ const CourseExpansion = ({course: ICourse}: CourseExpansionProps) => {
     });
 
     return (
-        <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md">
+        <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md" w="100%">
             {isError ? (
                 <Center h={270}>
                     <Flex direction="column">
@@ -272,7 +273,13 @@ const CourseExpansion = ({course: ICourse}: CourseExpansionProps) => {
                                 {!editing ? 'Edit Course' : 'Save Course'}
                             </Button>
                             <Button onClick={() => {
-                                editCourse({course: form.values, type: "DELETE"});
+                                try {
+                                    editCourse({course: form.values, type: "DELETE"});
+                                } catch (e) {
+
+                                } finally {
+                                    row.toggleExpanded();
+                                }
                             }} leftSection={<IconTrashX width={16}/>} color="red">
                                 Remove Course
                             </Button>
