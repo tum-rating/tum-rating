@@ -18,21 +18,12 @@ async function removeUser(token: string, userId: string): Promise<any> {
             Authorization: `Bearer ${token}`,
         },
     });
-    const responseData = await response.json();
+    const data = await response.json();
     if (!response.ok) {
-        notifications.update({
-            id: userId,
-            title: 'Error',
-            message: <Text size="xs">{responseData.message || 'An error occurred'}</Text>,
-            autoClose: false,
-            withCloseButton: true,
-            color: 'red',
-            loading: false,
-        });
-        throw new ResponseError('error', response);
+        throw new ResponseError(data.message, response, userId);
     }
-    responseData._id = userId;
-    return responseData;
+    data._id = userId;
+    return data;
 }
 
 export function useRemoveUser(): any {

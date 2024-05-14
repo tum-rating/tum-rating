@@ -14,6 +14,7 @@ import { HowEasyRating } from '@/components/Course/HowEasyRating.tsx';
 import { HowInterestingRating } from '@/components/Course/HowInterestingRating.tsx';
 import { ReviewsBox } from '@/components/Course/ReviewsBox.tsx';
 import { Skeleton } from '@/components/Skeleton';
+import { CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH } from '@/constants';
 import { useDetailCourse } from '@/courses/useCourse.tsx';
 import { getPath, Paths } from '@/routes/paths.ts';
 
@@ -38,7 +39,13 @@ const Course = () => {
     }
 
     return (
-        <Box className={classes.container} maw={1320}>
+        <Box
+            className={classes.container}
+            maw={MAX_SITE_WIDTH}
+            style={{
+                top: HEADER_HEIGHT + CONTENT_TOP_SPACING + 'px',
+            }}
+        >
             {isError ? (
                 <Box h="calc(100vh - 69px)">
                     <Center h="100%">

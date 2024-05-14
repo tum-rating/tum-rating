@@ -1,13 +1,14 @@
 import { Badge, Button, Container, Flex, LoadingOverlay, Select, Stack, Text, Textarea } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useUser } from '@/auth/useUser.tsx';
 import { HowEasyEditableRating } from '@/components/Course/HowEasyEditableRating.tsx';
 import { HowInterestingEditableRating } from '@/components/Course/HowInterestingEditableRating.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
+import { Skeleton } from '@/components/Skeleton';
 import { DetailCourse } from '@/courses/types.ts';
 import { useAddUserReview, UserAddReviewInput } from '@/courses/useAddUserReview.tsx';
 import { useDetailCourse } from '@/courses/useCourse.tsx';
@@ -26,6 +27,7 @@ const openEditUserReviewModal = ({ courseId, userReview, ...props }) => {
 const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ courseId: string }>) => {
     const { courseId } = innerProps;
     const { mutate: editUserReview, isSuccess, isLoading } = useAddUserReview(courseId, 'PATCH');
+    const { data: courseData, isLoading: courseDetailsLoading, isError: courseDetailsError } = useDetailCourse(courseId || '');
     const { data: user } = useUser();
     const { data: userReview }: { data: DetailCourse } = useDetailCourse(courseId, { staleTime: Infinity });
     const location = useLocation();
@@ -39,6 +41,14 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
             });
         }
     }, [isSuccess]);
+
+    const offeredInSemesters = useMemo(
+        () =>
+            courseData?.offeredInSemesters.map((semester) => {
+                return { value: semester, label: semester };
+            }),
+        [courseData],
+    );
 
     useEffect(() => {
         const userReviewComment = userReview?.reviews.find((data) => data.userId === user.id);
@@ -75,6 +85,23 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
         context.closeModal(id);
     };
 
+    if (courseDetailsError) {
+        return (
+            <Stack>
+                <Text fw="600" c="red">
+                    Unexpected error - course not found
+                </Text>
+                <Button
+                    onClick={() => {
+                        context.closeModal(id);
+                    }}
+                >
+                    Back to Course
+                </Button>
+            </Stack>
+        );
+    }
+
     return (
         <Container px={0} pos="relative" h="100%">
             <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
@@ -86,7 +113,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
             >
                 <Flex direction="column" gap="xs" h="100%">
                     <Textarea placeholder="Your comment" label="Your comment" autosize maxRows={6} minRows={6} value={form.values.comment} {...form.getInputProps('comment')} onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)} />
-                    <Select {...form.getInputProps('semester')} label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={[{ value: '2023 S', label: '2023 S' }]} />
+                    <Skeleton h={36} loading={courseDetailsLoading} component={<Select {...form.getInputProps('semester')} label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={offeredInSemesters} />} />
                     <Flex w="100%" gap="lg" direction="column" wrap="wrap" mt="md" mb="md">
                         <Stack>
                             <HowEasyEditableRating onChange={(value) => form.setFieldValue('howEasyRating', value)} score={form.values.howEasyRating} />
@@ -105,7 +132,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
                             )}
                         </Stack>
                     </Flex>
-                    <Flex mt="auto" justify="space-between">
+                    <Flex mt="auto" justify="space-between" mb="xs">
                         <Button onClick={() => context.closeModal(id)} color={'gray'} variant={'subtle'}>
                             Cancel
                         </Button>

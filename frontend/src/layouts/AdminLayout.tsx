@@ -1,30 +1,29 @@
-import {Anchor, AppShell, Burger, Button, Flex, Group, NavLink, Text} from '@mantine/core';
-import {useDisclosure} from '@mantine/hooks';
-import {PropsWithChildren, useEffect, useState} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import { Anchor, AppShell, Burger, Button, Flex, Group, NavLink, Text } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { PropsWithChildren, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import classes from "./AdminLayout.module.css"
+import classes from './AdminLayout.module.css';
 
-import {useCoursesProposals} from '@/admin/useCoursesProposals.ts';
-import {useUser} from '@/auth/useUser.tsx';
-import {PageAdminNotFound} from '@/pages/PageNotFound';
-import {getPath, Paths} from '@/routes/paths.ts';
-
+import { useCoursesProposals } from '@/admin/useCoursesProposals.ts';
+import { useUser } from '@/auth/useUser.tsx';
+import { AdminErrorBoundary } from '@/pages/PageNotFound';
+import { getPath, Paths } from '@/routes/paths.ts';
 
 const adminTabs = [
-    {label: 'Dashboard', link: getPath(Paths.admin)},
-    {label: 'Proposals', link: getPath(Paths.adminCoursesProposals)},
-    {label: 'Courses', link: getPath(Paths.adminCourses)},
-    {label: 'Users', link: getPath(Paths.adminUsers)},
+    { label: 'Dashboard', link: getPath(Paths.admin) },
+    { label: 'Proposals', link: getPath(Paths.adminCoursesProposals) },
+    { label: 'Courses', link: getPath(Paths.adminCourses) },
+    { label: 'Users', link: getPath(Paths.adminUsers) },
 ];
 
 const HEADER_HEIGHT = 60;
 
-export function AdminLayout({children}: PropsWithChildren) {
-    const [opened, {toggle}] = useDisclosure();
+export function AdminLayout({ children }: PropsWithChildren) {
+    const [opened, { toggle }] = useDisclosure();
     const [active, setActive] = useState(adminTabs[0].link);
-    const {error, isFetched, isLoading, isError} = useCoursesProposals();
-    const {data: user, isFetched: userFetched} = useUser();
+    const { error, isFetched, isLoading, isError } = useCoursesProposals();
+    const { data: user, isFetched: userFetched } = useUser();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -37,13 +36,14 @@ export function AdminLayout({children}: PropsWithChildren) {
     }, [location]);
 
     if (isLoading || !userFetched) return null;
+
     if (!user || (isFetched && isError)) {
-        return <PageAdminNotFound/>;
+        return <AdminErrorBoundary />;
     } else if (!error && isFetched) {
         return (
             <AppShell
-                header={{height: HEADER_HEIGHT}}
-                navbar={{width: 300, breakpoint: 'sm', collapsed: {desktop: true, mobile: !opened}}}
+                header={{ height: HEADER_HEIGHT }}
+                navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: true, mobile: !opened } }}
                 style={{
                     overflow: 'hidden',
                     height: '100vh',
@@ -51,8 +51,8 @@ export function AdminLayout({children}: PropsWithChildren) {
             >
                 <AppShell.Header>
                     <Group h="100%" px="md">
-                        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm"/>
-                        <Group justify="space-between" style={{flex: 1}}>
+                        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+                        <Group justify="space-between" style={{ flex: 1 }}>
                             <Flex align="flex-end">
                                 <Anchor underline="never" href={getPath(Paths.admin)}>
                                     <Flex align="flex-end">
@@ -82,7 +82,7 @@ export function AdminLayout({children}: PropsWithChildren) {
                                         <Button
                                             key={link.label}
                                             size="xs"
-                                            className={classes["admin-tab"]}
+                                            className={classes['admin-tab']}
                                             variant={active === link.link ? 'filled' : 'outline'}
                                             onClick={() => {
                                                 navigate(link.link);
@@ -114,7 +114,7 @@ export function AdminLayout({children}: PropsWithChildren) {
                     ))}
                     <NavLink href="#required-for-focus" label="Back to app" onClick={() => navigate('/')}></NavLink>
                 </AppShell.Navbar>
-                <AppShell.Main pt={HEADER_HEIGHT} style={{background: 'var(--primary-light-gradient)'}}>
+                <AppShell.Main pt={HEADER_HEIGHT} style={{ background: 'var(--primary-light-gradient)' }}>
                     {user ? children : null}
                 </AppShell.Main>
             </AppShell>

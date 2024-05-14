@@ -1,6 +1,8 @@
-import { Badge, Box, Button, Flex, Group, Text, ActionIcon } from '@mantine/core';
-import { IconFilterX, IconRefresh } from '@tabler/icons-react';
-import { DataTable, DataTableProps } from 'mantine-datatable';
+import { ActionIcon, Badge, Box, Flex, Group, Text, Tooltip } from '@mantine/core';
+import { IconRefresh } from '@tabler/icons-react';
+import clsx from 'clsx';
+import { MantineReactTable, MRT_GlobalFilterTextInput, MRT_RowVirtualizer, MRT_ShowHideColumnsButton, MRT_SortingState, MRT_ToggleFiltersButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMantineReactTable } from 'mantine-react-table';
+import { useRef, useState } from 'react';
 
 import { useUsersColumns } from './useUsersColumns.tsx';
 import rowClasses from '../Shared/styles/RowStyles.module.css';
@@ -18,61 +20,86 @@ const rowClassFn = (user: User) => {
     if (user.role === 1) {
         return rowClasses.goldRow;
     }
-    return undefined;
+    return rowClasses.grayRow;
 };
 
 const AdminUsersTable = () => {
-    const { isFetching, refetch } = useAllUsers();
+    const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
+    const { data, isLoading, refetch } = useAllUsers();
+    const [sorting, setSorting] = useState<MRT_SortingState>([]);
     const { isLoading: banLoading } = useBanUser();
+    const { columns } = useUsersColumns();
 
-    const rowExpansion: DataTableProps<any>['rowExpansion'] = {
-        allowMultiple: true,
-        collapseProps: {
-            transitionDuration: 0,
-            animateOpacity: false,
-            transitionTimingFunction: 'ease-out',
+    const table = useMantineReactTable({
+        columns,
+        data,
+        enableBottomToolbar: false,
+        enableGlobalFilterModes: true,
+        enablePagination: false,
+        enableRowVirtualization: true,
+        onSortingChange: setSorting,
+        mantineTableProps: {
+            withColumnBorders: true,
+            highlightOnHover: false,
+            withRowBorders: true,
+            withTableBorder: true,
         },
-        content: ({ record }) => <UserExpansion user={record} editing={false} />,
-    };
-
-    const { data: users, sortStatus, setSortStatus, columns, resetFilters, isAnyFilterActive } = useUsersColumns();
-    return (
-        <Box h="calc(100vh-110px)">
+        state: { isLoading: isLoading || banLoading, sorting },
+        initialState: {
+            density: 'xs',
+            showGlobalFilter: true,
+        },
+        mantineTableContainerProps: () => ({
+            className: clsx(classes.table),
+        }),
+        mantineTableBodyCellProps: ({ row }) => ({
+            className: clsx(classes.tableCellRow, rowClassFn(row.original)),
+        }),
+        displayColumnDefOptions: {
+            'mrt-row-expand': {
+                grow: false,
+            },
+        },
+        rowVirtualizerOptions: { overscan: 15 },
+        renderTopToolbar: ({ table }) => (
             <Flex justify="space-between" align="center" h={50} px="xs" bg="gray.1">
-                <Flex gap="4" align="center">
-                    <Badge radius="sm" fw={800} c="white" px={6}>
-                        {isFetching || banLoading ? '...' : users?.length}
-                    </Badge>
-                    <Text fw={600}>Users</Text>
+                <Flex gap="xs">
+                    <Flex gap="6" align="center" mr="auto">
+                        <Badge radius="sm" fw={800} c="white" px={6}>
+                            {data.length}
+                        </Badge>
+                        <Text fw={600}>Active users</Text>
+                    </Flex>
                 </Flex>
-                <Group>
-                    {isAnyFilterActive && (
-                        <>
-                            <Box visibleFrom="xs">
-                                <Button variant="light" size="xs" rightSection={<IconFilterX size={16} />} onClick={() => resetFilters()}>
-                                    Reset filters
-                                </Button>
-                            </Box>
-                            <Box hiddenFrom="xs">
-                                <ActionIcon variant="light" onClick={() => resetFilters()}>
-                                    <IconFilterX size={16} />
-                                </ActionIcon>
-                            </Box>
-                        </>
-                    )}
-                    <Box visibleFrom="xs">
-                        <Button variant="light" size="xs" rightSection={<IconRefresh size={16} />} onClick={() => refetch()}>
-                            Refresh
-                        </Button>
-                    </Box>
-                    <Box hiddenFrom="xs">
-                        <ActionIcon variant="light" onClick={() => refetch()}>
-                            <IconRefresh size={16} />
+                <MRT_GlobalFilterTextInput size="sm" variant="default" hidden={false} table={table} />
+                <Group gap="xs">
+                    <MRT_ToggleGlobalFilterButton size="lg" variant="default" table={table} />
+                    <MRT_ToggleFiltersButton size="lg" variant="default" table={table} />
+                    <MRT_ShowHideColumnsButton size="lg" variant="default" table={table} />
+                    <MRT_ToggleFullScreenButton size="lg" variant="default" table={table} />
+                    <Tooltip label="Refresh proposals">
+                        <ActionIcon size="lg" variant="default" onClick={() => refetch()}>
+                            <IconRefresh size={20} />
                         </ActionIcon>
-                    </Box>
+                    </Tooltip>
                 </Group>
             </Flex>
-            <DataTable height={100} withTableBorder withColumnBorders idAccessor="_id" striped pinLastColumn fetching={isFetching || banLoading} sortStatus={sortStatus} onSortStatusChange={setSortStatus} rowClassName={(record) => rowClassFn(record)} className={classes.table} rowExpansion={rowExpansion} records={users} columns={columns} />
+        ),
+
+        mantineDetailPanelProps: {
+            style: {
+                width: '100%',
+                padding: '0 !important',
+                margin: 0,
+            },
+        },
+        rowVirtualizerInstanceRef,
+        renderDetailPanel: ({ row }) => <UserExpansion user={row.original} row={row} />,
+    });
+
+    return (
+        <Box h="calc(100vh-110px)">
+            <MantineReactTable table={table} />
         </Box>
     );
 };

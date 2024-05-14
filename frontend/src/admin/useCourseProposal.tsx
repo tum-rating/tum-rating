@@ -1,6 +1,5 @@
-import { notifications } from '@mantine/notifications';
 import { endpoints } from '@/api';
-import {useQueryWithAuth} from "@/api/useQueryWithAuth.tsx";
+import { useQueryWithAuth } from '@/api/useQueryWithAuth.tsx';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
@@ -12,21 +11,11 @@ const getCourseProposal = async (token: string, courseProposalId: string) => {
             Authorization: `Bearer ${token}`,
         },
     });
-    const responseData = await response.json();
+    const data = await response.json();
     if (!response.ok) {
-        notifications.show({
-            id: courseProposalId,
-            title: 'Error',
-            message: responseData.message || 'An error occurred',
-            autoClose: false,
-            withCloseButton: true,
-            color: 'red',
-            loading: false,
-        });
-        throw new ResponseError('error', response);
+        throw new ResponseError(data.message, response, courseProposalId);
     }
-
-    return responseData;
+    return data;
 };
 
 const useCourseProposal = (courseProposalId: string) => {

@@ -1,6 +1,6 @@
 import { User } from '@/admin/types.ts';
 import { endpoints } from '@/api';
-import { useQueryWithAuth } from "@/api/useQueryWithAuth.tsx";
+import { useQueryWithAuth } from '@/api/useQueryWithAuth.tsx';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
@@ -11,8 +11,10 @@ async function getAllUsers(token: string): Promise<User[] | undefined> {
             Authorization: `Bearer ${token}`,
         },
     });
-    if (!response.ok) throw new ResponseError('Failed on get reviews request', response);
-    let data = await response.json();
+    const data = await response.json();
+    if (!response.ok) {
+        throw new ResponseError(data.message, response, 'get-all-users');
+    }
     return data.users || [];
 }
 

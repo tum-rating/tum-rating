@@ -1,17 +1,19 @@
 import { Flex } from '@mantine/core';
 import { MRT_ColumnDef } from 'mantine-react-table';
 import { useMemo } from 'react';
+import { isMobileOnly } from 'react-device-detect';
 
 import { NumberRatingBadge } from '@/components/Course';
 import { Course } from '@/courses/types.ts';
 
-export const useCoursesColumns = () => {
+const useCoursesTableColumns = () => {
     const columns: MRT_ColumnDef<Course | null>[] = useMemo(() => {
         return [
             {
                 header: 'Course',
                 accessorKey: 'name',
-                size: 200,
+
+                size: isMobileOnly ? 100 : 200,
                 mantineTableBodyCellProps: () => ({
                     style: {
                         fontWeight: '500',
@@ -20,7 +22,14 @@ export const useCoursesColumns = () => {
                 Cell: ({ row }) => {
                     return (
                         <>
-                            <span>{row.original.name} </span>
+                            <span>
+                                {row.original.name}{' '}
+                                {isMobileOnly ? (
+                                    <>
+                                        <br /> <span style={{ color: 'var(--mantine-color-dimmed' }}>{row.original.professor}</span>
+                                    </>
+                                ) : null}
+                            </span>
                         </>
                     );
                 },
@@ -58,12 +67,15 @@ export const useCoursesColumns = () => {
                     );
                 },
             },
-            {
-                header: 'Votes',
-                size: 50,
-                accessorKey: 'votesNumber',
-            },
-        ];
-    }, []);
+        ].filter((x) => {
+            if (isMobileOnly) {
+                return x.header !== 'Professor';
+            }
+            return true;
+        });
+    }, [isMobileOnly]);
+
     return { columns };
 };
+
+export { useCoursesTableColumns };

@@ -1,6 +1,7 @@
 import { Alert, Anchor, Box, Button, Checkbox, Container, Flex, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput, ThemeIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
 import { IconFaceIdError, IconMail } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSignUp } from '@/auth/useSignUp.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 interface SignUpModalProps extends ContextModalProps {}
 
@@ -23,6 +25,10 @@ const SignUpModal = () => {
     const { isSuccess, isPending: isLoading, mutate: signUp, error, isError } = useSignUp();
     const [apiError, setApiError] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        notifications.clean();
+    }, []);
 
     useEffect(() => {
         setApiError(isError);
@@ -72,7 +78,7 @@ const SignUpModal = () => {
                         })}
                     >
                         <Stack>
-                            <TextInput  data-testid="cypress-login-username-input" label={'Your name'} required placeholder={'Your name'} value={form.values.username} onChange={(event) => form.setFieldValue('username', event.currentTarget.value)} />
+                            <TextInput autoFocus data-autofocus data-testid="cypress-login-username-input" label={'Your name'} required placeholder={'Your name'} value={form.values.username} onChange={(event) => form.setFieldValue('username', event.currentTarget.value)} />
                             <TextInput type="email" data-testid="cypress-login-email-input" required label="Email" placeholder="Email" value={form.values.email} onChange={(event) => form.setFieldValue('email', event.currentTarget.value)} error={form.errors.email} />
                             <PasswordInput data-testid="cypress-login-password-input" autoComplete="on" required label="Password" placeholder="Password" value={form.values.password} onChange={(event) => form.setFieldValue('password', event.currentTarget.value)} error={form.errors.password} />
                             <Checkbox label="Accept terms of usage" checked={form.values.terms} onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)} />
@@ -83,7 +89,7 @@ const SignUpModal = () => {
                             )}
                             {apiError && error && (
                                 <Alert variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
-                                    <Text size="xs">{error.message || 'An error occurred'}</Text>
+                                    <Text size="xs">{error instanceof ResponseError ? error?.message : 'An error occurred'}</Text>
                                 </Alert>
                             )}
                             <Group>

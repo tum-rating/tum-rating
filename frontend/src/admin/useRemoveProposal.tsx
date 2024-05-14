@@ -18,21 +18,12 @@ async function removeProposal(token: string, proposalId: string): Promise<any> {
             Authorization: `Bearer ${token}`,
         },
     });
-    const responseData = await response.json();
+    const data = await response.json();
     if (!response.ok) {
-        notifications.update({
-            id: proposalId,
-            title: 'Error',
-            message: <Text size="xs">{responseData.message || 'An error occurred'}</Text>,
-            autoClose: false,
-            withCloseButton: true,
-            color: 'red',
-            loading: false,
-        });
-        throw new ResponseError('error', response);
+        throw new ResponseError(data.message, response, proposalId);
     }
-    responseData._id = proposalId;
-    return responseData;
+    data._id = proposalId;
+    return data;
 }
 
 export function useRemoveProposal(): any {

@@ -14,13 +14,15 @@ type Courses = {
 export async function getReviews(query: string): Promise<Courses | null> {
     const endpoint = endpoints.searchCourses(query);
     const response = await fetch(endpoint);
-    if (!response.ok) throw new ResponseError('Failed on get reviews request', response);
-    return await response.json();
+    const data = await response.json();
+    if (!response.ok) throw new ResponseError(data.message, response, query);
+    return data;
 }
 
 export function useSearchCourses(query: string) {
     return useQuery({
         queryKey: [QUERY_KEY.search_query, query],
+        enabled: !!query,
         queryFn: async () => getReviews(query),
     });
 }

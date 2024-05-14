@@ -25,9 +25,9 @@ async function addUserReview(user: UserWithToken | null | undefined, userReview:
         },
         body: JSON.stringify(body),
     });
-    const responseData = await response.json();
-    if (!response.ok) throw new ResponseError('Failed on get paginated reviews request', response);
-    return responseData;
+    const data = await response.json();
+    if (!response.ok) throw new ResponseError(data.message, response, courseId);
+    return data;
 }
 
 export interface UserAddReviewInput {
@@ -45,7 +45,7 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any 
         onSuccess: () => {
             notifications.show({
                 title: 'Success',
-                message: 'Success !',
+                message: type === 'POST' ? 'Review added' : 'Review updated',
                 color: 'green',
                 icon: <IconCheck />,
             });

@@ -1,6 +1,7 @@
 import { Alert, Anchor, Box, Button, Container, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
 import { IconAt, IconFaceIdError, IconLock } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginInput, useSignIn } from '@/auth/useSignIn.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 interface SignInModalProps extends ContextModalProps {}
 
@@ -27,6 +29,10 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
     useEffect(() => {
         setApiError(isError);
     }, [isError]);
+
+    useEffect(() => {
+        notifications.clean();
+    }, []);
 
     const form = useForm({
         initialValues: {
@@ -56,7 +62,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
                 <LoadingOverlay visible={signInLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
                 <form onSubmit={form.onSubmit((e) => handleSubmit(e))}>
                     <Stack>
-                        <TextInput type="email" leftSection={<IconAt size="1.1rem" />} data-testid="cypress-login-email-input" required label="Email" placeholder="Email" {...form.getInputProps('email')} />
+                        <TextInput autoFocus data-autofocus type="email" leftSection={<IconAt size="1.1rem" />} data-testid="cypress-login-email-input" required label="Email" placeholder="Email" {...form.getInputProps('email')} />
                         <PasswordInput leftSection={<IconLock size="1.1rem" />} data-testid="cypress-login-password-input" autoComplete="on" required label="Password" placeholder="Password" {...form.getInputProps('password')} />
                         <Group justify="space-between">
                             <Anchor
@@ -82,7 +88,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
                         </Group>
                         {apiError && error && (
                             <Alert variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
-                                <Text size="xs">{error.message || 'An error occurred'}</Text>
+                                <Text size="xs">{error instanceof ResponseError ? error?.message : 'An error occurred'}</Text>
                             </Alert>
                         )}
                         <Button mt="xs" type="submit" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>

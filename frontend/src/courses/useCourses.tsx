@@ -8,8 +8,9 @@ import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function getCourses(): Promise<Course[] | null> {
     const response = await fetch(endpoints.getAllCourses);
-    if (!response.ok) throw new ResponseError('Failed on get reviews request', response);
-    return await response.json();
+    const data = await response.json();
+    if (!response.ok) throw new ResponseError(data.message, response, 'courses');
+    return data;
 }
 
 export function useCourses() {

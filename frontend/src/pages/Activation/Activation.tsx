@@ -19,7 +19,7 @@ export const Activation = () => {
         if (isError) {
             navigate('/404');
         }
-    }, [isError, navigate]);
+    }, [isError]);
 
     return (
         <Flex className={classes.root} justify="center" align="center">

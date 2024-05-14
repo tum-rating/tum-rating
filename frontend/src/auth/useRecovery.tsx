@@ -1,8 +1,4 @@
-import { notifications } from '@mantine/notifications';
-import { IconX } from '@tabler/icons-react';
-import { useMutation } from '@tanstack/react-query';
-
-import { endpoints } from '@/api';
+import { endpoints, useMutationWithAuth } from '@/api';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function recovery(props: RecoveryBody) {
@@ -21,9 +17,8 @@ async function recovery(props: RecoveryBody) {
         body: JSON.stringify(requestBody),
     });
 
-    if (!response.ok) {
-        throw new Error('Password recovery failed');
-    }
+    const data = await response.json();
+    if (!response.ok) throw new ResponseError(data.message, response, 'recovery');
 
     return true;
 }
@@ -36,20 +31,12 @@ export interface RecoveryBody {
 }
 
 export function useRecovery() {
-    return useMutation({
+    return useMutationWithAuth({
         mutationFn: async ({ email, password, token }: RecoveryBody) =>
             await recovery({
                 email,
                 password,
                 token,
             }),
-        onError: (error) => {
-            const errorMessage = error instanceof ResponseError ? error.message : 'Ops.. Error on sign up. Try again!';
-            notifications.show({
-                message: errorMessage,
-                color: 'red',
-                icon: <IconX />,
-            });
-        },
     });
 }
