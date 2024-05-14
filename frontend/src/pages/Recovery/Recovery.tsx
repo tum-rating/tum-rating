@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import classes from './Recovery.module.css';
 
 import { useRecovery } from '@/auth/useRecovery.tsx';
+import {ResponseError} from "@/utils/Errors/ResponseError.ts";
 
 interface RecoveryFormProps {
     password: string;
@@ -89,7 +90,7 @@ export const Recovery = () => {
                             <PasswordInput data-testid="cypress-login-confirm-password-input" autoComplete="on" required label="Confirm Password" placeholder="Confirm Password" value={form.values.confirmPassword} onChange={(event) => form.setFieldValue('confirmPassword', event.currentTarget.value)} error={form.errors.confirmPassword} />
                             {apiError && error && (
                                 <Alert variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
-                                    <Text size="xs">{error.message || 'An error occurred'}</Text>
+                                    <Text size="xs">{error instanceof ResponseError ? error?.message : 'An error occurred'}</Text>
                                 </Alert>
                             )}
                             <div className={classes.controls}>
