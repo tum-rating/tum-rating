@@ -67,6 +67,7 @@ const useAddCourseProposal = () => {
                 color: 'green',
                 loading: false,
             });
+            return true;
         },
     });
 };
