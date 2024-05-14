@@ -1,4 +1,4 @@
-import {endpoints, useMutationWithAuth} from '@/api';
+import { endpoints, useMutationWithAuth } from '@/api';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function recovery(props: RecoveryBody) {

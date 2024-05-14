@@ -1,12 +1,12 @@
-import {Text} from "@mantine/core";
-import {notifications} from "@mantine/notifications";
+import { Text } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 
-import {ReadyCourseProposal} from "@/admin/types.ts";
-import {endpoints, useMutationWithAuth} from "@/api";
-import * as userLocalStorage from "@/auth/user.localstore.ts";
-import {QUERY_KEY} from "@/constants/queryKeys.ts";
-import {queryClient} from "@/react-query/client.ts";
-import {ResponseError} from "@/utils/Errors/ResponseError.ts";
+import { ReadyCourseProposal } from '@/admin/types.ts';
+import { endpoints, useMutationWithAuth } from '@/api';
+import * as userLocalStorage from '@/auth/user.localstore.ts';
+import { QUERY_KEY } from '@/constants/queryKeys.ts';
+import { queryClient } from '@/react-query/client.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 const addCourseProposal = async (token: string, courseProposal: ReadyCourseProposal) => {
     if (!token) {
@@ -36,8 +36,7 @@ const addCourseProposal = async (token: string, courseProposal: ReadyCoursePropo
         if (!response.ok) throw new ResponseError(data.message, response, courseProposal.courseId);
     }
     return courseProposal;
-}
-
+};
 
 const useAddCourseProposal = () => {
     const token = userLocalStorage.getUser();
@@ -69,8 +68,7 @@ const useAddCourseProposal = () => {
                 loading: false,
             });
         },
-    })
-}
+    });
+};
 
-export {useAddCourseProposal}
-
+export { useAddCourseProposal };

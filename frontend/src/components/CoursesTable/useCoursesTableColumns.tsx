@@ -1,10 +1,10 @@
-import {Flex} from "@mantine/core";
-import {MRT_ColumnDef} from "mantine-react-table";
-import {useMemo} from "react";
-import {isMobileOnly} from "react-device-detect";
+import { Flex } from '@mantine/core';
+import { MRT_ColumnDef } from 'mantine-react-table';
+import { useMemo } from 'react';
+import { isMobileOnly } from 'react-device-detect';
 
-import {NumberRatingBadge} from "@/components/Course";
-import {Course} from "@/courses/types.ts";
+import { NumberRatingBadge } from '@/components/Course';
+import { Course } from '@/courses/types.ts';
 
 const useCoursesTableColumns = () => {
     const columns: MRT_ColumnDef<Course | null>[] = useMemo(() => {
@@ -16,21 +16,20 @@ const useCoursesTableColumns = () => {
                 size: isMobileOnly ? 100 : 200,
                 mantineTableBodyCellProps: () => ({
                     style: {
-                        fontWeight: "500",
-                    }
+                        fontWeight: '500',
+                    },
                 }),
-                Cell: ({row}) => {
+                Cell: ({ row }) => {
                     return (
                         <>
-                    <span>
-                        {row.original.name}{' '}
-                        {isMobileOnly ? (
-                            <>
-                                <br/> <span
-                                style={{color: 'var(--mantine-color-dimmed'}}>{row.original.professor}</span>
-                            </>
-                        ) : null}
-                    </span>
+                            <span>
+                                {row.original.name}{' '}
+                                {isMobileOnly ? (
+                                    <>
+                                        <br /> <span style={{ color: 'var(--mantine-color-dimmed' }}>{row.original.professor}</span>
+                                    </>
+                                ) : null}
+                            </span>
                         </>
                     );
                 },
@@ -44,11 +43,11 @@ const useCoursesTableColumns = () => {
                 header: 'How interesting',
                 accessorKey: 'howInterestingRatingAverage',
                 size: 60,
-                Cell: ({row}) => {
+                Cell: ({ row }) => {
                     return (
                         <>
                             <Flex align="center" gap="xs">
-                                <NumberRatingBadge score={row.original.howInterestingRatingAverage}/>
+                                <NumberRatingBadge score={row.original.howInterestingRatingAverage} />
                             </Flex>
                         </>
                     );
@@ -58,26 +57,25 @@ const useCoursesTableColumns = () => {
                 header: 'How easy',
                 accessorKey: 'howEasyRatingAverage',
                 size: 50,
-                Cell: ({row}) => {
+                Cell: ({ row }) => {
                     return (
                         <>
                             <Flex align="center" gap="xs">
-                                <NumberRatingBadge score={row.original.howEasyRatingAverage}/>
+                                <NumberRatingBadge score={row.original.howEasyRatingAverage} />
                             </Flex>
                         </>
                     );
                 },
             },
-        ].filter( x => {
+        ].filter((x) => {
             if (isMobileOnly) {
-                return x.header !== 'Professor'
+                return x.header !== 'Professor';
             }
-            return true
-        })
-    }, [isMobileOnly])
+            return true;
+        });
+    }, [isMobileOnly]);
 
+    return { columns };
+};
 
-    return {columns}
-}
-
-export {useCoursesTableColumns}
+export { useCoursesTableColumns };

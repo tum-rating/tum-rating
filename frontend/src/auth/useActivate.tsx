@@ -2,7 +2,7 @@ import { Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useLocation } from 'react-router-dom';
 
-import {endpoints, useMutationWithAuth} from '@/api';
+import { endpoints, useMutationWithAuth } from '@/api';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function activate(token: string | null) {
@@ -15,7 +15,7 @@ async function activate(token: string | null) {
     });
 
     if (!response.ok) {
-        throw new ResponseError( 'Unknown error', response, 'activate');
+        throw new ResponseError('Unknown error', response, 'activate');
     }
 
     return { success: true };

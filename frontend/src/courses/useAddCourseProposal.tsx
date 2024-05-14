@@ -6,7 +6,6 @@ import * as userLocalStorage from '../auth/user.localstore.ts';
 import { endpoints, useMutationWithAuth } from '@/api';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
-
 async function addCourseProposal(token: string | null, courseReview: CourseInput): Promise<string | null> {
     if (!token) return null;
     const response = await fetch(endpoints.postCourseProposal, {
@@ -18,7 +17,7 @@ async function addCourseProposal(token: string | null, courseReview: CourseInput
         body: JSON.stringify({ ...courseReview }),
     });
     const data = await response.json();
-    if (!response.ok) throw new ResponseError(data.message, response,courseReview.url);
+    if (!response.ok) throw new ResponseError(data.message, response, courseReview.url);
     return data;
 }
 

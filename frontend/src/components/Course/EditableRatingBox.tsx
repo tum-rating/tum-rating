@@ -1,13 +1,13 @@
-import {Badge, Flex, Rating, Text} from '@mantine/core';
+import { Badge, Flex, Rating, Text } from '@mantine/core';
 
-import {RatingBoxProps} from '@/components/Course/RatingBox.tsx';
+import { RatingBoxProps } from '@/components/Course/RatingBox.tsx';
 
 interface EditableRatingBoxProps extends RatingBoxProps {
     onChange?: (value: number) => void;
 }
 
 const EditableRatingBox = (props: EditableRatingBoxProps) => {
-    const {score, message, color, label, onChange = (_: number) => false} = props;
+    const { score, message, color, label, onChange = (_: number) => false } = props;
 
     return (
         <Flex direction="column" align="center" justify="center" pos="relative">
@@ -48,4 +48,4 @@ const EditableRatingBox = (props: EditableRatingBoxProps) => {
     );
 };
 
-export {EditableRatingBox, EditableRatingBoxProps};
+export { EditableRatingBox, EditableRatingBoxProps };

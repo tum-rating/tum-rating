@@ -1,10 +1,10 @@
-import {Button, Flex} from '@mantine/core';
-import {notifications} from '@mantine/notifications';
+import { Button, Flex } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 
-import * as userLocalStorage from "@/auth/user.localstore.ts";
-import {useSignOutProps} from '@/auth/useSignOut.tsx';
-import {getPath, Paths} from '@/routes/paths.ts';
-import {ResponseError} from '@/utils/Errors/ResponseError.ts';
+import * as userLocalStorage from '@/auth/user.localstore.ts';
+import { useSignOutProps } from '@/auth/useSignOut.tsx';
+import { getPath, Paths } from '@/routes/paths.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 interface handleAuthErrorsProps {
     error: any;
@@ -13,7 +13,7 @@ interface handleAuthErrorsProps {
     navigate?: any;
 }
 
-export function handleAuthErrors({error, callback = () => null, signOut, navigate}: handleAuthErrorsProps) {
+export function handleAuthErrors({ error, callback = () => null, signOut, navigate }: handleAuthErrorsProps) {
     if (error instanceof ResponseError) {
         const initialErrorConfig = {
             id: error.errorId,
@@ -21,7 +21,7 @@ export function handleAuthErrors({error, callback = () => null, signOut, navigat
             message: error.message,
             loading: false,
             withCloseButton: true,
-        }
+        };
         switch (error.status) {
             case 400:
                 notifications.show({
@@ -48,7 +48,7 @@ export function handleAuthErrors({error, callback = () => null, signOut, navigat
                                     size="xs"
                                     variant="transparent"
                                     onClick={() => {
-                                        navigate("/" + getPath(Paths.signIn));
+                                        navigate('/' + getPath(Paths.signIn));
                                         notifications.hide('unauthorized-sign-out');
                                     }}
                                 >
@@ -60,7 +60,7 @@ export function handleAuthErrors({error, callback = () => null, signOut, navigat
                         withCloseButton: true,
                         autoClose: false,
                     });
-                }else{
+                } else {
                     notifications.show({
                         ...initialErrorConfig,
                         color: 'red',
@@ -91,7 +91,6 @@ export function handleAuthErrors({error, callback = () => null, signOut, navigat
                 break;
             default:
                 break;
-
         }
     }
 }

@@ -1,12 +1,12 @@
-import {Text} from '@mantine/core';
-import {notifications} from '@mantine/notifications';
+import { Text } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
-import {endpoints, useMutationWithAuth} from '@/api';
-import {QUERY_KEY} from '@/constants/queryKeys.ts';
-import {queryClient} from '@/react-query/client.ts';
-import {ResponseError} from '@/utils/Errors/ResponseError.ts';
+import { endpoints, useMutationWithAuth } from '@/api';
+import { QUERY_KEY } from '@/constants/queryKeys.ts';
+import { queryClient } from '@/react-query/client.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function removeProposal(token: string, proposalId: string): Promise<any> {
     if (!token) return null;

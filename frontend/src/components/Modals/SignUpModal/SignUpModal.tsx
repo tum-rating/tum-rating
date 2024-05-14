@@ -1,6 +1,7 @@
 import { Alert, Anchor, Box, Button, Checkbox, Container, Flex, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput, ThemeIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
 import { IconFaceIdError, IconMail } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSignUp } from '@/auth/useSignUp.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
-import {notifications} from "@mantine/notifications";
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 interface SignUpModalProps extends ContextModalProps {}
 
@@ -88,7 +89,7 @@ const SignUpModal = () => {
                             )}
                             {apiError && error && (
                                 <Alert variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
-                                    <Text size="xs">{error.message || 'An error occurred'}</Text>
+                                    <Text size="xs">{error instanceof ResponseError ? error?.message : 'An error occurred'}</Text>
                                 </Alert>
                             )}
                             <Group>

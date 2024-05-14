@@ -71,12 +71,14 @@ const RoutesApp = () => {
         },
         {
             path: getPath(Paths.admin),
-            element: <AdminLayout>
-                <ModalsProvider modals={modals}>
-                    <ModalsHashController />
-                    <Outlet/>
-                </ModalsProvider>
-            </AdminLayout>,
+            element: (
+                <AdminLayout>
+                    <ModalsProvider modals={modals}>
+                        <ModalsHashController />
+                        <Outlet />
+                    </ModalsProvider>
+                </AdminLayout>
+            ),
             children: [
                 {
                     path: getPath(Paths.admin),

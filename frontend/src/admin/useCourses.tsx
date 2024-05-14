@@ -1,17 +1,17 @@
-import {useInfiniteQuery} from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
-import {endpoints} from '@/api';
-import {PAGE_SIZE} from "@/constants";
-import {QUERY_KEY} from '@/constants/queryKeys.ts';
-import {Course} from '@/courses/types.ts';
-import {ResponseError} from '@/utils/Errors/ResponseError.ts';
+import { endpoints } from '@/api';
+import { PAGE_SIZE } from '@/constants';
+import { QUERY_KEY } from '@/constants/queryKeys.ts';
+import { Course } from '@/courses/types.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 type Courses = {
     courses: Course[];
     nextPageNumber: number;
 };
 
-async function getPaginatedCourses({pageParam = 1}): Promise<Courses> {
+async function getPaginatedCourses({ pageParam = 1 }): Promise<Courses> {
     const response = await fetch(endpoints.getPaginatedCourses(pageParam, PAGE_SIZE));
     const data = await response.json();
     if (!response.ok) {

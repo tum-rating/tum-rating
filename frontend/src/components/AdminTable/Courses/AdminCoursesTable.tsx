@@ -1,60 +1,40 @@
-import {Badge, Box, Flex, Group, Text} from '@mantine/core';
-import clsx from "clsx";
-import {
-    MantineReactTable,
-    MRT_GlobalFilterTextInput,
-    MRT_RowVirtualizer,
-    MRT_ShowHideColumnsButton,
-    MRT_ToggleFiltersButton,
-    MRT_ToggleFullScreenButton,
-    MRT_ToggleGlobalFilterButton,
-    useMantineReactTable
-} from "mantine-react-table";
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {useLocation} from "react-router-dom";
+import { ActionIcon, Badge, Box, Flex, Group, Skeleton, Text, Tooltip } from '@mantine/core';
+import { IconRefresh } from '@tabler/icons-react';
+import clsx from 'clsx';
+import { MantineReactTable, MRT_GlobalFilterTextInput, MRT_ShowHideColumnsButton, MRT_ToggleFiltersButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMantineReactTable } from 'mantine-react-table';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
+import { useCoursesColumns } from './useCoursesColumns.tsx';
 import classes from '../Shared/styles/TableStyles.module.css';
 
-import {useCourses} from "@/admin/useCourses.tsx";
-import {CourseExpansion} from '@/components/AdminTable/Courses/CourseExpansion.tsx';
-import {useCoursesTableColumns} from "@/components/CoursesTable/useCoursesTableColumns.tsx";
-import {HEADER_HEIGHT, PAGE_SIZE} from "@/constants";
-import {Course} from "@/courses/types.ts";
-import {useSearchCourses} from "@/courses/useSearchCourses.tsx";
-
-
+import { useCourses } from '@/admin/useCourses.tsx';
+import { CourseExpansion } from '@/components/AdminTable/Courses/CourseExpansion.tsx';
+import { HEADER_HEIGHT, PAGE_SIZE } from '@/constants';
+import { Course } from '@/courses/types.ts';
+import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
 
 const AdminCoursesTable = () => {
-    const [skeletonLoaders, setSkeletonLoaders] = useState([]);
     const tableContainerRef = useRef<HTMLDivElement>(null); //we can get access to the underlying TableContainer element and react to its scroll events
     const [records, setRecords] = useState<Course[]>([]);
-    const [queryRecords, setQueryRecords] = useState<Course[]>([]);
 
     const [query, setQuery] = useState('');
-    const {
-        data,
-        fetchNextPage,
-        isFetching,
-        isLoading,
-        hasNextPage
-    } = useCourses();
-    const {data: queryData, isFetching: isQueryDataFetching} = useSearchCourses(query);
+    const { data, fetchNextPage, isFetching, isLoading, hasNextPage, refetch } = useCourses();
+    const { data: queryData, isFetching: isQueryDataFetching, refetch: refetchSearchQuery } = useSearchCourses(query);
     const location = useLocation();
-    const {columns} = useCoursesTableColumns();
+    const { columns } = useCoursesColumns();
 
     useEffect(() => {
         if (data) {
             const newRecords = data.pages.map((v) => v.courses.map((el) => el)).flat();
             setRecords([...newRecords]);
-            // Remove skeleton loaders
-            setSkeletonLoaders([]);
         }
     }, [data]);
 
     useEffect(() => {
         if (queryData) {
             const newRecords = queryData.courses;
-            setQueryRecords([...newRecords]);
+            setRecords([...newRecords]);
         }
     }, [queryData]);
 
@@ -72,14 +52,12 @@ const AdminCoursesTable = () => {
     const fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
             if (containerRefElement) {
-                const {scrollHeight, scrollTop, clientHeight} = containerRefElement;
-                if (
-                    scrollHeight - scrollTop - clientHeight < clientHeight - 110 - HEADER_HEIGHT && !isFetching
-                ) {
+                const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+                if (scrollHeight - scrollTop - clientHeight < clientHeight - 110 - HEADER_HEIGHT && !isFetching) {
                     // Add skeleton loaders
                     if (hasNextPage) {
                         const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
-                        setSkeletonLoaders(prevSkeletonLoaders => [...prevSkeletonLoaders, ...newSkeletonLoaders]);
+                        setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
                     }
 
                     fetchNextPage();
@@ -93,14 +71,15 @@ const AdminCoursesTable = () => {
         fetchMoreOnBottomReached(tableContainerRef.current);
     }, [fetchMoreOnBottomReached]);
 
-
     const table = useMantineReactTable({
         columns,
-        data: query ? queryRecords : [...records,...skeletonLoaders],
+        data: records,
         enableBottomToolbar: false,
         enableGlobalFilterModes: true,
         enablePagination: false,
         enableRowVirtualization: true,
+        enableFilters: false,
+        enableSorting: false,
         mantineTableProps: {
             striped: 'odd',
             withColumnBorders: true,
@@ -110,25 +89,31 @@ const AdminCoursesTable = () => {
         },
         manualFiltering: true, //turn off client-side filtering
         onGlobalFilterChange: setQuery, //hoist internal global state to your state
-        state: {isLoading: isLoading || isQueryDataFetching},
+        state: {
+            isLoading: isLoading || isQueryDataFetching,
+        },
         initialState: {
             globalFilter: query,
-            density: "xs",
+            density: 'xs',
             showGlobalFilter: true,
         },
         mantineTableContainerProps: () => ({
-            className: clsx(classes.table)
+            className: clsx(classes.table),
+            onScroll: (
+                // @ts-ignore
+                event: UIEvent<HTMLDivElement>,
+            ) => fetchMoreOnBottomReached(event.target as HTMLDivElement),
         }),
-        mantineTableBodyCellProps: () => ({
+        mantineTableBodyCellProps: ({ row }) => ({
             className: clsx(classes.tableCellRow),
+            children: row.original === null ? <Skeleton h={30} /> : undefined,
         }),
         displayColumnDefOptions: {
             'mrt-row-expand': {
                 grow: false,
             },
         },
-        rowVirtualizerOptions: {overscan: 15},
-        renderTopToolbar: ({table}) => (
+        renderTopToolbar: ({ table }) => (
             <Flex justify="space-between" align="center" h={50} px="xs" bg="gray.1">
                 <Flex gap="xs">
                     <Flex gap="6" align="center" mr="auto">
@@ -139,37 +124,46 @@ const AdminCoursesTable = () => {
                     </Flex>
                 </Flex>
 
-                <MRT_GlobalFilterTextInput size="sm" variant="default" hidden={false} table={table}/>
+                <MRT_GlobalFilterTextInput size="sm" variant="default" hidden={false} table={table} />
                 <Group gap="xs">
-                    <MRT_ToggleGlobalFilterButton size="lg" variant="default" table={table}/>
-                    <MRT_ToggleFiltersButton size="lg" variant="default" table={table}/>
-                    <MRT_ShowHideColumnsButton size="lg" variant="default" table={table}/>
-                    <MRT_ToggleFullScreenButton size="lg" variant="default" table={table}/>
-                    {/*    <Tooltip label="Refresh proposals">*/}
-                    {/*        <ActionIcon size="lg" variant="default" onClick={() => refetch()}>*/}
-                    {/*            <IconRefresh size={20}/>*/}
-                    {/*        </ActionIcon>*/}
-                    {/*    </Tooltip>*/}
+                    <MRT_ToggleGlobalFilterButton size="lg" variant="default" table={table} />
+                    <MRT_ToggleFiltersButton size="lg" variant="default" table={table} />
+                    <MRT_ShowHideColumnsButton size="lg" variant="default" table={table} />
+                    <MRT_ToggleFullScreenButton size="lg" variant="default" table={table} />
+                    <Tooltip label="Refresh proposals">
+                        <ActionIcon
+                            size="lg"
+                            variant="default"
+                            onClick={() => {
+                                if (!query) {
+                                    refetch();
+                                } else {
+                                    refetchSearchQuery();
+                                }
+                            }}
+                        >
+                            <IconRefresh size={20} />
+                        </ActionIcon>
+                    </Tooltip>
                 </Group>
             </Flex>
         ),
+        rowVirtualizerOptions: { overscan: 25 },
         mantineDetailPanelProps: {
             style: {
-                width: "100%",
-                padding: "0 !important",
-                margin: 0
+                width: '100%',
+                padding: '0 !important',
+                margin: 0,
             },
         },
-        renderDetailPanel: ({row}) => <CourseExpansion course={row.original} row={row}/>
+        renderDetailPanel: ({ row }) => <CourseExpansion course={row.original} row={row} />,
     });
 
     return (
         <Box h="calc(100vh-110px)">
-            <MantineReactTable
-                table={table}
-            />
+            <MantineReactTable table={table} />
         </Box>
     );
 };
 
-export {AdminCoursesTable};
+export { AdminCoursesTable };

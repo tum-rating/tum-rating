@@ -1,7 +1,7 @@
 import { Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
-import {endpoints, useMutationWithAuth} from '@/api';
+import { endpoints, useMutationWithAuth } from '@/api';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function signUp({ email, password, username }: RegisterInput): Promise<{ success: boolean }> {

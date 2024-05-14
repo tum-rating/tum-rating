@@ -1,6 +1,7 @@
 import { Alert, Anchor, Box, Button, Container, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
 import { IconAt, IconFaceIdError, IconLock } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -8,7 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginInput, useSignIn } from '@/auth/useSignIn.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
-import {notifications} from "@mantine/notifications";
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 interface SignInModalProps extends ContextModalProps {}
 
@@ -87,7 +88,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
                         </Group>
                         {apiError && error && (
                             <Alert variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
-                                <Text size="xs">{error.message || 'An error occurred'}</Text>
+                                <Text size="xs">{error instanceof ResponseError ? error?.message : 'An error occurred'}</Text>
                             </Alert>
                         )}
                         <Button mt="xs" type="submit" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
