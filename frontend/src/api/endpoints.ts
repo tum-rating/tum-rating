@@ -4,6 +4,7 @@ const apiVersion = '/v1';
 const baseApiUrl = baseDomain + api + apiVersion;
 const authBase = baseApiUrl + '/auth';
 const coursesBase = baseApiUrl + '/courses';
+
 type AuthEndpoints = {
     base: string;
     signup: string;

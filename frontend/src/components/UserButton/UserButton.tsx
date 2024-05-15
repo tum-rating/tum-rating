@@ -20,10 +20,10 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                         <IconLego size="1.2rem" />
                     </ThemeIcon>
                     <Stack gap={0}>
-                        <Text truncate="end" size="sm" fw={500}>
+                        <Text data-testid="username" truncate="end" size="sm" fw={500}>
                             {user.username}
                         </Text>
-                        <Text truncate="end" c="dimmed" size="xs">
+                        <Text data-testid="email" truncate="end" c="dimmed" size="xs">
                             {user.email}
                         </Text>
                     </Stack>
@@ -45,10 +45,10 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                                 <IconLego size="1.2rem" />
                             </ThemeIcon>
                             <Stack gap={0}>
-                                <Text w={120} truncate="end" size="sm" fw={500}>
+                                <Text w={120} data-testid="username" truncate="end" size="sm" fw={500}>
                                     {user.username}
                                 </Text>
-                                <Text w={120} truncate="end" c="dimmed" size="xs">
+                                <Text w={120} data-testid="email" truncate="end" c="dimmed" size="xs">
                                     {user.email}
                                 </Text>
                             </Stack>
