@@ -2,7 +2,7 @@ import { Badge, Button, Container, Flex, Divider, LoadingOverlay, Select, Stack,
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
 import { useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 import { useUser } from '@/auth/useUser.tsx';
 import { HowEasyEditableRating } from '@/components/Course/HowEasyEditableRating.tsx';
@@ -29,11 +29,12 @@ const AddUserReviewModal = ({
     courseId: string;
 }>) => {
     const { courseId } = innerProps;
-    const { mutate: addUserReview, isSuccess, isLoading } = useAddUserReview(courseId, 'POST');
+
     const { data: courseData, isLoading: courseDetailsLoading, isError: courseDetailsError } = useDetailCourse(courseId || '');
     const { data: user } = useUser();
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
+    const { mutate: addUserReview, isSuccess, isLoading } = useAddUserReview(courseId, 'POST');
     const offeredInSemesters = useMemo(
         () =>
             courseData?.offeredInSemesters.map((semester) => {
@@ -73,6 +74,7 @@ const AddUserReviewModal = ({
         context.closeModal(id);
     };
 
+
     if (courseDetailsError) {
         return (
             <Stack>
@@ -110,6 +112,7 @@ const AddUserReviewModal = ({
 
     return (
         <Container px={0} pos="relative" h="100%">
+            <Link to="/courses/xxx/#modal=add-user-review">asdfasdfa</Link>
             <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
             <form
                 style={{ height: '100%', overflowY: 'auto' }}
