@@ -21,101 +21,101 @@ const modals = {
     recovery: RecoveryModal,
 };
 
-const RoutesApp = () => {
-    const routes = [
-        {
-            path: '/',
-            errorElement: <ErrorBoundary />,
-            element: (
-                <MainLayout>
-                    <ModalsProvider modals={modals}>
-                        <ModalsHashController />
-                        <Outlet />
-                    </ModalsProvider>
-                </MainLayout>
-            ),
-            children: [
-                {
-                    path: '/',
-                    element: (
-                        <Suspense fallback={'Loading...'}>
-                            <Home />
-                        </Suspense>
-                    ),
-                },
-                {
-                    path: getPath(Paths.activate),
-                    element: (
-                        <Suspense fallback={'Loading...'}>
-                            <Activation />
-                        </Suspense>
-                    ),
-                },
-                {
-                    path: getPath(Paths.recovery),
-                    element: (
-                        <Suspense fallback={'Loading...'}>
-                            <Recovery />
-                        </Suspense>
-                    ),
-                },
-                {
-                    path: getPath(Paths.courseDetail),
-                    element: (
-                        <Suspense fallback={'Loading...'}>
-                            <Course />
-                        </Suspense>
-                    ),
-                },
-            ],
-        },
-        {
-            path: getPath(Paths.admin),
-            element: (
-                <AdminLayout>
-                    <ModalsProvider modals={modals}>
-                        <ModalsHashController />
-                        <Outlet />
-                    </ModalsProvider>
-                </AdminLayout>
-            ),
-            children: [
-                {
-                    path: getPath(Paths.admin),
-                    element: (
-                        <Suspense fallback={'Loading...'}>
-                            <Admin />
-                        </Suspense>
-                    ),
-                },
-                {
-                    path: getPath(Paths.adminCourses),
-                    element: (
-                        <Suspense fallback={'Loading...'}>
-                            <AdminCoursesTable />
-                        </Suspense>
-                    ),
-                },
-                {
-                    path: getPath(Paths.adminCoursesProposals),
-                    element: (
-                        <Suspense fallback={'Loading...'}>
-                            <AdminCoursesProposalsTable />
-                        </Suspense>
-                    ),
-                },
-                {
-                    path: getPath(Paths.adminUsers),
-                    element: (
-                        <Suspense fallback={'Loading...'}>
-                            <AdminUsersTable />
-                        </Suspense>
-                    ),
-                },
-            ],
-        },
-    ];
+const routes = [
+    {
+        path: '/',
+        errorElement: <ErrorBoundary />,
+        element: (
+            <MainLayout>
+                <ModalsProvider modals={modals}>
+                    <ModalsHashController />
+                    <Outlet />
+                </ModalsProvider>
+            </MainLayout>
+        ),
+        children: [
+            {
+                path: '/',
+                element: (
+                    <Suspense fallback={'Loading...'}>
+                        <Home />
+                    </Suspense>
+                ),
+            },
+            {
+                path: getPath(Paths.activate),
+                element: (
+                    <Suspense fallback={'Loading...'}>
+                        <Activation />
+                    </Suspense>
+                ),
+            },
+            {
+                path: getPath(Paths.recovery),
+                element: (
+                    <Suspense fallback={'Loading...'}>
+                        <Recovery />
+                    </Suspense>
+                ),
+            },
+            {
+                path: getPath(Paths.courseDetail),
+                element: (
+                    <Suspense fallback={'Loading...'}>
+                        <Course />
+                    </Suspense>
+                ),
+            },
+        ],
+    },
+    {
+        path: getPath(Paths.admin),
+        element: (
+            <AdminLayout>
+                <ModalsProvider modals={modals}>
 
+                    <Outlet />
+                </ModalsProvider>
+            </AdminLayout>
+        ),
+        children: [
+            {
+                path: getPath(Paths.admin),
+                element: (
+                    <Suspense fallback={'Loading...'}>
+                        <Admin />
+                    </Suspense>
+                ),
+            },
+            {
+                path: getPath(Paths.adminCourses),
+                element: (
+                    <Suspense fallback={'Loading...'}>
+                        <AdminCoursesTable />
+                    </Suspense>
+                ),
+            },
+            {
+                path: getPath(Paths.adminCoursesProposals),
+                element: (
+                    <Suspense fallback={'Loading...'}>
+                        <AdminCoursesProposalsTable />
+                    </Suspense>
+                ),
+            },
+            {
+                path: getPath(Paths.adminUsers),
+                element: (
+                    <Suspense fallback={'Loading...'}>
+                        <AdminUsersTable />
+                    </Suspense>
+                ),
+            },
+        ],
+    },
+];
+
+const RoutesApp = () => {
     return (
         <Suspense>
             <RouterProvider router={createBrowserRouter(routes)} />
@@ -123,4 +123,4 @@ const RoutesApp = () => {
     );
 };
 
-export { RoutesApp };
+export { RoutesApp, routes, modals };

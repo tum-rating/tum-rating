@@ -1,8 +1,5 @@
-import { cleanup } from "@testing-library/react";
-import { afterEach, beforeAll, afterAll } from "vitest";
-
-import '@testing-library/jest-dom/vitest'
-import {server} from "./tests/mocks/server";
+import { cleanup } from '@testing-library/react';
+import { afterEach } from 'vitest';
 
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -18,10 +15,6 @@ Object.defineProperty(window, 'matchMedia', {
     }),
 });
 
-
-beforeAll(() => server.listen());
 afterEach(() => {
-    server.resetHandlers();
     cleanup();
 });
-afterAll(() => server.close());

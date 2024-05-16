@@ -23,7 +23,8 @@
     "declaration": true,
     "declarationDir": "types",
     "types": [
-      "vite/client"
+      "vite/client",
+      "jest"
     ],
     "composite": true,
     "skipLibCheck": true,
@@ -41,8 +42,10 @@
     }
   },
   "include": [
-    "src",
-    "tests"
+    "./src/**/*.tsx",
+    "./src/**/*.ts",
+    "./tests/**/*.tsx",
+    "./tests/**/*.ts"
   ],
   "references": [
     {

@@ -50,17 +50,17 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
     };
 
     return (
-        <Container p={0} data-testid="cypress-add-new-course-modal">
+        <Container p={0} data-testid="add-course-modal-content">
             <LoadingOverlay visible={addReviewLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
             <form onSubmit={form.onSubmit((e) => handleSubmit(e))}>
                 <Stack>
-                    <Textarea label="Course URL" required placeholder={`Example: ${example_course}`} description="Please provide a valid course URL from TUM Campus Portal" value={form.values.url} onChange={(event) => form.setFieldValue('url', event.currentTarget.value)} error={form.errors.url} radius="md" minRows={5} maxRows={10} autosize />
+                    <Textarea data-testid="textarea" label="Course URL" required placeholder={`Example: ${example_course}`} description="Please provide a valid course URL from TUM Campus Portal" value={form.values.url} onChange={(event) => form.setFieldValue('url', event.currentTarget.value)} error={form.errors.url} radius="md" minRows={5} maxRows={10} autosize />
                     {apiError && error && (
-                        <Alert variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
+                        <Alert data-testid="error-message" variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
                             <Text size="xs">{error.message || 'An error occurred'}</Text>
                         </Alert>
                     )}
-                    <Button loading={addReviewLoading} mt="xs" type="submit" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
+                    <Button data-testid="submit-button" loading={addReviewLoading} mt="xs" type="submit" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
                         Add Course Proposal
                     </Button>
                     <Alert variant="light" color="green" title="How to add a course" icon={<IconInfoCircle />}>

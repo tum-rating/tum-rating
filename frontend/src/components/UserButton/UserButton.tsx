@@ -34,7 +34,7 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
         return (
             <Menu position="bottom-end" shadow="md" width={200}>
                 <Menu.Target>
-                    <ActionIcon variant="outline">
+                    <ActionIcon variant="outline" data-testid="user-button">
                         <IconLego size="1.2rem" />
                     </ActionIcon>
                 </Menu.Target>
