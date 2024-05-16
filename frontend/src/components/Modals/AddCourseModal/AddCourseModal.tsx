@@ -50,7 +50,7 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
     };
 
     return (
-        <Container p={0} data-testid="add-course-modal-content">
+        <Container p={0} data-testid="modal-content">
             <LoadingOverlay visible={addReviewLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
             <form onSubmit={form.onSubmit((e) => handleSubmit(e))}>
                 <Stack>

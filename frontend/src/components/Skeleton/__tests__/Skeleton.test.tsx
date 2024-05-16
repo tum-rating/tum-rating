@@ -1,9 +1,10 @@
 import { screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
+import '@testing-library/jest-dom'
+import { Skeleton } from '../Skeleton';
 
 import {render} from "tests/utils/render.tsx";
 
-import { Skeleton } from '../Skeleton';
 
 describe('Skeleton', () => {
     it('renders SkeletonLoader when loading is true', () => {

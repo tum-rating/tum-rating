@@ -1,7 +1,11 @@
+/// <reference types="vitest" />
+/// <reference types="vite/client" />
+
 import { fileURLToPath, URL } from 'url';
 
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
     resolve: {
@@ -14,10 +18,10 @@ export default defineConfig({
     server: {
         port: 5174,
     },
-    plugins: [react()],
+    plugins: [react(), tsconfigPaths()],
     test: {
-        globals: true,
         environment: 'jsdom',
-        setupFiles: ['vitest.setup.ts'],
+        setupFiles: ['./vitest.setup.ts'],
+        globals: true,
     },
 });

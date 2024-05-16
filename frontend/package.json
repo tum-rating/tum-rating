@@ -14,7 +14,8 @@
     "cypress": "cypress open",
     "cypress:all": "cypress run",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@mantine/core": "^7.9.1",
@@ -49,6 +50,7 @@
     "@typescript-eslint/parser": "^7.0.2",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/ui": "^1.6.0",
+    "c8": "^9.1.0",
     "cypress": "^13.9.0",
     "cypress-wait-until": "^3.0.1",
     "eslint": "^8.56.0",
@@ -64,9 +66,12 @@
     "prettier": "^3.2.5",
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
+    "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.6.0"
   },
   "jest": {
-    "setupFilesAfterEnv": ["<rootDir>/vitest.setup.ts"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/vitest.setup.ts"
+    ]
   }
 }

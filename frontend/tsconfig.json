@@ -24,7 +24,8 @@
     "declarationDir": "types",
     "types": [
       "vite/client",
-      "jest"
+      "jest",
+      "vitest/globals"
     ],
     "composite": true,
     "skipLibCheck": true,

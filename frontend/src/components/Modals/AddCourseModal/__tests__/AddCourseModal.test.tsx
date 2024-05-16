@@ -1,24 +1,18 @@
 import { screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { Link } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 
-import { getPath, Paths } from '@/routes/paths.ts';
-import { render } from 'tests/utils/render.tsx';
+import { Paths } from '@/routes/paths.ts';
+import { openModal } from 'tests/utils/modals.tsx';
 
 describe('Modal: AddCourseModal', () => {
     beforeEach(() => {
-        render(<Link data-testid="add-course-trigger" to={getPath(Paths.addCourse)} />);
-        expect(screen.getByTestId('add-course-trigger')).toBeInTheDocument();
-        userEvent.click(screen.getByTestId('add-course-trigger'));
-        waitFor(() => {
-            expect(screen.getByTestId('add-course-modal-content')).toBeInTheDocument();
-        });
+        openModal(Paths.addCourse);
     });
 
-    it('renders AddCourseModal modal without crashing', () => {
-        waitFor(() => {
-            expect(screen.getByTestId('add-course-modal-content')).toBeInTheDocument();
+    it('renders AddCourseModal modal without crashing', async () => {
+        await waitFor(() => {
+            expect(screen.getByRole('dialog')).toBeInTheDocument();
         });
     });
 
@@ -45,7 +39,7 @@ describe('Modal: AddCourseModal', () => {
         await userEvent.click(screen.getByTestId('submit-button'));
         await new Promise((r) => setTimeout(r, 500));
         await waitFor(() => {
-            expect(screen.queryByTestId('add-course-modal-content')).not.toBeInTheDocument();
+            expect(screen.queryByTestId('modal-content')).not.toBeInTheDocument();
         });
     });
 });
