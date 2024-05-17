@@ -1,6 +1,9 @@
+
 import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
-import { afterEach } from 'vitest';
+import { afterEach, vi } from 'vitest';
+
+import { server } from './tests/mocks/node';
 
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -16,6 +19,15 @@ Object.defineProperty(window, 'matchMedia', {
     }),
 });
 
+beforeAll(() => {
+    server.listen();
+});
+
 afterEach(() => {
+    server.resetHandlers();
     cleanup();
+});
+
+afterAll(() => {
+    server.close();
 });
