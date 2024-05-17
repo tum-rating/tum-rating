@@ -10,7 +10,11 @@ import { openRecoveryModal } from '@/components/Modals/RecoveryModal';
 import { openSignInModal } from '@/components/Modals/SignInModal';
 import { openSignUpModal } from '@/components/Modals/SignUpModal';
 
-export const ModalsHashController = (_: PropsWithChildren) => {
+interface ModalsHashControllerProps extends PropsWithChildren {
+    withinPortal?: boolean;
+}
+
+export const ModalsHashController = ({ withinPortal = true }: ModalsHashControllerProps) => {
     const location = useLocation();
     const navigate = useNavigate();
     const { id } = useParams();
@@ -21,6 +25,7 @@ export const ModalsHashController = (_: PropsWithChildren) => {
                 closeAllModals();
                 navigate('#');
             },
+            withinPortal: withinPortal,
             fullScreen: isMobile,
             overlayProps: {
                 backgroundOpacity: 0.55,

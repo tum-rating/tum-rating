@@ -1,17 +1,11 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { Link } from 'react-router-dom';
 import { expect } from 'vitest';
 
-import { render } from 'tests/utils/render.tsx';
-
-async function openModal(path: string) {
-    render(<Link data-testid="trigger" to={path} />);
+async function openModal() {
     expect(screen.getByTestId('trigger')).toBeInTheDocument();
     await userEvent.click(screen.getByTestId('trigger'));
-    await waitFor(() => {
-        expect(screen.getByRole('dialog')).toBeInTheDocument();
-    });
+    expect(screen.getByTestId('tri1gger')).toBeInTheDocument();
 }
 
 export { openModal };

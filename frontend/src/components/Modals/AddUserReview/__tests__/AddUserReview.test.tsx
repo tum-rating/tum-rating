@@ -1,55 +1,92 @@
-import {UseMutationResult, UseQueryResult} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { screen, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
-import {User, useUser} from "@/auth/useUser.tsx";
-import {DetailCourse} from "@/courses/types.ts";
-import {useAddUserReview, UserAddReviewInput} from "@/courses/useAddUserReview.tsx";
-import {useDetailCourse} from "@/courses/useCourse.tsx";
-import { Paths } from '@/routes/paths.ts';
-import {user, courseDetails} from "tests/mocks/handlers.ts";
-import { openModal } from 'tests/utils/modals.tsx';
-
-vi.mock('@/auth/useUser.tsx', () => ({
-    useUser: vi.fn(),
-}));
-
-vi.mock('@/courses/useAddUserReview.tsx', () => ({
-    useAddUserReview: vi.fn(),
-}));
-
-vi.mock('@/courses/useCourse.tsx', () => ({
-    useDetailCourse: vi.fn(),
-}));
+import { AddUserReviewModal } from '@/components/Modals/AddUserReview';
+import { render } from 'tests/utils/render';
+import * as userLocalStorage from "@/auth/user.localstore.ts";
+import {generateJwtToken} from "tests/mocks/dataGenerators.ts";
 
 
 describe('Modal: AddUserReview', () => {
-    beforeEach(() => {
-        console.log(courseDetails)
-        openModal(Paths.addUserReview);
+    let queryClient: QueryClient;
+    beforeEach(async () => {
+        queryClient = new QueryClient();
     });
-
-    it('renders AddUserReview modal without crashing', async () => {
-        await waitFor(() => {
-            expect(screen.getByRole('dialog')).toBeInTheDocument();
+    describe('when user is logged in', () => {
+        beforeEach(async () => {
+            userLocalStorage.saveUser(generateJwtToken());
+        })
+        it('should render AddUserReview modal without crashing', async () => {
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <AddUserReviewModal
+                        id={null}
+                        context={null}
+                        innerProps={{
+                            courseId: null,
+                        }}
+                    />
+                </QueryClientProvider>,
+            );
+            expect(screen.getByTestId('trigger')).toBeInTheDocument();
+            // await userEvent.click(screen.getByTestId('trigger'));
+            // await openModal();
         });
-        (useUser as jest.MockedFunction<typeof useUser>).mockReturnValue({
-            data: user,
-            isSuccess: true,
-            isLoading: false
-        } as UseQueryResult<User, Error>);
-        console.log(courseDetails)
-        (useDetailCourse as jest.MockedFunction<typeof useDetailCourse>).mockReturnValue({
-            data: courseDetails
-        } as UseQueryResult<DetailCourse, Error>);
-
-        (useAddUserReview as jest.MockedFunction<typeof useAddUserReview>).mockReturnValue({
-            mutate: vi.fn(),
-            isSuccess: false,
-            isLoading: false,
-        } as unknown as UseMutationResult<void, Error, UserAddReviewInput, unknown>);
 
     });
+    describe('when user is not logged in', () => {
+        it('should display panel with login/register buttons and message', async () => {
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <AddUserReviewModal
+                        id={null}
+                        context={null}
+                        innerProps={{
+                            courseId: null,
+                        }}
+                    />
+                </QueryClientProvider>,
+            );
+            await waitFor(() => {
+                expect(screen.getByTestId('message')).toHaveTextContent('Only registered users can add reviews.');
+                expect(screen.getByTestId('sign-in-btn')).toBeInTheDocument();
+                expect(screen.getByTestId('sign-up-btn')).toBeInTheDocument();
+            });
+        });
+    });
+    // it('should render AddUserReview modal without crashing', async () => {
+    //     render(
+    //         <QueryClientProvider client={queryClient}>
+    //             <AddUserReviewModal
+    //                 id={null}
+    //                 context={null}
+    //                 innerProps={{
+    //                     courseId: null,
+    //                 }}
+    //             />
+    //         </QueryClientProvider>,
+    //     );
+    //     expect(screen.getByTestId('trigger')).toBeInTheDocument();
+    //     // await userEvent.click(screen.getByTestId('trigger'));
+    //     // await openModal();
+    // });
+    // describe('when user is logged in', () => {
+    //     beforeEach(async () => {
+    //         queryClient = new QueryClient();
+    //         userLocalStorage.saveUser(generateJwtToken());
+    //     });
+    // });
+    // describe('when user is not logged in', () => {
+    //     beforeEach(async () => {
+    //         queryClient = new QueryClient();
+    //     });
+    // });
+
+    // it('renders AddUserReview modal without crashing', async () => {
+    //
+    //     await openModal(Paths.addUserReview);
+    // });
 
     // it('displays login panel if there is no user', async () => {
     //     // (useUser as jest.MockedFunction<typeof useUser>).mockReturnValue({
@@ -57,8 +94,4 @@ describe('Modal: AddUserReview', () => {
     //     // } as UseQueryResult<User, Error>);
     //
     // })
-
-
-
-
 });

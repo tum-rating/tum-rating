@@ -1,25 +1,41 @@
-import { screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import '@testing-library/jest-dom'
+import { screen, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it } from 'vitest';
+
+import '@testing-library/jest-dom';
 import { Skeleton } from '../Skeleton';
 
-import {render} from "tests/utils/render.tsx";
-
+import { render } from 'tests/utils/render.tsx';
 
 describe('Skeleton', () => {
-    it('renders SkeletonLoader when loading is true', () => {
-        render(<Skeleton loading={true} component={<div data-testid="component"/>} />);
-        expect(screen.queryByTestId('component')).not.toBeInTheDocument();
+    let component: any;
+
+    beforeEach(() => {
+        component = <div data-testid="component" />;
     });
 
-    it('renders component when loading is false', () => {
-        render(<Skeleton loading={false} component={<div data-testid="component" />} />);
-        expect(screen.getByTestId('component')).toBeInTheDocument();
+    describe('when loading is true', () => {
+        it('should not render the component', async () => {
+            render(<Skeleton loading={true} component={component} />);
+            await waitFor(() => {
+                expect(screen.queryByTestId('component')).not.toBeInTheDocument();
+            });
+        });
     });
 
-    it('renders component when loading is false and component is a function', () => {
-        const Component = () => <div data-testid="component" />;
-        render(<Skeleton loading={false} component={Component} />);
-        expect(screen.getByTestId('component')).toBeInTheDocument();
+    describe('when loading is false', () => {
+        it('should render the component', async () => {
+            render(<Skeleton loading={false} component={component} />);
+            await waitFor(() => {
+                expect(screen.getByTestId('component')).toBeInTheDocument();
+            });
+        });
+
+        it('should render the component when component is a function', async () => {
+            const Component = () => component;
+            render(<Skeleton loading={false} component={Component} />);
+            await waitFor(() => {
+                expect(screen.getByTestId('component')).toBeInTheDocument();
+            });
+        });
     });
 });
