@@ -156,7 +156,7 @@ const AdminCoursesTable = () => {
                 margin: 0,
             },
         },
-        renderDetailPanel: ({ row }) => <CourseExpansion course={row.original} row={row} />,
+        renderDetailPanel: ({ row }) => <CourseExpansion key={row.original._id} course={row.original} row={row} />,
     });
 
     return (
