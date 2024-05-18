@@ -44,6 +44,7 @@ const ProposalExpansion = ({proposal: IProposal, row}: ProposalExpansionProps) =
         isSuccess: scraperIsSuccess
     } = useGetScrapedCourseProposal(IProposal.id);
 
+    const [scraperTUMRequestError, setScraperTUMRequestError] = useState<{message?: string, name?: string, status?: number} | null>();
     const [fetchedProposal, setFetchedProposal] = useState<Partial<Course>>({
         courseId: '',
         courseNumber: '',
@@ -66,7 +67,11 @@ const ProposalExpansion = ({proposal: IProposal, row}: ProposalExpansionProps) =
 
     useEffect(() => {
         if (scraperIsSuccess) {
-            setFetchedProposal(scrapedData.course);
+            if (scrapedData.error) {
+                setScraperTUMRequestError(scrapedData.error);
+            } else {
+                setFetchedProposal(scrapedData.course);
+            }
         }
     }, [scraperIsSuccess]);
 
@@ -186,13 +191,7 @@ const ProposalExpansion = ({proposal: IProposal, row}: ProposalExpansionProps) =
                                         description="This is the course URL provided by the user"
                                         readOnly
                                         placeholder="Enter course URL"
-                                        error={scraperIsError ? error?.message || 'scraper error' : undefined}
-                                        onClick={() => {
-                                            if (courseProposalDetails?.url) {
-                                                window.open(courseProposalDetails?.url, '_blank');
-                                            }
-                                        }}
-                                        pointer={courseProposalDetails?.url}
+                                        error={scraperIsError || scraperTUMRequestError ? error?.message || 'Scraper TUM request error ' + scraperTUMRequestError.message || 'scraper error' : undefined}
                                     />
                                     <Flex pos="absolute" right={0} top={0}>
                                         <Tooltip label="Open in new tab">
@@ -308,7 +307,11 @@ const ProposalExpansion = ({proposal: IProposal, row}: ProposalExpansionProps) =
                             <Button
                                 onClick={() => {
                                     if (scrapedData) {
-                                        setFetchedProposal(scrapedData.course);
+                                        if (scrapedData.error) {
+                                            setScraperTUMRequestError(scrapedData.error);
+                                        } else {
+                                            setFetchedProposal(scrapedData.course);
+                                        }
                                     } else {
                                         scrapeCourse();
                                     }
