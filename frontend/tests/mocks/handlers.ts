@@ -25,5 +25,8 @@ export const handlers = [
     http.patch(endpoints.postSpecificReview(':courseId', ':userId'), async () => {
         return HttpResponse.json();
     }),
+    http.post(endpoints.postCourseProposal, async () => {
+        return HttpResponse.json();
+    })
 
 ];

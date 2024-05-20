@@ -1,45 +1,78 @@
-import { screen, waitFor } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {fireEvent, screen, waitFor} from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
-import { Paths } from '@/routes/paths.ts';
-import { openModal } from 'tests/utils/modals.tsx';
+import * as userLocalStorage from '@/auth/user.localstore.ts';
+import { AddCourseModal } from '@/components/Modals/AddCourseModal';
+import { generateJwtToken } from 'tests/mocks/dataGenerators.ts';
+import { render } from 'tests/utils/render.tsx';
+import {act} from "react";
 
-describe('Modal: AddCourseModal', () => {
+describe('AddCourseModal', () => {
+    let queryClient: QueryClient;
+
     beforeEach(() => {
-        openModal(Paths.addCourse);
+        queryClient = new QueryClient();
     });
 
-    it('renders AddCourseModal modal without crashing', async () => {
-        await waitFor(() => {
-            expect(screen.getByRole('dialog')).toBeInTheDocument();
+    describe('when user is logged in', async () => {
+        beforeEach(() => {
+            userLocalStorage.saveUser(generateJwtToken());
+        });
+
+        it('should display form when user is logged in', async () => {
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <AddCourseModal context={null} innerProps={null} id={null} />
+                </QueryClientProvider>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByTestId('modal-content')).toBeInTheDocument();
+                expect(screen.getByTestId('textarea')).toBeInTheDocument();
+                expect(screen.getByTestId('submit-button')).toBeInTheDocument();
+            });
+        });
+        it('should display error if course URL is invalid', async () => {
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <AddCourseModal context={null} innerProps={null} id={null} />
+                </QueryClientProvider>,
+            );
+
+            await waitFor(() => {
+                expect(screen.getByTestId('modal-content')).toBeInTheDocument();
+                expect(screen.getByTestId('textarea')).toBeInTheDocument();
+                expect(screen.getByTestId('submit-button')).toBeInTheDocument();
+            });
+
+            const textarea = screen.getByTestId('textarea');
+
+            textarea.focus();
+            act(() => {
+                fireEvent.change(textarea, { target: { value: 'https://cam1dent/courses/950600157?$scrollTo=toc_overview' } });
+            })
+            const submitButton = screen.getByRole('button', { name: 'Add Course Proposal' });
+            const form = screen.getByTestId('form');
+            fireEvent.submit(form, {
+                button: submitButton,
+            });
+            expect(screen.getByText('Please provide a valid course URL from TUM Campus Portal')).toBeInTheDocument();
         });
     });
 
-    it('displays error message when form is submitted with invalid URL', async () => {
-        let textarea = null;
-        await waitFor(() => {
-            textarea = screen.getByTestId('textarea');
-        });
-        expect(textarea).toBeInTheDocument();
-        await userEvent.type(textarea, 'invalid-url');
-        await userEvent.click(screen.getByTestId('submit-button'));
-        await waitFor(() => {
-            expect(textarea).toHaveAttribute('aria-invalid', 'true');
-        });
-    });
-
-    it('close AddCourseModal modal if form is submitted with valid URL', async () => {
-        let textarea = null;
-        await waitFor(() => {
-            textarea = screen.getByTestId('textarea');
-        });
-        expect(textarea).toBeInTheDocument();
-        await userEvent.type(textarea, 'https://campus.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses/950600157?$scrollTo=toc_overview');
-        await userEvent.click(screen.getByTestId('submit-button'));
-        await new Promise((r) => setTimeout(r, 500));
-        await waitFor(() => {
-            expect(screen.queryByTestId('modal-content')).not.toBeInTheDocument();
+    describe('when user is not logged in', async () => {
+        it('should display panel with login/register buttons and message', async () => {
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <AddCourseModal context={null} innerProps={null} id={null} />
+                </QueryClientProvider>,
+            );
+            await waitFor(() => {
+                expect(screen.getByTestId('message')).toHaveTextContent('Only registered users can add courses proposals.');
+                expect(screen.getByTestId('sign-in-btn')).toBeInTheDocument();
+                expect(screen.getByTestId('sign-up-btn')).toBeInTheDocument();
+            });
         });
     });
 });
