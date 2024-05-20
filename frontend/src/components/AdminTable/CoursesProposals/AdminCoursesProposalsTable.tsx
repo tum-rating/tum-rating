@@ -94,7 +94,7 @@ const AdminCoursesProposalsTable = () => {
                 margin: 0,
             },
         },
-        renderDetailPanel: ({ row }) => <ProposalExpansion proposal={row.original} row={row} />,
+        renderDetailPanel: ({ row }) => <ProposalExpansion key={row.original.id} proposal={row.original} row={row} />,
     });
 
     return (

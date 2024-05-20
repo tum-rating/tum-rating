@@ -7,6 +7,8 @@ export class GetTUMCourse {
         this.statusCode = statusCode;
         this.course = course;
         this.error = error;
+        delete this.error?.stack;
+        delete this.error?.config;
     }
 
     @ApiProperty()

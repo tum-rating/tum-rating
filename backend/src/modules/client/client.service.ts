@@ -21,7 +21,6 @@ export class ClientService {
             return new GetTUMCourse(200, course, null);
         }
         catch (error) {
-            console.log(error);
             if (error instanceof AxiosError) {
                 return new GetTUMCourse(error.status, null, error);
             }
