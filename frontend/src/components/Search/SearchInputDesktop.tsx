@@ -1,4 +1,4 @@
-import { ActionIcon, Button, CloseButton, Combobox, Flex, Loader, ScrollArea, Text, TextInput, ThemeIcon, useCombobox } from '@mantine/core';
+import { ActionIcon, Button, CloseButton, Combobox, Flex, Loader, ScrollArea, TextInput, ThemeIcon, useCombobox } from '@mantine/core';
 import { useDebouncedState, useMediaQuery } from '@mantine/hooks';
 import { IconArrowLeft, IconSearch } from '@tabler/icons-react';
 import clsx from 'clsx';
@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import classes from './SearchInputDesktop.module.css';
 
 import { useUser } from '@/auth/useUser.tsx';
+import { CopyrightFooter } from "@/components/CopyrightFooter";
 import { SearchHighlight } from '@/components/Highlight';
 import { Course } from '@/courses/types.ts';
 import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
@@ -29,7 +30,7 @@ const SearchInputDesktop = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { lock, unlock } = useScrollLock({ autoLock: false });
-    const searchInputRef = useRef(null); // Create a ref for the search input
+    const searchInputRef = useRef(null);
 
     useEffect(() => {
         if (isMobileOnly) {
@@ -178,9 +179,7 @@ const SearchInputDesktop = () => {
                             </ScrollArea.Autosize>
                         </Combobox.Options>
                         <Combobox.Footer>
-                            <Text fz="xs" c="dimmed">
-                                TUM-RATING © 2024
-                            </Text>
+                            <CopyrightFooter/>
                         </Combobox.Footer>
                     </Combobox>
                 )}
@@ -271,11 +270,8 @@ const SearchInputDesktop = () => {
                         {options}
                     </ScrollArea.Autosize>
                 </Combobox.Options>
-                {/* TODO extract it to separate component, use year from get date */}
                 <Combobox.Footer>
-                    <Text fz="xs" c="dimmed">
-                        TUM-RATING © 2024
-                    </Text>
+                    <CopyrightFooter/>
                 </Combobox.Footer>
             </Combobox.Dropdown>
         </Combobox>
