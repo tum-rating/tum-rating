@@ -104,7 +104,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
 
     return (
         <Container px={0} pos="relative" h="100%">
-            <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
+            <LoadingOverlay visible={isLoading || courseDetailsLoading} overlayProps={{ radius: 'sm', blur: 2 }} data-testid="loading" />
             <form
                 style={{ height: '100%' }}
                 onSubmit={form.onSubmit((e) => {
@@ -112,9 +112,9 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
                 })}
             >
                 <Flex direction="column" gap="xs" h="100%">
-                    <Textarea placeholder="Your comment" label="Your comment" autosize maxRows={6} minRows={6} value={form.values.comment} {...form.getInputProps('comment')} onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)} />
-                    <Skeleton h={36} loading={courseDetailsLoading} component={<Select {...form.getInputProps('semester')} label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={offeredInSemesters} />} />
-                    <Flex w="100%" gap="lg" direction="column" wrap="wrap" mt="md" mb="md">
+                    <Textarea data-testid="textarea" placeholder="Your comment" label="Your comment" autosize maxRows={6} minRows={6} value={form.values.comment} {...form.getInputProps('comment')} onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)} />
+                    <Skeleton h={36} loading={courseDetailsLoading} component={<Select {...form.getInputProps('semester')} data-testid="semester" label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={offeredInSemesters} />} />
+                    <Flex w="100%" gap="xl" direction="row" justify="center" wrap="wrap" mt="md" mb="md">
                         <Stack>
                             <HowEasyEditableRating onChange={(value) => form.setFieldValue('howEasyRating', value)} score={form.values.howEasyRating} />
                             {form.errors.howEasyRating && (
