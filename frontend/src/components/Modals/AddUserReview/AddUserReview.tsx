@@ -2,7 +2,7 @@ import { Badge, Button, Container, Divider, Flex, LoadingOverlay, Select, Stack,
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
 import { useEffect, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useUser } from '@/auth/useUser.tsx';
 import { HowEasyEditableRating } from '@/components/Course/HowEasyEditableRating.tsx';
@@ -53,6 +53,7 @@ const AddUserReviewModal = ({
             });
         }
     }, [isSuccess]);
+
 
     const form = useForm({
         initialValues: {
@@ -113,7 +114,7 @@ const AddUserReviewModal = ({
             </Flex>
         );
     }
-
+    console.log(form.values.comment)
     return (
         <Container px={0} pos="relative" h="100%">
             <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
@@ -124,9 +125,8 @@ const AddUserReviewModal = ({
                 })}
             >
                 <Flex direction="column" gap="xs" h="100%">
-                    <Textarea autoFocus data-autofocus autosize minRows={6} maxRows={6} placeholder="Your comment" label="Your comment" h="auto" value={form.values.comment} {...form.getInputProps('comment')} onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)} />
-                    <Skeleton h={36} loading={courseDetailsLoading} component={<Select {...form.getInputProps('semester')} label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={offeredInSemesters} />} />
-
+                    <Textarea data-testid="textarea" autoFocus data-autofocus autosize minRows={6} maxRows={6} placeholder="Your comment" label="Your comment" h="auto" value={form.values.comment} {...form.getInputProps('comment')} onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)} />
+                    <Skeleton h={36} loading={courseDetailsLoading} component={<Select data-testid="select" {...form.getInputProps('semester')} label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={offeredInSemesters} />} />
                     <Flex w="100%" gap="xl" direction="row" justify="center" wrap="wrap" mt="md" mb="md">
                         <Stack>
                             <HowEasyEditableRating onChange={(value) => form.setFieldValue('howEasyRating', value)} score={form.values.howEasyRating} />

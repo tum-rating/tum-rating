@@ -4,6 +4,12 @@ import { faker } from '@faker-js/faker';
 
 import { PAGE_SIZE } from '@/constants';
 
+function withOverrides(generator: () => any) {
+    return (overrides = {}) => {
+        const data = generator();
+        return { ...data, ...overrides };
+    };
+}
 
 const generateJwtToken = () => {
     const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64');
@@ -26,7 +32,7 @@ const generateJwtToken = () => {
     return header + '.' + payloadBase64 + '.' + signature;
 };
 
-const generateCourse = () => ({
+const generateCourse = withOverrides(() => ({
     _id: faker.string.uuid(),
     professor: faker.person.fullName(),
     otherLecturers: [faker.person.fullName(), faker.person.fullName()],
@@ -37,9 +43,9 @@ const generateCourse = () => ({
     createdAt: faker.date.past().toISOString(),
     updatedAt: faker.date.recent().toISOString(),
     howInterestingRatingAverage: faker.number.int({ min: 0, max: 5 }),
-});
+}));
 
-const generateCourseDetails = () => ({
+const generateCourseDetails = withOverrides(() => ({
     courseId: faker.number.int().toString(),
     courseNumber: faker.number.int().toString(),
     createdAt: faker.date.past().toISOString(),
@@ -54,9 +60,9 @@ const generateCourseDetails = () => ({
     votesNumber: faker.number.int({ min: 0, max: 100 }),
     _id: faker.string.uuid(),
     __v: faker.number.int(),
-});
+}));
 
-const generateCourseReview = () => ({
+const generateCourseReview = withOverrides(() => ({
     _id: faker.string.uuid(),
     courseId: faker.string.uuid(),
     userId: faker.string.uuid(),
@@ -67,7 +73,7 @@ const generateCourseReview = () => ({
     semester: faker.date.future().getFullYear() + ' S',
     createdAt: faker.date.past().toISOString(),
     updatedAt: faker.date.recent().toISOString(),
-});
+}));
 
 const user = {
     username: faker.internet.userName(),
@@ -81,5 +87,13 @@ const courses = Array.from({ length: PAGE_SIZE }, () => generateCourse());
 const course = generateCourse();
 const courseReview = generateCourseReview();
 const courseDetails = generateCourseDetails();
+const courseDetailsWithLoggedUserReview = generateCourseDetails({
+    reviews: [
+        generateCourseReview({
+            userId: user.id,
+            userName: user.username,
+        }),
+    ],
+});
 
-export { user, courses, course, courseReview, courseDetails, generateJwtToken };
+export { user, courses, course, courseReview, courseDetails, generateJwtToken, courseDetailsWithLoggedUserReview };

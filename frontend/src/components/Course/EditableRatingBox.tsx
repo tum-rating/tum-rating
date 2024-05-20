@@ -10,7 +10,7 @@ const EditableRatingBox = (props: EditableRatingBoxProps) => {
     const { score, message, color, label, onChange = (_: number) => false } = props;
 
     return (
-        <Flex direction="column" align="center" justify="center" pos="relative">
+        <Flex direction="column" align="center" justify="center" pos="relative" data-testid="editable-rating">
             <Text mt={1} fw="500" fz="sm" mb="4">
                 {label}
             </Text>
