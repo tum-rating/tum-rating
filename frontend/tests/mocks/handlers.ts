@@ -17,6 +17,10 @@ export const handlers = [
     http.get(endpoints.getAllCourses, async () => {
         return HttpResponse.json(courses);
     }),
+    // Courses list (with pagination)
+    http.get(endpoints.getPaginatedCourses(":pageNumber",":pageSize"), async () => {
+        return HttpResponse.json(courses);
+    }),
     // Add user review
     http.post(endpoints.postSpecificReview(':courseId', ':userId'), async () => {
         return HttpResponse.json();

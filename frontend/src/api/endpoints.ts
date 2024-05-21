@@ -28,7 +28,7 @@ type CoursesEndpoints = {
     getAllCourses: string;
     getSpecificCourse: (id: string) => string;
     postSpecificReview: (courseId: string, userId: string) => string;
-    getPaginatedCourses: (pageNumber: number, pageSize: number) => string;
+    getPaginatedCourses: (pageNumber: number | string, pageSize: number | string) => string;
     searchCourses: (query: string) => string;
     postCourseProposal: string;
     searchCoursesOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => string;
