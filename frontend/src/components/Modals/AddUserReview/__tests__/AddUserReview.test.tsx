@@ -1,15 +1,14 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import {http, HttpResponse} from "msw";
+import { http, HttpResponse } from 'msw';
 
-import {endpoints} from "@/api";
+import { endpoints } from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { AddUserReviewModal } from '@/components/Modals/AddUserReview';
 import { EditUserReviewModal } from '@/components/Modals/EditUserReview';
-import {courseDetails, generateJwtToken} from 'tests/mocks/dataGenerators.ts';
-import {server} from "tests/mocks/node.ts";
+import { courseDetails, generateJwtToken } from 'tests/mocks/dataGenerators.ts';
+import { server } from 'tests/mocks/node.ts';
 import { render } from 'tests/utils/render.tsx';
-
 
 describe('AddUserReviewModal', () => {
     let queryClient: QueryClient;
@@ -25,11 +24,11 @@ describe('AddUserReviewModal', () => {
                 http.get(endpoints.getSpecificCourse(':id'), async () => {
                     return HttpResponse.json(courseDetails);
                 }),
-            )
+            );
         });
-        afterEach(()=>{
+        afterEach(() => {
             server.resetHandlers();
-        })
+        });
 
         it('should render AddUserReview modal without crashing', async () => {
             render(

@@ -3,6 +3,7 @@ import { PropsWithChildren, useEffect, useMemo } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
+import { useUser } from '@/auth/useUser';
 import { openAddCourseModal } from '@/components/Modals/AddCourseModal';
 import { openAddUserReviewModal } from '@/components/Modals/AddUserReview';
 import { openEditUserReviewModal } from '@/components/Modals/EditUserReview';
@@ -18,6 +19,7 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
     const location = useLocation();
     const navigate = useNavigate();
     const { id } = useParams();
+    const { data: user } = useUser();
     let modalsContext = useModals();
     const modalSharedParams = useMemo(
         () => ({
@@ -36,9 +38,9 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
     );
     const modals = useMemo(
         () => ({
-            'sign-in': { component: openSignInModal, params: { ...modalSharedParams } },
-            'sign-up': { component: openSignUpModal, params: { ...modalSharedParams } },
-            'forgot-password': { component: openRecoveryModal, params: { ...modalSharedParams } },
+            'sign-in': { component: openSignInModal, params: { ...modalSharedParams }, notForLoggedUser: true },
+            'sign-up': { component: openSignUpModal, params: { ...modalSharedParams }, notForLoggedUser: true },
+            'forgot-password': { component: openRecoveryModal, params: { ...modalSharedParams }, notForLoggedUser: true },
             'add-course': { component: openAddCourseModal, params: { ...modalSharedParams } },
             'add-user-review': {
                 component: openAddUserReviewModal,
@@ -56,7 +58,13 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
         if (location.hash.includes('#modal=')) {
             const modalKey = location.hash.replace('#modal=', '');
             const modal = modals[modalKey];
+
             if (modal) {
+                if (user && modal.notForLoggedUser) {
+                    closeAllModals();
+                    navigate('#')
+                    return;
+                }
                 modal.component(modal.params);
             }
         } else {

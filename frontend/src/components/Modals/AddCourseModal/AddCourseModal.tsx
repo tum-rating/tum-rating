@@ -11,7 +11,6 @@ import { CourseInput, useAddCourseProposal } from '@/courses/useAddCourseProposa
 import classes from '@/pages/PageNotFound/PageNotFound.module.css';
 import { Paths } from '@/routes/paths.ts';
 
-
 const openAddCourseModal = ({ ...props }) => {
     modals.openContextModal({
         ...contextModalConfig('addCourse', <Text fw={600}>Add Course Proposal</Text>),

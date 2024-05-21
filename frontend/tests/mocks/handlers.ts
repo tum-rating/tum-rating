@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
-import {courseDetailsWithLoggedUserReview, courses, user} from './dataGenerators.ts';
+import { courseDetailsWithLoggedUserReview, courses, user } from './dataGenerators.ts';
 
 import { endpoints } from '@/api';
 
@@ -27,6 +27,8 @@ export const handlers = [
     }),
     http.post(endpoints.postCourseProposal, async () => {
         return HttpResponse.json();
-    })
-
+    }),
+    http.post(endpoints.recovery, async () => {
+        return HttpResponse.json();
+    }),
 ];
