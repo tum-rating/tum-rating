@@ -30,7 +30,7 @@ export const Comment = (props: CommentProps) => {
     const userCommentFlag = (userReview || {}).userId === userId;
 
     return (
-        <Flex p="md" data-comment={userCommentFlag ? 'user-comment' : 'comment'} direction="column" className={classes.comment}>
+        <Flex p="md" data-comment={userCommentFlag ? 'user-comment' : 'comment'} direction="column" className={classes.comment} data-testid="comment">
             <Flex direction="column">
                 <Flex justify="space-between" w="100%">
                     <Flex gap="xs">
@@ -41,7 +41,7 @@ export const Comment = (props: CommentProps) => {
                                     {userName}{' '}
                                 </Text>
                                 {userCommentFlag && (
-                                    <Badge ml={4} size="xs" variant="light" color="green">
+                                    <Badge ml={4} size="xs" variant="light" color="green" data-testid="user-comment-badge">
                                         You
                                     </Badge>
                                 )}
@@ -51,8 +51,8 @@ export const Comment = (props: CommentProps) => {
                             </Text>
                         </Flex>
                     </Flex>
-                    <Menu position="bottom-end">
-                        <Menu.Target>
+                    <Menu position="bottom-end" >
+                        <Menu.Target data-testid="menu">
                             <ActionIcon variant="outline" color={userCommentFlag ? 'green' : 'auto'}>
                                 <IconDotsVertical width={16} height={16} />
                             </ActionIcon>
@@ -60,17 +60,17 @@ export const Comment = (props: CommentProps) => {
                         <Menu.Dropdown>
                             {userCommentFlag ? (
                                 <>
-                                    <Menu.Item onClick={() => navigate(getPath(Paths.editUserReview))}>
+                                    <Menu.Item data-testid="menu-edit-review" onClick={() => navigate(getPath(Paths.editUserReview))}>
                                         <Text size="sm">Edit your review</Text>
                                     </Menu.Item>
-                                    <Menu.Item>
+                                    <Menu.Item data-testid="menu-delete-review">
                                         <Text size="sm" c="red">
                                             Delete your review
                                         </Text>
                                     </Menu.Item>
                                 </>
                             ) : (
-                                <Menu.Item>
+                                <Menu.Item data-testid="menu-report-review">
                                     <Text c="red" size="sm">
                                         Report
                                     </Text>
