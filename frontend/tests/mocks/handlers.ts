@@ -25,10 +25,20 @@ export const handlers = [
     http.patch(endpoints.postSpecificReview(':courseId', ':userId'), async () => {
         return HttpResponse.json();
     }),
+    // Add course proposal
     http.post(endpoints.postCourseProposal, async () => {
         return HttpResponse.json();
     }),
+    // Recovery
     http.post(endpoints.recovery, async () => {
+        return HttpResponse.json();
+    }),
+    //Sign in
+    http.post(endpoints.signin, async () => {
+        return HttpResponse.json();
+    }),
+    // Sign up
+    http.post(endpoints.signup, async () => {
         return HttpResponse.json();
     }),
 ];
