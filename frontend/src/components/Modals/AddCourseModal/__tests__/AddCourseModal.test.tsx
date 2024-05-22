@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import {fireEvent, screen, waitFor} from '@testing-library/react';
-import {act} from "react";
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { act } from 'react';
 import { describe, expect, it } from 'vitest';
 
 import * as userLocalStorage from '@/auth/user.localstore.ts';
@@ -51,7 +51,7 @@ describe('AddCourseModal', () => {
             textarea.focus();
             act(() => {
                 fireEvent.change(textarea, { target: { value: 'https://cam1dent/courses/950600157?$scrollTo=toc_overview' } });
-            })
+            });
             const submitButton = screen.getByRole('button', { name: 'Add Course Proposal' });
             const form = screen.getByTestId('form');
             fireEvent.submit(form, {

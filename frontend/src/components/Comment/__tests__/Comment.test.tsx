@@ -36,10 +36,10 @@ describe('Comment', () => {
             menu = screen.getByTestId('menu');
         });
         await userEvent.click(menu);
-        await waitFor(()=> {
+        await waitFor(() => {
             expect(screen.getByTestId('menu-edit-review')).toBeInTheDocument();
             expect(screen.getByTestId('menu-delete-review')).toBeInTheDocument();
-        })
+        });
     });
 
     it('handles menu click correctly when user review is not present', async () => {

@@ -7,9 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 const AllTheProviders = ({ children }: { children: ReactNode }) => {
     return (
         <BrowserRouter>
-            <MantineProvider>
-                    {children}
-            </MantineProvider>
+            <MantineProvider>{children}</MantineProvider>
         </BrowserRouter>
     );
 };

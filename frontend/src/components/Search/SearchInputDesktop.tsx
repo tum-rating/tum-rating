@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import classes from './SearchInputDesktop.module.css';
 
 import { useUser } from '@/auth/useUser.tsx';
-import { CopyrightFooter } from "@/components/CopyrightFooter";
+import { CopyrightFooter } from '@/components/CopyrightFooter';
 import { SearchHighlight } from '@/components/Highlight';
 import { Course } from '@/courses/types.ts';
 import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
@@ -179,7 +179,7 @@ const SearchInputDesktop = () => {
                             </ScrollArea.Autosize>
                         </Combobox.Options>
                         <Combobox.Footer>
-                            <CopyrightFooter/>
+                            <CopyrightFooter />
                         </Combobox.Footer>
                     </Combobox>
                 )}
@@ -271,7 +271,7 @@ const SearchInputDesktop = () => {
                     </ScrollArea.Autosize>
                 </Combobox.Options>
                 <Combobox.Footer>
-                    <CopyrightFooter/>
+                    <CopyrightFooter />
                 </Combobox.Footer>
             </Combobox.Dropdown>
         </Combobox>

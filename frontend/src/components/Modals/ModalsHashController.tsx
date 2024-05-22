@@ -62,7 +62,7 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
             if (modal) {
                 if (user && modal.notForLoggedUser) {
                     closeAllModals();
-                    navigate('#')
+                    navigate('#');
                     return;
                 }
                 modal.component(modal.params);

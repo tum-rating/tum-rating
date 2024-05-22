@@ -1,1 +1,1 @@
-export {CopyrightFooter} from './CopyrightFooter';
+export { CopyrightFooter } from './CopyrightFooter';

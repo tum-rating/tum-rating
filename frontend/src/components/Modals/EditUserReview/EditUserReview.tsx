@@ -79,8 +79,6 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
         },
     });
 
-
-
     const onEditUserReview = (form: UserAddReviewInput) => {
         if (form.howInterestingRating === 0 || form.howEasyRating === 0) return;
         editUserReview({ ...form });

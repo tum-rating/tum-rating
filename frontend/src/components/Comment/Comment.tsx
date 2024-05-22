@@ -51,7 +51,7 @@ export const Comment = (props: CommentProps) => {
                             </Text>
                         </Flex>
                     </Flex>
-                    <Menu position="bottom-end" >
+                    <Menu position="bottom-end">
                         <Menu.Target data-testid="menu">
                             <ActionIcon variant="outline" color={userCommentFlag ? 'green' : 'auto'}>
                                 <IconDotsVertical width={16} height={16} />
