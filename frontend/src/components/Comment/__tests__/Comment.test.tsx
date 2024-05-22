@@ -1,8 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
-import { Comment } from '../Comment';
-
+import { Comment } from '@/components/Comment';
 import { courseReview } from 'tests/mocks/dataGenerators.ts';
 import { render } from 'tests/utils/render.tsx';
 
