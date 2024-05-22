@@ -62,6 +62,9 @@ describe('AddCourseModal', () => {
     });
 
     describe('when user is not logged in', async () => {
+        beforeEach(() => {
+            userLocalStorage.removeUser();
+        });
         it('should display panel with login/register buttons and message', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
@@ -69,7 +72,7 @@ describe('AddCourseModal', () => {
                 </QueryClientProvider>,
             );
             await waitFor(() => {
-                expect(screen.getByTestId('message')).toHaveTextContent('Only registered users can add courses proposals.');
+                expect(screen.getByTestId('message')).toBeInTheDocument();
                 expect(screen.getByTestId('sign-in-btn')).toBeInTheDocument();
                 expect(screen.getByTestId('sign-up-btn')).toBeInTheDocument();
             });

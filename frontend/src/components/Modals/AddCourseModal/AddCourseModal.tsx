@@ -25,7 +25,7 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
     const { mutate: addReview, status, isLoading: addReviewLoading, error, isError } = useAddCourseProposal();
     const [apiError, setApiError] = useState(null);
     const navigate = useNavigate();
-    const { data: user } = useUser();
+    const { data: user, isLoading: userLoading } = useUser();
 
     useEffect(() => {
         setApiError(isError);
@@ -55,7 +55,7 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
         addReview({ ...form });
     };
 
-    if (!user) {
+    if (!user && !userLoading) {
         return (
             <Flex direction="column" gap="xs" h="100%" justify="center" align="center" py="md">
                 <svg className={classes.notFoundImg} viewBox="0 0 72 72" width="64px" height="64px">
@@ -96,7 +96,7 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
                                 TUM Campus Portal
                             </Anchor>
                             . Copy the link and paste it into our form. If everything is ok, the course will appear within 24 hours.
-                            <Text fw={500} mt="xs">
+                            <Text span fw={500} mt="xs" display="block">
                                 Example course URL:{' '}
                                 <Anchor style={{ overflowWrap: 'anywhere' }} target={'_blank'} href={example_course}>
                                     {example_course}
