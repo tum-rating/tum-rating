@@ -18,8 +18,11 @@ export const handlers = [
         return HttpResponse.json(courses);
     }),
     // Courses list (with pagination)
-    http.get(endpoints.getPaginatedCourses(":pageNumber",":pageSize"), async () => {
-        return HttpResponse.json(courses);
+    http.get(endpoints.getAllCourses, async ({request}) => {
+        const url = new URL(request.url)
+        const pageNumber = url.searchParams.get('page-number');
+        const pageSize = url.searchParams.get('page-size');
+        return HttpResponse.json({ courses, nextPageNumber: pageNumber + 1, pageSize});
     }),
     // Add user review
     http.post(endpoints.postSpecificReview(':courseId', ':userId'), async () => {

@@ -4,13 +4,13 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 
 import { getPath, Paths } from './paths.ts';
 
-import { AdminCoursesProposalsTable, AdminCoursesTable, AdminUsersTable } from '@/components/AdminTable';
+import { RouteLoader } from '@/components/Loaders';
 import { ModalsHashController, RecoveryModal, SignInModal, SignUpModal } from '@/components/Modals';
 import { AddCourseModal } from '@/components/Modals/AddCourseModal/AddCourseModal.tsx';
 import { AddUserReviewModal } from '@/components/Modals/AddUserReview/AddUserReview.tsx';
 import { EditUserReviewModal } from '@/components/Modals/EditUserReview';
 import { AdminLayout, MainLayout } from '@/layouts';
-import { Activation, Admin, Course, Home, ErrorBoundary, Recovery } from '@/pages';
+import { Activation, Course, ErrorBoundary, Home, Recovery } from '@/pages';
 
 const modals = {
     signIn: SignInModal,
@@ -37,7 +37,7 @@ const routes = [
             {
                 path: '/',
                 element: (
-                    <Suspense fallback={'Loading...'}>
+                    <Suspense fallback={RouteLoader()}>
                         <Home />
                     </Suspense>
                 ),
@@ -73,7 +73,6 @@ const routes = [
         element: (
             <AdminLayout>
                 <ModalsProvider modals={modals}>
-
                     <Outlet />
                 </ModalsProvider>
             </AdminLayout>
@@ -81,35 +80,35 @@ const routes = [
         children: [
             {
                 path: getPath(Paths.admin),
-                element: (
-                    <Suspense fallback={'Loading...'}>
-                        <Admin />
-                    </Suspense>
-                ),
+                fallbackElement: <RouteLoader />,
+                lazy: async () => {
+                    let { Admin } = await import('@/pages/Admin/Admin.tsx');
+                    return { Component: Admin };
+                },
             },
             {
                 path: getPath(Paths.adminCourses),
-                element: (
-                    <Suspense fallback={'Loading...'}>
-                        <AdminCoursesTable />
-                    </Suspense>
-                ),
+                fallbackElement: <RouteLoader />,
+                lazy: async () => {
+                    let { AdminCoursesTable } = await import('@/components/AdminTable/Courses/AdminCoursesTable.tsx');
+                    return { Component: AdminCoursesTable };
+                },
             },
             {
                 path: getPath(Paths.adminCoursesProposals),
-                element: (
-                    <Suspense fallback={'Loading...'}>
-                        <AdminCoursesProposalsTable />
-                    </Suspense>
-                ),
+                fallbackElement: <RouteLoader />,
+                lazy: async () => {
+                    let { AdminCoursesProposalsTable } = await import('@/components/AdminTable/CoursesProposals/AdminCoursesProposalsTable.tsx');
+                    return { Component: AdminCoursesProposalsTable };
+                },
             },
             {
                 path: getPath(Paths.adminUsers),
-                element: (
-                    <Suspense fallback={'Loading...'}>
-                        <AdminUsersTable />
-                    </Suspense>
-                ),
+                fallbackElement: <RouteLoader />,
+                lazy: async () => {
+                    let { AdminUsersTable } = await import('@/components/AdminTable/Users/AdminUsersTable.tsx');
+                    return { Component: AdminUsersTable };
+                },
             },
         ],
     },
