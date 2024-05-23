@@ -1,9 +1,10 @@
-const baseDomain = import.meta.env.VITE_API_BASE;
+const baseDomain = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
 const api = '/api';
 const apiVersion = '/v1';
 const baseApiUrl = baseDomain + api + apiVersion;
 const authBase = baseApiUrl + '/auth';
 const coursesBase = baseApiUrl + '/courses';
+
 type AuthEndpoints = {
     base: string;
     signup: string;
@@ -27,7 +28,7 @@ type CoursesEndpoints = {
     getAllCourses: string;
     getSpecificCourse: (id: string) => string;
     postSpecificReview: (courseId: string, userId: string) => string;
-    getPaginatedCourses: (pageNumber: number, pageSize: number) => string;
+    getPaginatedCourses: (pageNumber: number | string, pageSize: number | string) => string;
     searchCourses: (query: string) => string;
     postCourseProposal: string;
     searchCoursesOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => string;
@@ -39,7 +40,7 @@ const Courses: CoursesEndpoints = {
     postCourseProposal: baseApiUrl + '/course-proposals',
     getSpecificCourse: (id: string) => `${coursesBase}/${id}`,
     postSpecificReview: (courseId: string, userId: string) => `${coursesBase}/${courseId}/user/${userId}`,
-    getPaginatedCourses: (pageNumber: number, pageSize: number) => `${coursesBase}?page-number=${pageNumber}&page-size=${pageSize}`,
+    getPaginatedCourses: (pageNumber: number | string, pageSize: number | string) => `${coursesBase}?page-number=${pageNumber}&page-size=${pageSize}`,
     searchCourses: (query: string) => `${coursesBase}?search=${query}`,
     searchCoursesOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => `${coursesBase}?page-number=${pageNumber}&page-size=${pageSize}&search=${search}`,
 };

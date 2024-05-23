@@ -16,10 +16,7 @@ async function recovery(props: RecoveryBody) {
         },
         body: JSON.stringify(requestBody),
     });
-
-    const data = await response.json();
-    if (!response.ok) throw new ResponseError(data.message, response, 'recovery');
-
+    if (!response.ok) throw new ResponseError('Unexpected error', response, 'recovery');
     return true;
 }
 

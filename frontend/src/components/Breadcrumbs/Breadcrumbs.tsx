@@ -31,6 +31,7 @@ const BreadcrumbsComponent = ({ courseName, isLoading }: BreadcrumbsProps) => {
             <Tooltip openDelay={500} label={courseName} multiline={true} transitionProps={{ transition: 'fade', duration: 100 }}>
                 <Skeleton
                     radius="lg"
+                    data-testid="skeleton"
                     loading={isLoading}
                     h={22}
                     w={150}

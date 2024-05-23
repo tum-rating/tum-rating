@@ -13,7 +13,10 @@
         "groups": [
           "builtin",
           "external",
-          ["parent", "sibling"],
+          [
+            "parent",
+            "sibling"
+          ],
           "internal"
         ],
         "pathGroups": [
@@ -45,9 +48,21 @@
     "import/resolver": {
       "alias": {
         "map": [
-          ["@", "./src"]
+          [
+            "@",
+            "./src"
+          ],
+          [
+            "tests",
+            "./tests"
+          ]
         ],
-        "extensions": [".ts", ".tsx", ".js", ".jsx"]
+        "extensions": [
+          ".ts",
+          ".tsx",
+          ".js",
+          ".jsx"
+        ]
       }
     }
   }

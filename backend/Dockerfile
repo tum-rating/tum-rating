@@ -24,11 +24,13 @@ FROM node:18.18-alpine AS backend-development
 
 WORKDIR /usr/app
 
-COPY --chown=node:node backend/package.json ./
+COPY --chown=node:node package.json ./
+
+COPY --chown=node:node backend/package.json backend/package.json
 
 COPY --chown=node:node package-lock.json ./
 
-RUN npm ci
+RUN npm i
 
 USER node
 
@@ -36,15 +38,17 @@ FROM node:18.18-alpine AS backend-build
 
 WORKDIR /usr/app
 
-COPY --chown=node:node backend/package.json ./
+COPY --chown=node:node package.json ./
+
+COPY --chown=node:node backend/package.json backend/package.json
 
 COPY --chown=node:node package-lock.json ./
 
 COPY --chown=node:node --from=backend-development /usr/app/node_modules ./node_modules
 
-COPY --chown=node:node backend/ .
+COPY --chown=node:node backend/ backend/
 
-RUN npm run build
+RUN npm run build -w backend
 
 ENV NODE_ENV production
 
@@ -57,7 +61,7 @@ FROM node:18.18-alpine AS production
 WORKDIR /usr/app
 
 COPY --chown=node:node --from=backend-build /usr/app/node_modules ./node_modules
-COPY --chown=node:node --from=backend-build /usr/app/dist ./dist
+COPY --chown=node:node --from=backend-build /usr/app/backend/dist ./dist
 COPY --chown=node:node backend/assets ./assets
 
 # copy frontend build

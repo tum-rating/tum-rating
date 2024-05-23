@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useSignUp } from '@/auth/useSignUp.tsx';
+import { useUser } from '@/auth/useUser.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
@@ -25,6 +26,8 @@ const SignUpModal = () => {
     const { isSuccess, isPending: isLoading, mutate: signUp, error, isError } = useSignUp();
     const [apiError, setApiError] = useState(null);
     const navigate = useNavigate();
+
+    const { data: user, isLoading: userLoading } = useUser();
 
     useEffect(() => {
         notifications.clean();
@@ -47,6 +50,10 @@ const SignUpModal = () => {
             terms: (value) => !value && 'You should accept terms of usage',
         },
     });
+
+    if (userLoading || user) {
+        return null;
+    }
 
     return (
         <Box pos="relative">
@@ -73,14 +80,15 @@ const SignUpModal = () => {
                     </Flex>
                 ) : (
                     <form
+                        data-testid="form"
                         onSubmit={form.onSubmit((e) => {
                             signUp(e);
                         })}
                     >
                         <Stack>
-                            <TextInput autoFocus data-autofocus data-testid="cypress-login-username-input" label={'Your name'} required placeholder={'Your name'} value={form.values.username} onChange={(event) => form.setFieldValue('username', event.currentTarget.value)} />
-                            <TextInput type="email" data-testid="cypress-login-email-input" required label="Email" placeholder="Email" value={form.values.email} onChange={(event) => form.setFieldValue('email', event.currentTarget.value)} error={form.errors.email} />
-                            <PasswordInput data-testid="cypress-login-password-input" autoComplete="on" required label="Password" placeholder="Password" value={form.values.password} onChange={(event) => form.setFieldValue('password', event.currentTarget.value)} error={form.errors.password} />
+                            <TextInput autoFocus data-autofocus data-testid="username" label={'Your name'} required placeholder={'Your name'} value={form.values.username} onChange={(event) => form.setFieldValue('username', event.currentTarget.value)} />
+                            <TextInput type="email" data-testid="email" required label="Email" placeholder="Email" value={form.values.email} onChange={(event) => form.setFieldValue('email', event.currentTarget.value)} error={form.errors.email} />
+                            <PasswordInput data-testid="password" autoComplete="on" required label="Password" placeholder="Password" value={form.values.password} onChange={(event) => form.setFieldValue('password', event.currentTarget.value)} error={form.errors.password} />
                             <Checkbox label="Accept terms of usage" checked={form.values.terms} onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)} />
                             {form.errors.terms && (
                                 <Text c="red" size="sm">
@@ -88,7 +96,7 @@ const SignUpModal = () => {
                                 </Text>
                             )}
                             {apiError && error && (
-                                <Alert variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
+                                <Alert data-testid="error-message" variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
                                     <Text size="xs">{error instanceof ResponseError ? error?.message : 'An error occurred'}</Text>
                                 </Alert>
                             )}
@@ -104,7 +112,7 @@ const SignUpModal = () => {
                                     Already have an account?
                                 </Anchor>
                             </Group>
-                            <Button type="submit" mt="xs" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
+                            <Button data-testid="submit" type="submit" mt="xs" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
                                 Sign Up
                             </Button>
                         </Stack>
