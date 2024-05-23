@@ -11,6 +11,10 @@ export class UserRepository extends BaseRepository<User> {
         super(_userModel);
     }
 
+    public getAllAndOmit(): Promise<Omit<WithId<User>, 'passwordHash' | 'passwordSalt' | 'emailDotSuffix'>[]> {
+        return this._userModel.find().select(['-__v', '-passwordHash', '-passwordSalt', '-emailDotSuffix']);
+    }
+
     public getByEmail(email: string) {
         return this._userModel.findOne({ email }).exec();
     }

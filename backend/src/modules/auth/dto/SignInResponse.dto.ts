@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { UserResponseDto } from 'src/modules/user/dto/UserResponse.dto';
+import { GetUserPublicResponseDto } from 'src/modules/user/dto/GetUserPublicResponse.dto';
 
 export class SignInResponseDto {
     @ApiProperty()
-    user: UserResponseDto;
+    user: GetUserPublicResponseDto;
 
     @ApiProperty()
     token: string;

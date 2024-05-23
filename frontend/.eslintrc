@@ -6,13 +6,17 @@
   ],
   "rules": {
     "no-console": "error",
+    "react-hooks/exhaustive-deps": "off",
     "import/order": [
       "error",
       {
         "groups": [
           "builtin",
           "external",
-          ["parent", "sibling"],
+          [
+            "parent",
+            "sibling"
+          ],
           "internal"
         ],
         "pathGroups": [
@@ -44,9 +48,21 @@
     "import/resolver": {
       "alias": {
         "map": [
-          ["@", "./src"]
+          [
+            "@",
+            "./src"
+          ],
+          [
+            "tests",
+            "./tests"
+          ]
         ],
-        "extensions": [".ts", ".tsx", ".js", ".jsx"]
+        "extensions": [
+          ".ts",
+          ".tsx",
+          ".js",
+          ".jsx"
+        ]
       }
     }
   }

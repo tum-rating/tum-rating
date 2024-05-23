@@ -1,0 +1,23 @@
+.redRow {
+    color: var(--mantine-color-red-6) !important;
+    background-color: light-dark(
+            color-mix(in srgb, var(--mantine-color-red-6) 10%, var(--mantine-color-white)),
+            color-mix(in srgb, var(--mantine-color-red-6) 30%, var(--mantine-color-black))
+    ) !important;
+}
+
+.goldRow {
+    color: var(--mantine-color-yellow-7) !important;
+    background-color: light-dark(
+            color-mix(in srgb, var(--mantine-color-yellow-6) 10%, var(--mantine-color-white)),
+            color-mix(in srgb, var(--mantine-color-yellow-6) 30%, var(--mantine-color-black))
+    ) !important;
+}
+
+.grayRow {
+    color: var(--mantine-color-gray-7) !important;
+    background-color: light-dark(
+            color-mix(in srgb, var(--mantine-color-gray-6) 10%, var(--mantine-color-white)),
+            color-mix(in srgb, var(--mantine-color-gray-6) 30%, var(--mantine-color-black))
+    ) !important;
+}
