@@ -17,7 +17,8 @@ import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { UserService } from 'src/modules/user/user.service';
 import { JWTService } from 'src/utils/jwt/jwt.service';
 import { MailerService } from 'src/modules/mailer/mailer.service';
-import { ERROR_MONGO_DUPLICATE_CODE } from 'src/utils/errors/mongoErrorCodes';
+import { UserRole } from 'src/database/documents/user';
+import { DuplicateError } from 'src/utils/errors/errors';
 
 import { AuthService } from './auth.service';
 import { SignUpRequestDto, SignUpRequestSchema } from './dto/SignUpRequest.dto';
@@ -25,7 +26,6 @@ import { SignInRequestDto, SignInRequestSchema } from './dto/SignInRequest.dto';
 import { SignInResponseDto } from './dto/SignInResponse.dto';
 import { ActivateUserEmailRequestDto, ActivateUserEmailRequestSchema } from './dto/ActivateUserEmail.dto';
 import { PasswordRecoveryRequestDto, PasswordRecoveryRequestSchema } from './dto/PasswordRecovery.dto';
-import { UserRole } from 'src/database/documents/user';
 
 @ApiTags('auth')
 @Controller('api/v1/auth')
@@ -68,7 +68,11 @@ export class AuthControllerV1 {
 
             const activationToken = await this._jwtService.signJWTActivate(createdUser.id);
 
-            await this._mailerService.sendEmailActivationEmail([{ email: body.email, name: body.username }], activationToken);
+            try {
+                await this._mailerService.sendEmailActivationEmail({ email: body.email, name: body.username }, activationToken);
+            } catch (error) {
+                this._logger.error('Failed to send activation email for %s: %s', body.email, error);
+            }
 
             this._userService.getUsersWithMatchingEmailSuffix(body.email)
                 .then(possibleDuplicates => {
@@ -87,20 +91,32 @@ export class AuthControllerV1 {
             this._logger.info('Signup local request completed user created with email %s, id %s', body.email, createdUser.id);
         } catch (error) {
             this._logger.error('Signup local error: %o', error);
-            if (error.code == ERROR_MONGO_DUPLICATE_CODE) {
+            if (error instanceof DuplicateError) {
                 let errorMessage;
-                if (Object.keys(error.keyPattern).includes('email')) {
+                if (error.isConflictingKey('email')) {
                     errorMessage = 'Email already exists';
 
                     const user = await this._userService.getUserByEmail(body.email);
+
+                    if (!user) {
+                        this._logger.error('User not found after duplicate email error %s', body.email);
+                        throw new InternalServerErrorException();
+                    }
+
                     if (!user.isEmailActivated) {
                         this._logger.info('Email already exist, but is not activated, sending activation for %s', user.email);
 
                         const activationToken = await this._jwtService.signJWTActivate(user.id);
-                        await this._mailerService.sendEmailActivationEmail([{ email: body.email, name: body.username }], activationToken);
+                        await this._mailerService.sendEmailActivationEmail({ email: body.email, name: body.username }, activationToken);
+                    } else {
+                        this._logger.info('Email already exist, and is activated, sending already exist email for %s', user.email);
+
+                        await this._mailerService.sendEmailAlreadyExists({ email: user.email, name: user.username }, user.username);
                     }
+
+                    return;
                 }
-                else if (Object.keys(error.keyPattern).includes('username')) errorMessage = 'Username already exists';
+                else if (error.isConflictingKey('username')) errorMessage = 'Username already exists';
 
                 this._logger.info('Signup duplicate "%s" already exists %s, %s', errorMessage, body.username, body.email);
                 throw new ConflictException(errorMessage);
@@ -133,7 +149,7 @@ export class AuthControllerV1 {
             this._logger.warn('Sign in request fail, user email is not activated for %s', body.email);
             const activationToken = await this._jwtService.signJWTActivate(databaseUser.id);
 
-            await this._mailerService.sendEmailActivationEmail([{ email: databaseUser.email, name: databaseUser.username }], activationToken);
+            await this._mailerService.sendEmailActivationEmail({ email: databaseUser.email, name: databaseUser.username }, activationToken);
 
             // dont reveal email confirmation with specific message
             throw new UnauthorizedException();
@@ -211,7 +227,7 @@ export class AuthControllerV1 {
 
             const recoveryToken = await this._jwtService.signJWTRecovery(user.id);
 
-            await this._mailerService.sendPasswordRecoveryEmail([{ email: user.email, name: user.username }], recoveryToken);
+            await this._mailerService.sendPasswordRecoveryEmail({ email: user.email, name: user.username }, recoveryToken);
             this._logger.info('Succesfully send recovery email to %s', user.email);
             return;
         }

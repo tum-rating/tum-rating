@@ -1,0 +1,138 @@
+import { Controller, UseGuards, Get, Post, Headers, Body, Param, Delete, NotFoundException } from '@nestjs/common';
+import { ObjectId } from 'mongoose';
+import { ApiBearerAuth, ApiTags, ApiParam } from '@nestjs/swagger';
+import { PinoLogger } from 'nestjs-pino';
+
+import { USER_ID } from 'src/utils/headers/context.headers';
+import { AdminGuard } from 'src/common/guards/admin.guard';
+import { AuthGuard } from 'src/common/guards/auth.guard';
+import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
+import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
+import { ClientService } from 'src/modules/client/client.service';
+import { NotFoundError } from 'src/utils/errors/errors';
+
+import { CourseProposalService } from './courseProposal.service';
+import { CreateCourseProposalRequestDto, CreateCourseProposalRequestSchema, CreateCourseProposalResponseDto } from './dto/CreateCourseProposalRequest.dto';
+import { GetCourseProposalResponseDto } from './dto/GetCourseProposalRequest.dto';
+import { DeleteCourseProposalResponseDto } from './dto/DeleteCourseProposalRequest.dto';
+import { GetAllCourseProposalsResponseDto } from './dto/GetAllCourseProposalsRequest.dto';
+import { GetScrapedCourseProposalResponseDto } from './dto/GetScrapedCourseProposalRequest.dto';
+
+@ApiTags('course-proposals')
+@Controller('/api/v1/course-proposals')
+export class CourseProposalControllerV1 {
+    constructor(
+        private readonly _courseProposalService: CourseProposalService,
+        private readonly _clientService: ClientService,
+        private readonly _logger: PinoLogger,
+    ) {
+        this._logger.setContext(CourseProposalControllerV1.name);
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(AdminGuard)
+    @Get()
+    public async getCourseProposals(): Promise<GetAllCourseProposalsResponseDto> {
+        this._logger.info('Get course proposal requested');
+
+        const courseProposals = await this._courseProposalService.getAllCourseProposals();
+
+        this._logger.info('Successfuly retrieved all course proposal with count %d', courseProposals.length);
+
+        return new GetAllCourseProposalsResponseDto(courseProposals);
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(AdminGuard)
+    @Get('/:id')
+    public async getCourseProposalById(
+        @Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string
+    ): Promise<GetCourseProposalResponseDto> {
+        this._logger.info('Get course proposal with with id: %s', id);
+
+        try {
+            const courseProposal = await this._courseProposalService.getCourseProposalsById(id);
+    
+            this._logger.info('Successfuly retrieved course proposal with id: %s', courseProposal.id);
+    
+            return new GetCourseProposalResponseDto(courseProposal);
+        } catch(error) {
+            if (error instanceof NotFoundError) {
+                throw new NotFoundException(error.message);
+            }
+
+            throw error;
+        }
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(AdminGuard)
+    @Get('/:id/scrape')
+    public async scrapeCourseProposalById(
+        @Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string
+    ): Promise<GetScrapedCourseProposalResponseDto> {
+        this._logger.info('Scrape course proposal with with id: %s', id);
+
+        let courseTUMID: string;
+        try {
+            const courseProposal = await this._courseProposalService.getCourseProposalsById(id);
+
+            courseTUMID = this._courseProposalService.getCourseTUMId(courseProposal);
+
+        } catch(error) {
+            if (error instanceof NotFoundError) {
+                throw new NotFoundException(error.message);
+            }
+
+            throw error;
+        }
+
+        const scrapedCourse = await this._clientService.getTUMCourse(courseTUMID);
+
+        this._logger.info('Successfuly scraped course proposal with id: %s', id);
+
+        return scrapedCourse;
+    }
+
+    @ApiBearerAuth()
+    @ApiParam({
+        name: 'user-id',
+        required: false,
+        description: '(Leave empty. It will be extracted from JWT token)',
+    })
+    @UseGuards(AuthGuard)
+    @Post()
+    public async createCourseProposal(
+        @Headers(USER_ID) userId: ObjectId,
+        @Body(new JoiObjectSchemaPipe(CreateCourseProposalRequestSchema))
+        body: CreateCourseProposalRequestDto,
+    ): Promise<CreateCourseProposalResponseDto> {
+        this._logger.info('Create course proposal request received for by user %s', userId);
+
+        const createdCourseProposal = await this._courseProposalService.createCourseProposal({
+            ...body,
+            userId,
+        });
+
+        this._logger.info('Successfuly created course proposal');
+
+        return {
+            id: createdCourseProposal.id,
+        };
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(AdminGuard)
+    @Delete('/:id')
+    public async deleteCourseProposal(
+        @Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string
+    ): Promise<DeleteCourseProposalResponseDto> {
+        this._logger.info('Delete course proposal with with id: %s', id);
+
+        const courseProposal = await this._courseProposalService.deleteCourseProposal(id);
+
+        this._logger.info('Successfuly deleted course proposal with id: %s', courseProposal.id);
+
+        return new DeleteCourseProposalResponseDto(courseProposal);
+    }
+}

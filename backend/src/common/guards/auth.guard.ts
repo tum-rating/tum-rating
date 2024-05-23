@@ -1,26 +1,27 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ExecutionContext, Injectable } from '@nestjs/common';
+import { PinoLogger } from 'nestjs-pino';
 
 import { JWTService } from 'src/utils/jwt/jwt.service';
-import { USER_ID } from 'src/utils/headers/context.headers';
+import { UserService } from 'src/modules/user/user.service';
+
+import { validateBannedUsersGuardStep } from './utils/validateBannedUsers.guard.step';
+import { validateJWTGuardStep } from './utils/validateJWT.guard.step';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-    constructor(private readonly _jwtService: JWTService) {}
+export class AuthGuard {
+    constructor(
+        protected readonly _jwtService: JWTService,
+        protected readonly _userService: UserService,
+        protected readonly _logger: PinoLogger,
+    ) {
+        this._logger.setContext(AuthGuard.name);
+    
+    }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        const request = context.switchToHttp().getRequest();
+        await validateJWTGuardStep(context, this._jwtService);
 
-        const authHeader: string = request.headers.authorization;
-
-        if (!authHeader) throw new UnauthorizedException();
-
-        const token = authHeader.split('Bearer ')[1];
-
-        const { isValid, payload } = await this._jwtService.verifyJWTAccess(token);
-
-        if (!isValid) throw new UnauthorizedException();
-
-        request.headers[USER_ID] = payload.sub;
+        await validateBannedUsersGuardStep(context, this._userService, this._logger);
 
         return true;
     }

@@ -5,13 +5,35 @@ on:
     branches:
       - develop
 
-jobs:  
+jobs:
   build-pr-develop-and-run-ci:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.18
+      - run: npm install
+
+      - name: Run frontend unit tests
+        run: npm run test -w frontend
+
+      - name: Upgrade docker compose
+        run: |
+          echo ---Upgrading docker compose---
+          sudo rm -rf docker-compose
+          sudo rm -rf /usr/bin/docker-compose
+          sudo rm -rf /usr/local/bin/docker-compose
+          sudo apt-get remove docker-compose-plugin
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.26.0/docker-compose-linux-x86_64" -o /usr/bin/docker-compose
+          sudo chmod +x /usr/bin/docker-compose
+          echo ---Docker version---
+          docker --version
+          echo ---Docker compose version---
+          docker-compose --version
 
       - name: Docker compose
         id: docker-compose
@@ -20,8 +42,5 @@ jobs:
           docker-compose -f docker-compose-ci.yaml up --build -d
           echo ---Containers up---
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18.18
-      - run: npm install
-      - run: npm -w backend run test:e2e
+      - name: Run backend e2e tests
+        run: npm -w backend run test:e2e

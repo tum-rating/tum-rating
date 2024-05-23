@@ -1,4 +1,4 @@
-import { EditableRatingBox , EditableRatingBoxProps } from '@/components/Course/EditableRatingBox.tsx';
+import { EditableRatingBox, EditableRatingBoxProps } from '@/components/Course/EditableRatingBox.tsx';
 import { useHowInterestingRating } from '@/hooks';
 
 interface HowInterestingEditableRatingProps {
@@ -10,7 +10,7 @@ interface HowInterestingEditableRatingProps {
 const HowInterestingEditableRating = (props: HowInterestingEditableRatingProps) => {
     const { score, ...rest } = props;
     const { message, color } = useHowInterestingRating(score);
-    return <EditableRatingBox label="How easy" score={score} message={message} color={color} {...rest} />;
+    return <EditableRatingBox data-testid="editable-rating-how-interesting" label="How interesting" score={score} message={message} color={color} {...rest} />;
 };
 
 export { HowInterestingEditableRating };

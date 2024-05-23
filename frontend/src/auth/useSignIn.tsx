@@ -1,16 +1,20 @@
+import { Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { IconCheck, IconX } from '@tabler/icons-react';
-import { useMutation } from '@tanstack/react-query';
 
 import { User } from './useUser.tsx';
 
-import { endpoints } from '@/api';
+import { endpoints, useMutationWithAuth } from '@/api';
+import { USER_LOCAL_STORAGE_KEY } from '@/auth/user.localstore.ts';
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { queryClient } from '@/react-query/client.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
+interface LoggedUser {
+    token: string;
+    user: User;
+}
 
-async function signIn({ email, password }: LoginInput): Promise<User> {
+async function signIn({ email, password }: LoginInput): Promise<LoggedUser> {
     const response = await fetch(endpoints.signin, {
         method: 'POST',
         headers: {
@@ -18,8 +22,9 @@ async function signIn({ email, password }: LoginInput): Promise<User> {
         },
         body: JSON.stringify({ email, password }),
     });
-    if (!response.ok) throw new ResponseError('Failed on sign in request', response);
-    return await response.json();
+    const data = await response.json();
+    if (!response.ok) throw new ResponseError(data.message, response, 'sign-in');
+    return data;
 }
 
 export type LoginInput = {
@@ -28,22 +33,21 @@ export type LoginInput = {
 };
 
 export function useSignIn() {
-    return useMutation({
+    return useMutationWithAuth({
         mutationFn: async ({ email, password }: LoginInput) => await signIn({ email, password }),
         onSuccess: (data) => {
-            queryClient.setQueryData([QUERY_KEY.user], data);
-            notifications.show({
-                message: 'Sign in successful!',
-                color: 'green',
-                icon: <IconCheck />,
+            queryClient.setQueryData([QUERY_KEY.user], data.token);
+            queryClient.setQueryData([QUERY_KEY.user_details], {
+                ...data.user,
+                isAdmin: data.user?.role === 'admin',
             });
-        },
-        onError: (error) => {
-            const errorMessage = error instanceof ResponseError ? error.message : 'Ops.. Error on sign up. Try again!';
+            localStorage.setItem(USER_LOCAL_STORAGE_KEY, data.token);
             notifications.show({
-                message: errorMessage,
-                color: 'red',
-                icon: <IconX />,
+                title: 'Success',
+                id: 'signin-success',
+                message: <Text size="xs">Sign in successful!</Text>,
+                color: 'green',
+                autoClose: 3000,
             });
         },
     });
