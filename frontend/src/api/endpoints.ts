@@ -40,7 +40,7 @@ const Courses: CoursesEndpoints = {
     postCourseProposal: baseApiUrl + '/course-proposals',
     getSpecificCourse: (id: string) => `${coursesBase}/${id}`,
     postSpecificReview: (courseId: string, userId: string) => `${coursesBase}/${courseId}/user/${userId}`,
-    getPaginatedCourses: (pageNumber: number, pageSize: number) => `${coursesBase}?page-number=${pageNumber}&page-size=${pageSize}`,
+    getPaginatedCourses: (pageNumber: number | string, pageSize: number | string) => `${coursesBase}?page-number=${pageNumber}&page-size=${pageSize}`,
     searchCourses: (query: string) => `${coursesBase}?search=${query}`,
     searchCoursesOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => `${coursesBase}?page-number=${pageNumber}&page-size=${pageSize}&search=${search}`,
 };
