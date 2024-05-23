@@ -23,7 +23,9 @@
     "declaration": true,
     "declarationDir": "types",
     "types": [
-      "vite/client"
+      "vite/client",
+      "jest",
+      "vitest/globals"
     ],
     "composite": true,
     "skipLibCheck": true,
@@ -34,12 +36,17 @@
       ],
       "cypress/*": [
         "./cypress/*"
+      ],
+      "tests/*": [
+        "./tests/*"
       ]
     }
   },
   "include": [
-    "src",
-    "cypress"
+    "./src/**/*.tsx",
+    "./src/**/*.ts",
+    "./tests/**/*.tsx",
+    "./tests/**/*.ts"
   ],
   "references": [
     {

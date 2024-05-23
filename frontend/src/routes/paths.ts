@@ -12,6 +12,11 @@ export enum Paths {
     editUserReview = '#modal=edit-user-review',
     spotlight = '#modal=spotlight',
     forgotPassword = '#modal=forgot-password',
+    //---admin
+    admin = 'admin',
+    adminUsers = 'users',
+    adminCourses = 'all-courses',
+    adminCoursesProposals = 'courses-proposals',
 }
 
 type PathElement = {
@@ -60,6 +65,19 @@ const PATH_ELEMENTS: PathElement = {
     },
     [Paths.forgotPassword]: {
         parent: null,
+    },
+    // admin
+    [Paths.admin]: {
+        parent: null,
+    },
+    [Paths.adminUsers]: {
+        parent: Paths.admin,
+    },
+    [Paths.adminCourses]: {
+        parent: Paths.admin,
+    },
+    [Paths.adminCoursesProposals]: {
+        parent: Paths.admin,
     },
 };
 

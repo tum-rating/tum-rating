@@ -1,0 +1,5 @@
+.desktopNavigation {
+    .admin-tab:not(:last-of-type) {
+        border-right: none
+    }
+}

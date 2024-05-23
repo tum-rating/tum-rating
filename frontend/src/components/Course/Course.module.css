@@ -1,24 +1,28 @@
 .container {
-    margin-top: 15px;
-    border-top-left-radius: var(--mantine-radius-lg);
-    border-top-right-radius: var(--mantine-radius-lg);
+    position: absolute;
+    bottom: -1px;
+    transform: translateX(7px);
+    border-top-left-radius: var(--mantine-radius-sm);
+    border-top-right-radius: var(--mantine-radius-sm);
     width: 100%;
     background: var(--mantine-color-body);
     @media (max-width: $mantine-breakpoint-sm) {
         border-radius: 0;
-        margin-top: 0;
+        bottom: unset;
+        top: 54px;
+    }
+    @media (max-width: 1320px) {
+        transform: translateX(0);
     }
 }
 
 .courseContent {
     padding-top: var(--mantine-spacing-lg);
-    /*
-        hack to fix body overflow. Dunno why it's happening.
-        First child is the banner that has his own padding.
-    */
+
     & > *:not(:first-child) {
         padding: 0 var(--mantine-spacing-lg);
     }
+
     @media (max-width: $mantine-breakpoint-sm) {
         & > *:not(:first-child) {
             padding: 0 var(--mantine-spacing-md);

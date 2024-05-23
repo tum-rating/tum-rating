@@ -1,57 +1,41 @@
-import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
-
-
-
 import * as userLocalStorage from './user.localstore.ts';
 
 import { endpoints } from '@/api';
+import { useQueryWithAuth } from '@/api/useQueryWithAuth.tsx';
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
-
-async function getUser(user: User | null | undefined): Promise<User | null> {
-    if (!user) return null;
+async function getUser(token: string | null): Promise<User | null> {
+    if (!token) return null;
     const response = await fetch(endpoints.user, {
         headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${token}`,
         },
     });
-    if (!response.ok) throw new ResponseError('Failed on get user request', response);
-    return await response.json();
+    const data = await response.json();
+    if (!response.ok) {
+        throw new ResponseError(data.message, response, 'user-details');
+    }
+    return data;
 }
 
 export interface User {
-    token: string;
-    user: {
-        username: string;
-        email: string;
-        id: number;
-    };
+    role?: string;
+    username: string;
+    email: string;
+    id: number;
+    isAdmin?: boolean;
 }
 
-interface IUseUser {
-    user: User | null;
-}
-
-export function useUser(): IUseUser {
-    const { data: user } = useQuery({
-        queryKey: [QUERY_KEY.user],
-        queryFn: async () => getUser(user),
+export function useUser() {
+    const userTokenFromLocalStorage = userLocalStorage.getUser();
+    return useQueryWithAuth({
+        queryKey: [QUERY_KEY.user_details],
+        queryFn: async () => await getUser(userTokenFromLocalStorage),
+        refetchIntervalInBackground: false,
         refetchOnMount: false,
-        refetchOnWindowFocus: false,
         refetchOnReconnect: false,
-        initialData: userLocalStorage.getUser(),
+        refetchOnWindowFocus: false,
+        retry: false,
     });
-
-    useEffect(() => {
-        if (!user) userLocalStorage.removeUser();
-        else {
-            userLocalStorage.saveUser(user);
-        }
-    }, [user]);
-
-    return {
-        user: user ?? null,
-    };
 }

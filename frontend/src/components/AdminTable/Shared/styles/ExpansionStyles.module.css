@@ -1,0 +1,21 @@
+.expansionContainer{
+    padding: var(--mantine-spacing-lg) 42px var(--mantine-spacing-xl);
+    background: var(--striped-background);
+    @media (max-width: $mantine-breakpoint-sm) {
+        padding: var(--mantine-spacing-lg) var(--mantine-spacing-md);
+        max-width: 100vw;
+    }
+}
+
+.expansionDetails{
+    width: 80%;
+    @media (max-width: $mantine-breakpoint-sm) {
+        width: 100%;
+    }
+}
+
+.expansionActions{
+    @media (max-width: $mantine-breakpoint-sm) {
+        width: 100%;
+    }
+}

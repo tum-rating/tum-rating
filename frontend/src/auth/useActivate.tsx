@@ -1,9 +1,8 @@
+import { Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { IconCheck, IconX } from '@tabler/icons-react';
-import { useMutation } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 
-import { endpoints } from '@/api';
+import { endpoints, useMutationWithAuth } from '@/api';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 async function activate(token: string | null) {
@@ -14,10 +13,11 @@ async function activate(token: string | null) {
         },
         body: JSON.stringify({ token }),
     });
+
     if (!response.ok) {
-        const errorData = await response.json();
-        throw new ResponseError(errorData.message, response);
+        throw new ResponseError('Unknown error', response, 'activate');
     }
+
     return { success: true };
 }
 
@@ -26,21 +26,14 @@ export function useActivate() {
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get('token');
 
-    return useMutation({
+    return useMutationWithAuth({
         mutationFn: async () => await activate(token),
         onSuccess: () => {
             notifications.show({
-                message: 'Activation successful!',
+                title: 'Success',
+                id: 'activation',
+                message: <Text size="xs">Activation successful!</Text>,
                 color: 'green',
-                icon: <IconCheck />,
-            });
-        },
-        onError: (error) => {
-            const errorMessage = error instanceof ResponseError ? error.message : 'Ops.. Error on sign up. Try again!';
-            notifications.show({
-                message: errorMessage,
-                color: 'red',
-                icon: <IconX />,
             });
         },
     });

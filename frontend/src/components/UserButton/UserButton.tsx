@@ -10,8 +10,8 @@ interface UserButtonProps {
 
 export function UserButton({ withoutDropdown = false }: UserButtonProps) {
     const signOut = useSignOut();
-    const { user } = useUser();
-    if (!user) return null;
+    const { data: user, isLoading } = useUser();
+    if (isLoading || !user) return <div style={{ visibility: 'hidden', position: 'fixed' }} data-testid="no_user_provided" />;
     if (withoutDropdown) {
         return (
             <Box>
@@ -20,11 +20,11 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                         <IconLego size="1.2rem" />
                     </ThemeIcon>
                     <Stack gap={0}>
-                        <Text truncate="end" size="sm" fw={500}>
-                            {user.user.username}
+                        <Text data-testid="username-loaded" truncate="end" size="sm" fw={500}>
+                            {user?.username}
                         </Text>
-                        <Text truncate="end" c="dimmed" size="xs">
-                            {user.user.email}
+                        <Text data-testid="email-loaded" truncate="end" c="dimmed" size="xs">
+                            {user?.email}
                         </Text>
                     </Stack>
                 </Group>
@@ -32,9 +32,9 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
         );
     } else {
         return (
-            <Menu position="bottom-end" shadow="md" width={200}>
-                <Menu.Target>
-                    <ActionIcon variant="outline">
+            <Menu position="bottom-end" shadow="md" width={200} data-testid="menu">
+                <Menu.Target data-testid="menu-button">
+                    <ActionIcon loading={isLoading} variant="outline" data-testid="menu-button">
                         <IconLego size="1.2rem" />
                     </ActionIcon>
                 </Menu.Target>
@@ -45,22 +45,17 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                                 <IconLego size="1.2rem" />
                             </ThemeIcon>
                             <Stack gap={0}>
-                                <Text w={120} truncate="end" size="sm" fw={500}>
-                                    {user.user.username}
+                                <Text w={120} data-testid="username-loaded" truncate="end" size="sm" fw={500}>
+                                    {user?.username}
                                 </Text>
-                                <Text w={120} truncate="end" c="dimmed" size="xs">
-                                    {user.user.email}
+                                <Text w={120} data-testid="email-loaded" truncate="end" c="dimmed" size="xs">
+                                    {user?.email}
                                 </Text>
                             </Stack>
                         </Group>
                     </Box>
                     <Menu.Label>Application</Menu.Label>
-                    <Menu.Item
-                        onClick={() => {
-                            signOut();
-                        }}
-                        leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}
-                    >
+                    <Menu.Item onClick={() => signOut()} leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} data-testid="logout" />}>
                         Logout
                     </Menu.Item>
                 </Menu.Dropdown>

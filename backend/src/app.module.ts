@@ -8,14 +8,28 @@ import { MongoModule } from 'src/database/mongo.module';
 import { LoggerModule } from 'src/utils/logger/logger.module';
 
 import { AuthModule } from './modules/auth/auth.module';
+import { ClientModule } from './modules/client/client.module';
 import { FrontendModule } from './modules/frontend-serve/frontendServe.module';
 import { HealthModule } from './modules/health/health.module';
 import { UserModule } from './modules/user/user.module';
-import { ReviewModule } from './modules/review/review.module';
-import { ReviewProposalModule } from './modules/review-proposal/reviewProposal.module';
+import { CourseModule } from './modules/course/course.module';
+import { CourseProposalModule } from './modules/course-proposal/courseProposal.module';
 
 @Module({
-    imports: [ConfigModule, MailerModule, MongoModule, LoggerModule, AuthModule, FrontendModule, HealthModule, UserModule, ReviewModule, ReviewProposalModule],
+    imports: [
+        ConfigModule,
+        MailerModule,
+        MongoModule,
+        LoggerModule,
+        
+        AuthModule,
+        ClientModule,
+        FrontendModule,
+        HealthModule,
+        UserModule,
+        CourseModule,
+        CourseProposalModule
+    ],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {

@@ -1,5 +1,5 @@
-import { ClassesTable } from '@/components/ClassesTable';
+import { CoursesTable } from '@/components/CoursesTable';
 
 export const Home = () => {
-    return <ClassesTable />;
+    return <CoursesTable />;
 };

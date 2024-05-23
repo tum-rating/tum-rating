@@ -37,4 +37,5 @@ export class User {
 export type UserDocument = User & Document;
 
 export const UserSchema = SchemaFactory.createForClass(User);
-UserSchema.index({emailDotSuffix: 1}, {sparse: true})
+UserSchema.index({emailDotSuffix: 1}, {sparse: true});
+UserSchema.set('toJSON', {virtuals: true});
