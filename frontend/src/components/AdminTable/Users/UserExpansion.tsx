@@ -25,6 +25,8 @@ const UserExpansion = ({ user: IUser, row }: UserExpansionProps) => {
     const { data: loggedUser } = useLoggedUser();
     const { mutate: changeBanStatus, isLoading: banLoading } = useBanUser();
     const { mutate: removeUser, isLoading: userRemoveLoading } = useRemoveUser();
+
+
     return (
         <Flex w="100%" wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md">
             {isError ? (
@@ -120,7 +122,7 @@ const UserExpansion = ({ user: IUser, row }: UserExpansionProps) => {
                                     size="sm"
                                     color="black"
                                     loading={banLoading || isLoading}
-                                    disabled={user?.id === String(loggedUser?.id)}
+                                    disabled={userDetails?.id === String(loggedUser?.id)}
                                     leftSection={<IconHammerOff size={16} />}
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -134,7 +136,7 @@ const UserExpansion = ({ user: IUser, row }: UserExpansionProps) => {
                                     size="sm"
                                     color="black"
                                     loading={banLoading || isLoading}
-                                    disabled={user?.id === String(loggedUser?.id)}
+                                    disabled={userDetails?.id === String(loggedUser?.id)}
                                     leftSection={<IconHammer size={16} />}
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -154,7 +156,7 @@ const UserExpansion = ({ user: IUser, row }: UserExpansionProps) => {
                                         row.toggleExpanded();
                                     }
                                 }}
-                                disabled={user?.id === String(loggedUser?.id)}
+                                disabled={userDetails?.id === String(loggedUser?.id)}
                                 loading={userRemoveLoading || isLoading || banLoading}
                                 leftSection={<IconTrashX width={16} />}
                                 color="red"
