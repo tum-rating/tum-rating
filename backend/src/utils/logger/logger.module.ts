@@ -34,6 +34,7 @@ import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
                         level: 'info',
                         stream: process.stdout,
                         autoLogging: false,
+                        redact: ['req.headers.authorization']
                     },
                 };
             },
