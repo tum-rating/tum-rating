@@ -18,8 +18,15 @@ export class LoggerMiddleware implements NestMiddleware {
             if (req.url === '/health') return;
 
             this._logger.info(
-                {duration: Date.now() - start, status: res.statusCode, method: req.method, url: req.url},
-                'Request duration'
+                {
+                    type: 'request-metrics',
+                    user: req.headers['user-id'],
+                    duration: Date.now() - start,
+                    status: res.statusCode,
+                    method: req.method,
+                    url: req.url
+                },
+                'Request metrics'
             );
         });
 
