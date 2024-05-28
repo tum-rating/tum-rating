@@ -12,7 +12,7 @@ import buttonClasses from './customStyles/Buttons.module.css';
 import { queryClient } from './react-query/client.ts';
 import { RoutesApp } from './routes';
 
-import { TableScrollProvider } from '@/context';
+import { SearchProvider, TableScrollProvider } from '@/context';
 
 const resolver: CSSVariablesResolver = () => ({
     variables: {
@@ -51,7 +51,9 @@ export default function App() {
                 <ReactQueryDevtools initialIsOpen={false} />
                 <Notifications />
                 <TableScrollProvider>
-                    <RoutesApp />
+                    <SearchProvider>
+                        <RoutesApp />
+                    </SearchProvider>
                 </TableScrollProvider>
             </QueryClientProvider>
         </MantineProvider>

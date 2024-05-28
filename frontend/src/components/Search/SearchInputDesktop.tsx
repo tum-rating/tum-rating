@@ -1,4 +1,4 @@
-import { ActionIcon, Button, CloseButton, Combobox, Flex, Loader, ScrollArea, TextInput, ThemeIcon, useCombobox } from '@mantine/core';
+import { ActionIcon, Button, CloseButton, Combobox, Flex, Loader, LoadingOverlay, ScrollArea, TextInput, ThemeIcon, useCombobox } from '@mantine/core';
 import { useDebouncedState, useMediaQuery } from '@mantine/hooks';
 import { IconArrowLeft, IconSearch } from '@tabler/icons-react';
 import clsx from 'clsx';
@@ -15,15 +15,17 @@ import { Course } from '@/courses/types.ts';
 import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
 import { useScrollLock } from '@/hooks/useScrollLock';
 import { getPath, Paths } from '@/routes/paths.ts';
+import { useSearchContext } from '@/context';
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
     });
-
+    const scrollAreaRef = useRef(null);
+    const { searchQuery, setSearchQuery } = useSearchContext();
     const [value, setValue] = useState('');
     const [empty, setEmpty] = useState(false);
-    const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 150);
+    const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 350);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const user = useUser();
     const smallerMode = useMediaQuery('(max-width: 48em)');
@@ -49,13 +51,20 @@ const SearchInputDesktop = () => {
         setDebouncedQuery(value);
     }, [value]);
 
-    const { data } = useSearchCourses(debouncedQuery);
+    useEffect(() => {
+        if (searchQuery.length === 0) {
+            setValue('');
+        }
+    }, [searchQuery]);
 
-    const [previousData, setPreviousData] = useState(null);
+    const { data, fetchNextPage, isFetching } = useSearchCourses(debouncedQuery);
+
+    const [previousData, setPreviousData] = useState([]);
 
     useEffect(() => {
         if (data) {
-            setPreviousData(data);
+            const newRecords = data.pages.map((v) => v.courses.map((el) => el)).flat();
+            setPreviousData(newRecords);
         }
     }, [data]);
 
@@ -67,7 +76,7 @@ const SearchInputDesktop = () => {
         }
     }, [isSearchOpen]);
 
-    const groupedActions = useMemo(() => (previousData ? previousData.courses : []), [previousData]);
+    const groupedActions = useMemo(() => (previousData ? previousData : []), [previousData]);
 
     useEffect(() => {
         setEmpty(groupedActions.length === 0);
@@ -94,9 +103,17 @@ const SearchInputDesktop = () => {
         e.preventDefault();
         if (value.length) {
             navigate('/?search=' + value);
-            setValue('');
+            setSearchQuery(value);
             combobox.closeDropdown();
         }
+    };
+
+    const handleClear = (e) => {
+        e.preventDefault();
+        setSearchQuery('');
+        setValue('');
+        navigate('#');
+        combobox.closeDropdown();
     };
 
     if (smallerMode) {
@@ -141,19 +158,7 @@ const SearchInputDesktop = () => {
                                             <IconArrowLeft width={16} height={16} />
                                         </ActionIcon>
                                     }
-                                    rightSection={
-                                        value !== '' && (
-                                            <CloseButton
-                                                size="sm"
-                                                onMouseDown={(event) => event.preventDefault()}
-                                                onClick={() => {
-                                                    setValue('');
-                                                    combobox.closeDropdown();
-                                                }}
-                                                aria-label="Clear value"
-                                            />
-                                        )
-                                    }
+                                    rightSection={value !== '' && <CloseButton size="sm" onMouseDown={(event) => event.preventDefault()} onClick={handleClear} aria-label="Clear value" />}
                                     classNames={{
                                         root: classes.searchInputMobileRoot,
                                         input: clsx(classes.searchInputMobileInput, combobox.dropdownOpened && classes.searchInputMobileInputActive),
@@ -207,19 +212,7 @@ const SearchInputDesktop = () => {
                                 <IconSearch width={16} height={16} />
                             </ThemeIcon>
                         }
-                        rightSection={
-                            value !== '' && (
-                                <CloseButton
-                                    size="sm"
-                                    onMouseDown={(event) => event.preventDefault()}
-                                    onClick={() => {
-                                        setValue('');
-                                        combobox.closeDropdown();
-                                    }}
-                                    aria-label="Clear value"
-                                />
-                            )
-                        }
+                        rightSection={value !== '' && <CloseButton size="sm" onMouseDown={(event) => event.preventDefault()} onClick={handleClear} aria-label="Clear value" />}
                         classNames={{
                             root: classes.searchInputDesktopRoot,
                             input: clsx(classes.searchInputDesktopInput, combobox.dropdownOpened && classes.searchInputDesktopInputActive),
@@ -242,7 +235,21 @@ const SearchInputDesktop = () => {
 
             <Combobox.Dropdown className={classes.searchInputDesktopDropdown} hidden={data === null}>
                 <Combobox.Options>
-                    <ScrollArea.Autosize mah="50vh" type="scroll">
+                    <ScrollArea.Autosize
+                        mah="50vh"
+                        viewportRef={scrollAreaRef}
+                        type="scroll"
+                        onScrollPositionChange={(event) => {
+                            const { y } = event;
+                            console.log(scrollAreaRef)
+                            if (y >= scrollAreaRef.current.clientHeight - 10) {
+                                fetchNextPage();
+                            }
+                        }}
+                    >
+                        <LoadingOverlay
+                            visible={isFetching}
+                        />
                         {empty && (
                             <Flex direction="column">
                                 <Combobox.Empty>No matching courses for "{value}"</Combobox.Empty>

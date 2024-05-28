@@ -4,10 +4,14 @@ import { render, RenderOptions } from '@testing-library/react';
 import { ReactElement, ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
+import { SearchProvider } from '@/context';
+
 const AllTheProviders = ({ children }: { children: ReactNode }) => {
     return (
         <BrowserRouter>
-            <MantineProvider>{children}</MantineProvider>
+            <MantineProvider>
+                <SearchProvider>{children}</SearchProvider>
+            </MantineProvider>
         </BrowserRouter>
     );
 };
