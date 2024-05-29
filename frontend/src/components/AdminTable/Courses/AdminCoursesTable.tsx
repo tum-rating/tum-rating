@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { useCoursesColumns } from './useCoursesColumns.tsx';
 import classes from '../Shared/styles/TableStyles.module.css';
 
-import { useCourses } from '@/admin/useCourses.tsx';
+import { useCourses as usePaginatedCourses } from '@/admin/useCourses.tsx';
 import { CourseExpansion } from '@/components/AdminTable/Courses/CourseExpansion.tsx';
 import { HEADER_HEIGHT, PAGE_SIZE } from '@/constants';
 import { Course } from '@/courses/types.ts';
@@ -19,24 +19,29 @@ const AdminCoursesTable = () => {
     const [records, setRecords] = useState<Course[]>([]);
 
     const [query, setQuery] = useState('');
-    const { data, fetchNextPage, isFetching, isLoading, hasNextPage, refetch } = useCourses();
-    const { data: queryData, isFetching: isQueryDataFetching, refetch: refetchSearchQuery } = useSearchCourses(query);
+    const { data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage, refetch: refetchPaginatedData } = usePaginatedCourses();
+    const { data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, refetch: refetchSearchQuery } = useSearchCourses(query);
     const location = useLocation();
     const { columns } = useCoursesColumns();
 
     useEffect(() => {
-        if (data) {
-            const newRecords = data.pages.map((v) => v.courses.map((el) => el)).flat();
+        if (paginatedData) {
+            const newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
             setRecords([...newRecords]);
         }
-    }, [data]);
+    }, [paginatedData]);
 
     useEffect(() => {
-        if (queryData) {
-            const newRecords = queryData.courses;
+        if (searchData) {
+            const newRecords = searchData.pages.map((v) => v.courses.map((el) => el)).flat();
             setRecords([...newRecords]);
+        } else {
+            if (paginatedData) {
+                const newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
+                setRecords([...newRecords]);
+            }
         }
-    }, [queryData]);
+    }, [searchData]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -53,18 +58,24 @@ const AdminCoursesTable = () => {
         (containerRefElement?: HTMLDivElement | null) => {
             if (containerRefElement) {
                 const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
-                if (scrollHeight - scrollTop - clientHeight < clientHeight - 110 - HEADER_HEIGHT && !isFetching) {
-                    // Add skeleton loaders
-                    if (hasNextPage) {
-                        const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
-                        setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
+                if (scrollHeight - scrollTop - clientHeight < clientHeight - 110 - HEADER_HEIGHT && !isSearchFetching) {
+                    if (query) {
+                        if (hasSearchNextPage) {
+                            const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
+                            setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
+                        }
+                        fetchSearchNextPage();
+                    } else {
+                        if (hasPaginatedNextPage) {
+                            const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
+                            setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
+                        }
+                        fetchPaginatedNextPage();
                     }
-
-                    fetchNextPage();
                 }
             }
         },
-        [fetchNextPage, isFetching],
+        [fetchPaginatedNextPage, fetchSearchNextPage, isPaginatedFetching, isSearchFetching],
     );
 
     useEffect(() => {
@@ -90,7 +101,8 @@ const AdminCoursesTable = () => {
         manualFiltering: true, //turn off client-side filtering
         onGlobalFilterChange: setQuery, //hoist internal global state to your state
         state: {
-            isLoading: isLoading || isQueryDataFetching,
+            showAlertBanner: isPaginatedError,
+            isLoading: (isPaginatedLoading || records.length === 0) && !isSearchFetched,
         },
         initialState: {
             globalFilter: query,
@@ -136,7 +148,7 @@ const AdminCoursesTable = () => {
                             variant="default"
                             onClick={() => {
                                 if (!query) {
-                                    refetch();
+                                    refetchPaginatedData();
                                 } else {
                                     refetchSearchQuery();
                                 }

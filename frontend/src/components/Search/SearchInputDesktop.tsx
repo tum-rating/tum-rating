@@ -1,4 +1,4 @@
-import { ActionIcon, Button, CloseButton, Combobox, Flex, Loader, LoadingOverlay, ScrollArea, TextInput, ThemeIcon, useCombobox } from '@mantine/core';
+import { ActionIcon, CloseButton, Combobox, Loader, LoadingOverlay, ScrollArea, TextInput, ThemeIcon, useCombobox } from '@mantine/core';
 import { useDebouncedState, useMediaQuery } from '@mantine/hooks';
 import { IconArrowLeft, IconSearch } from '@tabler/icons-react';
 import clsx from 'clsx';
@@ -14,8 +14,8 @@ import { SearchHighlight } from '@/components/Highlight';
 import { Course } from '@/courses/types.ts';
 import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
 import { useScrollLock } from '@/hooks/useScrollLock';
-import { getPath, Paths } from '@/routes/paths.ts';
 import { useSearchContext } from '@/context';
+import { ComboboxEmpty } from '@/components/Search/ComboboxEmpty.tsx';
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
@@ -179,8 +179,9 @@ const SearchInputDesktop = () => {
                         </Combobox.EventsTarget>
                         <Combobox.Options className={classes.searchInputMobileOptions}>
                             <ScrollArea.Autosize h="calc(100dvh - 58px)" ref={searchInputRef} type="scroll" className={classes.searchInputMobileScrollArea}>
-                                {empty && <Combobox.Empty>No matching courses for "{value}"</Combobox.Empty>}
-                                {options}
+                                {empty ? (
+                                        <ComboboxEmpty value={value} />
+                                ) : options}
                             </ScrollArea.Autosize>
                         </Combobox.Options>
                         <Combobox.Footer>
@@ -241,40 +242,16 @@ const SearchInputDesktop = () => {
                         type="scroll"
                         onScrollPositionChange={(event) => {
                             const { y } = event;
-                            console.log(scrollAreaRef)
+                            console.log(scrollAreaRef);
                             if (y >= scrollAreaRef.current.clientHeight - 10) {
                                 fetchNextPage();
                             }
                         }}
                     >
-                        <LoadingOverlay
-                            visible={isFetching}
-                        />
-                        {empty && (
-                            <Flex direction="column">
-                                <Combobox.Empty>No matching courses for "{value}"</Combobox.Empty>
-                                {user.data ? (
-                                    <Button
-                                        onClick={() => {
-                                            navigate(getPath(Paths.addCourse));
-                                        }}
-                                        variant="subtle"
-                                    >
-                                        Add Course Proposal
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        onClick={() => {
-                                            navigate(getPath(Paths.signIn));
-                                        }}
-                                        variant="subtle"
-                                    >
-                                        Sign In to Add Course Proposal
-                                    </Button>
-                                )}
-                            </Flex>
-                        )}
-                        {options}
+                        <LoadingOverlay visible={isFetching} />
+                        {empty ? (
+                            <ComboboxEmpty value={value} />
+                        ) : options}
                     </ScrollArea.Autosize>
                 </Combobox.Options>
                 <Combobox.Footer>

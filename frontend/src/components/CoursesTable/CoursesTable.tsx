@@ -35,7 +35,6 @@ function CoursesTable() {
         data: searchData,
         fetchNextPage: fetchSearchNextPage,
         hasNextPage: hasSearchNextPage,
-        // isFetchingNextPage: isSearchFetchingNextPage,
         isFetching: isSearchFetching,
         isFetched: isSearchFetched
     } = useSearchCourses(searchQuery);
