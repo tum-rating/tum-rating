@@ -8,7 +8,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import classes from './SearchInputDesktop.module.css';
 
-import { useUser } from '@/auth/useUser.tsx';
 import { CopyrightFooter } from '@/components/CopyrightFooter';
 import { SearchHighlight } from '@/components/Highlight';
 import { Course } from '@/courses/types.ts';
@@ -27,7 +26,6 @@ const SearchInputDesktop = () => {
     const [empty, setEmpty] = useState(false);
     const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 350);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const user = useUser();
     const smallerMode = useMediaQuery('(max-width: 48em)');
     const navigate = useNavigate();
     const location = useLocation();

@@ -45,7 +45,17 @@ const SignUpModal = () => {
             terms: true,
         },
         validate: {
-            email: (value) => !value.includes('@') && 'Invalid email',
+            email: (value) => {
+                if (!value.includes('@')) {
+                    return 'Invalid email';
+                }
+                const domain = value.split('@')[1];
+                if (domain !== 'mytum.de' && domain !== 'tum.de') {
+                    return 'Email domain must be of mytum.de or tum.de';
+                }
+                return false;
+            },
+            username: (value) => value.length < 3 && 'Username should contain at least 3 characters',
             password: (value) => value.length < 6 && 'Password should contain at least 6 characters',
             terms: (value) => !value && 'You should accept terms of usage',
         },
