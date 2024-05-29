@@ -125,7 +125,20 @@ const AddUserReviewModal = ({
                 })}
             >
                 <Flex direction="column" gap="xs" h="100%">
-                    <Textarea data-testid="textarea" autoFocus data-autofocus autosize minRows={6} maxRows={6} placeholder="Your comment" label="Your comment" h="auto" value={form.values.comment} {...form.getInputProps('comment')} onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)} />
+                    <Textarea
+                        data-testid="textarea"
+                        autoFocus
+                        data-autofocus
+                        autosize
+                        minRows={6}
+                        maxRows={6}
+                        label="Your comment"
+                        h="auto"
+                        value={form.values.comment}
+                        {...form.getInputProps('comment')}
+                        onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)}
+                        placeholder="Course Review: Loved the course! Learned a lot... &#10;&#10;Exercise: Exercises were challenging but fun... &#10;&#10;Exam: Exam was a good test of what we learned..."
+                    />
                     <Skeleton h={36} loading={courseDetailsLoading} component={<Select data-testid="select" {...form.getInputProps('semester')} label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={offeredInSemesters} />} />
                     <Flex w="100%" gap="xl" direction="row" justify="center" wrap="wrap" mt="md" mb="md">
                         <Stack>
