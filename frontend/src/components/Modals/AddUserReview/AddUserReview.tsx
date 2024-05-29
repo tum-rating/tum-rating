@@ -137,7 +137,7 @@ const AddUserReviewModal = ({
                         value={form.values.comment}
                         {...form.getInputProps('comment')}
                         onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)}
-                        placeholder="Course Review: Loved the course! Learned a lot... &#10;&#10;Exercise: Exercises were challenging but fun... &#10;&#10;Exam: Exam was a good test of what we learned..."
+                        placeholder="Course Review: Loved the course! Learned a lot... &#10;&#10;Exercise: Challenging but fun... &#10;&#10;Exam: The exams were difficult and I recommend a lot of studying before them. "
                     />
                     <Skeleton h={36} loading={courseDetailsLoading} component={<Select data-testid="select" {...form.getInputProps('semester')} label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={offeredInSemesters} />} />
                     <Flex w="100%" gap="xl" direction="row" justify="center" wrap="wrap" mt="md" mb="md">
