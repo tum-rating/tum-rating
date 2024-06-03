@@ -21,27 +21,17 @@ function CoursesTable() {
     const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
     const [records, setRecords] = useState<Course[]>([]);
     const { searchQuery, setSearchQuery } = useSearchContext();
+    const [internalLoader, setInternalLoader] = useState(true);
 
-    const {
-        data: paginatedData,
-        fetchNextPage: fetchPaginatedNextPage,
-        isFetching: isPaginatedFetching,
-        isLoading: isPaginatedLoading,
-        isError: isPaginatedError,
-        hasNextPage: hasPaginatedNextPage
-    } = usePaginatedCourses();
+    const { data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage } = usePaginatedCourses();
 
-    const {
-        data: searchData,
-        fetchNextPage: fetchSearchNextPage,
-        hasNextPage: hasSearchNextPage,
-        isFetching: isSearchFetching,
-        isFetched: isSearchFetched
-    } = useSearchCourses(searchQuery);
+    const { data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched } = useSearchCourses(searchQuery);
 
     const navigate = useNavigate();
     const location = useLocation();
     const { columns } = useCoursesTableColumns();
+
+    //-----
 
     useEffect(() => {
         const spacingTopBarDiff = !!searchQuery ? 0 : 25;
@@ -49,23 +39,15 @@ function CoursesTable() {
     }, [searchQuery]);
 
     useEffect(() => {
-        if (paginatedData) {
-            const newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
-            setRecords([...newRecords]);
-        }
-    }, [paginatedData]);
-
-    useEffect(() => {
+        let newRecords = [];
         if (searchData) {
-            const newRecords = searchData.pages.map((v) => v.courses.map((el) => el)).flat();
-            setRecords([...newRecords]);
-        } else {
-            if (paginatedData) {
-                const newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
-                setRecords([...newRecords]);
-            }
+            newRecords = searchData.pages.map((v) => v.courses.map((el) => el)).flat();
+        } else if (paginatedData) {
+            newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
         }
-    }, [searchData]);
+        setRecords([...newRecords]);
+        setInternalLoader(false);
+    }, [paginatedData, searchData]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -117,11 +99,11 @@ function CoursesTable() {
         }
     }, [rowVirtualizerInstanceRef.current, records]);
 
-    const handleRowClick = (record: Course) => {
+    const handleRowClick = useCallback((record: Course) => {
         const dynamicPath = '/courses/' + record._id;
         setScrollIndex(rowVirtualizerInstanceRef.current.range.startIndex);
         navigate(dynamicPath);
-    };
+    }, []);
 
     const removeQuery = () => {
         setSearchQuery('');
@@ -129,7 +111,6 @@ function CoursesTable() {
     };
 
     const table = useMantineReactTable({
-        // @ts-ignore
         columns,
         data: records,
         mantinePaperProps: {
@@ -148,13 +129,13 @@ function CoursesTable() {
             style:
                 !records.length || isPaginatedLoading || isSearchFetching || row.original === null
                     ? {
-                        pointerEvents: 'none',
-                        cursor: 'not-allowed',
-                    }
+                          pointerEvents: 'none',
+                          cursor: 'not-allowed',
+                      }
                     : {
-                        pointerEvents: 'auto',
-                        cursor: 'pointer',
-                    },
+                          pointerEvents: 'auto',
+                          cursor: 'pointer',
+                      },
         }),
         mantineTableHeadCellProps: {
             className: clsx(classes.tableHeadRow),
@@ -220,7 +201,7 @@ function CoursesTable() {
         },
         state: {
             showAlertBanner: isPaginatedError,
-            isLoading: (isPaginatedLoading || records.length === 0) && !isSearchFetched,
+            isLoading: isPaginatedLoading || !isSearchFetched || internalLoader,
         },
         rowVirtualizerInstanceRef,
         rowVirtualizerOptions: { overscan: 15 },
