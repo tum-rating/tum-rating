@@ -25,7 +25,7 @@ function CoursesTable() {
 
     const { data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage } = usePaginatedCourses();
 
-    const { data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched } = useSearchCourses(searchQuery);
+    const { data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, isError: isSearchError } = useSearchCourses(searchQuery);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -39,15 +39,26 @@ function CoursesTable() {
     }, [searchQuery]);
 
     useEffect(() => {
-        let newRecords = [];
-        if (searchData) {
-            newRecords = searchData.pages.map((v) => v.courses.map((el) => el)).flat();
-        } else if (paginatedData) {
-            newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
+        if (paginatedData) {
+            const newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
+            setRecords([...newRecords]);
+            setInternalLoader(false);
         }
-        setRecords([...newRecords]);
-        setInternalLoader(false);
-    }, [paginatedData, searchData]);
+    }, [paginatedData]);
+
+    useEffect(() => {
+        if (searchData) {
+            const newRecords = searchData.pages.map((v) => v.courses.map((el) => el)).flat();
+            setRecords([...newRecords]);
+            setInternalLoader(false);
+        } else {
+            if (paginatedData) {
+                const newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
+                setRecords([...newRecords]);
+                setInternalLoader(false);
+            }
+        }
+    }, [searchData]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -201,7 +212,7 @@ function CoursesTable() {
         },
         state: {
             showAlertBanner: isPaginatedError,
-            isLoading: isPaginatedLoading || !isSearchFetched || internalLoader,
+            isLoading: (isPaginatedLoading || !isSearchFetched || internalLoader) &&  (!isSearchError || !isPaginatedError),
         },
         rowVirtualizerInstanceRef,
         rowVirtualizerOptions: { overscan: 15 },

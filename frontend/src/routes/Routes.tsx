@@ -51,10 +51,10 @@ const modals = {
 const routes = [
     {
         element: <SuspenseLayout />,
+        errorElement: <ErrorBoundary />,
         children: [
             {
                 path: '/',
-                errorElement: <ErrorBoundary />,
                 element: (
                     <MainLayout>
                         <ModalsProvider modals={modals}>
