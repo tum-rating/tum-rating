@@ -15,6 +15,7 @@ import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
 import { useScrollLock } from '@/hooks/useScrollLock';
 import { useSearchContext } from '@/context';
 import { ComboboxEmpty } from '@/components/Search/ComboboxEmpty.tsx';
+import { PAGE_SIZE } from '@/constants';
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
@@ -65,6 +66,7 @@ const SearchInputDesktop = () => {
             setPreviousData(newRecords);
         }
     }, [data]);
+
 
     useEffect(() => {
         if (!isSearchOpen) {
@@ -177,9 +179,7 @@ const SearchInputDesktop = () => {
                         </Combobox.EventsTarget>
                         <Combobox.Options className={classes.searchInputMobileOptions}>
                             <ScrollArea.Autosize h="calc(100dvh - 58px)" ref={searchInputRef} type="scroll" className={classes.searchInputMobileScrollArea}>
-                                {empty ? (
-                                        <ComboboxEmpty value={value} />
-                                ) : options}
+                                {empty ? <ComboboxEmpty value={value} /> : options}
                             </ScrollArea.Autosize>
                         </Combobox.Options>
                         <Combobox.Footer>
@@ -240,16 +240,13 @@ const SearchInputDesktop = () => {
                         type="scroll"
                         onScrollPositionChange={(event) => {
                             const { y } = event;
-                            console.log(scrollAreaRef);
-                            if (y >= scrollAreaRef.current.clientHeight - 10) {
+                            if (y >= PAGE_SIZE * 50 * data.pageParams.at(-1) - 10) {
                                 fetchNextPage();
                             }
                         }}
                     >
                         <LoadingOverlay visible={isFetching} />
-                        {empty ? (
-                            <ComboboxEmpty value={value} />
-                        ) : options}
+                        {empty ? <ComboboxEmpty value={value} /> : options}
                     </ScrollArea.Autosize>
                 </Combobox.Options>
                 <Combobox.Footer>

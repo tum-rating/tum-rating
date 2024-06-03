@@ -27,7 +27,6 @@ export const ComboboxEmpty = (props: ComboboxEmptyProps) => {
                         onClick={() => {
                             navigate(getPath(Paths.addCourse));
                         }}
-                        // variant="subtle"
                     >
                         Add Course Proposal
                     </Button>
@@ -37,7 +36,6 @@ export const ComboboxEmpty = (props: ComboboxEmptyProps) => {
                             navigate(getPath(Paths.signIn));
                         }}
                         size="sm"
-                        // variant="subtle"
                     >
                         Sign In to Add Course Proposal
                     </Button>
