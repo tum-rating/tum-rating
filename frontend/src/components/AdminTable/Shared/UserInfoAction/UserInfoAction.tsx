@@ -1,12 +1,14 @@
 import { Badge, Button, Flex, HoverCard, Stack, Text } from '@mantine/core';
 import { ReactNode } from 'react';
 
+import { useNavigate } from 'react-router-dom';
 import { User } from '@/admin/types.ts';
 import { useBanUser } from '@/admin/useBanUser.tsx';
 import { useUser } from '@/admin/useUser.ts';
 import { useUser as useLoggedUser } from '@/auth/useUser.tsx';
 import { UserAvatar } from '@/components/Avatar';
 import { Skeleton } from '@/components/Skeleton';
+import {getPath, Paths} from "@/routes/paths.ts";
 
 interface UserInfoActionProps {
     userId: string;
@@ -17,6 +19,8 @@ const UserInfoAction = (props: UserInfoActionProps) => {
     const { userId, children } = props;
     const { mutate: banUser } = useBanUser();
     const { data: loggedUser } = useLoggedUser();
+    const navigate = useNavigate();
+
     const { data: user, isLoading } = useUser(userId);
     return (
         <HoverCard width={280} shadow="md">
@@ -63,7 +67,8 @@ const UserInfoAction = (props: UserInfoActionProps) => {
                         fullWidth
                         mt="md"
                         onClick={() => {
-                            //TODO navigate to user details, url or something else
+                            const dynamicPath = getPath(Paths.adminUserDetails).replace(':userId', user?.id);
+                            navigate(dynamicPath)
                         }}
                     >
                         Details

@@ -1,27 +1,31 @@
-export enum Paths {
-    home = '/',
-    auth = 'auth',
-    activate = 'activate',
-    recovery = 'recovery',
-    courses = 'courses',
-    courseDetail = ':id',
-    signIn = '#modal=sign-in',
-    signUp = '#modal=sign-up',
-    addCourse = '#modal=add-course',
-    addUserReview = '#modal=add-user-review',
-    editUserReview = '#modal=edit-user-review',
-    spotlight = '#modal=spotlight',
-    forgotPassword = '#modal=forgot-password',
+export const Paths = {
+    home: '/',
+    auth: 'auth',
+    activate: 'activate',
+    recovery: 'recovery',
+    courses: 'courses',
+    courseDetail: ':courseId',
+    signIn: '#modal=sign-in',
+    signUp: '#modal=sign-up',
+    addCourse: '#modal=add-course',
+    addUserReview: '#modal=add-user-review',
+    editUserReview: '#modal=edit-user-review',
+    spotlight: '#modal=spotlight',
+    forgotPassword: '#modal=forgot-password',
     //---admin
-    admin = 'admin',
-    adminUsers = 'users',
-    adminCourses = 'all-courses',
-    adminCoursesProposals = 'courses-proposals',
-}
+    admin: 'admin',
+    adminUsers: 'users',
+    adminCourses: 'courses',
+    adminCoursesProposals: 'courses-proposals',
+    //--- admin collections details
+    adminUserDetails: ':userId',
+    adminCoursesProposalsDetails: ':courseProposalId',
+    adminCoursesDetails: ':adminCourseId',
+};
 
 type PathElement = {
-    [key in Paths]: {
-        parent: Paths | null;
+    [key in keyof typeof Paths]: {
+        parent: keyof typeof Paths | null;
     };
 };
 
@@ -79,9 +83,18 @@ const PATH_ELEMENTS: PathElement = {
     [Paths.adminCoursesProposals]: {
         parent: Paths.admin,
     },
+    [Paths.adminUserDetails]: {
+        parent: Paths.adminUsers,
+    },
+    [Paths.adminCoursesProposalsDetails]: {
+        parent: Paths.adminCoursesProposals,
+    },
+    [Paths.adminCoursesDetails]: {
+        parent: Paths.adminCourses,
+    },
 };
 
-const getPath = (pathToResolve: Paths) => {
+const getPath = (pathToResolve: keyof typeof Paths) => {
     let fullPath = `/${pathToResolve}`;
     let current = pathToResolve;
     if (fullPath.includes('#modal=')) fullPath = fullPath.replace('/', '');

@@ -2,25 +2,30 @@ import { Alert, Button, Center, Divider, Flex, Stack, TagsInput, Text, TextInput
 import { useForm } from '@mantine/form';
 import { IconDatabaseX, IconEditCircle, IconTrashX } from '@tabler/icons-react';
 import { MRT_Row } from 'mantine-react-table';
-import { useEffect, useState } from 'react';
+import {HTMLAttributes, useEffect, useState} from 'react';
 
+import {useNavigate} from "react-router-dom";
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
 import { useEditCourse } from '@/admin/useEditCourse.tsx';
 import { Skeleton } from '@/components/Skeleton';
 import { Course } from '@/courses/types.ts';
 import { useDetailCourse } from '@/courses/useCourse.tsx';
+import {getPath, Paths} from "@/routes/paths.ts";
 
-interface CourseExpansionProps {
-    course: Course | null;
-    row: MRT_Row<Course>;
+
+interface CourseExpansionProps extends HTMLAttributes<HTMLElement> {
+    courseId: string;
+    row?: MRT_Row<Course>;
 }
 
-const CourseExpansion = ({ course: ICourse, row }: CourseExpansionProps) => {
-    const { data: courseDetails, isLoading, isError, refetch } = useDetailCourse(ICourse._id);
+const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
+    const { data: courseDetails, isLoading, isError, refetch } = useDetailCourse(courseId);
 
     const { mutate: editCourse } = useEditCourse();
     const [editing, setEditing] = useState(false);
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (courseDetails) {
@@ -50,11 +55,11 @@ const CourseExpansion = ({ course: ICourse, row }: CourseExpansionProps) => {
     });
 
     return (
-        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%">
+        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%" {...rest}>
             {isError ? (
                 <Center h={270}>
                     <Flex direction="column">
-                        <Text fw={600}>Error occurred - {ICourse._id}</Text>
+                        <Text fw={600}>Error occurred - {courseId}</Text>
                         <Alert variant="light" color="red" title="Alert title" icon={<IconDatabaseX height={120} width={120} />}>
                             {'An error occurred while fetching the data - error message not provided'}
                         </Alert>
@@ -90,9 +95,21 @@ const CourseExpansion = ({ course: ICourse, row }: CourseExpansionProps) => {
                                         radius="sm"
                                         loading={isLoading}
                                         component={
-                                            <Text truncate fz="xs" fw="600" c="dimmed">
-                                                {courseDetails?.courseId}
-                                            </Text>
+                                            <Button
+                                                px={4}
+                                                m={0}
+                                                h={20}
+                                                variant="subtle"
+                                                fz="xs"
+                                                fw="600"
+                                                c={'blue'}
+                                                onClick={() => {
+                                                    const dynamicPath = getPath(Paths.adminCoursesDetails).replace(':adminCourseId', courseId);
+                                                    navigate(dynamicPath);
+                                                }}
+                                            >
+                                                {courseId}
+                                            </Button>
                                         }
                                     ></Skeleton>
                                 </Flex>
@@ -208,7 +225,7 @@ const CourseExpansion = ({ course: ICourse, row }: CourseExpansionProps) => {
                                         editCourse({ course: form.values, type: 'DELETE' });
                                     } catch (e) {
                                     } finally {
-                                        row.toggleExpanded();
+                                        row && row.toggleExpanded();
                                     }
                                 }}
                                 leftSection={<IconTrashX width={16} />}

@@ -1,4 +1,5 @@
 import { ActionIcon, Badge, Box, Flex, Group, Skeleton, Text, Tooltip } from '@mantine/core';
+import { useDebouncedState } from '@mantine/hooks';
 import { IconRefresh } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { MantineReactTable, MRT_GlobalFilterTextInput, MRT_ShowHideColumnsButton, MRT_ToggleFiltersButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMantineReactTable } from 'mantine-react-table';
@@ -8,7 +9,6 @@ import { useLocation } from 'react-router-dom';
 import { useCoursesColumns } from './useCoursesColumns.tsx';
 import classes from '../Shared/styles/TableStyles.module.css';
 
-import { useCourses as usePaginatedCourses } from '@/admin/useCourses.tsx';
 import { CourseExpansion } from '@/components/AdminTable/Courses/CourseExpansion.tsx';
 import { HEADER_HEIGHT, PAGE_SIZE } from '@/constants';
 import { Course } from '@/courses/types.ts';
@@ -19,27 +19,16 @@ const AdminCoursesTable = () => {
     const [records, setRecords] = useState<Course[]>([]);
 
     const [query, setQuery] = useState('');
-    const { data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage, refetch: refetchPaginatedData } = usePaginatedCourses();
-    const { data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, refetch: refetchSearchQuery } = useSearchCourses(query);
+    const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 350);
+
+    const { data: searchData, isError: isSearchDataError, isLoading: isSearchDataLoading, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, refetch: refetchSearchQuery } = useSearchCourses(debouncedQuery);
     const location = useLocation();
     const { columns } = useCoursesColumns();
-
-    useEffect(() => {
-        if (paginatedData) {
-            const newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
-            setRecords([...newRecords]);
-        }
-    }, [paginatedData]);
 
     useEffect(() => {
         if (searchData) {
             const newRecords = searchData.pages.map((v) => v.courses.map((el) => el)).flat();
             setRecords([...newRecords]);
-        } else {
-            if (paginatedData) {
-                const newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
-                setRecords([...newRecords]);
-            }
         }
     }, [searchData]);
 
@@ -54,28 +43,24 @@ const AdminCoursesTable = () => {
         }
     }, [location]);
 
-    const fetchMoreOnBottomReached = useCallback(
+    useEffect(() => {
+        setDebouncedQuery(query);
+    }, [query]);
+
+    let fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
             if (containerRefElement) {
                 const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
                 if (scrollHeight - scrollTop - clientHeight < clientHeight - 110 - HEADER_HEIGHT && !isSearchFetching) {
-                    if (query) {
-                        if (hasSearchNextPage) {
-                            const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
-                            setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
-                        }
-                        fetchSearchNextPage();
-                    } else {
-                        if (hasPaginatedNextPage) {
-                            const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
-                            setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
-                        }
-                        fetchPaginatedNextPage();
+                    if (hasSearchNextPage) {
+                        const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
+                        setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
                     }
+                    fetchSearchNextPage();
                 }
             }
         },
-        [fetchPaginatedNextPage, fetchSearchNextPage, isPaginatedFetching, isSearchFetching],
+        [fetchSearchNextPage, isSearchFetching],
     );
 
     useEffect(() => {
@@ -98,11 +83,11 @@ const AdminCoursesTable = () => {
             withRowBorders: true,
             withTableBorder: true,
         },
-        manualFiltering: true, //turn off client-side filtering
-        onGlobalFilterChange: setQuery, //hoist internal global state to your state
+        manualFiltering: true,
+        onGlobalFilterChange: setQuery,
         state: {
-            showAlertBanner: isPaginatedError,
-            isLoading: (isPaginatedLoading || records.length === 0) && !isSearchFetched,
+            showAlertBanner: isSearchDataError,
+            isLoading: (isSearchDataLoading || records.length === 0) && !isSearchFetched,
         },
         initialState: {
             globalFilter: query,
@@ -147,11 +132,7 @@ const AdminCoursesTable = () => {
                             size="lg"
                             variant="default"
                             onClick={() => {
-                                if (!query) {
-                                    refetchPaginatedData();
-                                } else {
-                                    refetchSearchQuery();
-                                }
+                                refetchSearchQuery();
                             }}
                         >
                             <IconRefresh size={20} />
@@ -168,7 +149,7 @@ const AdminCoursesTable = () => {
                 margin: 0,
             },
         },
-        renderDetailPanel: ({ row }) => <CourseExpansion key={row.original._id} course={row.original} row={row} />,
+        renderDetailPanel: ({ row }) => <CourseExpansion key={row.original._id} courseId={row.original._id} row={row} />,
     });
 
     return (

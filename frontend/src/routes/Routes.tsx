@@ -10,14 +10,14 @@ import { AddCourseModal } from '@/components/Modals/AddCourseModal/AddCourseModa
 import { AddUserReviewModal } from '@/components/Modals/AddUserReview/AddUserReview.tsx';
 import { EditUserReviewModal } from '@/components/Modals/EditUserReview';
 import { AdminLayout, MainLayout } from '@/layouts';
-import { Activation, Course, ErrorBoundary, Recovery, Home } from '@/pages';
-
+import { Activation, Course, ErrorBoundary, Home, Recovery } from '@/pages';
 
 const Admin = lazy(async () => {
     let { Admin } = await import('@/pages');
     return { default: Admin };
 });
 
+//--- TABLES
 const AdminCoursesTable = lazy(async () => {
     let { AdminCoursesTable } = await import('@/components/AdminTable');
     return { default: AdminCoursesTable };
@@ -32,6 +32,25 @@ const AdminUsersTable = lazy(async () => {
     let { AdminUsersTable } = await import('@/components/AdminTable');
     return { default: AdminUsersTable };
 });
+
+//--- ADMIN DETAILS
+
+const AdminUserDetails = lazy(async () => {
+    let { AdminUserDetails } = await import('@/pages/Admin/AdminUserDetails');
+    return { default: AdminUserDetails };
+});
+
+const AdminCoursesProposalsDetails = lazy(async () => {
+    let { AdminCoursesProposalsDetails } = await import('@/pages/Admin/AdminCoursesProposalsDetails');
+    return { default: AdminCoursesProposalsDetails };
+});
+
+const AdminCoursesDetails = lazy(async () => {
+    let { AdminCoursesDetails } = await import('@/pages/Admin/AdminCoursesDetails');
+    return { default: AdminCoursesDetails };
+})
+
+
 
 const SuspenseLayout = () => (
     <Suspense fallback={<RouteLoader />}>
@@ -86,7 +105,7 @@ const routes = [
                 path: getPath(Paths.admin),
                 element: (
                     <AdminLayout>
-                        <ModalsProvider modals={modals}>
+                        <ModalsProvider modals={{ ...modals }}>
                             <Outlet />
                         </ModalsProvider>
                     </AdminLayout>
@@ -108,6 +127,19 @@ const routes = [
                         path: getPath(Paths.adminUsers),
                         element: <AdminUsersTable />,
                     },
+                    {
+                        path: getPath(Paths.adminUserDetails),
+                        element: <AdminUserDetails />,
+                    },
+                    {
+                        path: getPath(Paths.adminCoursesProposalsDetails),
+                        element: <AdminCoursesProposalsDetails />,
+                    },
+                    {
+                        path: getPath(Paths.adminCoursesDetails),
+                        element: <AdminCoursesDetails />,
+                    }
+
                 ],
             },
         ],

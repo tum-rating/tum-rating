@@ -2,7 +2,7 @@ import { ActionIcon, Alert, Button, Center, Divider, Flex, Stack, TagsInput, Tex
 import { useForm } from '@mantine/form';
 import { IconDatabaseX, IconExternalLink, IconMasksTheater, IconMoodCheck, IconTrashX } from '@tabler/icons-react';
 import { MRT_Row } from 'mantine-react-table';
-import { useEffect, useState } from 'react';
+import { HTMLAttributes, useEffect, useState } from 'react';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
@@ -15,17 +15,23 @@ import { UserInfoAction } from '@/components/AdminTable/Shared/UserInfoAction';
 import { Skeleton } from '@/components/Skeleton';
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { queryClient } from '@/react-query/client.ts';
+import { getPath, Paths } from '@/routes/paths.ts';
+import { useNavigate } from 'react-router-dom';
 
-interface ProposalExpansionProps {
-    proposal: CourseProposal;
-    row: MRT_Row<CourseProposal>;
+interface ProposalExpansionProps extends HTMLAttributes<HTMLElement> {
+    courseProposalId: string;
+    row?: MRT_Row<CourseProposal>;
 }
 
-const ProposalExpansion = ({ proposal: IProposal, row }: ProposalExpansionProps) => {
-    const { data: courseProposalDetails, isLoading, error, isError, refetch } = useCourseProposal(IProposal.id);
-    const { refetch: scrapeCourse, data: scrapedData, isLoading: scraperIsLoading, isError: scraperIsError, isSuccess: scraperIsSuccess } = useGetScrapedCourseProposal(IProposal.id);
+const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansionProps) => {
+    const { data: courseProposalDetails, isLoading, error, isError, refetch } = useCourseProposal(courseProposalId);
+    const { refetch: scrapeCourse, data: scrapedData, isLoading: scraperIsLoading, isError: scraperIsError, isSuccess: scraperIsSuccess } = useGetScrapedCourseProposal(courseProposalId);
 
-    const [scraperTUMRequestError, setScraperTUMRequestError] = useState<{ message?: string; name?: string; status?: number } | null>();
+    const [scraperTUMRequestError, setScraperTUMRequestError] = useState<{
+        message?: string;
+        name?: string;
+        status?: number;
+    } | null>();
     const [fetchedProposal, setFetchedProposal] = useState<Partial<Course>>({
         courseId: '',
         courseNumber: '',
@@ -35,13 +41,14 @@ const ProposalExpansion = ({ proposal: IProposal, row }: ProposalExpansionProps)
         offeredInSemesters: [],
     });
 
-    // TODO handle 401 conflict error
     const { mutate: acceptProposal, isPending: acceptProposalPending, isSuccess: acceptProposalSuccess } = useAddCourseProposal();
     const { mutate: removeProposal } = useRemoveProposal();
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (acceptProposalSuccess) {
-            row.toggleExpanded();
+            row && row.toggleExpanded();
             removeProposal(courseProposalDetails.id);
         }
     }, [acceptProposalSuccess]);
@@ -79,11 +86,11 @@ const ProposalExpansion = ({ proposal: IProposal, row }: ProposalExpansionProps)
     });
 
     return (
-        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%">
+        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%" {...rest}>
             {isError ? (
                 <Center h={270}>
                     <Flex direction="column">
-                        <Text fw={600}>Error occurred - {IProposal.id}</Text>
+                        <Text fw={600}>Error occurred - {courseProposalId}</Text>
                         <Alert variant="light" color="red" title="Alert title" icon={<IconDatabaseX height={120} width={120} />}>
                             {error?.message || 'An error occurred while fetching the data - error message not provided'}
                         </Alert>
@@ -119,7 +126,7 @@ const ProposalExpansion = ({ proposal: IProposal, row }: ProposalExpansionProps)
                                         radius="sm"
                                         loading={isLoading}
                                         component={
-                                            <UserInfoAction userId={courseProposalDetails?.userId}>
+                                             <UserInfoAction userId={courseProposalDetails?.userId}>
                                                 {(user) => (
                                                     <Button px={4} m={0} h={20} variant="subtle" fz="xs" fw="600" c={user?.isBanned ? 'gray' : 'blue'} style={user?.isBanned ? { textDecorationLine: 'line-through' } : {}}>
                                                         {user?.username}
@@ -139,9 +146,21 @@ const ProposalExpansion = ({ proposal: IProposal, row }: ProposalExpansionProps)
                                         radius="sm"
                                         loading={isLoading}
                                         component={
-                                            <Text truncate fz="xs" fw="600" c="dimmed">
+                                            <Button
+                                                px={4}
+                                                m={0}
+                                                h={20}
+                                                variant="subtle"
+                                                fz="xs"
+                                                fw="600"
+                                                c={'blue'}
+                                                onClick={() => {
+                                                    const dynamicPath = getPath(Paths.adminCoursesProposalsDetails).replace(':courseProposalId', courseProposalId);
+                                                    navigate(dynamicPath);
+                                                }}
+                                            >
                                                 {courseProposalDetails?.id}
-                                            </Text>
+                                            </Button>
                                         }
                                     ></Skeleton>
                                 </Flex>

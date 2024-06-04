@@ -1,7 +1,7 @@
 import { Alert, Badge, Button, Center, Divider, Flex, Stack, Text, TextInput } from '@mantine/core';
 import { IconDatabaseX, IconEditCircle, IconHammer, IconHammerOff, IconTrashX } from '@tabler/icons-react';
 import { MRT_Row } from 'mantine-react-table';
-import { useState } from 'react';
+import {HTMLAttributes, useState} from 'react';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
@@ -13,13 +13,13 @@ import { useUser as useLoggedUser } from '@/auth/useUser.tsx';
 import { UserAvatar } from '@/components/Avatar';
 import { Skeleton } from '@/components/Skeleton';
 
-interface UserExpansionProps {
-    user: User;
-    row: MRT_Row<User>;
+interface UserExpansionProps extends HTMLAttributes<HTMLElement> {
+    userId: string;
+    row?: MRT_Row<User>;
 }
 
-const UserExpansion = ({ user: IUser, row }: UserExpansionProps) => {
-    const { data: userDetails, isLoading, error, isError, refetch } = useUser(IUser.id);
+const UserExpansion = ({ userId, row , ...rest }: UserExpansionProps) => {
+    const { data: userDetails, isLoading, error, isError, refetch } = useUser(userId);
     const [user, setUser] = useState(userDetails);
     const [editing, setEditing] = useState(false);
     const { data: loggedUser } = useLoggedUser();
@@ -28,11 +28,11 @@ const UserExpansion = ({ user: IUser, row }: UserExpansionProps) => {
 
 
     return (
-        <Flex w="100%" wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md">
+        <Flex w="100%" wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" {...rest}>
             {isError ? (
                 <Center h={270}>
                     <Flex direction="column">
-                        <Text fw={600}>Error occurred - {IUser.id}</Text>
+                        <Text fw={600}>Error occurred - {userId}</Text>
                         <Alert variant="light" color="red" title="Alert title" icon={<IconDatabaseX height={120} width={120} />}>
                             {error?.message || 'An error occurred while fetching the data - error message not provided'}
                         </Alert>
@@ -153,7 +153,7 @@ const UserExpansion = ({ user: IUser, row }: UserExpansionProps) => {
                                         removeUser(userDetails?.id);
                                     } catch (e) {
                                     } finally {
-                                        row.toggleExpanded();
+                                        row && row.toggleExpanded();
                                     }
                                 }}
                                 disabled={userDetails?.id === String(loggedUser?.id)}
