@@ -1,4 +1,4 @@
-import { Button, Combobox, Flex, Text, ThemeIcon } from '@mantine/core';
+import { Button, Combobox, Container, Flex, Loader, Text, ThemeIcon } from '@mantine/core';
 import { IconSearchOff } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,10 +7,11 @@ import { getPath, Paths } from '@/routes/paths.ts';
 
 interface ComboboxEmptyProps {
     value: string;
+    isLoading: boolean;
 }
 
 export const ComboboxEmpty = (props: ComboboxEmptyProps) => {
-    const { value } = props;
+    const { value, isLoading } = props;
     const { data: user } = useUser();
     const navigate = useNavigate();
 
@@ -20,7 +21,17 @@ export const ComboboxEmpty = (props: ComboboxEmptyProps) => {
                 <ThemeIcon variant="light" size="64">
                     <IconSearchOff width={44} height={44} />
                 </ThemeIcon>
-                <Text size="sm">No matching courses for <Text display="inline" fw="700">"{value}"</Text></Text>
+                <Container>
+                    {' '}
+                    <Text size="sm">No matching courses for</Text>
+                    {isLoading ? (
+                        <Loader  size="xs" />
+                    ) : (
+                        <Text display="inline" fw="700">
+                            "{value}"
+                        </Text>
+                    )}
+                </Container>
                 {user ? (
                     <Button
                         size="sm"

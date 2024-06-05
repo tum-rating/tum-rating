@@ -1,4 +1,4 @@
-import { ActionIcon, CloseButton, Combobox, Loader, LoadingOverlay, ScrollArea, TextInput, ThemeIcon, useCombobox } from '@mantine/core';
+import { ActionIcon, CloseButton, Combobox, Loader, ScrollArea, TextInput, ThemeIcon, useCombobox } from '@mantine/core';
 import { useDebouncedState, useMediaQuery } from '@mantine/hooks';
 import { IconArrowLeft, IconSearch } from '@tabler/icons-react';
 import clsx from 'clsx';
@@ -56,7 +56,7 @@ const SearchInputDesktop = () => {
         }
     }, [searchQuery]);
 
-    const { data, fetchNextPage, isFetching } = useSearchCourses(debouncedQuery);
+    const { data, fetchNextPage, isLoading } = useSearchCourses(debouncedQuery);
 
     const [previousData, setPreviousData] = useState([]);
 
@@ -179,7 +179,7 @@ const SearchInputDesktop = () => {
                         </Combobox.EventsTarget>
                         <Combobox.Options className={classes.searchInputMobileOptions}>
                             <ScrollArea.Autosize h="calc(100dvh - 58px)" ref={searchInputRef} type="scroll" className={classes.searchInputMobileScrollArea}>
-                                {empty ? <ComboboxEmpty value={value} /> : options}
+                                {empty ? <ComboboxEmpty value={value} isLoading={isLoading} /> : options}
                             </ScrollArea.Autosize>
                         </Combobox.Options>
                         <Combobox.Footer>
@@ -245,8 +245,7 @@ const SearchInputDesktop = () => {
                             }
                         }}
                     >
-                        <LoadingOverlay visible={isFetching} />
-                        {empty ? <ComboboxEmpty value={value} /> : options}
+                        {empty ? <ComboboxEmpty value={value} isLoading={isLoading} /> : options}
                     </ScrollArea.Autosize>
                 </Combobox.Options>
                 <Combobox.Footer>
