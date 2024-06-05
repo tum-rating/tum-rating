@@ -84,7 +84,7 @@ const SearchInputDesktop = () => {
 
     const options = useMemo(() => {
         return (groupedActions || []).map((item: Course) => (
-            <Combobox.Option className={classes.option} value={item._id} key={item.courseId}>
+            <Combobox.Option className={classes.option} value={item._id} key={item._id}>
                 <SearchHighlight value={value.split(' ')} text={item.name} />
                 <SearchHighlight
                     value={value.split(' ')}

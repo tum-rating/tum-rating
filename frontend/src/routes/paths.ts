@@ -1,6 +1,5 @@
 export enum Paths {
     home = '/',
-    auth = 'auth',
     activate = 'activate',
     recovery = 'recovery',
     courses = 'courses',
@@ -33,26 +32,11 @@ const PATH_ELEMENTS: PathElement = {
     [Paths.home]: {
         parent: null,
     },
-    [Paths.auth]: {
-        parent: null,
-    },
-    [Paths.activate]: {
-        parent: Paths.auth,
-    },
-    [Paths.recovery]: {
-        parent: Paths.auth,
-    },
     [Paths.courses]: {
         parent: Paths.home,
     },
     [Paths.courseDetail]: {
         parent: Paths.courses,
-    },
-    [Paths.signIn]: {
-        parent: Paths.auth,
-    },
-    [Paths.signUp]: {
-        parent: Paths.auth,
     },
     [Paths.addCourse]: {
         parent: Paths.courses,
@@ -66,9 +50,23 @@ const PATH_ELEMENTS: PathElement = {
     [Paths.spotlight]: {
         parent: Paths.courses,
     },
-    [Paths.forgotPassword]: {
-        parent: Paths.auth,
+    //---auth-modals
+    [Paths.activate]: {
+        parent: null,
     },
+    [Paths.recovery]: {
+        parent: null,
+    },
+    [Paths.signIn]: {
+        parent: null,
+    },
+    [Paths.signUp]: {
+        parent: null,
+    },
+    [Paths.forgotPassword]: {
+        parent: null,
+    },
+    //---admin
     [Paths.admin]: {
         parent: null,
     },
