@@ -38,7 +38,7 @@ const Course = () => {
         userReview = reviews?.find((review) => review.userId === user.id);
         reviews = reviews?.filter((review) => review.userId !== user.id);
     }
-
+    console.log(data)
     return (
         <Box
             className={classes.container}

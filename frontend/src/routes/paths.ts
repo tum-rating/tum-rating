@@ -4,7 +4,7 @@ export enum Paths {
     activate = 'activate',
     recovery = 'recovery',
     courses = 'courses',
-    courseDetail = ':id',
+    courseDetail = ':courseId',
     signIn = '#modal=sign-in',
     signUp = '#modal=sign-up',
     addCourse = '#modal=add-course',
