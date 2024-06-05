@@ -1,6 +1,6 @@
-import { ActionIcon, Alert, Button, Center, Divider, Flex, Stack, TagsInput, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Divider, Flex, Stack, TagsInput, Text, TextInput, Tooltip } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconDatabaseX, IconExternalLink, IconMasksTheater, IconMoodCheck, IconTrashX } from '@tabler/icons-react';
+import { IconExternalLink, IconMasksTheater, IconMoodCheck, IconTrashX } from '@tabler/icons-react';
 import { MRT_Row } from 'mantine-react-table';
 import { HTMLAttributes, useEffect, useState } from 'react';
 
@@ -17,6 +17,8 @@ import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { queryClient } from '@/react-query/client.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
 import { useNavigate } from 'react-router-dom';
+import { CollectionDetailsStatusAlert } from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
+import { useOperationStatus } from '../Shared/CollectionDetailsStatusAlert/useOperationStatus';
 
 interface ProposalExpansionProps extends HTMLAttributes<HTMLElement> {
     courseProposalId: string;
@@ -32,6 +34,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
         name?: string;
         status?: number;
     } | null>();
+
     const [fetchedProposal, setFetchedProposal] = useState<Partial<Course>>({
         courseId: '',
         courseNumber: '',
@@ -41,14 +44,41 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
         offeredInSemesters: [],
     });
 
-    const { mutate: acceptProposal, isPending: acceptProposalPending, isSuccess: acceptProposalSuccess } = useAddCourseProposal();
-    const { mutate: removeProposal } = useRemoveProposal();
+    const { mutate: acceptProposal, isPending: acceptProposalPending, isSuccess: acceptProposalSuccess, isError: acceptProposalIsError, error: acceptProposalError, reset: resetAcceptProposal } = useAddCourseProposal();
+    const { mutate: removeProposal, isSuccess: removeProposalSuccess, isError: removeProposalIsError, error: removeProposalError, reset: resetRemoveProposal } = useRemoveProposal();
 
     const navigate = useNavigate();
 
+    const operationStatus = useOperationStatus([
+        {
+            isError: isError,
+            errorMessage: error?.message || 'An error occurred while fetching the data - error message not provided',
+            isSuccess: false,
+            successMessage: '',
+            refetch,
+        },
+        {
+            isError: acceptProposalIsError || removeProposalIsError,
+            errorMessage: acceptProposalError && "Proposal accepted" || removeProposalError?.message,
+            isSuccess: acceptProposalSuccess || removeProposalSuccess,
+            successMessage: acceptProposalSuccess ? 'Proposal accepted' : removeProposalSuccess ? 'Proposal removed' : '',
+            refetch: async () => {
+                if (acceptProposalError) {
+                    resetAcceptProposal();
+                }
+                if (removeProposalError) {
+                    resetRemoveProposal();
+                }
+                await refetch();
+            },
+        },
+    ]);
+
     useEffect(() => {
         if (acceptProposalSuccess) {
-            row && row.toggleExpanded();
+            if (row) {
+                row.toggleExpanded();
+            }
             removeProposal(courseProposalDetails.id);
         }
     }, [acceptProposalSuccess]);
@@ -87,24 +117,8 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
 
     return (
         <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%" {...rest}>
-            {isError ? (
-                <Center h={270}>
-                    <Flex direction="column">
-                        <Text fw={600}>Error occurred - {courseProposalId}</Text>
-                        <Alert variant="light" color="red" title="Alert title" icon={<IconDatabaseX height={120} width={120} />}>
-                            {error?.message || 'An error occurred while fetching the data - error message not provided'}
-                        </Alert>
-                        <Button
-                            variant={'white'}
-                            c="black"
-                            onClick={() => {
-                                refetch();
-                            }}
-                        >
-                            Refetch
-                        </Button>
-                    </Flex>
-                </Center>
+            {operationStatus.isError ? (
+                <CollectionDetailsStatusAlert {...operationStatus} />
             ) : (
                 <>
                     <Flex direction="column" gap="xs" className={classes.expansionDetails}>
@@ -126,7 +140,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                                         radius="sm"
                                         loading={isLoading}
                                         component={
-                                             <UserInfoAction userId={courseProposalDetails?.userId}>
+                                            <UserInfoAction userId={courseProposalDetails?.userId}>
                                                 {(user) => (
                                                     <Button px={4} m={0} h={20} variant="subtle" fz="xs" fw="600" c={user?.isBanned ? 'gray' : 'blue'} style={user?.isBanned ? { textDecorationLine: 'line-through' } : {}}>
                                                         {user?.username}

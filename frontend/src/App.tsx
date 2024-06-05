@@ -13,6 +13,7 @@ import { queryClient } from './react-query/client.ts';
 import { RoutesApp } from './routes';
 
 import { SearchProvider, TableScrollProvider } from '@/context';
+import { useEffect } from 'react';
 
 const resolver: CSSVariablesResolver = () => ({
     variables: {
@@ -34,6 +35,10 @@ const resolver: CSSVariablesResolver = () => ({
 });
 
 export default function App() {
+    useEffect(() => {
+        //eslint-disable-next-line
+        console.log("%cTUM-RATING",'font-family:monospace;background:#228be6;color:white;font-size:24px;padding:4px 8px;border-radius:4px;',"Hello there👋");
+    }, []);
     return (
         <MantineProvider
             defaultColorScheme="light"

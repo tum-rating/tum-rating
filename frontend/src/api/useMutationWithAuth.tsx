@@ -11,6 +11,9 @@ export function useMutationWithAuth<TData = unknown, TError = unknown, TVariable
     return useMutation<TData, TError, TVariables, TContext>({
         ...options,
         onError: (error: TError, variables: TVariables, context: TContext) => {
+            if (options.onError) {
+                options.onError(error, variables, context);
+            }
             if (error instanceof ResponseError) {
                 handleAuthErrors({
                     error,
@@ -18,9 +21,6 @@ export function useMutationWithAuth<TData = unknown, TError = unknown, TVariable
                     callback: () => {},
                     navigate,
                 });
-            }
-            if (options.onError) {
-                options.onError(error, variables, context);
             }
         },
     });

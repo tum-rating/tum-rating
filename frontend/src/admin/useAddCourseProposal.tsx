@@ -32,8 +32,7 @@ const addCourseProposal = async (token: string, courseProposal: ReadyCoursePropo
             color: 'red',
             loading: false,
         });
-        const data = await response.json();
-        if (!response.ok) throw new ResponseError(data.message, response, courseProposal.courseId);
+        if (!response.ok) throw new ResponseError(responseData.message, response, courseProposal.courseId);
     }
     return courseProposal;
 };
