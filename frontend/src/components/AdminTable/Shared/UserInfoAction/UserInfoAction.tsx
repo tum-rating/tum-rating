@@ -1,6 +1,5 @@
 import { Badge, Button, Flex, HoverCard, Stack, Text, Tooltip } from '@mantine/core';
 import { ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { User } from '@/admin/types.ts';
 import { useBanUser } from '@/admin/useBanUser.tsx';
@@ -19,7 +18,6 @@ const UserInfoAction = (props: UserInfoActionProps) => {
     const { userId, children } = props;
     const { mutate: banUser } = useBanUser();
     const { data: loggedUser } = useLoggedUser();
-    const navigate = useNavigate();
 
     const { data: user, isLoading } = useUser(userId);
     return (
@@ -68,7 +66,7 @@ const UserInfoAction = (props: UserInfoActionProps) => {
                         mt="md"
                         onClick={() => {
                             const dynamicPath = getPath(Paths.adminUserDetails).replace(':userId', user?.id);
-                            navigate(dynamicPath);
+                            window.open(dynamicPath, '_blank');
                         }}
                     >
                         Details

@@ -4,7 +4,6 @@ import { IconDatabaseX, IconEditCircle, IconTrashX } from '@tabler/icons-react';
 import { MRT_Row } from 'mantine-react-table';
 import {HTMLAttributes, useEffect, useState} from 'react';
 
-import {useNavigate} from "react-router-dom";
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
 import { useEditCourse } from '@/admin/useEditCourse.tsx';
@@ -25,7 +24,6 @@ const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
     const { mutate: editCourse } = useEditCourse();
     const [editing, setEditing] = useState(false);
 
-    const navigate = useNavigate()
 
     useEffect(() => {
         if (courseDetails) {
@@ -105,7 +103,7 @@ const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
                                                 c={'blue'}
                                                 onClick={() => {
                                                     const dynamicPath = getPath(Paths.adminCoursesDetails).replace(':adminCourseId', courseId);
-                                                    navigate(dynamicPath);
+                                                    window.open(dynamicPath, '_blank');
                                                 }}
                                             >
                                                 {courseId}
