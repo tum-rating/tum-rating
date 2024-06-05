@@ -14,7 +14,7 @@ import { getPath, Paths } from '@/routes/paths.ts';
 const adminTabs = [
     { label: 'Dashboard', link: getPath(Paths.admin) },
     { label: 'Proposals', link: getPath(Paths.adminCoursesProposals) },
-    { label: 'Courses', link: getPath(Paths.adminCourses) },
+    { label: 'Courses', link: getPath(Paths.adminAllCourses) },
     { label: 'Users', link: getPath(Paths.adminUsers) },
 ];
 

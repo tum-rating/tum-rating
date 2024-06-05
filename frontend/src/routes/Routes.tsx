@@ -116,7 +116,7 @@ const routes = [
                         element: <Admin />,
                     },
                     {
-                        path: getPath(Paths.adminCourses),
+                        path: getPath(Paths.adminAllCourses),
                         element: <AdminCoursesTable />,
                     },
                     {

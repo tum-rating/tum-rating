@@ -1,31 +1,31 @@
-export const Paths = {
-    home: '/',
-    auth: 'auth',
-    activate: 'activate',
-    recovery: 'recovery',
-    courses: 'courses',
-    courseDetail: ':courseId',
-    signIn: '#modal=sign-in',
-    signUp: '#modal=sign-up',
-    addCourse: '#modal=add-course',
-    addUserReview: '#modal=add-user-review',
-    editUserReview: '#modal=edit-user-review',
-    spotlight: '#modal=spotlight',
-    forgotPassword: '#modal=forgot-password',
+export enum Paths {
+    home = '/',
+    auth = 'auth',
+    activate = 'activate',
+    recovery = 'recovery',
+    courses = 'courses',
+    courseDetail = ':id',
+    signIn = '#modal=sign-in',
+    signUp = '#modal=sign-up',
+    addCourse = '#modal=add-course',
+    addUserReview = '#modal=add-user-review',
+    editUserReview = '#modal=edit-user-review',
+    spotlight = '#modal=spotlight',
+    forgotPassword = '#modal=forgot-password',
     //---admin
-    admin: 'admin',
-    adminUsers: 'users',
-    adminCourses: 'courses',
-    adminCoursesProposals: 'courses-proposals',
+    admin = 'admin',
+    adminUsers = 'users',
+    adminAllCourses = 'all-courses',
+    adminCoursesProposals = 'courses-proposals',
     //--- admin collections details
-    adminUserDetails: ':userId',
-    adminCoursesProposalsDetails: ':courseProposalId',
-    adminCoursesDetails: ':adminCourseId',
-};
+    adminUserDetails = ':userId',
+    adminCoursesProposalsDetails = ':courseProposalId',
+    adminCoursesDetails = ':adminCourseId',
+}
 
 type PathElement = {
-    [key in keyof typeof Paths]: {
-        parent: keyof typeof Paths | null;
+    [key in Paths]: {
+        parent: Paths | null;
     };
 };
 
@@ -36,48 +36,46 @@ const PATH_ELEMENTS: PathElement = {
     [Paths.auth]: {
         parent: null,
     },
+    [Paths.activate]: {
+        parent: Paths.auth,
+    },
+    [Paths.recovery]: {
+        parent: Paths.auth,
+    },
     [Paths.courses]: {
         parent: Paths.home,
     },
     [Paths.courseDetail]: {
         parent: Paths.courses,
     },
-    [Paths.recovery]: {
-        parent: Paths.auth,
-    },
-    [Paths.activate]: {
-        parent: Paths.auth,
-    },
-    // modals
     [Paths.signIn]: {
-        parent: null,
+        parent: Paths.auth,
     },
     [Paths.signUp]: {
-        parent: null,
+        parent: Paths.auth,
     },
     [Paths.addCourse]: {
-        parent: null,
+        parent: Paths.courses,
     },
     [Paths.addUserReview]: {
-        parent: null,
+        parent: Paths.courses,
     },
     [Paths.editUserReview]: {
-        parent: null,
+        parent: Paths.courses,
     },
     [Paths.spotlight]: {
-        parent: null,
+        parent: Paths.courses,
     },
     [Paths.forgotPassword]: {
-        parent: null,
+        parent: Paths.auth,
     },
-    // admin
     [Paths.admin]: {
         parent: null,
     },
     [Paths.adminUsers]: {
         parent: Paths.admin,
     },
-    [Paths.adminCourses]: {
+    [Paths.adminAllCourses]: {
         parent: Paths.admin,
     },
     [Paths.adminCoursesProposals]: {
@@ -90,11 +88,11 @@ const PATH_ELEMENTS: PathElement = {
         parent: Paths.adminCoursesProposals,
     },
     [Paths.adminCoursesDetails]: {
-        parent: Paths.adminCourses,
+        parent: Paths.adminAllCourses,
     },
 };
 
-const getPath = (pathToResolve: keyof typeof Paths) => {
+const getPath = (pathToResolve: Paths) => {
     let fullPath = `/${pathToResolve}`;
     let current = pathToResolve;
     if (fullPath.includes('#modal=')) fullPath = fullPath.replace('/', '');
