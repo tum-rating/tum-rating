@@ -38,7 +38,6 @@ const Course = () => {
         userReview = reviews?.find((review) => review.userId === user.id);
         reviews = reviews?.filter((review) => review.userId !== user.id);
     }
-    console.log(data)
     return (
         <Box
             className={classes.container}
@@ -101,7 +100,7 @@ const Course = () => {
                                 </Flex>
                             </Flex>
                         </Flex>
-                        <Flex mt="xl" direction="column" className="children-animation">
+                        <Flex mt="xl" direction="column" className="children-animation" style={{ background: 'var(--mantine-color-body)' }}>
                             <Flex align="center" gap="xs" mb="lg">
                                 <Box bg="blue" w={10} h={30} style={{ borderRadius: '8px' }} />
                                 <Text fw="bold" fz="xl">
