@@ -1,8 +1,8 @@
-import { Alert, Button, Center, Divider, Flex, Stack, TagsInput, Text, TextInput } from '@mantine/core';
+import { Button, Divider, Flex, Stack, TagsInput, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconDatabaseX, IconEditCircle, IconTrashX } from '@tabler/icons-react';
+import { IconEditCircle, IconTrashX } from '@tabler/icons-react';
 import { MRT_Row } from 'mantine-react-table';
-import {HTMLAttributes, useEffect, useState} from 'react';
+import { HTMLAttributes, useEffect, useState } from 'react';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
@@ -10,8 +10,8 @@ import { useEditCourse } from '@/admin/useEditCourse.tsx';
 import { Skeleton } from '@/components/Skeleton';
 import { Course } from '@/courses/types.ts';
 import { useDetailCourse } from '@/courses/useCourse.tsx';
-import {getPath, Paths} from "@/routes/paths.ts";
-
+import { getPath, Paths } from '@/routes/paths.ts';
+import { CollectionDetailsStatusAlert } from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 
 interface CourseExpansionProps extends HTMLAttributes<HTMLElement> {
     courseId: string;
@@ -19,11 +19,16 @@ interface CourseExpansionProps extends HTMLAttributes<HTMLElement> {
 }
 
 const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
-    const { data: courseDetails, isLoading, isError, refetch } = useDetailCourse(courseId);
+    const { data: courseDetails, isLoading, isError, error, refetch } = useDetailCourse(courseId);
 
-    const { mutate: editCourse } = useEditCourse();
+
+const a = useEditCourse()
+    const { mutate: editCourse, variables } = a;
+
+    console.log(a)
     const [editing, setEditing] = useState(false);
 
+    const [statusAlertFlag, setStatusAlertFlag] = useState(false);
 
     useEffect(() => {
         if (courseDetails) {
@@ -52,26 +57,26 @@ const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
         },
     });
 
+    useEffect(() => {
+        setStatusAlertFlag(isError);
+    }, [isError]);
+    console.log(variables)
     return (
         <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%" {...rest}>
-            {isError ? (
-                <Center h={270}>
-                    <Flex direction="column">
-                        <Text fw={600}>Error occurred - {courseId}</Text>
-                        <Alert variant="light" color="red" title="Alert title" icon={<IconDatabaseX height={120} width={120} />}>
-                            {'An error occurred while fetching the data - error message not provided'}
-                        </Alert>
+            {statusAlertFlag ? (
+                <Flex justify="center" w="100%" direction="column" gap="lg">
+                    <CollectionDetailsStatusAlert status={true} message={error?.message} type="error" />
+                    {isError && (
                         <Button
-                            variant={'white'}
-                            c="black"
+                            variant="subtle"
                             onClick={() => {
                                 refetch();
                             }}
                         >
                             Refetch
                         </Button>
-                    </Flex>
-                </Center>
+                    )}
+                </Flex>
             ) : (
                 <>
                     <Flex direction="column" gap="xs" className={classes.expansionDetails}>

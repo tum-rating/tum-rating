@@ -20,6 +20,7 @@ export async function getReviews(query: string, pageNumber: number = 1, pageSize
 }
 
 export function useSearchCourses(query: string) {
+    console.log(query)
     return useInfiniteQueryWithAuth({
         queryKey: [QUERY_KEY.search_query, query],
         // @ts-ignore

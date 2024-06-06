@@ -18,7 +18,7 @@ interface ModalsHashControllerProps extends PropsWithChildren {
 export const ModalsHashController = ({ withinPortal = true }: ModalsHashControllerProps) => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { id } = useParams();
+    const { courseId } = useParams();
     const { data: user } = useUser();
     let modalsContext = useModals();
     const modalSharedParams = useMemo(
@@ -44,14 +44,14 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
             'add-course': { component: openAddCourseModal, params: { ...modalSharedParams } },
             'add-user-review': {
                 component: openAddUserReviewModal,
-                params: { ...modalSharedParams, innerProps: { courseId: id } },
+                params: { ...modalSharedParams, innerProps: { courseId } },
             },
             'edit-user-review': {
                 component: openEditUserReviewModal,
-                params: { ...modalSharedParams, innerProps: { courseId: id } },
+                params: { ...modalSharedParams, innerProps: { courseId } },
             },
         }),
-        [modalSharedParams, id],
+        [modalSharedParams, courseId],
     );
 
     useEffect(() => {
@@ -65,7 +65,21 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
                     navigate('#');
                     return;
                 }
-                modal.component(modal.params);
+                let emptyKeyFlag = false;
+                if(modal.params.innerProps){
+                    Object.keys(modal.params.innerProps).forEach(key => {
+                        if(modal.params.innerProps[key] === undefined){
+                            emptyKeyFlag = true;
+                        }
+                    });
+                }
+
+                if (!emptyKeyFlag) {
+                    modal.component(modal.params);
+                } else {
+                    // eslint-disable-next-line no-console
+                    console.error(`Modal ${modalKey} cannot be opened because some keys in innerProps are undefined.`);
+                }
             }
         } else {
             if (modalsContext.modals.length > 0) {

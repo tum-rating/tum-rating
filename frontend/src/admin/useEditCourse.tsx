@@ -39,7 +39,8 @@ export function useEditCourse(): any {
     const token = userLocalStorage.getUser();
     return useMutationWithAuth({
         mutationFn: async ({ course, type }: CourseEdit) => editCourse(token, course, type),
-        onMutate: ({ course, type }) => {
+        onMutate: (variables) => {
+            const { course, type } = variables
             notifications.show({
                 id: course._id,
                 loading: true,
@@ -48,14 +49,14 @@ export function useEditCourse(): any {
                 autoClose: false,
                 withCloseButton: false,
             });
-            return course;
+            return variables;
         },
         onSuccess: ({ course, type }) => {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.admin_detail_course, course._id],
             });
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY.admin_courses],
+                queryKey: [QUERY_KEY.search_query],
             });
             notifications.update({
                 id: course._id,

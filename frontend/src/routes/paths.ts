@@ -43,16 +43,16 @@ const PATH_ELEMENTS: PathElement = {
         parent: Paths.courses,
     },
     [Paths.addCourse]: {
-        parent: Paths.courses,
+        parent: null,
     },
     [Paths.addUserReview]: {
-        parent: Paths.courses,
+        parent: null,
     },
     [Paths.editUserReview]: {
-        parent: Paths.courses,
+        parent: null,
     },
     [Paths.spotlight]: {
-        parent: Paths.courses,
+        parent: null,
     },
     //---auth
     [Paths.activate]: {

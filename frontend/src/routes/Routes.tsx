@@ -105,7 +105,8 @@ const routes = [
                 path: getPath(Paths.admin),
                 element: (
                     <AdminLayout>
-                        <ModalsProvider modals={{ ...modals }}>
+                        <ModalsProvider modals={modals}>
+                            <ModalsHashController />
                             <Outlet />
                         </ModalsProvider>
                     </AdminLayout>

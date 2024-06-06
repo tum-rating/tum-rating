@@ -6,7 +6,7 @@ import classes from './CollectionDetailsStatusAlert.module.css';
 
 interface CollectionDetailsStatusAlertProps {
     status: boolean;
-    message: ReactElement | string;
+    message?: ReactElement | string;
     type?: 'error' | 'success';
 }
 
@@ -33,7 +33,7 @@ const typeResolver = (type: 'error' | 'success') => {
 const CollectionDetailsStatusAlert = (props: CollectionDetailsStatusAlertProps) => {
     const { status, message, type = 'success' } = props;
     if (status) {
-        return <Alert className={classes.alert} w="100%" title={message || 'Process status: true, message not provided'} {...typeResolver(type)}></Alert>;
+        return <Alert className={classes.alert} maw="100%" title={message || 'Process status: true, message not provided'} {...typeResolver(type)}></Alert>;
     } else return null;
 };
 

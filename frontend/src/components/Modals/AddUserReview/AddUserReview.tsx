@@ -36,6 +36,7 @@ const AddUserReviewModal = ({
 
     const navigate = useNavigate();
     const { mutate: addUserReview, isSuccess, isLoading } = useAddUserReview(courseId, 'POST');
+
     const offeredInSemesters = useMemo(
         () =>
             courseData?.offeredInSemesters.map((semester) => {
