@@ -61,7 +61,7 @@ const SignUpModal = () => {
         },
     });
 
-    if (userLoading || user) {
+    if ((userLoading || user) && !isSuccess) {
         return null;
     }
 
@@ -70,7 +70,7 @@ const SignUpModal = () => {
             <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
             <Container p={0} data-testid="cypress-sign-up-modal">
                 {isSuccess ? (
-                    <Flex direction="column" align="center" gap="xs" mt="xl">
+                    <Flex direction="column" align="center" gap="xs" my="xl">
                         <Group>
                             <ThemeIcon size="80px" radius={50} variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
                                 <IconMail size={55} />

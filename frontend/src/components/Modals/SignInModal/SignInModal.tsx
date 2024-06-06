@@ -70,7 +70,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
         signIn(e);
     };
 
-    if (userLoading || user) {
+    if ((userLoading || user) && !isSignInSuccess) {
         return null;
     }
 

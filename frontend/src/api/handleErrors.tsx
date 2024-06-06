@@ -22,6 +22,8 @@ export function handleAuthErrors({ error, callback = () => null, signOut, naviga
             loading: false,
             withCloseButton: true,
         };
+
+        console.log(error)
         switch (error.status) {
             case 400:
                 notifications.show({
