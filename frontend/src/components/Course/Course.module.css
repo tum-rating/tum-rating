@@ -17,13 +17,12 @@
 }
 
 .courseContent {
-    padding-top: var(--mantine-spacing-lg);
-
+    padding-top: var(--mantine-spacing-xs);;
     & > *:not(:first-child) {
         padding: 0 var(--mantine-spacing-lg);
     }
-
     @media (max-width: $mantine-breakpoint-sm) {
+        padding-top: var(--mantine-spacing-lg);
         & > *:not(:first-child) {
             padding: 0 var(--mantine-spacing-md);
         }

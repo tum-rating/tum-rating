@@ -7,13 +7,13 @@ import { Button, CSSVariablesResolver, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { useEffect } from 'react';
 
 import buttonClasses from './customStyles/Buttons.module.css';
 import { queryClient } from './react-query/client.ts';
 import { RoutesApp } from './routes';
 
 import { SearchProvider, TableScrollProvider } from '@/context';
-import { useEffect } from 'react';
 
 const resolver: CSSVariablesResolver = () => ({
     variables: {

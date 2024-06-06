@@ -18,7 +18,6 @@ import { queryClient } from '@/react-query/client.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
 import { useNavigate } from 'react-router-dom';
 import { CollectionDetailsStatusAlert } from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
-import { useOperationStatus } from '../Shared/CollectionDetailsStatusAlert/useOperationStatus';
 
 interface ProposalExpansionProps extends HTMLAttributes<HTMLElement> {
     courseProposalId: string;
@@ -44,35 +43,18 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
         offeredInSemesters: [],
     });
 
-    const { mutate: acceptProposal, isPending: acceptProposalPending, isSuccess: acceptProposalSuccess, isError: acceptProposalIsError, error: acceptProposalError, reset: resetAcceptProposal } = useAddCourseProposal();
-    const { mutate: removeProposal, isSuccess: removeProposalSuccess, isError: removeProposalIsError, error: removeProposalError, reset: resetRemoveProposal } = useRemoveProposal();
+    const { mutate: acceptProposal, isPending: acceptProposalPending, isSuccess: acceptProposalSuccess } = useAddCourseProposal();
+    const { mutate: removeProposal, isSuccess: removeProposalSuccess } = useRemoveProposal();
 
     const navigate = useNavigate();
 
-    const operationStatus = useOperationStatus([
-        {
-            isError: isError,
-            errorMessage: error?.message || 'An error occurred while fetching the data - error message not provided',
-            isSuccess: false,
-            successMessage: '',
-            refetch,
-        },
-        {
-            isError: acceptProposalIsError || removeProposalIsError,
-            errorMessage: acceptProposalError && "Proposal accepted" || removeProposalError?.message,
-            isSuccess: acceptProposalSuccess || removeProposalSuccess,
-            successMessage: acceptProposalSuccess ? 'Proposal accepted' : removeProposalSuccess ? 'Proposal removed' : '',
-            refetch: async () => {
-                if (acceptProposalError) {
-                    resetAcceptProposal();
-                }
-                if (removeProposalError) {
-                    resetRemoveProposal();
-                }
-                await refetch();
-            },
-        },
-    ]);
+    // status: boolean;
+    // title: string;
+    // message: string;
+    // action: {
+    //     name: string;
+    //     method: () => void;
+    // }
 
     useEffect(() => {
         if (acceptProposalSuccess) {
@@ -117,8 +99,18 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
 
     return (
         <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%" {...rest}>
-            {operationStatus.isError ? (
-                <CollectionDetailsStatusAlert {...operationStatus} />
+            {isError ? (
+                <Flex align="center" justify="center" w="100%" direction="column" gap="lg">
+                    <CollectionDetailsStatusAlert status={true} message={error.message} type="error" />
+                    <Button
+                        variant="subtle"
+                        onClick={() => {
+                            refetch();
+                        }}
+                    >
+                        Refetch
+                    </Button>
+                </Flex>
             ) : (
                 <>
                     <Flex direction="column" gap="xs" className={classes.expansionDetails}>
@@ -297,13 +289,14 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                                         scrapeCourse();
                                     }
                                 }}
-                                loading={scraperIsLoading}
+                                loading={scraperIsLoading || isLoading}
                                 leftSection={<IconMasksTheater width={16} />}
                             >
                                 Scrape Course
                             </Button>
                             {fetchedProposal.courseId && (
                                 <Button
+                                    loading={isLoading}
                                     onClick={() => {
                                         queryClient.removeQueries({ queryKey: [QUERY_KEY.scrape_course, fetchedProposal.courseId] });
                                         setFetchedProposal({
@@ -329,7 +322,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                                         acceptProposal(form.values);
                                     }
                                 }}
-                                loading={acceptProposalPending || scraperIsLoading}
+                                loading={acceptProposalPending || scraperIsLoading || isLoading}
                                 color="green"
                                 leftSection={<IconMoodCheck width={16} />}
                             >
@@ -339,12 +332,14 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                                 onClick={() => {
                                     removeProposal(courseProposalDetails.id);
                                 }}
-                                loading={acceptProposalPending || scraperIsLoading}
+                                loading={acceptProposalPending || scraperIsLoading || isLoading}
                                 leftSection={<IconTrashX width={16} />}
                                 color="red"
                             >
                                 Remove Proposal
                             </Button>
+                            <CollectionDetailsStatusAlert status={acceptProposalSuccess} message="Course proposal accepted" />
+                            <CollectionDetailsStatusAlert status={removeProposalSuccess} message="Course proposal removed" />
                         </Stack>
                     </Flex>
                 </>

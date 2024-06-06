@@ -1,40 +1,40 @@
-import { Alert, Button } from '@mantine/core';
+import { Alert } from '@mantine/core';
 import { IconDatabaseHeart, IconDatabaseX } from '@tabler/icons-react';
+import { ReactElement } from 'react';
+
+import classes from './CollectionDetailsStatusAlert.module.css';
 
 interface CollectionDetailsStatusAlertProps {
-    isError: boolean;
-    errorMessage: string;
-    isSuccess: boolean;
-    successMessage: string;
-    refetch: () => void;
+    status: boolean;
+    message: ReactElement | string;
+    type?: 'error' | 'success';
 }
 
+const typeResolver = (type: 'error' | 'success') => {
+    switch (type) {
+        case 'error':
+            return {
+                color: 'red',
+                icon: <IconDatabaseX />,
+            };
+        case 'success':
+            return {
+                color: 'green',
+                icon: <IconDatabaseHeart />,
+            };
+        default:
+            return {
+                color: 'green',
+                icon: <IconDatabaseHeart />,
+            };
+    }
+};
+
 const CollectionDetailsStatusAlert = (props: CollectionDetailsStatusAlertProps) => {
-    const { isError, errorMessage, isSuccess, successMessage, refetch } = props;
-
-    if (isError) {
-        return (
-            <>
-                <Alert variant="light" color="red" title="Error" icon={<IconDatabaseX />}>
-                    {errorMessage || 'Process failed, message not provided'}
-                    <Button variant={'white'} c="black" onClick={refetch}>
-                        Refetch
-                    </Button>
-                </Alert>
-            </>
-        );
-    }
-
-    if (isSuccess) {
-        return (
-            <>
-                <Alert variant="light" color="green" title="Success" icon={<IconDatabaseHeart />}>
-                    {successMessage || 'Process succeeded, message not provided'}
-                </Alert>
-            </>
-        );
-    }
-    return null;
+    const { status, message, type = 'success' } = props;
+    if (status) {
+        return <Alert className={classes.alert} w="100%" title={message || 'Process status: true, message not provided'} {...typeResolver(type)}></Alert>;
+    } else return null;
 };
 
 export { CollectionDetailsStatusAlert };
