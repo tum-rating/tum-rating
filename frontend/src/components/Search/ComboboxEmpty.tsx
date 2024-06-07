@@ -25,7 +25,7 @@ export const ComboboxEmpty = (props: ComboboxEmptyProps) => {
                     {' '}
                     <Text size="sm">No matching courses for</Text>
                     {isLoading ? (
-                        <Loader  size="xs" />
+                        <Loader size="xs" />
                     ) : (
                         <Text display="inline" fw="700">
                             "{value}"

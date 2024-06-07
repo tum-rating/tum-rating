@@ -1,7 +1,7 @@
 import { Course } from './types.ts';
 
 import { endpoints } from '@/api';
-import {useInfiniteQueryWithAuth} from "@/api/useInfiniteQueryWithAuth.tsx";
+import { useInfiniteQueryWithAuth } from '@/api/useInfiniteQueryWithAuth.tsx';
 import { PAGE_SIZE } from '@/constants';
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
@@ -20,7 +20,6 @@ export async function getReviews(query: string, pageNumber: number = 1, pageSize
 }
 
 export function useSearchCourses(query: string) {
-    console.log(query)
     return useInfiniteQueryWithAuth({
         queryKey: [QUERY_KEY.search_query, query],
         // @ts-ignore

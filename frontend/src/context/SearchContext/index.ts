@@ -1,1 +1,1 @@
-export {SearchProvider, useSearchContext} from './SearchContext';
+export { SearchProvider, useSearchContext } from './SearchContext';

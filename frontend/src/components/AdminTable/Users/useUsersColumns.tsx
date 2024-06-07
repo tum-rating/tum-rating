@@ -11,8 +11,8 @@ export const useUsersColumns = () => {
             header: 'Username',
         },
         {
-            accessorKey: "id",
-            header: "ID",
+            accessorKey: 'id',
+            header: 'ID',
         },
         {
             accessorKey: 'role',

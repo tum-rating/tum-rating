@@ -8,11 +8,11 @@ import classes from '../Shared/styles/ExpansionStyles.module.css';
 
 import { useEditCourse } from '@/admin/useEditCourse.tsx';
 import { useRemoveCourse } from '@/admin/useRemoveCourse.tsx';
+import { CollectionDetailsStatusAlert } from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 import { Skeleton } from '@/components/Skeleton';
 import { Course } from '@/courses/types.ts';
 import { useDetailCourse } from '@/courses/useCourse.tsx';
 import { getPath, Paths } from '@/routes/paths.ts';
-import { CollectionDetailsStatusAlert } from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 
 interface CourseExpansionProps extends HTMLAttributes<HTMLElement> {
     courseId: string;
@@ -212,7 +212,6 @@ const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
                                 leftSection={<IconEditCircle width={16} />}
                                 onClick={() => {
                                     if (editing) {
-                                        console.log(form.values)
                                         editCourse(form.values);
                                         setEditing(false);
                                     } else {

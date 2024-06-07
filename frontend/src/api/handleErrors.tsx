@@ -23,7 +23,6 @@ export function handleAuthErrors({ error, callback = () => null, signOut, naviga
             withCloseButton: true,
         };
 
-        console.log(error)
         switch (error.status) {
             case 400:
                 notifications.show({
@@ -102,14 +101,15 @@ export function handleAuthErrors({ error, callback = () => null, signOut, naviga
                     autoClose: false,
                     className: 'server-error-notification',
                     id: 'server-error-notification',
-                    title: "Server error 500",
+                    title: 'Server error 500',
                     message: (
                         <Text size="xs">
-                            We apologise and are working on fixing the issue. <br/> Please try again later.
+                            We apologise and are working on fixing the issue. <br /> Please try again later.
                         </Text>
-                    )
+                    ),
                 });
                 callback && callback();
+                break;
             default:
                 break;
         }

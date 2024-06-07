@@ -10,12 +10,12 @@ import classes from './SearchInputDesktop.module.css';
 
 import { CopyrightFooter } from '@/components/CopyrightFooter';
 import { SearchHighlight } from '@/components/Highlight';
+import { ComboboxEmpty } from '@/components/Search/ComboboxEmpty.tsx';
+import { PAGE_SIZE } from '@/constants';
+import { useSearchContext } from '@/context';
 import { Course } from '@/courses/types.ts';
 import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
 import { useScrollLock } from '@/hooks/useScrollLock';
-import { useSearchContext } from '@/context';
-import { ComboboxEmpty } from '@/components/Search/ComboboxEmpty.tsx';
-import { PAGE_SIZE } from '@/constants';
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
@@ -66,7 +66,6 @@ const SearchInputDesktop = () => {
             setPreviousData(newRecords);
         }
     }, [data]);
-
 
     useEffect(() => {
         if (!isSearchOpen) {

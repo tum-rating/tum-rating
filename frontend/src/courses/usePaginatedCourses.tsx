@@ -1,7 +1,7 @@
 import { Course } from './types.ts';
 
 import { endpoints } from '@/api';
-import {useInfiniteQueryWithAuth} from "@/api/useInfiniteQueryWithAuth.tsx";
+import { useInfiniteQueryWithAuth } from '@/api/useInfiniteQueryWithAuth.tsx';
 import { PAGE_SIZE } from '@/constants';
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';

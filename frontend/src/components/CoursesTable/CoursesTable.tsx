@@ -212,7 +212,7 @@ function CoursesTable() {
         },
         state: {
             showAlertBanner: isPaginatedError,
-            isLoading: (isPaginatedLoading || !isSearchFetched || internalLoader) &&  (!isSearchError || !isPaginatedError),
+            isLoading: (isPaginatedLoading || !isSearchFetched || internalLoader) && (!isSearchError || !isPaginatedError),
         },
         rowVirtualizerInstanceRef,
         rowVirtualizerOptions: { overscan: 15 },

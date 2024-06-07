@@ -3,6 +3,7 @@ import { useForm } from '@mantine/form';
 import { IconExternalLink, IconMasksTheater, IconMoodCheck, IconTrashX } from '@tabler/icons-react';
 import { MRT_Row } from 'mantine-react-table';
 import { HTMLAttributes, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
@@ -11,13 +12,12 @@ import { useAddCourseProposal } from '@/admin/useAddCourseProposal.tsx';
 import { useCourseProposal } from '@/admin/useCourseProposal.tsx';
 import { useGetScrapedCourseProposal } from '@/admin/useCourseScraper.tsx';
 import { useRemoveProposal } from '@/admin/useRemoveProposal.tsx';
+import { CollectionDetailsStatusAlert } from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 import { UserInfoAction } from '@/components/AdminTable/Shared/UserInfoAction';
 import { Skeleton } from '@/components/Skeleton';
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { queryClient } from '@/react-query/client.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
-import { useNavigate } from 'react-router-dom';
-import { CollectionDetailsStatusAlert } from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 
 interface ProposalExpansionProps extends HTMLAttributes<HTMLElement> {
     courseProposalId: string;
@@ -29,7 +29,6 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
     const { refetch: scrapeCourse, data: scrapedData, isLoading: scraperIsLoading, isError: scraperIsError, isSuccess: scraperIsSuccess } = useGetScrapedCourseProposal(courseProposalId);
 
     const [statusAlertFlag, setStatusAlertFlag] = useState(false);
-
 
     const [scraperTUMRequestError, setScraperTUMRequestError] = useState<{
         message?: string;
@@ -53,7 +52,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
 
     useEffect(() => {
         setStatusAlertFlag(isError || removeProposalSuccess || acceptProposalSuccess);
-    }, [isError,removeProposalSuccess ,acceptProposalSuccess]);
+    }, [isError, removeProposalSuccess, acceptProposalSuccess]);
 
     useEffect(() => {
         if (acceptProposalSuccess) {
@@ -99,10 +98,9 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
     return (
         <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%" {...rest}>
             {statusAlertFlag ? (
-                <Flex  justify="center" w="100%" direction="column" gap="lg">
+                <Flex justify="center" w="100%" direction="column" gap="lg">
                     <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error" />
-                    <CollectionDetailsStatusAlert status={acceptProposalSuccess} message={`Course proposal ${courseProposalId} accepted`}
-                    />
+                    <CollectionDetailsStatusAlert status={acceptProposalSuccess} message={`Course proposal ${courseProposalId} accepted`} />
                     <CollectionDetailsStatusAlert status={removeProposalSuccess} message={`Course proposal ${courseProposalId} removed.`} />
                     {isError && (
                         <Button

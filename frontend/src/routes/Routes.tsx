@@ -48,9 +48,7 @@ const AdminCoursesProposalsDetails = lazy(async () => {
 const AdminCoursesDetails = lazy(async () => {
     let { AdminCoursesDetails } = await import('@/pages/Admin/AdminCoursesDetails');
     return { default: AdminCoursesDetails };
-})
-
-
+});
 
 const SuspenseLayout = () => (
     <Suspense fallback={<RouteLoader />}>
@@ -139,8 +137,7 @@ const routes = [
                     {
                         path: getPath(Paths.adminCoursesDetails),
                         element: <AdminCoursesDetails />,
-                    }
-
+                    },
                 ],
             },
         ],

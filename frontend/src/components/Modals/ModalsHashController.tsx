@@ -66,9 +66,9 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
                     return;
                 }
                 let emptyKeyFlag = false;
-                if(modal.params.innerProps){
-                    Object.keys(modal.params.innerProps).forEach(key => {
-                        if(modal.params.innerProps[key] === undefined){
+                if (modal.params.innerProps) {
+                    Object.keys(modal.params.innerProps).forEach((key) => {
+                        if (modal.params.innerProps[key] === undefined) {
                             emptyKeyFlag = true;
                         }
                     });

@@ -17,5 +17,4 @@ describe('SearchContext', () => {
         });
         expect(result.current.searchQuery).toBe('new query');
     });
-
 });

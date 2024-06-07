@@ -84,8 +84,8 @@ const AdminCoursesTable = () => {
             withTableBorder: true,
         },
         manualFiltering: true,
-        onGlobalFilterChange: (value)=>{
-            setQuery(value ? value : "");
+        onGlobalFilterChange: (value) => {
+            setQuery(value ? value : '');
         },
         state: {
             showAlertBanner: isSearchDataError,

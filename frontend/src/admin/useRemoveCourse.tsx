@@ -8,8 +8,6 @@ import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { queryClient } from '@/react-query/client.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
-
-
 const removeCourse = async (token: string, courseId: string): Promise<any> => {
     const endpoint = endpoints.editCourse(courseId);
     const response = await fetch(endpoint, {
@@ -24,16 +22,13 @@ const removeCourse = async (token: string, courseId: string): Promise<any> => {
         throw new ResponseError(data.message, response, courseId);
     }
     return courseId;
-
-}
-
+};
 
 export function useRemoveCourse(): any {
     const token = userLocalStorage.getUser();
     return useMutationWithAuth({
         mutationFn: async (courseId: string) => removeCourse(token, courseId),
         onMutate: (courseId) => {
-            console.log(courseId)
             notifications.show({
                 id: courseId,
                 loading: true,
@@ -45,7 +40,6 @@ export function useRemoveCourse(): any {
             return courseId;
         },
         onSuccess: (courseId) => {
-            console.log(courseId)
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.admin_detail_course, courseId],
             });

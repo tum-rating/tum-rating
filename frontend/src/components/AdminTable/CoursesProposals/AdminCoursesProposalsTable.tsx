@@ -10,7 +10,6 @@ import classes from '../Shared/styles/TableStyles.module.css';
 import { useCoursesProposals } from '@/admin/useCoursesProposals.ts';
 import { ProposalExpansion } from '@/components/AdminTable/CoursesProposals/ProposalExpansion.tsx';
 import { useProposalsColumns } from '@/components/AdminTable/CoursesProposals/useProposalsColumns.tsx';
-import { getPath, Paths } from '@/routes/paths.ts';
 
 const AdminCoursesProposalsTable = () => {
     const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
@@ -68,7 +67,7 @@ const AdminCoursesProposalsTable = () => {
                         <Text fw={600}>Active proposals</Text>
                     </Flex>
                     <Tooltip label="Add course proposal" openDelay={400}>
-                        <ActionIcon variant="light" onClick={() => navigate("#modal=add-course")}>
+                        <ActionIcon variant="light" onClick={() => navigate('#modal=add-course')}>
                             <IconPlus size={16} />
                         </ActionIcon>
                     </Tooltip>
