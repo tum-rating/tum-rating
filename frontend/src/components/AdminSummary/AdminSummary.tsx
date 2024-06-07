@@ -40,7 +40,7 @@ const AdminSummary = () => {
                         diffValue: null,
                     }}
                     title="Courses"
-                    link={getPath(Paths.adminCourses)}
+                    link={getPath(Paths.adminAllCourses)}
                     icon={<IconLibrary />}
                     description="Total number of courses"
                 />

@@ -45,13 +45,23 @@ const SignUpModal = () => {
             terms: true,
         },
         validate: {
-            email: (value) => !value.includes('@') && 'Invalid email',
+            email: (value) => {
+                if (!value.includes('@')) {
+                    return 'Invalid email';
+                }
+                const domain = value.split('@')[1];
+                if (domain !== 'mytum.de' && domain !== 'tum.de') {
+                    return 'Email domain must be of mytum.de or tum.de';
+                }
+                return false;
+            },
+            username: (value) => value.length < 3 && 'Username should contain at least 3 characters',
             password: (value) => value.length < 6 && 'Password should contain at least 6 characters',
             terms: (value) => !value && 'You should accept terms of usage',
         },
     });
 
-    if (userLoading || user) {
+    if ((userLoading || user) && !isSuccess) {
         return null;
     }
 
@@ -60,7 +70,7 @@ const SignUpModal = () => {
             <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
             <Container p={0} data-testid="cypress-sign-up-modal">
                 {isSuccess ? (
-                    <Flex direction="column" align="center" gap="xs" mt="xl">
+                    <Flex direction="column" align="center" gap="xs" my="xl">
                         <Group>
                             <ThemeIcon size="80px" radius={50} variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
                                 <IconMail size={55} />

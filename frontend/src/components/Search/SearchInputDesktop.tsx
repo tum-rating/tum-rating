@@ -1,4 +1,4 @@
-import { ActionIcon, Button, CloseButton, Combobox, Flex, Loader, ScrollArea, TextInput, ThemeIcon, useCombobox } from '@mantine/core';
+import { ActionIcon, CloseButton, Combobox, Loader, ScrollArea, TextInput, ThemeIcon, useCombobox } from '@mantine/core';
 import { useDebouncedState, useMediaQuery } from '@mantine/hooks';
 import { IconArrowLeft, IconSearch } from '@tabler/icons-react';
 import clsx from 'clsx';
@@ -8,24 +8,25 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import classes from './SearchInputDesktop.module.css';
 
-import { useUser } from '@/auth/useUser.tsx';
 import { CopyrightFooter } from '@/components/CopyrightFooter';
 import { SearchHighlight } from '@/components/Highlight';
+import { ComboboxEmpty } from '@/components/Search/ComboboxEmpty.tsx';
+import { PAGE_SIZE } from '@/constants';
+import { useSearchContext } from '@/context';
 import { Course } from '@/courses/types.ts';
 import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
 import { useScrollLock } from '@/hooks/useScrollLock';
-import { getPath, Paths } from '@/routes/paths.ts';
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
     });
-
+    const scrollAreaRef = useRef(null);
+    const { searchQuery, setSearchQuery } = useSearchContext();
     const [value, setValue] = useState('');
     const [empty, setEmpty] = useState(false);
-    const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 150);
+    const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 350);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const user = useUser();
     const smallerMode = useMediaQuery('(max-width: 48em)');
     const navigate = useNavigate();
     const location = useLocation();
@@ -49,13 +50,20 @@ const SearchInputDesktop = () => {
         setDebouncedQuery(value);
     }, [value]);
 
-    const { data } = useSearchCourses(debouncedQuery);
+    useEffect(() => {
+        if (searchQuery.length === 0) {
+            setValue('');
+        }
+    }, [searchQuery]);
 
-    const [previousData, setPreviousData] = useState(null);
+    const { data, fetchNextPage, isLoading } = useSearchCourses(debouncedQuery);
+
+    const [previousData, setPreviousData] = useState([]);
 
     useEffect(() => {
         if (data) {
-            setPreviousData(data);
+            const newRecords = data.pages.map((v) => v.courses.map((el) => el)).flat();
+            setPreviousData(newRecords);
         }
     }, [data]);
 
@@ -67,7 +75,7 @@ const SearchInputDesktop = () => {
         }
     }, [isSearchOpen]);
 
-    const groupedActions = useMemo(() => (previousData ? previousData.courses : []), [previousData]);
+    const groupedActions = useMemo(() => (previousData ? previousData : []), [previousData]);
 
     useEffect(() => {
         setEmpty(groupedActions.length === 0);
@@ -75,7 +83,7 @@ const SearchInputDesktop = () => {
 
     const options = useMemo(() => {
         return (groupedActions || []).map((item: Course) => (
-            <Combobox.Option className={classes.option} value={item._id} key={item.courseId}>
+            <Combobox.Option className={classes.option} value={item._id} key={item._id}>
                 <SearchHighlight value={value.split(' ')} text={item.name} />
                 <SearchHighlight
                     value={value.split(' ')}
@@ -94,9 +102,17 @@ const SearchInputDesktop = () => {
         e.preventDefault();
         if (value.length) {
             navigate('/?search=' + value);
-            setValue('');
+            setSearchQuery(value);
             combobox.closeDropdown();
         }
+    };
+
+    const handleClear = (e) => {
+        e.preventDefault();
+        setSearchQuery('');
+        setValue('');
+        navigate('#');
+        combobox.closeDropdown();
     };
 
     if (smallerMode) {
@@ -141,19 +157,7 @@ const SearchInputDesktop = () => {
                                             <IconArrowLeft width={16} height={16} />
                                         </ActionIcon>
                                     }
-                                    rightSection={
-                                        value !== '' && (
-                                            <CloseButton
-                                                size="sm"
-                                                onMouseDown={(event) => event.preventDefault()}
-                                                onClick={() => {
-                                                    setValue('');
-                                                    combobox.closeDropdown();
-                                                }}
-                                                aria-label="Clear value"
-                                            />
-                                        )
-                                    }
+                                    rightSection={value !== '' && <CloseButton size="sm" onMouseDown={(event) => event.preventDefault()} onClick={handleClear} aria-label="Clear value" />}
                                     classNames={{
                                         root: classes.searchInputMobileRoot,
                                         input: clsx(classes.searchInputMobileInput, combobox.dropdownOpened && classes.searchInputMobileInputActive),
@@ -174,8 +178,7 @@ const SearchInputDesktop = () => {
                         </Combobox.EventsTarget>
                         <Combobox.Options className={classes.searchInputMobileOptions}>
                             <ScrollArea.Autosize h="calc(100dvh - 58px)" ref={searchInputRef} type="scroll" className={classes.searchInputMobileScrollArea}>
-                                {empty && <Combobox.Empty>No matching courses for "{value}"</Combobox.Empty>}
-                                {options}
+                                {empty ? <ComboboxEmpty value={value} isLoading={isLoading} /> : options}
                             </ScrollArea.Autosize>
                         </Combobox.Options>
                         <Combobox.Footer>
@@ -207,19 +210,7 @@ const SearchInputDesktop = () => {
                                 <IconSearch width={16} height={16} />
                             </ThemeIcon>
                         }
-                        rightSection={
-                            value !== '' && (
-                                <CloseButton
-                                    size="sm"
-                                    onMouseDown={(event) => event.preventDefault()}
-                                    onClick={() => {
-                                        setValue('');
-                                        combobox.closeDropdown();
-                                    }}
-                                    aria-label="Clear value"
-                                />
-                            )
-                        }
+                        rightSection={value !== '' && <CloseButton size="sm" onMouseDown={(event) => event.preventDefault()} onClick={handleClear} aria-label="Clear value" />}
                         classNames={{
                             root: classes.searchInputDesktopRoot,
                             input: clsx(classes.searchInputDesktopInput, combobox.dropdownOpened && classes.searchInputDesktopInputActive),
@@ -242,32 +233,18 @@ const SearchInputDesktop = () => {
 
             <Combobox.Dropdown className={classes.searchInputDesktopDropdown} hidden={data === null}>
                 <Combobox.Options>
-                    <ScrollArea.Autosize mah="50vh" type="scroll">
-                        {empty && (
-                            <Flex direction="column">
-                                <Combobox.Empty>No matching courses for "{value}"</Combobox.Empty>
-                                {user.data ? (
-                                    <Button
-                                        onClick={() => {
-                                            navigate(getPath(Paths.addCourse));
-                                        }}
-                                        variant="subtle"
-                                    >
-                                        Add Course Proposal
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        onClick={() => {
-                                            navigate(getPath(Paths.signIn));
-                                        }}
-                                        variant="subtle"
-                                    >
-                                        Sign In to Add Course Proposal
-                                    </Button>
-                                )}
-                            </Flex>
-                        )}
-                        {options}
+                    <ScrollArea.Autosize
+                        mah="50vh"
+                        viewportRef={scrollAreaRef}
+                        type="scroll"
+                        onScrollPositionChange={(event) => {
+                            const { y } = event;
+                            if (y >= PAGE_SIZE * 50 * data.pageParams.at(-1) - 10) {
+                                fetchNextPage();
+                            }
+                        }}
+                    >
+                        {empty ? <ComboboxEmpty value={value} isLoading={isLoading} /> : options}
                     </ScrollArea.Autosize>
                 </Combobox.Options>
                 <Combobox.Footer>
