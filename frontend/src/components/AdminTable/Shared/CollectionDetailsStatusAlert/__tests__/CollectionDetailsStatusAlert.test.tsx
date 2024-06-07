@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 
 import { CollectionDetailsStatusAlert } from '../CollectionDetailsStatusAlert';
 
-import { render } from 'tests/utils/render.tsx';
+import { render } from 'tests/unit/utils/render.tsx';
 
 describe('CollectionDetailsStatusAlert', () => {
     it('renders without crashing', () => {
