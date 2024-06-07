@@ -7,6 +7,7 @@ import { HTMLAttributes, useEffect, useState } from 'react';
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
 import { useEditCourse } from '@/admin/useEditCourse.tsx';
+import { useRemoveCourse } from '@/admin/useRemoveCourse.tsx';
 import { Skeleton } from '@/components/Skeleton';
 import { Course } from '@/courses/types.ts';
 import { useDetailCourse } from '@/courses/useCourse.tsx';
@@ -21,11 +22,9 @@ interface CourseExpansionProps extends HTMLAttributes<HTMLElement> {
 const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
     const { data: courseDetails, isLoading, isError, error, refetch } = useDetailCourse(courseId);
 
+    const { mutate: editCourse } = useEditCourse();
+    const { mutate: removeCourse, isSuccess: removeCourseIsSuccess } = useRemoveCourse();
 
-const a = useEditCourse()
-    const { mutate: editCourse, variables } = a;
-
-    console.log(a)
     const [editing, setEditing] = useState(false);
 
     const [statusAlertFlag, setStatusAlertFlag] = useState(false);
@@ -58,14 +57,15 @@ const a = useEditCourse()
     });
 
     useEffect(() => {
-        setStatusAlertFlag(isError);
-    }, [isError]);
-    console.log(variables)
+        setStatusAlertFlag(isError || removeCourseIsSuccess);
+    }, [isError || removeCourseIsSuccess]);
+
     return (
         <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%" {...rest}>
             {statusAlertFlag ? (
                 <Flex justify="center" w="100%" direction="column" gap="lg">
-                    <CollectionDetailsStatusAlert status={true} message={error?.message} type="error" />
+                    <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error" />
+                    <CollectionDetailsStatusAlert status={removeCourseIsSuccess} message="Course removed" type="success" />
                     {isError && (
                         <Button
                             variant="subtle"
@@ -212,7 +212,8 @@ const a = useEditCourse()
                                 leftSection={<IconEditCircle width={16} />}
                                 onClick={() => {
                                     if (editing) {
-                                        editCourse({ course: form.values, type: 'PATCH' });
+                                        console.log(form.values)
+                                        editCourse(form.values);
                                         setEditing(false);
                                     } else {
                                         setEditing(true);
@@ -225,7 +226,7 @@ const a = useEditCourse()
                             <Button
                                 onClick={() => {
                                     try {
-                                        editCourse({ course: form.values, type: 'DELETE' });
+                                        removeCourse(courseId);
                                     } catch (e) {
                                     } finally {
                                         row && row.toggleExpanded();

@@ -1,5 +1,5 @@
 .alert * {
     & > * {
-        font-size: var(--mantine-font-size-xs) !important;
+        font-size: var(--mantine-font-size-sm) !important;
     }
 }

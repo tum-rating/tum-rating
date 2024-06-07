@@ -100,9 +100,10 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
         <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%" {...rest}>
             {statusAlertFlag ? (
                 <Flex  justify="center" w="100%" direction="column" gap="lg">
-                    <CollectionDetailsStatusAlert status={true} message={error?.message} type="error" />
-                    <CollectionDetailsStatusAlert status={removeProposalSuccess} message="Course proposal removed" />
-                    <CollectionDetailsStatusAlert status={acceptProposalSuccess} message="Course proposal accepted" />
+                    <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error" />
+                    <CollectionDetailsStatusAlert status={acceptProposalSuccess} message={`Course proposal ${courseProposalId} accepted`}
+                    />
+                    <CollectionDetailsStatusAlert status={removeProposalSuccess} message={`Course proposal ${courseProposalId} removed.`} />
                     {isError && (
                         <Button
                             variant="subtle"
@@ -347,8 +348,6 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                     >
                         Remove Proposal
                     </Button>
-                    <CollectionDetailsStatusAlert status={acceptProposalSuccess} message="Course proposal accepted" />
-                    <CollectionDetailsStatusAlert status={removeProposalSuccess} message="Course proposal removed" />
                 </Stack>
             </Flex>
         </Flex>
