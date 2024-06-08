@@ -39,9 +39,6 @@ const RecoveryModal = () => {
                 if (!/^\S+@\S+$/.test(val)) {
                     return 'Invalid Email';
                 }
-                if (!val.endsWith('@tum.de')) {
-                    return 'Email must end with @tum.de';
-                }
                 return null;
             },
         },
