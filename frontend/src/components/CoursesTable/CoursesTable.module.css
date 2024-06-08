@@ -1,6 +1,6 @@
 
 .dataTableContainer {
-    margin-top: 15px;
+    margin-top: 25px;
     width: 100%;
     @media (max-width: $mantine-breakpoint-sm) {
         min-height: calc(100vh - 148px);
@@ -13,20 +13,20 @@
 }
 
 .dataTableInfo {
-    height: 18px;
-    padding: 0;
-    background: var(--mantine-color-body);
+    height: 25px;
+    padding: 0 0 3px 0;
+    background: transparent;
     opacity: 0;
+    box-shadow: none;
     @media (max-width: $mantine-breakpoint-sm) {
         border-radius: 0;
-    }
-    @media (max-width: $mantine-breakpoint-sm) {
-         display: none;
-    }
+        display: none;
+        padding:0;
 
+    }
     &[data-active='true'] {
         animation: .3s fadeInUp both;
-        background-color: rgb(255 255 255 / 59%);
+        background: transparent;
     }
 
     @media (max-width: $mantine-breakpoint-sm) {
@@ -48,12 +48,11 @@
 }
 
 .tablePaper{
+    background: transparent;
     @media (max-width: $mantine-breakpoint-sm) {
         border-radius: 0;
     }
 }
-
-
 
 .tableHeadRow{
     font-size: var(--mantine-font-size-xs);
@@ -73,5 +72,14 @@
 .tableCellRow{
     @media (max-width: $mantine-breakpoint-sm) {
         font-size: 12px;
+    }
+}
+
+.tableContainer{
+    border-radius: var(--mantine-radius-sm);
+    border: calc(0.0625rem* var(--mantine-scale)) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+    @media (max-width: $mantine-breakpoint-sm) {
+        border-radius: 0;
+        border: none;
     }
 }

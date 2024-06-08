@@ -1,4 +1,4 @@
-import { Badge, Button, Flex, HoverCard, Stack, Text } from '@mantine/core';
+import { Badge, Button, Flex, HoverCard, Stack, Text, Tooltip } from '@mantine/core';
 import { ReactNode } from 'react';
 
 import { User } from '@/admin/types.ts';
@@ -7,6 +7,7 @@ import { useUser } from '@/admin/useUser.ts';
 import { useUser as useLoggedUser } from '@/auth/useUser.tsx';
 import { UserAvatar } from '@/components/Avatar';
 import { Skeleton } from '@/components/Skeleton';
+import { getPath, Paths } from '@/routes/paths.ts';
 
 interface UserInfoActionProps {
     userId: string;
@@ -17,6 +18,7 @@ const UserInfoAction = (props: UserInfoActionProps) => {
     const { userId, children } = props;
     const { mutate: banUser } = useBanUser();
     const { data: loggedUser } = useLoggedUser();
+
     const { data: user, isLoading } = useUser(userId);
     return (
         <HoverCard width={280} shadow="md">
@@ -63,36 +65,39 @@ const UserInfoAction = (props: UserInfoActionProps) => {
                         fullWidth
                         mt="md"
                         onClick={() => {
-                            //TODO navigate to user details, url or something else
+                            const dynamicPath = getPath(Paths.adminUserDetails).replace(':userId', user?.id);
+                            window.open(dynamicPath, '_blank');
                         }}
                     >
                         Details
                     </Button>
-                    {user?.isBanned ? (
-                        <Button
-                            fullWidth
-                            disabled={user?.id === String(loggedUser?.id)}
-                            size="xs"
-                            color="red"
-                            onClick={() => {
-                                banUser({ userId: user?.id, flag: false });
-                            }}
-                        >
-                            Unban
-                        </Button>
-                    ) : (
-                        <Button
-                            fullWidth
-                            disabled={user?.id === String(loggedUser?.id)}
-                            size="xs"
-                            color="red"
-                            onClick={() => {
-                                banUser({ userId: user?.id, flag: true });
-                            }}
-                        >
-                            Ban
-                        </Button>
-                    )}
+                    <Tooltip label={"You can't ban your own account"} disabled={!(user?.id === String(loggedUser?.id))} position="bottom">
+                        {user?.isBanned ? (
+                            <Button
+                                fullWidth
+                                disabled={user?.id === String(loggedUser?.id)}
+                                size="xs"
+                                color="red"
+                                onClick={() => {
+                                    banUser({ userId: user?.id, flag: false });
+                                }}
+                            >
+                                Unban
+                            </Button>
+                        ) : (
+                            <Button
+                                fullWidth
+                                disabled={user?.id === String(loggedUser?.id)}
+                                size="xs"
+                                color="red"
+                                onClick={() => {
+                                    banUser({ userId: user?.id, flag: true });
+                                }}
+                            >
+                                Ban
+                            </Button>
+                        )}
+                    </Tooltip>
                 </Stack>
             </HoverCard.Dropdown>
         </HoverCard>

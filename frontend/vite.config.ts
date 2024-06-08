@@ -19,6 +19,15 @@ export default defineConfig({
         port: 5174,
     },
     plugins: [react(), tsconfigPaths()],
+    build: {
+        rollupOptions: {
+            output: {
+                entryFileNames: '[hash].[format]',
+                chunkFileNames: '[hash].[format]',
+                assetFileNames: '[hash].[ext]'
+            }
+        }
+    },
     test: {
         environment: 'jsdom',
         setupFiles: ['./vitest.setup.ts'],

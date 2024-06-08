@@ -16,7 +16,8 @@ async function recovery(props: RecoveryBody) {
         },
         body: JSON.stringify(requestBody),
     });
-    if (!response.ok) throw new ResponseError('Unexpected error', response, 'recovery');
+    const data = await response.json();
+    if (!response.ok) throw new ResponseError(data.message, response, 'recovery');
     return true;
 }
 
@@ -24,6 +25,7 @@ export interface RecoveryBody {
     email?: string;
     password?: string;
     token?: string;
+
     [key: string]: string | undefined;
 }
 

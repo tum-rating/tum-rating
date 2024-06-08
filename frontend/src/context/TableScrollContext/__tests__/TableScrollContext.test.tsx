@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 
-import { TableScrollProvider, useTableScrollContext } from '../TableScrollContext';
+import { TableScrollProvider, useTableScrollContext } from '@/context';
 
 describe('TableScrollContext', () => {
     it('should provide initial values', () => {

@@ -7,17 +7,16 @@ import classes from './AdminLayout.module.css';
 
 import { useCoursesProposals } from '@/admin/useCoursesProposals.ts';
 import { useUser } from '@/auth/useUser.tsx';
+import { HEADER_HEIGHT } from '@/constants';
 import { AdminErrorBoundary } from '@/pages/PageNotFound';
 import { getPath, Paths } from '@/routes/paths.ts';
 
 const adminTabs = [
     { label: 'Dashboard', link: getPath(Paths.admin) },
     { label: 'Proposals', link: getPath(Paths.adminCoursesProposals) },
-    { label: 'Courses', link: getPath(Paths.adminCourses) },
+    { label: 'Courses', link: getPath(Paths.adminAllCourses) },
     { label: 'Users', link: getPath(Paths.adminUsers) },
 ];
-
-const HEADER_HEIGHT = 60;
 
 export function AdminLayout({ children }: PropsWithChildren) {
     const [opened, { toggle }] = useDisclosure();
@@ -29,7 +28,7 @@ export function AdminLayout({ children }: PropsWithChildren) {
 
     useEffect(() => {
         const path = location.pathname;
-        const tab = adminTabs.find((tab) => tab.link === path);
+        const tab = adminTabs.findLast((tab) => path.includes(tab.link));
         if (tab) {
             setActive(tab.link);
         }

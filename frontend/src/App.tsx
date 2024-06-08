@@ -7,12 +7,13 @@ import { Button, CSSVariablesResolver, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { useEffect } from 'react';
 
 import buttonClasses from './customStyles/Buttons.module.css';
 import { queryClient } from './react-query/client.ts';
 import { RoutesApp } from './routes';
 
-import { TableScrollProvider } from '@/context';
+import { SearchProvider, TableScrollProvider } from '@/context';
 
 const resolver: CSSVariablesResolver = () => ({
     variables: {
@@ -34,6 +35,10 @@ const resolver: CSSVariablesResolver = () => ({
 });
 
 export default function App() {
+    useEffect(() => {
+        //eslint-disable-next-line
+        console.log('%cTUM-RATING', 'font-family:monospace;background:#228be6;color:white;font-size:24px;padding:4px 8px;border-radius:4px;', 'Hello there👋');
+    }, []);
     return (
         <MantineProvider
             defaultColorScheme="light"
@@ -51,7 +56,9 @@ export default function App() {
                 <ReactQueryDevtools initialIsOpen={false} />
                 <Notifications />
                 <TableScrollProvider>
-                    <RoutesApp />
+                    <SearchProvider>
+                        <RoutesApp />
+                    </SearchProvider>
                 </TableScrollProvider>
             </QueryClientProvider>
         </MantineProvider>
