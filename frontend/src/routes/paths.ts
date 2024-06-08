@@ -4,7 +4,7 @@ export enum Paths {
     activate = 'activate',
     recovery = 'recovery',
     courses = 'courses',
-    courseDetail = ':id',
+    courseDetail = ':courseId',
     signIn = '#modal=sign-in',
     signUp = '#modal=sign-up',
     addCourse = '#modal=add-course',
@@ -15,8 +15,12 @@ export enum Paths {
     //---admin
     admin = 'admin',
     adminUsers = 'users',
-    adminCourses = 'all-courses',
+    adminAllCourses = 'all-courses',
     adminCoursesProposals = 'courses-proposals',
+    //--- admin collections details
+    adminUserDetails = ':userId',
+    adminCoursesProposalsDetails = ':courseProposalId',
+    adminCoursesDetails = ':adminCourseId',
 }
 
 type PathElement = {
@@ -38,19 +42,6 @@ const PATH_ELEMENTS: PathElement = {
     [Paths.courseDetail]: {
         parent: Paths.courses,
     },
-    [Paths.recovery]: {
-        parent: Paths.auth,
-    },
-    [Paths.activate]: {
-        parent: Paths.auth,
-    },
-    // modals
-    [Paths.signIn]: {
-        parent: null,
-    },
-    [Paths.signUp]: {
-        parent: null,
-    },
     [Paths.addCourse]: {
         parent: null,
     },
@@ -63,21 +54,44 @@ const PATH_ELEMENTS: PathElement = {
     [Paths.spotlight]: {
         parent: null,
     },
+    //---auth
+    [Paths.activate]: {
+        parent: Paths.auth,
+    },
+    [Paths.recovery]: {
+        parent: Paths.auth,
+    },
+    //---auth-modals
+    [Paths.signIn]: {
+        parent: null,
+    },
+    [Paths.signUp]: {
+        parent: null,
+    },
     [Paths.forgotPassword]: {
         parent: null,
     },
-    // admin
+    //---admin
     [Paths.admin]: {
         parent: null,
     },
     [Paths.adminUsers]: {
         parent: Paths.admin,
     },
-    [Paths.adminCourses]: {
+    [Paths.adminAllCourses]: {
         parent: Paths.admin,
     },
     [Paths.adminCoursesProposals]: {
         parent: Paths.admin,
+    },
+    [Paths.adminUserDetails]: {
+        parent: Paths.adminUsers,
+    },
+    [Paths.adminCoursesProposalsDetails]: {
+        parent: Paths.adminCoursesProposals,
+    },
+    [Paths.adminCoursesDetails]: {
+        parent: Paths.adminAllCourses,
     },
 };
 

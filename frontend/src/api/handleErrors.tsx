@@ -1,4 +1,4 @@
-import { Button, Flex } from '@mantine/core';
+import { Button, Flex, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
 import * as userLocalStorage from '@/auth/user.localstore.ts';
@@ -22,6 +22,7 @@ export function handleAuthErrors({ error, callback = () => null, signOut, naviga
             loading: false,
             withCloseButton: true,
         };
+
         switch (error.status) {
             case 400:
                 notifications.show({
@@ -29,6 +30,7 @@ export function handleAuthErrors({ error, callback = () => null, signOut, naviga
                     color: 'red',
                     withCloseButton: true,
                     className: 'bad-request-notification',
+                    id: 'bad-request-notification',
                 });
                 callback && callback();
                 break;
@@ -57,6 +59,7 @@ export function handleAuthErrors({ error, callback = () => null, signOut, naviga
                             </Flex>
                         ),
                         color: 'red',
+                        id: 'unauthorized-sign-out',
                         withCloseButton: true,
                         autoClose: false,
                     });
@@ -84,8 +87,26 @@ export function handleAuthErrors({ error, callback = () => null, signOut, naviga
                 notifications.show({
                     ...initialErrorConfig,
                     color: 'red',
+                    id: 'not-found-notification',
                     withCloseButton: true,
                     className: 'not-found-notification',
+                });
+                callback && callback();
+                break;
+            case 500:
+                notifications.show({
+                    ...initialErrorConfig,
+                    color: 'red',
+                    withCloseButton: true,
+                    autoClose: false,
+                    className: 'server-error-notification',
+                    id: 'server-error-notification',
+                    title: 'Server error 500',
+                    message: (
+                        <Text size="xs">
+                            We apologise and are working on fixing the issue. <br /> Please try again later.
+                        </Text>
+                    ),
                 });
                 callback && callback();
                 break;

@@ -94,7 +94,7 @@ const AdminUsersTable = () => {
             },
         },
         rowVirtualizerInstanceRef,
-        renderDetailPanel: ({ row }) => <UserExpansion key={row.original.id} user={row.original} row={row} />,
+        renderDetailPanel: ({ row }) => <UserExpansion key={row.original.id} row={row} userId={row.original.id} />,
     });
 
     return (

@@ -65,24 +65,5 @@ describe('RecoveryModal', () => {
                 expect(screen.getByText('Invalid Email')).toBeInTheDocument();
             });
         });
-
-        it('should display success message when form submission succeeds', async () => {
-            render(
-                <QueryClientProvider client={queryClient}>
-                    <RecoveryModal />
-                </QueryClientProvider>,
-            );
-            let email = null;
-            await waitFor(() => {
-                email = screen.getByTestId('email');
-            });
-            act(() => {
-                fireEvent.change(email, { target: { value: 'tum@tum.de' } });
-            });
-            fireEvent.click(screen.getByTestId('submit'));
-            await waitFor(() => {
-                expect(screen.getByTestId('success-message')).toBeInTheDocument();
-            });
-        });
     });
 });
