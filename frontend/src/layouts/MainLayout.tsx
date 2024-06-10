@@ -45,12 +45,11 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     <Flex gap={20}>
                         {!user ? (
                             <>
-                                <Button loading={!user && isLoading} data-testid="cypress-open-sign-in-modal-btn" size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
+                                <Button loading={!user && isLoading} size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
                                     Sign In
                                 </Button>
                                 <Button
                                     loading={!user && isLoading}
-                                    data-testid="cypress-open-sign-up-modal-btn"
                                     size="xs"
                                     variant="primary-gradient"
                                     onClick={() => {
@@ -116,7 +115,6 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                             ) : (
                                 <>
                                     <Button
-                                        data-testid="cypress-open-sign-in-modal-btn"
                                         fullWidth
                                         size="md"
                                         variant="outline"
@@ -128,7 +126,6 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                                         Sign In
                                     </Button>
                                     <Button
-                                        data-testid="cypress-open-sign-up-modal-btn"
                                         fullWidth
                                         size="md"
                                         variant="primary-gradient"
