@@ -21,7 +21,8 @@ const openRecoveryModal = ({ ...props }: RecoveryModalProps) => {
 };
 
 const RecoveryModal = () => {
-    const { mutate: recovery, isPending: recoveryLoading, isSuccess: isRecoverySuccess, error, isError } = useRecovery();
+    const a = useRecovery();
+    const { mutate: recovery, isPending: recoveryLoading, isSuccess: isRecoverySuccess, error, isError } = a;
     const [apiError, setApiError] = useState(null);
     const { data: user, isLoading: userLoading } = useUser();
     const navigate = useNavigate();
@@ -54,7 +55,7 @@ const RecoveryModal = () => {
     if (userLoading || user) {
         return null;
     }
-
+    console.log(a)
     return (
         <form onSubmit={form.onSubmit((e) => handleSubmit(e))}>
             <LoadingOverlay visible={recoveryLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
