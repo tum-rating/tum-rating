@@ -29,9 +29,27 @@ export default defineConfig({
   },
   // Configure projects for major browsers.
   projects: [
+    // Setup project
+    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        // Use prepared auth state.
+        storageState: 'tests/e2e/utils/.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
+
+    {
+      name: 'firefox',
+      use: {
+        ...devices['Desktop Firefox'],
+        // Use prepared auth state.
+        storageState: 'tests/e2e/utils/.auth/user.json',
+      },
+      dependencies: ['setup'],
     },
   ],
   // Run your local dev server before starting the tests.

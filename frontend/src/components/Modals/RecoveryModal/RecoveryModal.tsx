@@ -55,7 +55,6 @@ const RecoveryModal = () => {
     if (userLoading || user) {
         return null;
     }
-    console.log(a)
     return (
         <form onSubmit={form.onSubmit((e) => handleSubmit(e))}>
             <LoadingOverlay visible={recoveryLoading} overlayProps={{ radius: 'sm', blur: 2 }} />

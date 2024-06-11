@@ -14,7 +14,7 @@ interface LoggedUser {
     user: User;
 }
 
-async function signIn({ email, password }: LoginInput): Promise<LoggedUser> {
+export async function signIn({ email, password }: LoginInput): Promise<LoggedUser> {
     const response = await fetch(endpoints.signin, {
         method: 'POST',
         headers: {
