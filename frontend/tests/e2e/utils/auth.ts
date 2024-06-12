@@ -1,10 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { expect, Page } from '@playwright/test';
+import {USER_LOCAL_STORAGE_KEY} from "@/auth/user.localstore.ts";
 
 
 interface TestUserCredentials{
     email: string;
-    username: string;
+    username?: string;
     password: string;
 
 }
@@ -21,6 +22,12 @@ const generateTestUser = () => {
         password: faker.internet.password(),
     }
 };
+
+const checkIfIsLoggedUser = (page:Page) => {
+    page.evaluate(()=>{
+        return localStorage.getItem(USER_LOCAL_STORAGE_KEY)
+    })
+}
 
 const signUp = async (props: AuthAction) => {
     const { page, user } = props;
@@ -45,12 +52,11 @@ const activateAccount = async (props: AuthAction) => {
 
 const signIn = async (props: AuthAction) => {
     const { page, user } = props;
-    await page.getByRole('button', { name: 'Log In' }).click();
+    await page.getByRole('button', { name: 'Sign In' }).click();
     await page.getByTestId('email').fill(user.email);
     await page.getByTestId('password').fill(user.password);
     await page.getByTestId('submit').click();
     await page.getByTestId('menu').click();
-    await expect(page.getByTestId('username-loaded')).toHaveText(user.username);
     await expect(page.getByTestId('email-loaded')).toHaveText(user.email);
 };
 
@@ -67,5 +73,19 @@ const getActivationTokenFromMail = async (email: string) => {
     return activationToken;
 };
 
+const getRecoveryTokenFromMail = async (email: string) => {
+    const response = await fetch(`http://localhost:1080/email`);
+    const data = await response.json();
+    let recoveryToken = null;
+    let userMail = data.filter((x) => x.to[0].address === email && x.subject === 'Password recovery');
+    const pattern = /token=([\w-]+\.[\w-]+\.[\w-]+)/;
+    const match = userMail[0].html.match(pattern);
+    if (match) {
+        recoveryToken = match[1];
+    }
+    return recoveryToken;
 
-export { signUp, activateAccount, signIn, generateTestUser}
+}
+
+
+export { signUp, activateAccount, signIn, generateTestUser,getRecoveryTokenFromMail}

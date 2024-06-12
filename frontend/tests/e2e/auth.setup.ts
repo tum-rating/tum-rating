@@ -1,6 +1,6 @@
 import { test as setup } from '@playwright/test';
 
-import { activateAccount, generateTestUser, signIn, signUp } from 'tests/e2e/utils/user.ts';
+import { activateAccount, generateTestUser, signIn, signUp } from 'tests/e2e/utils/auth.ts';
 
 const authFile = 'tests/e2e/utils/.auth/user.json'
 
