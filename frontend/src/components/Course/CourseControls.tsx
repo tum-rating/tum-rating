@@ -37,7 +37,7 @@ const CourseControls = ({ data, user, userReview, isLoading }: CourseControlsPro
             <Box className={classes.courseControlsBtns}>
                 {!user ? (
                     <Button loading={isLoading} size={isMobile ? 'md' : 'sm'} variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => navigate(getPath(Paths.signIn))} leftSection={<IconCirclePlus style={{ width: rem(16), height: rem(16) }} />}>
-                        Sign In do add review
+                        Sign In to add review
                     </Button>
                 ) : userReview ? (
                     <Button loading={isLoading} size={isMobile ? 'md' : 'sm'} variant="gradient" gradient={{ from: 'teal', to: 'lime', deg: 170 }} onClick={() => navigate(getPath(Paths.editUserReview))} leftSection={<IconEditCircle style={{ width: rem(16), height: rem(16) }} />}>
