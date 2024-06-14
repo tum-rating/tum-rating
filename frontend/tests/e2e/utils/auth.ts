@@ -1,18 +1,18 @@
 import { faker } from '@faker-js/faker';
 import { expect, Page } from '@playwright/test';
-import {USER_LOCAL_STORAGE_KEY} from "@/auth/user.localstore.ts";
 
+import { openMobileDrawer } from 'tests/e2e/utils/layout.ts';
 
-interface TestUserCredentials{
+interface TestUserCredentials {
     email: string;
     username?: string;
     password: string;
-
 }
 
 interface AuthAction {
     page: Page;
     user: TestUserCredentials;
+    mobile?: boolean;
 }
 
 const generateTestUser = () => {
@@ -20,18 +20,11 @@ const generateTestUser = () => {
         email: faker.internet.email({ provider: 'tum.de' }),
         username: faker.internet.userName(),
         password: faker.internet.password(),
-    }
+    };
 };
-
-const checkIfIsLoggedUser = (page:Page) => {
-    page.evaluate(()=>{
-        return localStorage.getItem(USER_LOCAL_STORAGE_KEY)
-    })
-}
 
 const signUp = async (props: AuthAction) => {
     const { page, user } = props;
-    await page.goto('/');
     await page.getByRole('button', { name: 'Sign up' }).click();
     await page.getByTestId('email').fill(user.email);
     await page.getByTestId('username').fill(user.username);
@@ -51,12 +44,16 @@ const activateAccount = async (props: AuthAction) => {
 };
 
 const signIn = async (props: AuthAction) => {
-    const { page, user } = props;
-    await page.getByRole('button', { name: 'Sign In' }).click();
+    const { page, user, mobile = true } = props;
+    await page.getByRole('button', { name: 'Sign In' }).first().click();
     await page.getByTestId('email').fill(user.email);
     await page.getByTestId('password').fill(user.password);
     await page.getByTestId('submit').click();
-    await page.getByTestId('menu').click();
+    if (mobile) {
+        await openMobileDrawer({ page });
+    } else {
+        await page.getByTestId('menu').click();
+    }
     await expect(page.getByTestId('email-loaded')).toHaveText(user.email);
 };
 
@@ -84,8 +81,6 @@ const getRecoveryTokenFromMail = async (email: string) => {
         recoveryToken = match[1];
     }
     return recoveryToken;
+};
 
-}
-
-
-export { signUp, activateAccount, signIn, generateTestUser,getRecoveryTokenFromMail}
+export { signUp, activateAccount, signIn, generateTestUser, getRecoveryTokenFromMail };

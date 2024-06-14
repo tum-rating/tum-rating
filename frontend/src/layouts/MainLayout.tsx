@@ -62,7 +62,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                         ) : null}
 
                         <UserButton />
-                        <ActionIcon variant="outline" onClick={toggleColorScheme}>
+                        <ActionIcon data-testid="color-scheme-toggle" variant="outline" onClick={toggleColorScheme}>
                             {colorScheme === 'dark' ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
                         </ActionIcon>
                         {isAdmin && (
@@ -90,7 +90,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     <Stack h="100%" justify="space-between">
                         <Flex align="center" justify="space-between">
                             {user ? <UserButton withoutDropdown /> : <Text>Hello</Text>}
-                            <Switch size="md" onChange={toggleColorScheme} checked={colorScheme === 'light'} onLabel={<IconSun size="1.1rem" />} offLabel={<IconMoonStars size="1.1rem" />} />
+                            <Switch data-testid="color-scheme-toggle" size="md" onChange={toggleColorScheme} checked={colorScheme === 'light'} onLabel={<IconSun size="1.1rem" />} offLabel={<IconMoonStars size="1.1rem" />} />
                         </Flex>
                         <Flex direction="column" w="100%" wrap="nowrap" gap="sm">
                             {user ? (

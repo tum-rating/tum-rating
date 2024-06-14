@@ -24,8 +24,7 @@ const openCoursePageByClickingCourseRowInTable = async ({ page }) => {
     const rowElement = page.locator('.mantine-Table-tr:nth-of-type(4)');
     const rowElementDetails = await rowElement.locator('.mantine-Table-td').allInnerTexts();
     await rowElement.click();
-    await expect(page.getByRole('main').locator('p').filter({ hasText: rowElementDetails[0] })).toBeVisible();
-    await expect(page.getByRole('link', { name: rowElementDetails[0] })).toBeVisible();
+    await checkCourseRender({ page, name: rowElementDetails[0] });
 };
 
 const addReviewToCourse = async ({ page, courseReview }: CourseAction) => {
@@ -45,4 +44,9 @@ const addReviewToCourse = async ({ page, courseReview }: CourseAction) => {
     // await page.locator('#mantine-k1mggu3gt > div:nth-child(5) > label > .m_fae05d6a > .m_5662a89a > path').first().click();
 };
 
-export { openCoursePageByClickingCourseRowInTable, addReviewToCourse, generateCourseReview };
+const checkCourseRender = async ({ page, name }) => {
+    await expect(page.getByRole('main').locator('p').filter({ hasText: name })).toBeVisible();
+    await expect(page.getByRole('link', { name: name })).toBeVisible();
+};
+
+export { openCoursePageByClickingCourseRowInTable, addReviewToCourse, checkCourseRender, generateCourseReview };
