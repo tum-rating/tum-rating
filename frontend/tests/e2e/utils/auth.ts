@@ -44,7 +44,7 @@ const activateAccount = async (props: AuthAction) => {
 };
 
 const signIn = async (props: AuthAction) => {
-    const { page, user, mobile = true } = props;
+    const { page, user, mobile = false } = props;
     await page.getByRole('button', { name: 'Sign In' }).first().click();
     await page.getByTestId('email').fill(user.email);
     await page.getByTestId('password').fill(user.password);

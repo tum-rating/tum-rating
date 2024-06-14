@@ -80,7 +80,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     </Flex>
                 </Flex>
                 <Group hiddenFrom="sm" h="100%" px="md" justify="space-between" pos="relative">
-                    <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+                    <Burger data-testid="burger" opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
                     <Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>
                     <SearchInputDesktop />
                 </Group>
