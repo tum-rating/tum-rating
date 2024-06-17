@@ -24,11 +24,11 @@ export default defineConfig({
     build: {
         rollupOptions: {
             output: {
-                entryFileNames: '[hash].[format]',
-                chunkFileNames: '[hash].[format]',
-                assetFileNames: '[hash].[ext]',
-            },
-        },
+                entryFileNames: '[hash].js',
+                chunkFileNames: '[hash].js',
+                assetFileNames: '[hash].[ext]'
+            }
+        }
     },
     test: {
         environment: 'jsdom',
