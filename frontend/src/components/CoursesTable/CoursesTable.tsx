@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import classes from './CoursesTable.module.css';
 
+import {CoursesTableHelmet} from "@/components/CoursesTable/CoursesTableHelmet.tsx";
 import { useCoursesTableColumns } from '@/components/CoursesTable/useCoursesTableColumns.tsx';
 import { CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH, PAGE_SIZE } from '@/constants';
 import { useSearchContext, useTableScrollContext } from '@/context';
@@ -220,6 +221,7 @@ function CoursesTable() {
 
     return (
         <>
+            <CoursesTableHelmet courses={records} />
             <MantineReactTable table={table} />
         </>
     );

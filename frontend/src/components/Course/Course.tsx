@@ -11,6 +11,7 @@ import { CourseControls } from './CourseControls.tsx';
 import tumLogo from '@/assets/img/tum_logo.png';
 import { useUser } from '@/auth/useUser.tsx';
 import { Comment } from '@/components/Comment';
+import {CourseHelmet} from "@/components/Course/CourseHelmet.tsx";
 import { HowEasyRating } from '@/components/Course/HowEasyRating.tsx';
 import { HowInterestingRating } from '@/components/Course/HowInterestingRating.tsx';
 import { ReviewsBox } from '@/components/Course/ReviewsBox.tsx';
@@ -39,6 +40,8 @@ const Course = () => {
         reviews = reviews?.filter((review) => review.userId !== user.id);
     }
     return (
+        <>
+        <CourseHelmet course={data} />
         <Box
             className={classes.container}
             maw={MAX_SITE_WIDTH}
@@ -168,6 +171,7 @@ const Course = () => {
                 </>
             )}
         </Box>
+        </>
     );
 };
 
