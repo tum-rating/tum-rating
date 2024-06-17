@@ -49,10 +49,6 @@ const SignUpModal = () => {
                 if (!value.includes('@')) {
                     return 'Invalid email';
                 }
-                const domain = value.split('@')[1];
-                if (domain !== 'mytum.de' && domain !== 'tum.de') {
-                    return 'Email domain must be of mytum.de or tum.de';
-                }
                 return false;
             },
             username: (value) => value.length < 3 && 'Username should contain at least 3 characters',
