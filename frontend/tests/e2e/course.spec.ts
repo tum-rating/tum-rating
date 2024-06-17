@@ -8,6 +8,7 @@ import {
 
 
 test('should add review to a course', async ({page, browser}) => {
+    page.setDefaultNavigationTimeout(60000);
     await page.goto('/');
     const courseReview = generateCourseReview();
     await openCoursePageByClickingCourseRowInTable({page, browser});

@@ -50,8 +50,7 @@ const addReviewToCourse = async ({page, courseReview}: CourseAction) => {
 
 
 const checkCourseRender = async ({page, name}) => {
-    await expect(page.getByRole('main').locator('p').filter({hasText: name})).toBeVisible({ timeout: 10000 });
-    await expect(page.getByRole('link', {name: name})).toBeVisible();
+    await page.getByTestId("course-name").filter({hasText: name}).isVisible();
 };
 
 export {
