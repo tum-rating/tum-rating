@@ -45,8 +45,8 @@ jobs:
       - name: Run backend e2e tests
         run: npm -w backend run test:e2e
 
-      - name: Setup Playwright
-        uses: microsoft/playwright-github-action@v1
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
 
       - name: Run frontend e2e tests
         run: npm run test:e2e:ci -w frontend
