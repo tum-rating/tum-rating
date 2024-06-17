@@ -44,3 +44,19 @@ jobs:
 
       - name: Run backend e2e tests
         run: npm -w backend run test:e2e
+
+      - name: Setup Playwright
+        uses: microsoft/playwright-github-action@v1
+
+      - name: Start backend server
+        run: |
+          npm start -w backend &
+          sleep 10 
+
+      - name: Start frontend server
+        run: |
+          npm start -w frontend &
+          sleep 10 
+
+      - name: Run frontend e2e tests
+        run: npm run test:e2e:ci -w frontend
