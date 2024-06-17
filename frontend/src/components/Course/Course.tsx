@@ -75,7 +75,7 @@ const Course = () => {
                                     radius="lg"
                                     loading={isLoading}
                                     component={
-                                        <Text style={{ wordBreak: 'break-word' }} fz={24} fw="700" lineClamp={5}>
+                                        <Text data-testid="course-name" style={{ wordBreak: 'break-word' }} fz={24} fw="700" lineClamp={5}>
                                             {data?.name}{' '}
                                         </Text>
                                     }

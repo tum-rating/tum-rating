@@ -5,8 +5,8 @@ import { describe, expect, it } from 'vitest';
 
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { AddCourseModal } from '@/components/Modals/AddCourseModal';
-import { generateJwtToken } from 'tests/mocks/dataGenerators.ts';
-import { render } from 'tests/utils/render.tsx';
+import { generateJwtToken } from 'tests/unit/mocks/dataGenerators.ts';
+import { render } from 'tests/unit/utils/render.tsx';
 
 describe('AddCourseModal', () => {
     let queryClient: QueryClient;

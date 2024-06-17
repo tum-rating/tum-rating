@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 
 import { Breadcrumbs } from '@/components/Breadcrumbs/Breadcrumbs';
-import { render } from 'tests/utils/render';
+import { render } from 'tests/unit/utils/render';
 
 describe('Breadcrumbs', () => {
     it('should render without crashing', () => {

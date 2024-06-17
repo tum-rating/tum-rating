@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 
 import { SearchHighlight } from '../SearchHighlight';
 
-import { render } from 'tests/utils/render';
+import { render } from 'tests/unit/utils/render';
 
 describe('SearchHighlight', () => {
     it('should render without crashing', async () => {
