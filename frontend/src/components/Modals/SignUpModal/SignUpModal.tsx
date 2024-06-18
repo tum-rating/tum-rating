@@ -64,7 +64,7 @@ const SignUpModal = () => {
     return (
         <Box pos="relative">
             <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-            <Container p={0} data-testid="cypress-sign-up-modal">
+            <Container p={0}>
                 {isSuccess ? (
                     <Flex direction="column" align="center" gap="xs" my="xl">
                         <Group>
@@ -95,7 +95,7 @@ const SignUpModal = () => {
                             <TextInput autoFocus data-autofocus data-testid="username" label={'Your name'} required placeholder={'Your name'} value={form.values.username} onChange={(event) => form.setFieldValue('username', event.currentTarget.value)} />
                             <TextInput type="email" data-testid="email" required label="Email" placeholder="Email" value={form.values.email} onChange={(event) => form.setFieldValue('email', event.currentTarget.value)} error={form.errors.email} />
                             <PasswordInput data-testid="password" autoComplete="on" required label="Password" placeholder="Password" value={form.values.password} onChange={(event) => form.setFieldValue('password', event.currentTarget.value)} error={form.errors.password} />
-                            <Checkbox label="Accept terms of usage" checked={form.values.terms} onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)} />
+                            <Checkbox data-testid="terms" label="Accept terms of usage" checked={form.values.terms} onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)} />
                             {form.errors.terms && (
                                 <Text c="red" size="sm">
                                     {form.errors.terms}

@@ -19,7 +19,7 @@ jobs:
       - run: npm install
 
       - name: Run frontend unit tests
-        run: npm run test -w frontend
+        run: npm run test:unit -w frontend
 
       - name: Upgrade docker compose
         run: |
@@ -44,3 +44,12 @@ jobs:
 
       - name: Run backend e2e tests
         run: npm -w backend run test:e2e
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Prepare frontend e2e tests
+        run: npm run bootstrap:frontendE2E -w backend
+
+      - name: Run frontend e2e tests
+        run: npm run test:e2e:ci -w frontend

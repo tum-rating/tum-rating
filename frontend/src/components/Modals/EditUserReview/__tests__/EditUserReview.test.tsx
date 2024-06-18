@@ -3,8 +3,8 @@ import { screen, waitFor } from '@testing-library/react';
 
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { EditUserReviewModal } from '@/components/Modals/EditUserReview';
-import { courseDetailsWithLoggedUserReview, generateJwtToken, user } from 'tests/mocks/dataGenerators.ts';
-import { render } from 'tests/utils/render.tsx';
+import { courseDetailsWithLoggedUserReview, generateJwtToken, user } from 'tests/unit/mocks/dataGenerators.ts';
+import { render } from 'tests/unit/utils/render.tsx';
 
 describe('EditUserReviewModal', () => {
     let queryClient: QueryClient;

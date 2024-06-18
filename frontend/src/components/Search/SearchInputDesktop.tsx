@@ -119,6 +119,7 @@ const SearchInputDesktop = () => {
         return (
             <>
                 <ActionIcon
+                    data-testid="search_trigger"
                     variant="light"
                     onClick={() => {
                         if (isMobileOnly) {
@@ -202,7 +203,7 @@ const SearchInputDesktop = () => {
             withinPortal={false}
             store={combobox}
         >
-            <Combobox.Target>
+            <Combobox.Target data-testid="search_trigger">
                 <form style={{ width: '100%' }} onSubmit={handleSubmit}>
                     <TextInput
                         leftSection={

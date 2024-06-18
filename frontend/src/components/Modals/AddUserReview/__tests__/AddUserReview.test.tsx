@@ -6,9 +6,9 @@ import { endpoints } from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { AddUserReviewModal } from '@/components/Modals/AddUserReview';
 import { EditUserReviewModal } from '@/components/Modals/EditUserReview';
-import { courseDetails, generateJwtToken } from 'tests/mocks/dataGenerators.ts';
-import { server } from 'tests/mocks/node.ts';
-import { render } from 'tests/utils/render.tsx';
+import { courseDetails, generateJwtToken } from 'tests/unit/mocks/dataGenerators.ts';
+import { server } from 'tests/unit/mocks/node.ts';
+import { render } from 'tests/unit/utils/render.tsx';
 
 describe('AddUserReviewModal', () => {
     let queryClient: QueryClient;

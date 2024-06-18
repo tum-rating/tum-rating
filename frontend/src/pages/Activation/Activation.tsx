@@ -40,7 +40,7 @@ export const Activation = () => {
                     mt="xl"
                     className={classes.control}
                 >
-                    Log In
+                    Sign in
                 </Button>
             </Flex>
         </Flex>

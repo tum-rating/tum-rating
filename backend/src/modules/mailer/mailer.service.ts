@@ -27,6 +27,7 @@ interface MailerConfig {
 }
 
 const emailTemplatesDir = '../../../assets/mail-templates';
+const emailCssStyles = "email-template.css";
 const emailActivationTemplateFile = 'activation.html';
 const emailRecoveryTemplateFile = 'recovery.html';
 const emailEmailAlreadyExistsTemplateFile = 'email-already-exists.html';
@@ -49,10 +50,10 @@ export class MailerService {
         };
 
         if (this._configService.get('app.env') !== 'development') {
-            mailerConfig.auth ={
+            mailerConfig.auth = {
                 user: this._configService.get('mailer.user'),
-                pass: this._configService.get('mailer.pass')
-            }
+                pass: this._configService.get('mailer.pass'),
+            };
         }
 
         this._transporter = NodeMailer.createTransport(mailerConfig);
@@ -69,7 +70,7 @@ export class MailerService {
             to: this._formatRecipient(to),
             subject,
             html: html,
-            text
+            text,
         });
 
         this._logger.debug('Successfuly sent email to %o, subject %s', to, subject);
@@ -85,13 +86,24 @@ export class MailerService {
         this._logger.debug('Successfuly sent email to %o, subject %s', to, subject);
     }
 
+    private _getCommonVariables() {
+        const styles = fs.readFileSync(join(__dirname, emailTemplatesDir, emailCssStyles), 'utf8');
+        return {
+            BaseUrl: this._configService.getOrThrow('webapp.url'),
+            CurrentYear: new Date().getFullYear().toString(),
+            Styles: styles,
+            LogoUrl: "https://tum-rating.de/0YXZHm9A.png"
+        };
+    }
+
     public async sendEmailActivationEmail(to: MailRecipient, activationToken: string) {
         const activationLink = `${this._configService.getOrThrow('webapp.url')}/auth/activate?token=${activationToken}`;
         const username = to.name || 'User';
 
         const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.activation, {
+            ...this._getCommonVariables(),
             Username: username,
-            ActivationLink: activationLink
+            ActivationLink: activationLink,
         });
 
         return this.send(to, 'Activate your account', processedEmailTemplate);
@@ -103,30 +115,30 @@ export class MailerService {
         const email = to.email || 'Email';
 
         const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.passwordRecovery, {
+            ...this._getCommonVariables(),
             Username: username,
             PasswordResetLink: passwordResetLink,
-            Email: email
+            Email: email,
         });
 
         return this.send(to, 'Password recovery', processedEmailTemplate);
     }
 
-    public async sendEmailMultiAccountsAlert(possibleDuplicates: (Pick<User, 'email'> & {id: string})[]) {
+    public async sendEmailMultiAccountsAlert(possibleDuplicates: (Pick<User, 'email'> & { id: string })[]) {
         const adminEmails = this._configService.getOrThrow<string[]>('mailer.adminEmails');
-        const toFormatted = adminEmails.map(email => ({email}));
+        const toFormatted = adminEmails.map((email) => ({ email }));
 
-        const text = 'Possible duplicates:\n'
-            + possibleDuplicates.map(duplicate => `${duplicate.id}, ${duplicate.email}`).join(';');
+        const text = 'Possible duplicates:\n' + possibleDuplicates.map((duplicate) => `${duplicate.id}, ${duplicate.email}`).join(';');
 
-        
         await this.sendMany(toFormatted, 'TUM-RATING ADMIN ALERT', null, text);
     }
 
     public async sendEmailAlreadyExists(to: MailRecipient, username: string) {
         const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.emailAlreadyExists, {
+            ...this._getCommonVariables(),
             Username: username,
             Email: to.email,
-            RecoveryLink: `${this._configService.getOrThrow('webapp.url')}#modal=forgot-password`
+            RecoveryLink: `${this._configService.getOrThrow('webapp.url')}#modal=forgot-password`,
         });
 
         return this.send(to, 'Email is already registered', processedEmailTemplate);
@@ -149,7 +161,7 @@ export class MailerService {
         return {
             activation: activationEmailTemplate,
             passwordRecovery: passwordRecoveryEmailTemplate,
-            emailAlreadyExists: emailAlreadyExistsEmailTemplate
+            emailAlreadyExists: emailAlreadyExistsEmailTemplate,
         };
     }
 

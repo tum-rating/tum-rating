@@ -11,6 +11,7 @@ import { CourseControls } from './CourseControls.tsx';
 import tumLogo from '@/assets/img/tum_logo.png';
 import { useUser } from '@/auth/useUser.tsx';
 import { Comment } from '@/components/Comment';
+import {CourseHelmet} from "@/components/Course/CourseHelmet.tsx";
 import { HowEasyRating } from '@/components/Course/HowEasyRating.tsx';
 import { HowInterestingRating } from '@/components/Course/HowInterestingRating.tsx';
 import { ReviewsBox } from '@/components/Course/ReviewsBox.tsx';
@@ -39,6 +40,8 @@ const Course = () => {
         reviews = reviews?.filter((review) => review.userId !== user.id);
     }
     return (
+        <>
+        <CourseHelmet course={data} />
         <Box
             className={classes.container}
             maw={MAX_SITE_WIDTH}
@@ -65,8 +68,8 @@ const Course = () => {
                     <CourseControls data={data} isLoading={isLoading} user={user} userReview={userReview}></CourseControls>
                     <Box className={classes.courseContent}>
                         <Flex className={clsx(classes.courseBanner, 'children-animation')}>
-                            <Box className={classes.image}>
-                                <Skeleton radius="lg" mah={90} w={280} h={100} loading={isLoading} component={<Image radius="lg" h={100} mah={90} w={280} fit="contain" fallbackSrc={tumLogo} />} />
+                            <Box className={classes.imageContainer}>
+                                <Skeleton radius="lg" mah={90} w={280} loading={isLoading} component={<Image className={classes.image} radius="lg" h={100} mah={90} w={280} fit="contain" fallbackSrc={tumLogo} />} />
                             </Box>
                             <Flex className={classes.courseDetails} direction="column" gap="xs">
                                 <Skeleton
@@ -75,12 +78,12 @@ const Course = () => {
                                     radius="lg"
                                     loading={isLoading}
                                     component={
-                                        <Text style={{ wordBreak: 'break-word' }} fz={24} fw="700" lineClamp={5}>
+                                        <Text data-testid="course-name" fz={20} fw="700">
                                             {data?.name}{' '}
                                         </Text>
                                     }
                                 />
-                                <Flex gap="xs">
+                                <Flex gap="xs" wrap={"wrap"}>
                                     <Skeleton
                                         w={180}
                                         h={26}
@@ -114,7 +117,7 @@ const Course = () => {
                             </Flex>
                         </Flex>
                         <Flex style={{ flexGrow: 1, background: 'var(--mantine-color-body)' }} pt="xl" direction="column" className="children-animation">
-                            <Flex justify="space-between" align="center" mb="lg">
+                            <Flex justify="space-between" align="center" mb="lg" wrap={"wrap"}>
                                 <Flex align="center" gap="xs">
                                     <Box bg="blue" w={10} h={30} style={{ borderRadius: '8px' }} />
                                     <Text fw="bold" fz="xl">
@@ -168,6 +171,7 @@ const Course = () => {
                 </>
             )}
         </Box>
+        </>
     );
 };
 
