@@ -9,19 +9,21 @@ const CoursesTableHelmet = ({ courses }: { courses: Course[] }) => {
     const structuredData = {
         '@context': 'https://schema.org/',
         '@type': 'ItemList',
-        itemListElement: courses.map((course, index) => {
-            return {
-                '@type': 'ListItem',
-                position: index + 1,
-                item: {
-                    '@id': `https://www.tum-rating.de/courses/${course.courseId}`,
-                    name: course.name,
-                    description: `${course.name} taught by ${course.professor}.`,
-                    image: [tumRatingLogo],
-                    url: `https://www.tum-rating.d/courses/${course.courseId}`,
-                },
-            };
-        }),
+        itemListElement: courses
+            .filter((x) => x !== null)
+            .map((course, index) => {
+                return {
+                    '@type': 'ListItem',
+                    position: index + 1,
+                    item: {
+                        '@id': `https://www.tum-rating.de/courses/${course.courseId}`,
+                        name: course.name,
+                        description: `${course.name} taught by ${course.professor}.`,
+                        image: [tumRatingLogo],
+                        url: `https://www.tum-rating.d/courses/${course.courseId}`,
+                    },
+                };
+            }),
     };
     return (
         <div>
