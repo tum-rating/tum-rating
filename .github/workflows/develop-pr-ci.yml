@@ -48,5 +48,8 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
+      - name: Prepare frontend e2e tests
+        run: npm run bootstrap:frontendE2E -w backend
+
       - name: Run frontend e2e tests
         run: npm run test:e2e:ci -w frontend
