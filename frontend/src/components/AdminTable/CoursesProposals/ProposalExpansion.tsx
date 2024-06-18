@@ -1,8 +1,9 @@
-import { ActionIcon, Alert, Button, Center, Divider, Flex, Stack, TagsInput, Text, TextInput, Tooltip } from '@mantine/core';
+import { ActionIcon, Button, Divider, Flex, Stack, TagsInput, Text, TextInput, Tooltip } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconDatabaseX, IconExternalLink, IconMasksTheater, IconMoodCheck, IconTrashX } from '@tabler/icons-react';
+import { IconExternalLink, IconMasksTheater, IconMoodCheck, IconTrashX } from '@tabler/icons-react';
 import { MRT_Row } from 'mantine-react-table';
-import { useEffect, useState } from 'react';
+import { HTMLAttributes, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
@@ -11,21 +12,30 @@ import { useAddCourseProposal } from '@/admin/useAddCourseProposal.tsx';
 import { useCourseProposal } from '@/admin/useCourseProposal.tsx';
 import { useGetScrapedCourseProposal } from '@/admin/useCourseScraper.tsx';
 import { useRemoveProposal } from '@/admin/useRemoveProposal.tsx';
+import { CollectionDetailsStatusAlert } from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 import { UserInfoAction } from '@/components/AdminTable/Shared/UserInfoAction';
 import { Skeleton } from '@/components/Skeleton';
 import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { queryClient } from '@/react-query/client.ts';
+import { getPath, Paths } from '@/routes/paths.ts';
 
-interface ProposalExpansionProps {
-    proposal: CourseProposal;
-    row: MRT_Row<CourseProposal>;
+interface ProposalExpansionProps extends HTMLAttributes<HTMLElement> {
+    courseProposalId: string;
+    row?: MRT_Row<CourseProposal>;
 }
 
-const ProposalExpansion = ({ proposal: IProposal, row }: ProposalExpansionProps) => {
-    const { data: courseProposalDetails, isLoading, error, isError, refetch } = useCourseProposal(IProposal.id);
-    const { refetch: scrapeCourse, data: scrapedData, isLoading: scraperIsLoading, isError: scraperIsError, isSuccess: scraperIsSuccess } = useGetScrapedCourseProposal(IProposal.id);
+const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansionProps) => {
+    const { data: courseProposalDetails, isLoading, error, isError, refetch } = useCourseProposal(courseProposalId);
+    const { refetch: scrapeCourse, data: scrapedData, isLoading: scraperIsLoading, isError: scraperIsError, isSuccess: scraperIsSuccess } = useGetScrapedCourseProposal(courseProposalId);
 
-    const [scraperTUMRequestError, setScraperTUMRequestError] = useState<{ message?: string; name?: string; status?: number } | null>();
+    const [statusAlertFlag, setStatusAlertFlag] = useState(false);
+
+    const [scraperTUMRequestError, setScraperTUMRequestError] = useState<{
+        message?: string;
+        name?: string;
+        status?: number;
+    } | null>();
+
     const [fetchedProposal, setFetchedProposal] = useState<Partial<Course>>({
         courseId: '',
         courseNumber: '',
@@ -35,13 +45,20 @@ const ProposalExpansion = ({ proposal: IProposal, row }: ProposalExpansionProps)
         offeredInSemesters: [],
     });
 
-    // TODO handle 401 conflict error
     const { mutate: acceptProposal, isPending: acceptProposalPending, isSuccess: acceptProposalSuccess } = useAddCourseProposal();
-    const { mutate: removeProposal } = useRemoveProposal();
+    const { mutate: removeProposal, isSuccess: removeProposalSuccess } = useRemoveProposal();
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setStatusAlertFlag(isError || removeProposalSuccess || acceptProposalSuccess);
+    }, [isError, removeProposalSuccess, acceptProposalSuccess]);
 
     useEffect(() => {
         if (acceptProposalSuccess) {
-            row.toggleExpanded();
+            if (row) {
+                row.toggleExpanded();
+            }
             removeProposal(courseProposalDetails.id);
         }
     }, [acceptProposalSuccess]);
@@ -79,25 +96,23 @@ const ProposalExpansion = ({ proposal: IProposal, row }: ProposalExpansionProps)
     });
 
     return (
-        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%">
-            {isError ? (
-                <Center h={270}>
-                    <Flex direction="column">
-                        <Text fw={600}>Error occurred - {IProposal.id}</Text>
-                        <Alert variant="light" color="red" title="Alert title" icon={<IconDatabaseX height={120} width={120} />}>
-                            {error?.message || 'An error occurred while fetching the data - error message not provided'}
-                        </Alert>
+        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%" {...rest}>
+            {statusAlertFlag ? (
+                <Flex justify="center" w="100%" direction="column" gap="lg">
+                    <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error" />
+                    <CollectionDetailsStatusAlert status={acceptProposalSuccess} message={`Course proposal ${courseProposalId} accepted`} />
+                    <CollectionDetailsStatusAlert status={removeProposalSuccess} message={`Course proposal ${courseProposalId} removed.`} />
+                    {isError && (
                         <Button
-                            variant={'white'}
-                            c="black"
+                            variant="subtle"
                             onClick={() => {
                                 refetch();
                             }}
                         >
                             Refetch
                         </Button>
-                    </Flex>
-                </Center>
+                    )}
+                </Flex>
             ) : (
                 <>
                     <Flex direction="column" gap="xs" className={classes.expansionDetails}>
@@ -139,9 +154,21 @@ const ProposalExpansion = ({ proposal: IProposal, row }: ProposalExpansionProps)
                                         radius="sm"
                                         loading={isLoading}
                                         component={
-                                            <Text truncate fz="xs" fw="600" c="dimmed">
+                                            <Button
+                                                px={4}
+                                                m={0}
+                                                h={20}
+                                                variant="subtle"
+                                                fz="xs"
+                                                fw="600"
+                                                c={'blue'}
+                                                onClick={() => {
+                                                    const dynamicPath = getPath(Paths.adminCoursesProposalsDetails).replace(':courseProposalId', courseProposalId);
+                                                    navigate(dynamicPath);
+                                                }}
+                                            >
                                                 {courseProposalDetails?.id}
-                                            </Text>
+                                            </Button>
                                         }
                                     ></Skeleton>
                                 </Flex>
@@ -244,78 +271,83 @@ const ProposalExpansion = ({ proposal: IProposal, row }: ProposalExpansionProps)
                             )}
                         </Flex>
                     </Flex>
-                    <Flex direction="column" gap="xs" className={classes.expansionActions}>
-                        <Flex align="center" gap="xs">
-                            <Text fz="sm" fw={500}>
-                                Actions
-                            </Text>
-                        </Flex>
-                        <Stack gap="xs">
-                            <Divider variant="dashed" size="sm" />
-                            <Button
-                                onClick={() => {
-                                    if (scrapedData) {
-                                        if (scrapedData.error) {
-                                            setScraperTUMRequestError(scrapedData.error);
-                                        } else {
-                                            setFetchedProposal(scrapedData.course);
-                                        }
-                                    } else {
-                                        scrapeCourse();
-                                    }
-                                }}
-                                loading={scraperIsLoading}
-                                leftSection={<IconMasksTheater width={16} />}
-                            >
-                                Scrape Course
-                            </Button>
-                            {fetchedProposal.courseId && (
-                                <Button
-                                    onClick={() => {
-                                        queryClient.removeQueries({ queryKey: [QUERY_KEY.scrape_course, fetchedProposal.courseId] });
-                                        setFetchedProposal({
-                                            courseId: '',
-                                            courseNumber: '',
-                                            name: '',
-                                            professor: '',
-                                            otherLecturers: [],
-                                            offeredInSemesters: [],
-                                        });
-                                    }}
-                                    leftSection={<IconTrashX width={16} />}
-                                    color="red"
-                                >
-                                    Clear Scraped Data
-                                </Button>
-                            )}
-                            <Divider variant="dashed" size="sm" />
-                            <Button
-                                onClick={() => {
-                                    const validate = form.validate();
-                                    if (!validate.hasErrors) {
-                                        acceptProposal(form.values);
-                                    }
-                                }}
-                                loading={acceptProposalPending || scraperIsLoading}
-                                color="green"
-                                leftSection={<IconMoodCheck width={16} />}
-                            >
-                                Accept Proposal
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                    removeProposal(courseProposalDetails.id);
-                                }}
-                                loading={acceptProposalPending || scraperIsLoading}
-                                leftSection={<IconTrashX width={16} />}
-                                color="red"
-                            >
-                                Remove Proposal
-                            </Button>
-                        </Stack>
-                    </Flex>
                 </>
             )}
+            <Flex direction="column" gap="xs" className={classes.expansionActions}>
+                <Flex align="center" gap="xs">
+                    <Text fz="sm" fw={500}>
+                        Actions
+                    </Text>
+                </Flex>
+                <Stack gap="xs">
+                    <Divider variant="dashed" size="sm" />
+                    <Button
+                        onClick={() => {
+                            if (scrapedData) {
+                                if (scrapedData.error) {
+                                    setScraperTUMRequestError(scrapedData.error);
+                                } else {
+                                    setFetchedProposal(scrapedData.course);
+                                }
+                            } else {
+                                scrapeCourse();
+                            }
+                        }}
+                        loading={scraperIsLoading || isLoading}
+                        leftSection={<IconMasksTheater width={16} />}
+                        disabled={statusAlertFlag}
+                    >
+                        Scrape Course
+                    </Button>
+                    {fetchedProposal.courseId && (
+                        <Button
+                            loading={isLoading}
+                            onClick={() => {
+                                queryClient.removeQueries({ queryKey: [QUERY_KEY.scrape_course, fetchedProposal.courseId] });
+                                setFetchedProposal({
+                                    courseId: '',
+                                    courseNumber: '',
+                                    name: '',
+                                    professor: '',
+                                    otherLecturers: [],
+                                    offeredInSemesters: [],
+                                });
+                            }}
+                            leftSection={<IconTrashX width={16} />}
+                            disabled={statusAlertFlag}
+                            color="red"
+                        >
+                            Clear Scraped Data
+                        </Button>
+                    )}
+                    <Divider variant="dashed" size="sm" />
+                    <Button
+                        onClick={() => {
+                            const validate = form.validate();
+                            if (!validate.hasErrors) {
+                                acceptProposal(form.values);
+                            }
+                        }}
+                        loading={acceptProposalPending || scraperIsLoading || isLoading}
+                        disabled={statusAlertFlag}
+                        color="green"
+                        leftSection={<IconMoodCheck width={16} />}
+                    >
+                        Accept Proposal
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            removeProposal(courseProposalDetails.id);
+                        }}
+                        loading={acceptProposalPending || scraperIsLoading || isLoading}
+                        disabled={statusAlertFlag}
+                        leftSection={<IconTrashX width={16} />}
+                        color="red"
+                    >
+                        Remove Proposal
+                    </Button>
+                </Stack>
+            </Flex>
         </Flex>
     );
 };

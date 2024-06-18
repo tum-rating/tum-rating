@@ -6,9 +6,9 @@ import { act } from 'react';
 import { endpoints } from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { SignInModal } from '@/components/Modals/SignInModal/SignInModal';
-import { generateJwtToken } from 'tests/mocks/dataGenerators.ts';
-import { server } from 'tests/mocks/node.ts';
-import { render } from 'tests/utils/render.tsx';
+import { generateJwtToken } from 'tests/unit/mocks/dataGenerators.ts';
+import { server } from 'tests/unit/mocks/node.ts';
+import { render } from 'tests/unit/utils/render.tsx';
 
 describe('SignInModal', () => {
     let queryClient: QueryClient;

@@ -11,12 +11,12 @@
 }
 
 .children-animation > * {
-    animation: slideUp .15s ease-in-out both;
+    animation: slideUp .4s ease-out both;
 }
 
 @keyframes slideUp {
     0% {
-        transform: translateY(2%);
+        transform: translateY(5%);
         opacity: 0;
     }
     100% {

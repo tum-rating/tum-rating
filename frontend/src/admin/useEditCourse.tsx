@@ -9,12 +9,12 @@ import { QUERY_KEY } from '@/constants/queryKeys.ts';
 import { queryClient } from '@/react-query/client.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
-async function editCourse(token: string, course: Course, type: Method): Promise<any> {
+async function editCourse(token: string, course: Course): Promise<any> {
     const body = { ...course };
     delete body._id;
     const endpoint = endpoints.editCourse(course._id);
     const response = await fetch(endpoint, {
-        method: type,
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -25,42 +25,36 @@ async function editCourse(token: string, course: Course, type: Method): Promise<
     if (!response.ok) {
         if (!response.ok) throw new ResponseError(data.message, response, course._id);
     }
-    return { course, type };
+    return { course };
 }
 
-type Method = 'PATCH' | 'DELETE';
-
-interface CourseEdit {
-    course: Course;
-    type: Method;
-}
-
+// useEditCourse.tsx
 export function useEditCourse(): any {
     const token = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: async ({ course, type }: CourseEdit) => editCourse(token, course, type),
-        onMutate: ({ course, type }) => {
+        mutationFn: async (course: Course) => editCourse(token, course),
+        onMutate: (course) => {
             notifications.show({
                 id: course._id,
                 loading: true,
-                title: type === 'PATCH' ? 'Editing course' : 'Removing course',
-                message: <Text size="xs">{type === 'PATCH' ? 'Your course is being edited' : 'Your course is being removed'}</Text>,
+                title: 'Editing course',
+                message: <Text size="xs">Your course is being edited</Text>,
                 autoClose: false,
                 withCloseButton: false,
             });
             return course;
         },
-        onSuccess: ({ course, type }) => {
+        onSuccess: (course) => {
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY.admin_detail_course, course._id],
+                queryKey: [QUERY_KEY.admin_detail_course, course.course._id],
             });
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY.admin_courses],
+                queryKey: [QUERY_KEY.search_query],
             });
             notifications.update({
-                id: course._id,
+                id: course.course._id,
                 title: 'Success',
-                message: <Text size="xs">{type === 'PATCH' ? 'Course saved' : 'Course removed'}</Text>,
+                message: <Text size="xs">Course saved</Text>,
                 autoClose: true,
                 withCloseButton: true,
                 color: 'green',

@@ -40,8 +40,15 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
     const form = useForm({
         initialValues: {
             email: '',
-            username: '',
             password: '',
+        },
+        validate: {
+            email: (value) => {
+                if (!value.includes('@')) {
+                    return 'Invalid email';
+                }
+                return false;
+            },
         },
     });
 
@@ -59,7 +66,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
         signIn(e);
     };
 
-    if (userLoading || user) {
+    if ((userLoading || user) && !isSignInSuccess) {
         return null;
     }
 

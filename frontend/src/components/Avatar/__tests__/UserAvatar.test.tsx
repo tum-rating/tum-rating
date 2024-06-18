@@ -2,15 +2,14 @@ import { MantineProvider } from '@mantine/core';
 import { screen } from '@testing-library/react';
 
 import { UserAvatar } from '@/components/Avatar/UserAvatar';
-import {render} from "tests/utils/render.tsx";
-
+import { render } from 'tests/unit/utils/render.tsx';
 
 describe('UserAvatar', () => {
     it('should render without crashing', () => {
         render(
             <MantineProvider>
                 <UserAvatar />
-            </MantineProvider>
+            </MantineProvider>,
         );
         const avatarElement = screen.getByRole('img');
         expect(avatarElement).toBeInTheDocument();
@@ -20,7 +19,7 @@ describe('UserAvatar', () => {
         render(
             <MantineProvider>
                 <UserAvatar />
-            </MantineProvider>
+            </MantineProvider>,
         );
         const svgElement = screen.getByRole('img');
         expect(svgElement).toHaveAttribute('viewBox', '0 0 80 80');

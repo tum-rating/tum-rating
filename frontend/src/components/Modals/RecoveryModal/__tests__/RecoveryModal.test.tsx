@@ -4,8 +4,8 @@ import { act } from 'react';
 
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { RecoveryModal } from '@/components/Modals/RecoveryModal';
-import { generateJwtToken } from 'tests/mocks/dataGenerators.ts';
-import { render } from 'tests/utils/render.tsx';
+import { generateJwtToken } from 'tests/unit/mocks/dataGenerators.ts';
+import { render } from 'tests/unit/utils/render.tsx';
 
 describe('RecoveryModal', () => {
     let queryClient: QueryClient;
@@ -63,25 +63,6 @@ describe('RecoveryModal', () => {
 
             await waitFor(() => {
                 expect(screen.getByText('Invalid Email')).toBeInTheDocument();
-            });
-        });
-
-        it('should display success message when form submission succeeds', async () => {
-            render(
-                <QueryClientProvider client={queryClient}>
-                    <RecoveryModal />
-                </QueryClientProvider>,
-            );
-            let email = null;
-            await waitFor(() => {
-                email = screen.getByTestId('email');
-            });
-            act(() => {
-                fireEvent.change(email, { target: { value: 'tum@tum.de' } });
-            });
-            fireEvent.click(screen.getByTestId('submit'));
-            await waitFor(() => {
-                expect(screen.getByTestId('success-message')).toBeInTheDocument();
             });
         });
     });

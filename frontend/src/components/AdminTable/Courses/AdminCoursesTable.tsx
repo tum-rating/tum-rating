@@ -1,4 +1,5 @@
 import { ActionIcon, Badge, Box, Flex, Group, Skeleton, Text, Tooltip } from '@mantine/core';
+import { useDebouncedState } from '@mantine/hooks';
 import { IconRefresh } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { MantineReactTable, MRT_GlobalFilterTextInput, MRT_ShowHideColumnsButton, MRT_ToggleFiltersButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMantineReactTable } from 'mantine-react-table';
@@ -8,7 +9,6 @@ import { useLocation } from 'react-router-dom';
 import { useCoursesColumns } from './useCoursesColumns.tsx';
 import classes from '../Shared/styles/TableStyles.module.css';
 
-import { useCourses } from '@/admin/useCourses.tsx';
 import { CourseExpansion } from '@/components/AdminTable/Courses/CourseExpansion.tsx';
 import { HEADER_HEIGHT, PAGE_SIZE } from '@/constants';
 import { Course } from '@/courses/types.ts';
@@ -19,24 +19,18 @@ const AdminCoursesTable = () => {
     const [records, setRecords] = useState<Course[]>([]);
 
     const [query, setQuery] = useState('');
-    const { data, fetchNextPage, isFetching, isLoading, hasNextPage, refetch } = useCourses();
-    const { data: queryData, isFetching: isQueryDataFetching, refetch: refetchSearchQuery } = useSearchCourses(query);
+    const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 350);
+
+    const { data: searchData, isError: isSearchDataError, isLoading: isSearchDataLoading, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, refetch: refetchSearchQuery } = useSearchCourses(debouncedQuery);
     const location = useLocation();
     const { columns } = useCoursesColumns();
 
     useEffect(() => {
-        if (data) {
-            const newRecords = data.pages.map((v) => v.courses.map((el) => el)).flat();
+        if (searchData) {
+            const newRecords = searchData.pages.map((v) => v.courses.map((el) => el)).flat();
             setRecords([...newRecords]);
         }
-    }, [data]);
-
-    useEffect(() => {
-        if (queryData) {
-            const newRecords = queryData.courses;
-            setRecords([...newRecords]);
-        }
-    }, [queryData]);
+    }, [searchData]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -49,22 +43,24 @@ const AdminCoursesTable = () => {
         }
     }, [location]);
 
-    const fetchMoreOnBottomReached = useCallback(
+    useEffect(() => {
+        setDebouncedQuery(query);
+    }, [query]);
+
+    let fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
             if (containerRefElement) {
                 const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
-                if (scrollHeight - scrollTop - clientHeight < clientHeight - 110 - HEADER_HEIGHT && !isFetching) {
-                    // Add skeleton loaders
-                    if (hasNextPage) {
+                if (scrollHeight - scrollTop - clientHeight < clientHeight - 110 - HEADER_HEIGHT && !isSearchFetching) {
+                    if (hasSearchNextPage) {
                         const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
                         setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
                     }
-
-                    fetchNextPage();
+                    fetchSearchNextPage();
                 }
             }
         },
-        [fetchNextPage, isFetching],
+        [fetchSearchNextPage, isSearchFetching],
     );
 
     useEffect(() => {
@@ -87,10 +83,13 @@ const AdminCoursesTable = () => {
             withRowBorders: true,
             withTableBorder: true,
         },
-        manualFiltering: true, //turn off client-side filtering
-        onGlobalFilterChange: setQuery, //hoist internal global state to your state
+        manualFiltering: true,
+        onGlobalFilterChange: (value) => {
+            setQuery(value ? value : '');
+        },
         state: {
-            isLoading: isLoading || isQueryDataFetching,
+            showAlertBanner: isSearchDataError,
+            isLoading: (isSearchDataLoading || records.length === 0) && !isSearchFetched,
         },
         initialState: {
             globalFilter: query,
@@ -135,11 +134,7 @@ const AdminCoursesTable = () => {
                             size="lg"
                             variant="default"
                             onClick={() => {
-                                if (!query) {
-                                    refetch();
-                                } else {
-                                    refetchSearchQuery();
-                                }
+                                refetchSearchQuery();
                             }}
                         >
                             <IconRefresh size={20} />
@@ -156,7 +151,7 @@ const AdminCoursesTable = () => {
                 margin: 0,
             },
         },
-        renderDetailPanel: ({ row }) => <CourseExpansion key={row.original._id} course={row.original} row={row} />,
+        renderDetailPanel: ({ row }) => <CourseExpansion key={row.original._id} courseId={row.original._id} row={row} />,
     });
 
     return (

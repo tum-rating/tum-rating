@@ -1,5 +1,5 @@
 import { ModalsProvider } from '@mantine/modals';
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 
 import { getPath, Paths } from './paths.ts';
@@ -12,6 +12,50 @@ import { EditUserReviewModal } from '@/components/Modals/EditUserReview';
 import { AdminLayout, MainLayout } from '@/layouts';
 import { Activation, Course, ErrorBoundary, Home, Recovery } from '@/pages';
 
+const Admin = lazy(async () => {
+    let { Admin } = await import('@/pages');
+    return { default: Admin };
+});
+
+//--- TABLES
+const AdminCoursesTable = lazy(async () => {
+    let { AdminCoursesTable } = await import('@/components/AdminTable');
+    return { default: AdminCoursesTable };
+});
+
+const AdminCoursesProposalsTable = lazy(async () => {
+    let { AdminCoursesProposalsTable } = await import('@/components/AdminTable');
+    return { default: AdminCoursesProposalsTable };
+});
+
+const AdminUsersTable = lazy(async () => {
+    let { AdminUsersTable } = await import('@/components/AdminTable');
+    return { default: AdminUsersTable };
+});
+
+//--- ADMIN DETAILS
+
+const AdminUserDetails = lazy(async () => {
+    let { AdminUserDetails } = await import('@/pages/Admin/AdminUserDetails');
+    return { default: AdminUserDetails };
+});
+
+const AdminCoursesProposalsDetails = lazy(async () => {
+    let { AdminCoursesProposalsDetails } = await import('@/pages/Admin/AdminCoursesProposalsDetails');
+    return { default: AdminCoursesProposalsDetails };
+});
+
+const AdminCoursesDetails = lazy(async () => {
+    let { AdminCoursesDetails } = await import('@/pages/Admin/AdminCoursesDetails');
+    return { default: AdminCoursesDetails };
+});
+
+const SuspenseLayout = () => (
+    <Suspense fallback={<RouteLoader />}>
+        <Outlet />
+    </Suspense>
+);
+
 const modals = {
     signIn: SignInModal,
     signUp: SignUpModal,
@@ -23,92 +67,78 @@ const modals = {
 
 const routes = [
     {
-        path: '/',
+        element: <SuspenseLayout />,
         errorElement: <ErrorBoundary />,
-        element: (
-            <MainLayout>
-                <ModalsProvider modals={modals}>
-                    <ModalsHashController />
-                    <Outlet />
-                </ModalsProvider>
-            </MainLayout>
-        ),
         children: [
             {
                 path: '/',
                 element: (
-                    <Suspense fallback={RouteLoader()}>
-                        <Home />
-                    </Suspense>
+                    <MainLayout>
+                        <ModalsProvider modals={modals}>
+                            <ModalsHashController />
+                            <Outlet />
+                        </ModalsProvider>
+                    </MainLayout>
                 ),
+                children: [
+                    {
+                        path: '/',
+                        element: <Home />,
+                    },
+                    {
+                        path: getPath(Paths.activate),
+                        element: <Activation />,
+                    },
+                    {
+                        path: getPath(Paths.recovery),
+                        element: <Recovery />,
+                    },
+                    {
+                        path: getPath(Paths.courseDetail),
+                        element: <Course />,
+                    },
+                ],
             },
-            {
-                path: getPath(Paths.activate),
-                element: (
-                    <Suspense fallback={'Loading...'}>
-                        <Activation />
-                    </Suspense>
-                ),
-            },
-            {
-                path: getPath(Paths.recovery),
-                element: (
-                    <Suspense fallback={'Loading...'}>
-                        <Recovery />
-                    </Suspense>
-                ),
-            },
-            {
-                path: getPath(Paths.courseDetail),
-                element: (
-                    <Suspense fallback={'Loading...'}>
-                        <Course />
-                    </Suspense>
-                ),
-            },
-        ],
-    },
-    {
-        path: getPath(Paths.admin),
-        element: (
-            <AdminLayout>
-                <ModalsProvider modals={modals}>
-                    <Outlet />
-                </ModalsProvider>
-            </AdminLayout>
-        ),
-        children: [
             {
                 path: getPath(Paths.admin),
-                fallbackElement: <RouteLoader />,
-                lazy: async () => {
-                    let { Admin } = await import('@/pages/Admin/Admin.tsx');
-                    return { Component: Admin };
-                },
-            },
-            {
-                path: getPath(Paths.adminCourses),
-                fallbackElement: <RouteLoader />,
-                lazy: async () => {
-                    let { AdminCoursesTable } = await import('@/components/AdminTable/Courses/AdminCoursesTable.tsx');
-                    return { Component: AdminCoursesTable };
-                },
-            },
-            {
-                path: getPath(Paths.adminCoursesProposals),
-                fallbackElement: <RouteLoader />,
-                lazy: async () => {
-                    let { AdminCoursesProposalsTable } = await import('@/components/AdminTable/CoursesProposals/AdminCoursesProposalsTable.tsx');
-                    return { Component: AdminCoursesProposalsTable };
-                },
-            },
-            {
-                path: getPath(Paths.adminUsers),
-                fallbackElement: <RouteLoader />,
-                lazy: async () => {
-                    let { AdminUsersTable } = await import('@/components/AdminTable/Users/AdminUsersTable.tsx');
-                    return { Component: AdminUsersTable };
-                },
+                element: (
+                    <AdminLayout>
+                        <ModalsProvider modals={modals}>
+                            <ModalsHashController />
+                            <Outlet />
+                        </ModalsProvider>
+                    </AdminLayout>
+                ),
+                children: [
+                    {
+                        path: getPath(Paths.admin),
+                        element: <Admin />,
+                    },
+                    {
+                        path: getPath(Paths.adminAllCourses),
+                        element: <AdminCoursesTable />,
+                    },
+                    {
+                        path: getPath(Paths.adminCoursesProposals),
+                        element: <AdminCoursesProposalsTable />,
+                    },
+                    {
+                        path: getPath(Paths.adminUsers),
+                        element: <AdminUsersTable />,
+                    },
+                    {
+                        path: getPath(Paths.adminUserDetails),
+                        element: <AdminUserDetails />,
+                    },
+                    {
+                        path: getPath(Paths.adminCoursesProposalsDetails),
+                        element: <AdminCoursesProposalsDetails />,
+                    },
+                    {
+                        path: getPath(Paths.adminCoursesDetails),
+                        element: <AdminCoursesDetails />,
+                    },
+                ],
             },
         ],
     },

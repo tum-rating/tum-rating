@@ -21,7 +21,7 @@ import { CourseProposalModule } from './modules/course-proposal/courseProposal.m
         MailerModule,
         MongoModule,
         LoggerModule,
-        
+
         AuthModule,
         ClientModule,
         FrontendModule,

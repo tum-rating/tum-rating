@@ -7,55 +7,68 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import classes from './CoursesTable.module.css';
 
-import city from '@/assets/img/city.png';
+import {CoursesTableHelmet} from "@/components/CoursesTable/CoursesTableHelmet.tsx";
 import { useCoursesTableColumns } from '@/components/CoursesTable/useCoursesTableColumns.tsx';
 import { CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH, PAGE_SIZE } from '@/constants';
-import { useTableScrollContext } from '@/context';
+import { useSearchContext, useTableScrollContext } from '@/context';
 import { Course } from '@/courses/types.ts';
 import { usePaginatedCourses } from '@/courses/usePaginatedCourses.tsx';
 import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
 
 function CoursesTable() {
-    const [contentTopSpacing, setContentTopSpacing] = useState<number>(CONTENT_TOP_SPACING);
+    const [tableTopSpacing, setTableTopSpacing] = useState<number>(CONTENT_TOP_SPACING);
     const { scrollIndex, setScrollIndex } = useTableScrollContext();
     const tableContainerRef = useRef<HTMLDivElement>(null);
     const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
     const [records, setRecords] = useState<Course[]>([]);
+    const { searchQuery, setSearchQuery } = useSearchContext();
+    const [internalLoader, setInternalLoader] = useState(true);
 
-    const { data, fetchNextPage, isFetching, isLoading, isError, hasNextPage } = usePaginatedCourses();
-    const [query, setQuery] = useState('');
-    const { data: queryData, isFetching: isQueryDataFetching } = useSearchCourses(query);
+    const { data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage } = usePaginatedCourses();
+
+    const { data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, isError: isSearchError } = useSearchCourses(searchQuery);
+
     const navigate = useNavigate();
     const location = useLocation();
     const { columns } = useCoursesTableColumns();
 
-    useEffect(() => {
-        const spacingTopBarDiff = !!query ? 0 : 15;
-        setContentTopSpacing(spacingTopBarDiff);
-    }, [query]);
+    //-----
 
     useEffect(() => {
-        if (data) {
-            const newRecords = data.pages.map((v) => v.courses.map((el) => el)).flat();
-            setRecords([...newRecords]);
-        }
-    }, [data]);
+        const spacingTopBarDiff = !!searchQuery ? 0 : 25;
+        setTableTopSpacing(spacingTopBarDiff);
+    }, [searchQuery]);
 
     useEffect(() => {
-        if (queryData) {
-            const newRecords = queryData.courses;
+        if (paginatedData) {
+            const newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
             setRecords([...newRecords]);
+            setInternalLoader(false);
         }
-    }, [queryData]);
+    }, [paginatedData]);
+
+    useEffect(() => {
+        if (searchData) {
+            const newRecords = searchData.pages.map((v) => v.courses.map((el) => el)).flat();
+            setRecords([...newRecords]);
+            setInternalLoader(false);
+        } else {
+            if (paginatedData) {
+                const newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
+                setRecords([...newRecords]);
+                setInternalLoader(false);
+            }
+        }
+    }, [searchData]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const searchParam = params.get('search');
         if (searchParam) {
             const decodedSearchParam = decodeURIComponent(searchParam);
-            setQuery(decodedSearchParam);
+            setSearchQuery(decodedSearchParam);
         } else {
-            setQuery('');
+            setSearchQuery('');
         }
     }, [location]);
 
@@ -63,16 +76,24 @@ function CoursesTable() {
         (containerRefElement?: HTMLDivElement | null) => {
             if (containerRefElement) {
                 const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
-                if (scrollHeight - scrollTop - clientHeight < clientHeight - contentTopSpacing - HEADER_HEIGHT && !isFetching) {
-                    if (hasNextPage) {
-                        const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
-                        setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
+                if (scrollHeight - scrollTop - clientHeight < clientHeight - tableTopSpacing - HEADER_HEIGHT && !isPaginatedFetching && !isSearchFetching) {
+                    if (searchQuery) {
+                        if (hasSearchNextPage) {
+                            const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
+                            setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
+                        }
+                        fetchSearchNextPage();
+                    } else {
+                        if (hasPaginatedNextPage) {
+                            const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
+                            setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
+                        }
+                        fetchPaginatedNextPage();
                     }
-                    fetchNextPage();
                 }
             }
         },
-        [fetchNextPage, isFetching],
+        [fetchPaginatedNextPage, fetchSearchNextPage, isPaginatedFetching, isSearchFetching],
     );
 
     useEffect(() => {
@@ -90,19 +111,18 @@ function CoursesTable() {
         }
     }, [rowVirtualizerInstanceRef.current, records]);
 
-    const handleRowClick = (record: Course) => {
+    const handleRowClick = useCallback((record: Course) => {
         const dynamicPath = '/courses/' + record._id;
         setScrollIndex(rowVirtualizerInstanceRef.current.range.startIndex);
         navigate(dynamicPath);
-    };
+    }, []);
 
     const removeQuery = () => {
-        setQuery('');
-        navigate('/');
+        setSearchQuery('');
+        navigate('#');
     };
 
     const table = useMantineReactTable({
-        // @ts-ignore
         columns,
         data: records,
         mantinePaperProps: {
@@ -110,6 +130,7 @@ function CoursesTable() {
                 marginTop: CONTENT_TOP_SPACING + 'px',
             },
             className: classes.tablePaper,
+            withBorder: false,
         },
         mantineTableBodyRowProps: ({ row }) => ({
             onClick: () => {
@@ -118,7 +139,7 @@ function CoursesTable() {
                 }
             },
             style:
-                !records.length || isLoading || row.original === null
+                !records.length || isPaginatedLoading || isSearchFetching || row.original === null
                     ? {
                           pointerEvents: 'none',
                           cursor: 'not-allowed',
@@ -138,7 +159,7 @@ function CoursesTable() {
         enablePagination: false,
         enableFilters: false,
         enableFullScreenToggle: false,
-        enableTopToolbar: !!query,
+        enableTopToolbar: !!searchQuery,
         enableGlobalFilterModes: false,
         enableBottomToolbar: false,
         enableGlobalFilter: false,
@@ -149,14 +170,15 @@ function CoursesTable() {
         enableRowVirtualization: true,
         mantineTableContainerProps: {
             style: {
-                maxHeight: 'calc(100% - ' + (CONTENT_TOP_SPACING - contentTopSpacing) + 'px)',
+                height: 'calc(100% - ' + (CONTENT_TOP_SPACING - tableTopSpacing) + 'px)',
                 maxWidth: MAX_SITE_WIDTH + 'px',
                 width: '100vw',
-            }, //give the table a max height
+            },
             onScroll: (
                 // @ts-ignore
                 event: UIEvent<HTMLDivElement>,
             ) => fetchMoreOnBottomReached(event.target as HTMLDivElement),
+            className: classes.tableContainer,
         },
         mantineToolbarAlertBannerProps: {
             color: 'red',
@@ -171,22 +193,14 @@ function CoursesTable() {
         },
         renderTopToolbar: () => {
             return (
-                <Flex
-                    data-active={!!query}
-                    justify="space-between"
-                    align="center"
-                    className={classes.dataTableInfo}
-                    style={{
-                        backgroundImage: `url(${city})`,
-                    }}
-                >
+                <Flex data-active={!!searchQuery} justify="space-between" align="center" className={classes.dataTableInfo}>
                     <Flex align="center" h="100%">
-                        {query ? (
+                        {searchQuery ? (
                             <>
                                 <Badge color="green" radius="xs" fw={600}>
                                     <Flex align="center">
-                                        {query}
-                                        <ActionIcon p={0} m={0} variant="transparent" c="white" aria-label="Remove query" loading={isQueryDataFetching}>
+                                        {searchQuery}
+                                        <ActionIcon p={0} m={0} variant="transparent" c="white" aria-label="Remove query" loading={isSearchFetching}>
                                             <IconX size={16} onClick={removeQuery} />
                                         </ActionIcon>
                                     </Flex>
@@ -198,8 +212,8 @@ function CoursesTable() {
             );
         },
         state: {
-            showAlertBanner: isError,
-            isLoading: isLoading || records.length === 0,
+            showAlertBanner: isPaginatedError,
+            isLoading: (isPaginatedLoading || !isSearchFetched || internalLoader) && (!isSearchError || !isPaginatedError),
         },
         rowVirtualizerInstanceRef,
         rowVirtualizerOptions: { overscan: 15 },
@@ -207,6 +221,7 @@ function CoursesTable() {
 
     return (
         <>
+            <CoursesTableHelmet courses={records} />
             <MantineReactTable table={table} />
         </>
     );
