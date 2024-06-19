@@ -7,9 +7,9 @@ import { describe, expect, it } from 'vitest';
 import { endpoints } from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { UserButton } from '@/components/UserButton';
-import { generateJwtToken, user } from 'tests/mocks/dataGenerators.ts';
-import { server } from 'tests/mocks/node.ts';
-import { render } from 'tests/utils/render.tsx';
+import { generateJwtToken, user } from 'tests/unit/mocks/dataGenerators.ts';
+import { server } from 'tests/unit/mocks/node.ts';
+import { render } from 'tests/unit/utils/render.tsx';
 
 describe('UserButton', () => {
     describe('when user is logged in', () => {

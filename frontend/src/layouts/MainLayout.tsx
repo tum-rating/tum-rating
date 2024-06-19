@@ -45,12 +45,11 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     <Flex gap={20}>
                         {!user ? (
                             <>
-                                <Button loading={!user && isLoading} data-testid="cypress-open-sign-in-modal-btn" size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
+                                <Button loading={!user && isLoading} size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
                                     Sign In
                                 </Button>
                                 <Button
                                     loading={!user && isLoading}
-                                    data-testid="cypress-open-sign-up-modal-btn"
                                     size="xs"
                                     variant="primary-gradient"
                                     onClick={() => {
@@ -63,7 +62,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                         ) : null}
 
                         <UserButton />
-                        <ActionIcon variant="outline" onClick={toggleColorScheme}>
+                        <ActionIcon data-testid="color-scheme-toggle" variant="outline" onClick={toggleColorScheme}>
                             {colorScheme === 'dark' ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
                         </ActionIcon>
                         {isAdmin && (
@@ -81,7 +80,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     </Flex>
                 </Flex>
                 <Group hiddenFrom="sm" h="100%" px="md" justify="space-between" pos="relative">
-                    <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+                    <Burger data-testid="burger" opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
                     <Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>
                     <SearchInputDesktop />
                 </Group>
@@ -91,7 +90,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     <Stack h="100%" justify="space-between">
                         <Flex align="center" justify="space-between">
                             {user ? <UserButton withoutDropdown /> : <Text>Hello</Text>}
-                            <Switch size="md" onChange={toggleColorScheme} checked={colorScheme === 'light'} onLabel={<IconSun size="1.1rem" />} offLabel={<IconMoonStars size="1.1rem" />} />
+                            <Switch data-testid="color-scheme-toggle" size="md" onChange={toggleColorScheme} checked={colorScheme === 'light'} onLabel={<IconSun size="1.1rem" />} offLabel={<IconMoonStars size="1.1rem" />} />
                         </Flex>
                         <Flex direction="column" w="100%" wrap="nowrap" gap="sm">
                             {user ? (
@@ -116,7 +115,6 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                             ) : (
                                 <>
                                     <Button
-                                        data-testid="cypress-open-sign-in-modal-btn"
                                         fullWidth
                                         size="md"
                                         variant="outline"
@@ -128,7 +126,6 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                                         Sign In
                                     </Button>
                                     <Button
-                                        data-testid="cypress-open-sign-up-modal-btn"
                                         fullWidth
                                         size="md"
                                         variant="primary-gradient"
