@@ -16,7 +16,10 @@ import { Paths } from '@/routes/paths.ts';
 
 const openAddUserReviewModal = ({ courseId, ...props }) => {
     modals.openContextModal({
-        ...contextModalConfig('addUserReview', <Text fw={600}>Add your review</Text>),
+        ...contextModalConfig({
+            modal: 'addUserReview',
+            title: <Text fw={600}>Add your review</Text>,
+        }),
         ...props,
     });
 };
@@ -119,8 +122,7 @@ const AddUserReviewModal = ({
     return (
         <Container px={0} pos="relative" h="100%">
             <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-            <form
-                style={{ height: '100%', overflowY: 'auto' }}
+            <form className="modal-form" style={{ height: '100%', overflowY: 'auto' }}
                 onSubmit={form.onSubmit((e) => {
                     handleSubmit(e);
                 })}

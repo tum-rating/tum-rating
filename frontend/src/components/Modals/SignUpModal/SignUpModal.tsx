@@ -1,4 +1,19 @@
-import { Alert, Anchor, Box, Button, Checkbox, Container, Flex, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput, ThemeIcon } from '@mantine/core';
+import {
+    Alert,
+    Anchor,
+    Box,
+    Button,
+    Checkbox,
+    Container,
+    Flex,
+    Group, Image,
+    LoadingOverlay,
+    PasswordInput,
+    Stack,
+    Text,
+    TextInput,
+    ThemeIcon, useMantineColorScheme
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
@@ -11,12 +26,14 @@ import { useUser } from '@/auth/useUser.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import logo from "@/assets/img/logo.png";
+import logoDark from "@/assets/img/logo-dark.png";
 
 interface SignUpModalProps extends ContextModalProps {}
 
 const openSignUpModal = ({ ...props }: SignUpModalProps) => {
     modals.openContextModal({
-        ...contextModalConfig('signUp', <Text fw={600}>Sign Up</Text>),
+        ...contextModalConfig({modal: 'signUp' }),
         closeOnClickOutside: false,
         ...props,
     });
@@ -26,7 +43,7 @@ const SignUpModal = () => {
     const { isSuccess, isPending: isLoading, mutate: signUp, error, isError } = useSignUp();
     const [apiError, setApiError] = useState(null);
     const navigate = useNavigate();
-
+    const { colorScheme } = useMantineColorScheme();
     const { data: user, isLoading: userLoading } = useUser();
 
     useEffect(() => {
@@ -62,9 +79,17 @@ const SignUpModal = () => {
     }
 
     return (
-        <Box pos="relative">
+        <Box pos="relative" h="100%">
+            <Flex mb="xl" mt="sm" mx="auto" w="100%" justify="center" direction="column">
+                <Flex>
+                    <Text fz={38} fw="bold">Join</Text>
+                    {colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}
+                </Flex>
+
+                <Text>Sign up for free</Text>
+            </Flex>
             <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-            <Container p={0}>
+            <Container p={0} >
                 {isSuccess ? (
                     <Flex direction="column" align="center" gap="xs" my="xl">
                         <Group>
@@ -85,13 +110,14 @@ const SignUpModal = () => {
                         </Text>
                     </Flex>
                 ) : (
-                    <form
+                    <form className="modal-form"
+                         style={{ height: '100%' }}
                         data-testid="form"
                         onSubmit={form.onSubmit((e) => {
                             signUp(e);
                         })}
                     >
-                        <Stack>
+                        <Stack h="100%">
                             <TextInput autoFocus data-autofocus data-testid="username" label={'Your name'} required placeholder={'Your name'} value={form.values.username} onChange={(event) => form.setFieldValue('username', event.currentTarget.value)} />
                             <TextInput type="email" data-testid="email" required label="Email" placeholder="Email" value={form.values.email} onChange={(event) => form.setFieldValue('email', event.currentTarget.value)} error={form.errors.email} />
                             <PasswordInput data-testid="password" autoComplete="on" required label="Password" placeholder="Password" value={form.values.password} onChange={(event) => form.setFieldValue('password', event.currentTarget.value)} error={form.errors.password} />

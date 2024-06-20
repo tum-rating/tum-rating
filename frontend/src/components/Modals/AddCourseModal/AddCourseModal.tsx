@@ -13,7 +13,9 @@ import { Paths } from '@/routes/paths.ts';
 
 const openAddCourseModal = ({ ...props }) => {
     modals.openContextModal({
-        ...contextModalConfig('addCourse', <Text fw={600}>Add Course Proposal</Text>),
+        ...contextModalConfig({
+            modal: 'addCourse',
+        }),
         ...props,
     });
 };
@@ -78,7 +80,7 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
     return (
         <Container p={0} data-testid="modal-content">
             <LoadingOverlay visible={addReviewLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-            <form data-testid="form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
+            <form className="modal-form" data-testid="form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
                 <Stack>
                     <Textarea data-testid="textarea" label="Course URL" required placeholder={`Example: ${example_course}`} description="Provide a valid course URL from TUM Campus Portal" value={form.values.url} onChange={(event) => form.setFieldValue('url', event.currentTarget.value)} error={form.errors.url} radius="md" minRows={5} maxRows={10} autosize />
                     {apiError && error && (

@@ -15,7 +15,7 @@ interface RecoveryModalProps extends ContextModalProps {}
 
 const openRecoveryModal = ({ ...props }: RecoveryModalProps) => {
     modals.openContextModal({
-        ...contextModalConfig('recovery', <Text fw={600}>Recover Your Password</Text>),
+        ...contextModalConfig({ modal: 'recovery' }),
         ...props,
     });
 };
@@ -53,7 +53,7 @@ const RecoveryModal = () => {
         return null;
     }
     return (
-        <form onSubmit={form.onSubmit((e) => handleSubmit(e))}>
+        <form className="modal-form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
             <LoadingOverlay visible={recoveryLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
             {isRecoverySuccess ? (
                 <Flex direction="column" align="center" gap="xs" mt="xl" data-testid="success-message">

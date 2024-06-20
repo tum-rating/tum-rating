@@ -16,7 +16,7 @@ interface SignInModalProps extends ContextModalProps {}
 
 const openSignInModal = ({ ...props }: SignInModalProps) => {
     modals.openContextModal({
-        ...contextModalConfig('signIn', <Text fw={600}>Sign In</Text>),
+        ...contextModalConfig({ modal: 'signIn' }),
         ...props,
     });
 };
@@ -74,7 +74,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
         <Box pos="relative">
             <Container p={0}>
                 <LoadingOverlay visible={signInLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-                <form data-testid="form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
+                <form className="modal-form" data-testid="form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
                     <Stack>
                         <TextInput autoFocus data-autofocus type="email" leftSection={<IconAt size="1.1rem" />} data-testid="email" required label="Email" placeholder="Email" {...form.getInputProps('email')} />
                         <PasswordInput leftSection={<IconLock size="1.1rem" />} data-testid="password" autoComplete="on" required label="Password" placeholder="Password" {...form.getInputProps('password')} />

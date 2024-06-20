@@ -1,0 +1,8 @@
+
+.input {
+    @media (max-width: $mantine-breakpoint-sm) {
+        font-size: 18px;
+        padding: 24px 15px;
+        /*background: red;*/
+    }
+}

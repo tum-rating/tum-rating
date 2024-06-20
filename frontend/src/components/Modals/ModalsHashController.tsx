@@ -1,3 +1,4 @@
+import {Image, useMantineColorScheme} from "@mantine/core";
 import { closeAllModals, useModals } from '@mantine/modals';
 import { PropsWithChildren, useEffect, useMemo } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -11,6 +12,7 @@ import { openRecoveryModal } from '@/components/Modals/RecoveryModal';
 import { openSignInModal } from '@/components/Modals/SignInModal';
 import { openSignUpModal } from '@/components/Modals/SignUpModal';
 
+
 interface ModalsHashControllerProps extends PropsWithChildren {
     withinPortal?: boolean;
 }
@@ -21,6 +23,7 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
     const { courseId } = useParams();
     const { data: user } = useUser();
     let modalsContext = useModals();
+    const { colorScheme } = useMantineColorScheme();
     const modalSharedParams = useMemo(
         () => ({
             onClose: () => {
@@ -29,6 +32,7 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
             },
             withinPortal: withinPortal,
             fullScreen: isMobile,
+            withCloseButton: false,
             overlayProps: {
                 backgroundOpacity: 0.55,
                 blur: 3,

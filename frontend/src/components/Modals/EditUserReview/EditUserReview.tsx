@@ -15,7 +15,10 @@ import { useDetailCourse } from '@/courses/useCourse.tsx';
 
 const openEditUserReviewModal = ({ courseId, userReview, ...props }) => {
     modals.openContextModal({
-        ...contextModalConfig('editUserReview', <Text fw={600}>Edit your review</Text>),
+        ...contextModalConfig({
+            modal: 'editUserReview',
+            title: <Text fw={600}>Edit your review</Text>,
+        }),
         innerProps: {
             courseId,
             userReview,
@@ -105,6 +108,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
         <Container px={0} pos="relative" h="100%">
             <LoadingOverlay visible={isLoading || courseDetailsLoading} overlayProps={{ radius: 'sm', blur: 2 }} data-testid="loading" />
             <form
+                className="modal-form"
                 data-testid="form"
                 style={{ height: '100%' }}
                 onSubmit={form.onSubmit((e) => {
