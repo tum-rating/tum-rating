@@ -1,5 +1,5 @@
-import { ActionIcon, Badge, Box, Flex, Group, Text, Tooltip } from '@mantine/core';
-import { IconPlus, IconRefresh } from '@tabler/icons-react';
+import { ActionIcon, Badge, Box, Flex, Group, Menu, Text, Tooltip } from '@mantine/core';
+import { IconAdjustments, IconPlus, IconRefresh } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { MantineReactTable, MRT_GlobalFilterTextInput, type MRT_RowVirtualizer, MRT_ShowHideColumnsButton, type MRT_SortingState, MRT_ToggleFiltersButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMantineReactTable } from 'mantine-react-table';
 import { useEffect, useRef, useState } from 'react';
@@ -67,7 +67,7 @@ const AdminCoursesProposalsTable = () => {
                         <Text fw={600}>Active proposals</Text>
                     </Flex>
                     <Tooltip label="Add course proposal" openDelay={400}>
-                        <ActionIcon variant="light" onClick={() => navigate('#modal=add-course')}>
+                        <ActionIcon variant="light" onClick={() => navigate('#modal=add-course')} visibleFrom={'sm'}>
                             <IconPlus size={16} />
                         </ActionIcon>
                     </Tooltip>
@@ -75,14 +75,48 @@ const AdminCoursesProposalsTable = () => {
                 <MRT_GlobalFilterTextInput size="sm" variant="default" hidden={false} table={table} />
                 <Group gap="xs">
                     <MRT_ToggleGlobalFilterButton size="lg" variant="default" table={table} />
-                    <MRT_ToggleFiltersButton size="lg" variant="default" table={table} />
                     <MRT_ShowHideColumnsButton size="lg" variant="default" table={table} />
-                    <MRT_ToggleFullScreenButton size="lg" variant="default" table={table} />
-                    <Tooltip label="Refresh proposals">
-                        <ActionIcon size="lg" variant="default" onClick={() => refetch()}>
-                            <IconRefresh size={20} />
-                        </ActionIcon>
-                    </Tooltip>
+                    <Flex visibleFrom={'sm'}>
+                        <MRT_ToggleFiltersButton size="lg" variant="default" table={table} />
+                        <MRT_ToggleFullScreenButton size="lg" variant="default" table={table} />
+                        <Tooltip label="Refresh proposals">
+                            <ActionIcon size="lg" variant="default" onClick={() => refetch()}>
+                                <IconRefresh size={20} />
+                            </ActionIcon>
+                        </Tooltip>
+                    </Flex>
+                    <Menu>
+                        <Menu.Target>
+                            <ActionIcon hiddenFrom={'sm'}>
+                                <IconAdjustments />
+                            </ActionIcon>
+                        </Menu.Target>
+                        <Menu.Dropdown>
+                            <Menu.Item
+                                leftSection={<IconAdjustments />}
+                                rightSection={<Text>Filtering</Text>}
+                                onClick={() => {
+                                    // console.log(table.options)
+                                    // console.log(table.options.enableColumnFilters);
+                                    // table.setShowColumnFilters(!table.options.getColumnCanGlobalFilter());
+                                }}
+                            ></Menu.Item>
+                            {/*<Menu.Item*/}
+                            {/*    leftSection={<IconScreen />}*/}
+                            {/*    rightSection={<Text>Full Screen</Text>}*/}
+                            {/*    onClick={() => {*/}
+                            {/*        // table.setFullScreen(!table.fullScreen);*/}
+                            {/*    }}*/}
+                            {/*>*/}
+                            {/*    <MRT_ToggleFullScreenButton size="sm" variant="default" table={table} />*/}
+                            {/*</Menu.Item>*/}
+                            <Menu.Item>
+                                <ActionIcon size="sm" variant="default" onClick={() => refetch()}>
+                                    <IconRefresh size={16} />
+                                </ActionIcon>
+                            </Menu.Item>
+                        </Menu.Dropdown>
+                    </Menu>
                 </Group>
             </Flex>
         ),
