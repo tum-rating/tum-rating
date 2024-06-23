@@ -1,5 +1,5 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { ClientSession, Model } from 'mongoose';
 import { Course, CourseDocument } from 'src/database/documents/course';
 import { Review } from 'src/database/documents/review';
 import { BaseRepository } from './base.repository';
@@ -55,7 +55,11 @@ export class CourseRepository extends BaseRepository<Course> {
     }
 
     public async findOneByIdWithPopulatedReviews(id: string): Promise<WithId<CourseWithReviews>> {
-        return this._courseModel.findById(id).populate('reviews', '-__v').select('-__v');
+        return this._courseModel.findById(id).populate({
+            path: 'reviews',
+            match: { isHidden: false },
+            select: '-__v -isHidden'
+        }).select('-__v');
     }
 
     public async addReview(courseId: string, reviewId: string) {
@@ -67,7 +71,7 @@ export class CourseRepository extends BaseRepository<Course> {
         );
     }
 
-    public async updateCourseStats(courseId: string, stats: Pick<Course, 'howEasyRatingAverage' | 'howInterestingRatingAverage' | 'votesNumber'>) {
-        return this._courseModel.updateOne({ _id: courseId }, stats);
+    public async updateCourseStats(courseId: string, stats: Pick<Course, 'howEasyRatingAverage' | 'howInterestingRatingAverage' | 'votesNumber'>, session?: ClientSession) {
+        return this._courseModel.updateOne({ _id: courseId }, stats, { session });
     }
 }
