@@ -31,9 +31,9 @@ describe('Get Review', () => {
                 expect(response.body).toBeDefined();
                 expect(response.body.userId).toEqual(signInResponse.user.id);
                 expect(response.body.courseId).toEqual(createdCourse.id);
-                expect(response.body.howEasyRating).toEqual(reviewUser.userReview.howEasyRating);
-                expect(response.body.howInterestingRating).toEqual(reviewUser.userReview.howInterestingRating);
-                expect(response.body.semester).toEqual(reviewUser.userReview.semester);
+                expect(response.body.howEasyRating).toEqual(reviewUser.howEasyRating);
+                expect(response.body.howInterestingRating).toEqual(reviewUser.howInterestingRating);
+                expect(response.body.semester).toEqual(reviewUser.semester);
                 expect(response.body.userName).toEqual(signInResponse.user.username);
             });
     });
