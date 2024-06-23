@@ -1,15 +1,31 @@
 version: "3.9"
 services:
   mongodb:
-    image: mongo:7.0.0-rc10
-    ports:
-      - "27017:27017"
-    # command: --wiredTigerCacheSizeGB 0.25 --replSet s0
+    build:
+      context: .
+      dockerfile: development/mongo.Dockerfile
+    container_name: mongodb-replicaset
+    restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root-user
       MONGO_INITDB_ROOT_PASSWORD: root-password
+    ports:
+      - 27017:27017
+    command: --replSet rs0 --keyFile /etc/mongo-keyfile --bind_ip_all --port 27017
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'127.0.0.1:27017'}]}) }" | mongosh --port 27017 -u root-user -p root-password --authenticationDatabase admin
+      interval: 5s
+      timeout: 15s
+      start_period: 15s
+      retries: 10
+    volumes:
+      - data:/data/db
+
   mailer:
     image: maildev/maildev
     ports:
       - "1025:1025"
       - "1080:1080"
+
+volumes:
+  data:
