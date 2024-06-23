@@ -19,6 +19,9 @@ export class Review {
     })
     courseId: MongooseSchema.Types.ObjectId;
 
+    @Prop({ required: true, type: Boolean, default: false })
+    isHidden: boolean;
+
     @Prop({ required: true, type: Number, min: 0, max: 5 })
     howInterestingRating: number;
 
@@ -46,3 +49,4 @@ export type ReviewDocument = Review & Document;
 export const ReviewSchema = SchemaFactory.createForClass(Review);
 
 ReviewSchema.index({ courseId: 1, userId: 1 }, { unique: true });
+ReviewSchema.index({ courseId: 1, isHidden: 1 });

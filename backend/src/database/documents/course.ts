@@ -44,6 +44,8 @@ export class Course {
     reviews: string[];
 }
 
+export type CourseWithPopulatedReviews = Omit<Course, 'reviews'> & { reviews: Review[] };
+
 export type CourseDocument = Course & Document;
 
 export const CourseSchema = SchemaFactory.createForClass(Course);
