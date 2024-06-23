@@ -264,7 +264,7 @@ export class CourseControllerV1 {
             courseId: courseId as unknown as ObjectId,
         };
 
-        let createdReview: Review;
+        let createdReview: WithId<Review>;
         try {
             createdReview = await this._courseService.addReview(review);
         } catch (error: any) {
