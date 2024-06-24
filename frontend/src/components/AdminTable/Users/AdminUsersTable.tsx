@@ -1,7 +1,6 @@
-import { ActionIcon, Badge, Box, Flex, Group, Text, Tooltip } from '@mantine/core';
-import { IconRefresh } from '@tabler/icons-react';
+import { Badge, Box, Flex, Text } from '@mantine/core';
 import clsx from 'clsx';
-import { MantineReactTable, MRT_GlobalFilterTextInput, MRT_RowVirtualizer, MRT_ShowHideColumnsButton, MRT_SortingState, MRT_ToggleFiltersButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMantineReactTable } from 'mantine-react-table';
+import { MantineReactTable, MRT_RowVirtualizer, MRT_SortingState, useMantineReactTable } from 'mantine-react-table';
 import { useRef, useState } from 'react';
 
 import { useUsersColumns } from './useUsersColumns.tsx';
@@ -11,6 +10,7 @@ import { User } from '@/admin/types.ts';
 import { useAllUsers } from '@/admin/useAllUsers.ts';
 import { useBanUser } from '@/admin/useBanUser.tsx';
 import classes from '@/components/AdminTable/Shared/styles/TableStyles.module.css';
+import { TableToolbox } from '@/components/AdminTable/Shared/TableToolbox';
 import { UserExpansion } from '@/components/AdminTable/Users/UserExpansion.tsx';
 
 const rowClassFn = (user: User) => {
@@ -71,18 +71,12 @@ const AdminUsersTable = () => {
                         <Text fw={600}>Active users</Text>
                     </Flex>
                 </Flex>
-                <MRT_GlobalFilterTextInput size="sm" variant="default" hidden={false} table={table} />
-                <Group gap="xs">
-                    <MRT_ToggleGlobalFilterButton size="lg" variant="default" table={table} />
-                    <MRT_ToggleFiltersButton size="lg" variant="default" table={table} />
-                    <MRT_ShowHideColumnsButton size="lg" variant="default" table={table} />
-                    <MRT_ToggleFullScreenButton size="lg" variant="default" table={table} />
-                    <Tooltip label="Refresh proposals">
-                        <ActionIcon size="lg" variant="default" onClick={() => refetch()}>
-                            <IconRefresh size={20} />
-                        </ActionIcon>
-                    </Tooltip>
-                </Group>
+                <TableToolbox
+                    table={table}
+                    customActions={{
+                        refresh: refetch,
+                    }}
+                />
             </Flex>
         ),
 
