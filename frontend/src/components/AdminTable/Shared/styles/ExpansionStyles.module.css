@@ -4,7 +4,7 @@
     background: var(--striped-background);
     @media (max-width: $mantine-breakpoint-sm) {
         padding: var(--mantine-spacing-lg) var(--mantine-spacing-md);
-        max-width: 100vw;
+        max-width: calc(100vw - var(--mantine-spacing-md)* 2);;
     }
 }
 

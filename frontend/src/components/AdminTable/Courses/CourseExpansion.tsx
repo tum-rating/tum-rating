@@ -61,7 +61,7 @@ const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
     }, [isError || removeCourseIsSuccess]);
 
     return (
-        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%" {...rest}>
+        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100vw" {...rest}>
             {statusAlertFlag ? (
                 <Flex justify="center" w="100%" direction="column" gap="lg">
                     <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error" />
