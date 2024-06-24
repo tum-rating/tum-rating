@@ -17,6 +17,7 @@ interface TableToolboxProps {
         tableFilters?: boolean;
         tableRefresh?: boolean;
         tableFullscreen?: boolean;
+        toggleFilters?: boolean;
     };
 }
 
@@ -28,6 +29,7 @@ const TableToolbox = (props: TableToolboxProps) => {
         tableFilters: true,
         tableRefresh: true,
         tableFullscreen: true,
+        toggleFilters: true,
         ...config
     };
 
