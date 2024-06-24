@@ -11,7 +11,7 @@ const TableRefresh = (props:TableToolboxProps) =>{
                         <IconRefresh size={20} />
                     </ActionIcon>
                 </Tooltip>
-                <Flex align="center" gap={4} hiddenFrom={'sm'} onClick={() => props.customActions.refresh()} h={28}>
+                <Flex align="center" gap={"xs"} hiddenFrom={'sm'} onClick={() => props.customActions.refresh()} h={28}>
                     <ThemeIcon variant="default">
                         <IconRefresh size={22} />
                     </ThemeIcon>

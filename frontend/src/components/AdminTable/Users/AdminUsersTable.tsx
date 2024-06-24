@@ -68,7 +68,7 @@ const AdminUsersTable = () => {
                         <Badge radius="sm" fw={800} c="white" px={6}>
                             {data.length}
                         </Badge>
-                        <Text fw={600}>Active users</Text>
+                        <Text lineClamp={2} fw={600} className={classes.tableHeaderText}>Active users</Text>
                     </Flex>
                 </Flex>
                 <TableToolbox

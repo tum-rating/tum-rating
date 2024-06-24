@@ -96,7 +96,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
     });
 
     return (
-        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100%" {...rest}>
+        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" {...rest}>
             {statusAlertFlag ? (
                 <Flex justify="center" w="100%" direction="column" gap="lg">
                     <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error" />
@@ -115,7 +115,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                 </Flex>
             ) : (
                 <>
-                    <Flex direction="column" gap="xs" className={classes.expansionDetails}>
+                    <Flex  direction="column" gap="xs" className={classes.expansionDetails}>
                         <Flex align="center" gap="xs" wrap="wrap">
                             <Text fz="sm" fw={500}>
                                 Details

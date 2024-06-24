@@ -119,13 +119,13 @@ const AdminCoursesTable = () => {
                         <Badge radius="sm" fw={800} c="white" px={6}>
                             {records.length}
                         </Badge>
-                        <Text fw={600}>Active courses</Text>
+                        <Text lineClamp={2} fw={600} className={classes.tableHeaderText}>Active courses</Text>
                     </Flex>
                 </Flex>
                 <TableToolbox
                     table={table}
                     config={{
-                        toggleFilters: false,
+                        tableFilters: false,
                     }}
                     customActions={{
                         refresh: refetchSearchQuery,
