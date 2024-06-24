@@ -119,7 +119,9 @@ const AdminCoursesTable = () => {
                         <Badge radius="sm" fw={800} c="white" px={6}>
                             {records.length}
                         </Badge>
-                        <Text lineClamp={2} fw={600} className={classes.tableHeaderText}>Active courses</Text>
+                        <Text lineClamp={2} fw={600} className={classes.tableHeaderText}>
+                            Active courses
+                        </Text>
                     </Flex>
                 </Flex>
                 <TableToolbox

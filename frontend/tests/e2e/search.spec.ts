@@ -10,7 +10,7 @@ test(`should find courses by name "${query} "and navigate to course page by clic
     // http://localhost:3000/api/v1/courses?page-number=1&page-size=45&search=advanced
     await page.waitForRequest(/courses/, { timeout: 1000 });
     const menu = page.locator('.mantine-Popover-dropdown');
-    const option = menu.getByRole('option').first()
+    const option = menu.getByRole('option').first();
     const optionCourseName = option.locator('p').first();
     const optionDetails = await optionCourseName.allInnerTexts();
     await option.click();
@@ -23,9 +23,9 @@ test(`[mobile] should find courses by name "${query}" and navigate to course pag
     await page.getByTestId('search_trigger').click();
     await page.getByRole('textbox', { name: 'Search...' }).fill(query);
     await page.waitForRequest(/courses/, { timeout: 1000 });
-    const option = page.getByRole('option').first()
+    const option = page.getByRole('option').first();
     const optionCourseName = option.locator('p').first();
     const optionDetails = await optionCourseName.allInnerTexts();
     await option.click();
     await checkCourseRender({ page, name: optionDetails[0] });
-})
+});

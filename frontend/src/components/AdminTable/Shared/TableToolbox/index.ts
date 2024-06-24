@@ -1,1 +1,1 @@
-export {TableToolbox} from "./TableToolbox.tsx"
+export { TableToolbox } from './TableToolbox.tsx';

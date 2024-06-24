@@ -115,7 +115,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                 </Flex>
             ) : (
                 <>
-                    <Flex  direction="column" gap="xs" className={classes.expansionDetails}>
+                    <Flex direction="column" gap="xs" className={classes.expansionDetails}>
                         <Flex align="center" gap="xs" wrap="wrap">
                             <Text fz="sm" fw={500}>
                                 Details

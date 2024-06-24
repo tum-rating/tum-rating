@@ -65,7 +65,9 @@ const AdminCoursesProposalsTable = () => {
                         <Badge radius="sm" fw={800} c="white" px={6}>
                             {data.length}
                         </Badge>
-                        <Text lineClamp={2} fw={600} className={classes.tableHeaderText}>Active proposals</Text>
+                        <Text lineClamp={2} fw={600} className={classes.tableHeaderText}>
+                            Active proposals
+                        </Text>
                     </Flex>
                     <Tooltip label="Add course proposal" openDelay={400}>
                         <ActionIcon variant="lg" onClick={() => navigate('#modal=add-course')} visibleFrom={'sm'}>

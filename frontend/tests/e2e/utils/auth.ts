@@ -30,7 +30,7 @@ const signUp = async (props: AuthAction) => {
     await page.getByTestId('username').fill(user.username);
     await page.getByTestId('password').fill(user.password);
     await page.getByTestId('submit').click();
-    await expect(page.getByText(user.email, { exact: true })).toBeVisible({timeout: 60000});
+    await expect(page.getByText(user.email, { exact: true })).toBeVisible({ timeout: 60000 });
 };
 
 const activateAccount = async (props: AuthAction) => {

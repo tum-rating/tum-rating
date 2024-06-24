@@ -14,7 +14,7 @@ const TableSearch = (props: TableToolboxProps) => {
     return (
         <>
             <TextInput
-                size={"sm"}
+                size={'sm'}
                 leftSectionPointerEvents="none"
                 leftSection={<IconSearch width={18} />}
                 placeholder="Search"
@@ -36,7 +36,6 @@ const TableSearch = (props: TableToolboxProps) => {
                 }
             ></TextInput>
         </>
-
     );
 };
 
