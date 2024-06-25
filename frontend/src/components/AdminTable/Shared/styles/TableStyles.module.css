@@ -4,15 +4,12 @@
 
 .tableCellRow{
     height: 37px;
-    /*font-size: 12px;*/
-    /*height: 40px;*/
-    /*@media (max-width: 768px){*/
-    /*    font-size: 10px;*/
-    /*    padding: 2px 8px;*/
-    /*    height: 50px;*/
-    /*    border-radius: 0;*/
-    /*    .mrt-table-head-cell-content-wrapper{*/
-    /*        font-size: 10px;*/
-    /*    }*/
-    /*}*/
+}
+
+.tableHeaderText{
+    font-size: var(--mantine-font-size-sm);
+    @media (max-width: $mantine-breakpoint-sm) {
+        line-height: 1;
+        font-size: var(--mantine-font-size-xs)
+    }
 }
