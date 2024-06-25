@@ -122,9 +122,6 @@ export class UserService {
                 coursesToUpdate[review.courseId as unknown as string] = true;
             };
 
-
-            console.log('here 4.5', coursesToUpdate)
-
             for (const courseId in coursesToUpdate) {
                 const stats = await this._reviewRepository.getStatsByCourseId(courseId, session);
 
