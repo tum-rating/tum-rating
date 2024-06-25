@@ -1,4 +1,4 @@
-import { ActionIcon, Anchor, AppShell, Box, Burger, Button, Drawer, Flex, Group, Image, Stack, Switch, Text, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, Anchor, AppShell, Box, Burger, Button, Flex, Group, Image, Stack, Switch, Text, useMantineColorScheme } from '@mantine/core';
 import { useDisclosure, useHotkeys, useMediaQuery } from '@mantine/hooks';
 import { IconMoonStars, IconSun } from '@tabler/icons-react';
 import { PropsWithChildren } from 'react';
@@ -13,12 +13,13 @@ import { SearchInputDesktop } from '@/components/Search';
 import { UserButton } from '@/components/UserButton';
 import { HEADER_HEIGHT, MAX_SITE_WIDTH } from '@/constants/styles.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
+import {Drawer} from "@/components/Drawer";
 
 export const MainLayout = ({ children }: PropsWithChildren) => {
     const { data: user, isLoading } = useUser();
     const isAdmin = isLoading ? false : user?.isAdmin;
     const navigate = useNavigate();
-    const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+    const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure();
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const smallerMode = useMediaQuery('(max-width: 48em)');
     const signOut = useSignOut();
@@ -71,7 +72,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                                 variant="primary-gradient"
                                 onClick={() => {
                                     navigate(getPath(Paths.admin));
-                                    toggleMobile();
+                                    toggleDrawer();
                                 }}
                             >
                                 Admin
@@ -80,67 +81,70 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     </Flex>
                 </Flex>
                 <Group hiddenFrom="sm" h="100%" px="md" justify="space-between" pos="relative">
-                    <Burger data-testid="burger" opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+                    <Burger data-testid="burger" opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" size="sm" />
                     <Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>
                     <SearchInputDesktop />
                 </Group>
             </AppShell.Header>
             <AppShell.Main p={0} m={0}>
-                <Drawer style={{ zIndex: 6 }} title={<Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>} opened={mobileOpened} onClose={toggleMobile} overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}>
-                    <Stack h="100%" justify="space-between">
-                        <Flex align="center" justify="space-between">
-                            {user ? <UserButton withoutDropdown /> : <Text>Hello</Text>}
-                            <Switch data-testid="color-scheme-toggle" size="md" onChange={toggleColorScheme} checked={colorScheme === 'light'} onLabel={<IconSun size="1.1rem" />} offLabel={<IconMoonStars size="1.1rem" />} />
-                        </Flex>
-                        <Flex direction="column" w="100%" wrap="nowrap" gap="sm">
-                            {user ? (
-                                <>
-                                    {isAdmin ?? (
-                                        <Button
-                                            fullWidth
-                                            size="lg"
-                                            variant="primary-gradient"
-                                            onClick={() => {
-                                                navigate(getPath(Paths.admin));
-                                                toggleMobile();
-                                            }}
-                                        >
-                                            Admin
-                                        </Button>
-                                    )}
-                                    <Button fullWidth size="lg" variant="outline" onClick={() => signOut()}>
-                                        Log out
-                                    </Button>
-                                </>
-                            ) : (
-                                <>
-                                    <Button
-                                        fullWidth
-                                        size="md"
-                                        variant="outline"
-                                        onClick={() => {
-                                            navigate(getPath(Paths.signIn));
-                                            toggleMobile();
-                                        }}
-                                    >
-                                        Sign In
-                                    </Button>
-                                    <Button
-                                        fullWidth
-                                        size="md"
-                                        variant="primary-gradient"
-                                        onClick={() => {
-                                            navigate(getPath(Paths.signUp));
-                                            toggleMobile();
-                                        }}
-                                    >
-                                        Sign Up
-                                    </Button>
-                                </>
-                            )}
-                        </Flex>
-                    </Stack>
+                <Drawer open={drawerOpened}>
+                    asd
                 </Drawer>
+                {/*<Drawer style={{ zIndex: 6 }} title={<Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>} opened={drawerOpened} onClose={toggleDrawer} overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}>*/}
+                {/*    <Stack h="100%" justify="space-between">*/}
+                {/*        <Flex align="center" justify="space-between">*/}
+                {/*            {user ? <UserButton withoutDropdown /> : <Text>Hello</Text>}*/}
+                {/*            <Switch data-testid="color-scheme-toggle" size="md" onChange={toggleColorScheme} checked={colorScheme === 'light'} onLabel={<IconSun size="1.1rem" />} offLabel={<IconMoonStars size="1.1rem" />} />*/}
+                {/*        </Flex>*/}
+                {/*        <Flex direction="column" w="100%" wrap="nowrap" gap="sm">*/}
+                {/*            {user ? (*/}
+                {/*                <>*/}
+                {/*                    {isAdmin ?? (*/}
+                {/*                        <Button*/}
+                {/*                            fullWidth*/}
+                {/*                            size="lg"*/}
+                {/*                            variant="primary-gradient"*/}
+                {/*                            onClick={() => {*/}
+                {/*                                navigate(getPath(Paths.admin));*/}
+                {/*                                toggleDrawer();*/}
+                {/*                            }}*/}
+                {/*                        >*/}
+                {/*                            Admin*/}
+                {/*                        </Button>*/}
+                {/*                    )}*/}
+                {/*                    <Button fullWidth size="lg" variant="outline" onClick={() => signOut()}>*/}
+                {/*                        Log out*/}
+                {/*                    </Button>*/}
+                {/*                </>*/}
+                {/*            ) : (*/}
+                {/*                <>*/}
+                {/*                    <Button*/}
+                {/*                        fullWidth*/}
+                {/*                        size="md"*/}
+                {/*                        variant="outline"*/}
+                {/*                        onClick={() => {*/}
+                {/*                            navigate(getPath(Paths.signIn));*/}
+                {/*                            toggleDrawer();*/}
+                {/*                        }}*/}
+                {/*                    >*/}
+                {/*                        Sign In*/}
+                {/*                    </Button>*/}
+                {/*                    <Button*/}
+                {/*                        fullWidth*/}
+                {/*                        size="md"*/}
+                {/*                        variant="primary-gradient"*/}
+                {/*                        onClick={() => {*/}
+                {/*                            navigate(getPath(Paths.signUp));*/}
+                {/*                            toggleDrawer();*/}
+                {/*                        }}*/}
+                {/*                    >*/}
+                {/*                        Sign Up*/}
+                {/*                    </Button>*/}
+                {/*                </>*/}
+                {/*            )}*/}
+                {/*        </Flex>*/}
+                {/*    </Stack>*/}
+                {/*</Drawer>*/}
                 <Flex justify="center" pt={HEADER_HEIGHT} mx="auto" h={`calc(100vh)`} maw={MAX_SITE_WIDTH}>
                     {children}
                 </Flex>
