@@ -19,11 +19,11 @@ const isEqual = (prev: SwipeState, next: SwipeState): boolean => prev.swiping ==
 interface DrawerProps {
     open: boolean;
     children?: ReactNode;
-    toggleFn?: () => void;
+    toggle: (flag?: boolean) => void;
 }
 
 const Drawer = (props: DrawerProps) => {
-    const { open, children, toggleFn } = props;
+    const { open, children, toggle } = props;
     const [state, setState] = useState(initialState);
     const [drawerX, setDrawerX] = useState(DRAWER_CLOSED_X);
 
@@ -146,22 +146,26 @@ const Drawer = (props: DrawerProps) => {
                 if (-state.alphaX >= (isOpenRef.current ? DRAWER_WIDTH * 0.9 : DRAWER_WIDTH * 0.1)) {
                     isOpenRef.current = true;
                     setDrawerX(DRAWER_OPENED_X);
+                    toggle(true);
                 } else {
                     isOpenRef.current = false;
                     setDrawerX(DRAWER_CLOSED_X);
+                    toggle(false);
                 }
             } else {
                 if (isOpenRef.current) {
                     setDrawerX(DRAWER_OPENED_X);
+                    toggle(true);
                 } else {
                     setDrawerX(DRAWER_CLOSED_X);
+                    toggle(false);
                 }
             }
         }
     }, [state]);
 
     useEffect(() => {
-        if(open === isOpenRef.current) return;
+        if (open === isOpenRef.current) return;
         isOpenRef.current = open;
         setDrawerX(open ? DRAWER_OPENED_X : DRAWER_CLOSED_X);
     }, [open]);
@@ -203,7 +207,7 @@ const Drawer = (props: DrawerProps) => {
                     zIndex: 999,
                     display: isOpenRef.current ? 'block' : 'none',
                 }}
-                onClick={toggleFn}
+                onClick={() => toggle()}
             ></div>
         </>
     );

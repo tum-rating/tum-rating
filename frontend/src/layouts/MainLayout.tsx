@@ -1,19 +1,7 @@
-import {
-    ActionIcon,
-    Anchor,
-    AppShell,
-    Box,
-    Burger,
-    Button,
-    Flex,
-    Group,
-    Image,
-    Stack, Switch, Text,
-    useMantineColorScheme
-} from '@mantine/core';
-import { useDisclosure, useHotkeys, useMediaQuery } from '@mantine/hooks';
+import { ActionIcon, Anchor, AppShell, Box, Button, Flex, Group, Image, Stack, Switch, Text, useMantineColorScheme } from '@mantine/core';
+import { useHotkeys, useMediaQuery } from '@mantine/hooks';
 import { IconMoonStars, IconSun } from '@tabler/icons-react';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import { isMobileOnly } from 'react-device-detect';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,6 +9,7 @@ import logoDark from '@/assets/img/logo-dark.png';
 import logo from '@/assets/img/logo.png';
 import { useSignOut } from '@/auth/useSignOut';
 import { useUser } from '@/auth/useUser';
+import { Burger } from '@/components/Burger';
 import { Drawer } from '@/components/Drawer';
 import { SearchInputDesktop } from '@/components/Search';
 import { UserButton } from '@/components/UserButton';
@@ -31,7 +20,14 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
     const { data: user, isLoading } = useUser();
     const isAdmin = isLoading ? false : user?.isAdmin;
     const navigate = useNavigate();
-    const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure(false);
+
+    const [drawerOpened, setDrawerOpened] = useState(false);
+
+    const toggleDrawer = (flag?: boolean) => {
+        if (flag === undefined) setDrawerOpened(!drawerOpened);
+        else setDrawerOpened(flag);
+    };
+
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const smallerMode = useMediaQuery('(max-width: 48em)');
     const signOut = useSignOut();
@@ -92,14 +88,14 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     </Flex>
                 </Flex>
                 <Group hiddenFrom="sm" h="100%" px="md" justify="space-between" pos="relative">
-                    <Burger data-testid="burger" opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" size="sm" />
+                    <Burger open={drawerOpened} toggle={toggleDrawer}></Burger>
                     <Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>
                     <SearchInputDesktop />
                 </Group>
             </AppShell.Header>
             <AppShell.Main p={0} m={0}>
-                <Box hiddenFrom={"sm"}>
-                    <Drawer open={drawerOpened}>
+                <Box hiddenFrom={'sm'}>
+                    <Drawer open={drawerOpened} toggle={toggleDrawer}>
                         <Stack h="100%" justify="space-between" p="sm">
                             <Flex align="center" justify="space-between">
                                 {user ? <UserButton withoutDropdown /> : <Text>Hello</Text>}
