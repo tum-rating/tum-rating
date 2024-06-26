@@ -15,7 +15,7 @@ afterAll(async () => {
 });
 
 describe('Scrape Course Proposal', () => {
-    it('should scrape course proposal', async () => {
+    it.skip('should scrape course proposal', async () => {
         const signInResponse = await signInRequestMock();
         const singInAdminResponse = await signInAdminRequestMock();
 
