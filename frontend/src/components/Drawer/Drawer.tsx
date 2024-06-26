@@ -147,13 +147,13 @@ const Drawer = (props: DrawerProps) => {
                     position: 'fixed',
                     top: 0,
                     left: 0,
+                    borderRight: '1px solid var(--app-shell-border-color)',
                     background: 'var(--mantine-color-body)',
                     width: DRAWER_WIDTH,
                     height: '100%',
                     zIndex: 1000,
                 }}
             >
-                <div>isOpen: {String(isOpenRef.current)}</div>
                 <div
                     className="content"
                     style={{
@@ -170,9 +170,13 @@ const Drawer = (props: DrawerProps) => {
                     inset: 0,
                     width: '100%',
                     height: '100%',
-                    filter: 'blur(5px)',
+                    filter: 'invert(1)',
+                    opacity: '.1',
+                    background: 'var(--mantine-color-body)',
                     zIndex: 999,
                     display: isOpenRef.current ? 'block' : 'none',
+                    willChange: 'opacity, filter',
+                    transition: 'opacity .4s, filter .4s',
                 }}
                 onClick={() => toggle()}
             ></div>
