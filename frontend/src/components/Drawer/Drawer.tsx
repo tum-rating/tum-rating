@@ -33,7 +33,6 @@ const Drawer = (props: DrawerProps) => {
     const isOpenRef = useRef(open);
 
     const startSwipe = (e: MouseEvent | TouchEvent) => {
-        e.preventDefault();
         e.stopPropagation();
         const clientX = getPointerCoordinates(e);
         if (!isOpenRef.current && clientX > SWIPEABLE_AREA) return;
@@ -60,16 +59,13 @@ const Drawer = (props: DrawerProps) => {
 
     const endSwipe = (e: MouseEvent | TouchEvent) => {
         if (isDraggingRef.current) {
-            e.preventDefault();
             e.stopPropagation();
             setState((prevState) => ({
                 ...prevState,
                 swiping: false,
-                count: state.count + 1,
+                count: prevState.count++
             }));
         }
-
-        startingPointRef.current = -1;
         isDraggingRef.current = false;
     };
 
@@ -94,46 +90,17 @@ const Drawer = (props: DrawerProps) => {
         [endSwipe],
     );
 
-    const onMouseDown = useCallback(
-        (e: MouseEvent) => {
-            startSwipe(e);
-        },
-        [startSwipe],
-    );
-
-    const onMouseMove = useCallback(
-        (e: MouseEvent) => {
-            continueSwipe(e);
-        },
-        [continueSwipe],
-    );
-
-    const onMouseUp = useCallback(
-        (e: MouseEvent) => {
-            endSwipe(e);
-        },
-        [endSwipe],
-    );
-
     useEffect(() => {
         if (isMobile) {
             document.addEventListener('touchstart', onTouchStart);
             document.addEventListener('touchmove', onTouchMove);
             document.addEventListener('touchend', onTouchEnd);
-        } else {
-            document.addEventListener('mousedown', onMouseDown);
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
         }
         return () => {
             if (isMobile) {
                 document.removeEventListener('touchstart', onTouchStart);
                 document.removeEventListener('touchmove', onTouchMove);
                 document.removeEventListener('touchend', onTouchEnd);
-            } else {
-                document.removeEventListener('mousedown', onMouseDown);
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
             }
         };
     }, [document]);
@@ -142,8 +109,8 @@ const Drawer = (props: DrawerProps) => {
         if (state.swiping) {
             setDrawerX(-state.alphaX - DRAWER_WIDTH);
         } else {
-            if (state.count > 0) {
-                if (-state.alphaX >= (isOpenRef.current ? DRAWER_WIDTH * 0.9 : DRAWER_WIDTH * 0.1)) {
+            if(state.count > 0){
+                if(-state.alphaX >= startingPointRef.current){
                     isOpenRef.current = true;
                     setDrawerX(DRAWER_OPENED_X);
                     toggle(true);
@@ -152,11 +119,11 @@ const Drawer = (props: DrawerProps) => {
                     setDrawerX(DRAWER_CLOSED_X);
                     toggle(false);
                 }
-            } else {
-                if (isOpenRef.current) {
+            }else{
+                if(isOpenRef.current){
                     setDrawerX(DRAWER_OPENED_X);
                     toggle(true);
-                } else {
+                }else{
                     setDrawerX(DRAWER_CLOSED_X);
                     toggle(false);
                 }
