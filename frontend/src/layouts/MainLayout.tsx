@@ -1,4 +1,16 @@
-import { ActionIcon, Anchor, AppShell, Box, Burger, Button, Flex, Group, Image, Stack, Switch, Text, useMantineColorScheme } from '@mantine/core';
+import {
+    ActionIcon,
+    Anchor,
+    AppShell,
+    Box,
+    Burger,
+    Button,
+    Flex,
+    Group,
+    Image,
+    Stack, Switch, Text,
+    useMantineColorScheme
+} from '@mantine/core';
 import { useDisclosure, useHotkeys, useMediaQuery } from '@mantine/hooks';
 import { IconMoonStars, IconSun } from '@tabler/icons-react';
 import { PropsWithChildren } from 'react';
@@ -9,22 +21,21 @@ import logoDark from '@/assets/img/logo-dark.png';
 import logo from '@/assets/img/logo.png';
 import { useSignOut } from '@/auth/useSignOut';
 import { useUser } from '@/auth/useUser';
+import { Drawer } from '@/components/Drawer';
 import { SearchInputDesktop } from '@/components/Search';
 import { UserButton } from '@/components/UserButton';
 import { HEADER_HEIGHT, MAX_SITE_WIDTH } from '@/constants/styles.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
-import {Drawer} from "@/components/Drawer";
 
 export const MainLayout = ({ children }: PropsWithChildren) => {
     const { data: user, isLoading } = useUser();
     const isAdmin = isLoading ? false : user?.isAdmin;
     const navigate = useNavigate();
-    const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure();
+    const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure(false);
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const smallerMode = useMediaQuery('(max-width: 48em)');
     const signOut = useSignOut();
     useHotkeys([['/', () => navigate(getPath(Paths.spotlight))]]);
-
     return (
         <AppShell header={{ height: HEADER_HEIGHT }} padding="md">
             <Box
@@ -35,7 +46,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     zIndex: -1,
                 }}
             />
-            <AppShell.Header maw="100vw">
+            <AppShell.Header maw="100vw" zIndex={1001}>
                 <Flex visibleFrom="sm" h="100%" px="md" justify="space-between" align="center">
                     <Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>
                     {!isMobileOnly && !smallerMode && (
@@ -87,64 +98,63 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                 </Group>
             </AppShell.Header>
             <AppShell.Main p={0} m={0}>
-                <Drawer open={drawerOpened}>
-                    asd
-                </Drawer>
-                {/*<Drawer style={{ zIndex: 6 }} title={<Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>} opened={drawerOpened} onClose={toggleDrawer} overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}>*/}
-                {/*    <Stack h="100%" justify="space-between">*/}
-                {/*        <Flex align="center" justify="space-between">*/}
-                {/*            {user ? <UserButton withoutDropdown /> : <Text>Hello</Text>}*/}
-                {/*            <Switch data-testid="color-scheme-toggle" size="md" onChange={toggleColorScheme} checked={colorScheme === 'light'} onLabel={<IconSun size="1.1rem" />} offLabel={<IconMoonStars size="1.1rem" />} />*/}
-                {/*        </Flex>*/}
-                {/*        <Flex direction="column" w="100%" wrap="nowrap" gap="sm">*/}
-                {/*            {user ? (*/}
-                {/*                <>*/}
-                {/*                    {isAdmin ?? (*/}
-                {/*                        <Button*/}
-                {/*                            fullWidth*/}
-                {/*                            size="lg"*/}
-                {/*                            variant="primary-gradient"*/}
-                {/*                            onClick={() => {*/}
-                {/*                                navigate(getPath(Paths.admin));*/}
-                {/*                                toggleDrawer();*/}
-                {/*                            }}*/}
-                {/*                        >*/}
-                {/*                            Admin*/}
-                {/*                        </Button>*/}
-                {/*                    )}*/}
-                {/*                    <Button fullWidth size="lg" variant="outline" onClick={() => signOut()}>*/}
-                {/*                        Log out*/}
-                {/*                    </Button>*/}
-                {/*                </>*/}
-                {/*            ) : (*/}
-                {/*                <>*/}
-                {/*                    <Button*/}
-                {/*                        fullWidth*/}
-                {/*                        size="md"*/}
-                {/*                        variant="outline"*/}
-                {/*                        onClick={() => {*/}
-                {/*                            navigate(getPath(Paths.signIn));*/}
-                {/*                            toggleDrawer();*/}
-                {/*                        }}*/}
-                {/*                    >*/}
-                {/*                        Sign In*/}
-                {/*                    </Button>*/}
-                {/*                    <Button*/}
-                {/*                        fullWidth*/}
-                {/*                        size="md"*/}
-                {/*                        variant="primary-gradient"*/}
-                {/*                        onClick={() => {*/}
-                {/*                            navigate(getPath(Paths.signUp));*/}
-                {/*                            toggleDrawer();*/}
-                {/*                        }}*/}
-                {/*                    >*/}
-                {/*                        Sign Up*/}
-                {/*                    </Button>*/}
-                {/*                </>*/}
-                {/*            )}*/}
-                {/*        </Flex>*/}
-                {/*    </Stack>*/}
-                {/*</Drawer>*/}
+                <Box hiddenFrom={"sm"}>
+                    <Drawer open={drawerOpened}>
+                        <Stack h="100%" justify="space-between" p="sm">
+                            <Flex align="center" justify="space-between">
+                                {user ? <UserButton withoutDropdown /> : <Text>Hello</Text>}
+                                <Switch data-testid="color-scheme-toggle" size="md" onChange={toggleColorScheme} checked={colorScheme === 'light'} onLabel={<IconSun size="1.1rem" />} offLabel={<IconMoonStars size="1.1rem" />} />
+                            </Flex>
+                            <Flex direction="column" w="100%" wrap="nowrap" gap="sm">
+                                {user ? (
+                                    <>
+                                        {isAdmin ?? (
+                                            <Button
+                                                fullWidth
+                                                size="lg"
+                                                variant="primary-gradient"
+                                                onClick={() => {
+                                                    navigate(getPath(Paths.admin));
+                                                    toggleDrawer();
+                                                }}
+                                            >
+                                                Admin
+                                            </Button>
+                                        )}
+                                        <Button fullWidth size="lg" variant="outline" onClick={() => signOut()}>
+                                            Log out
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Button
+                                            fullWidth
+                                            size="md"
+                                            variant="outline"
+                                            onClick={() => {
+                                                navigate(getPath(Paths.signIn));
+                                                toggleDrawer();
+                                            }}
+                                        >
+                                            Sign In
+                                        </Button>
+                                        <Button
+                                            fullWidth
+                                            size="md"
+                                            variant="primary-gradient"
+                                            onClick={() => {
+                                                navigate(getPath(Paths.signUp));
+                                                toggleDrawer();
+                                            }}
+                                        >
+                                            Sign Up
+                                        </Button>
+                                    </>
+                                )}
+                            </Flex>
+                        </Stack>
+                    </Drawer>
+                </Box>
                 <Flex justify="center" pt={HEADER_HEIGHT} mx="auto" h={`calc(100vh)`} maw={MAX_SITE_WIDTH}>
                     {children}
                 </Flex>

@@ -1,27 +1,18 @@
-const DRAWER_WIDTH = 375;
-// const DRAWER_LEFT_OVERFLOW_WIDTH = 90;
-// const DRAWER_CONTENT_WIDTH = DRAWER_WIDTH * 0.67;
-// const CLOSED_DRAWER_DRAGGABLE_SPACE = 0;
-//
-// const CLOSED_DRAWER_X = -DRAWER_WIDTH;
-// const OPENED_DRAWER_X = 0;
-//
-// const START_SPACE = 25;
-//
-// const MINIMAL_SWIPE_DISTANCE = 50;
-// const MINIMAL_SWIPE_TIME = 100;
-//
-//
-// const OPENED_DRAWER_ANIMATION_NAME = 'opened-drawer';
-// const CLOSED_DRAWER_ANIMATION_NAME = 'closed-drawer';
-//
+import {isMobile} from "react-device-detect";
 
+const DRAWER_WIDTH = isMobile ? window.innerWidth : 420;
+const DRAG_THRESHOLD = 20;
+// const FAST_SWIPE_THRESHOLD = 150;
+const SWIPEABLE_AREA = isMobile ? DRAWER_WIDTH / 1.5 : 250
 
-const DRAG_THRESHOLD = 10;
-const SWIPEABLE_AREA = 1000;
+const DRAWER_CLOSED_X = -DRAWER_WIDTH;
+const DRAWER_OPENED_X = 0;
 
 export {
     DRAG_THRESHOLD,
     SWIPEABLE_AREA,
-    DRAWER_WIDTH
+    DRAWER_WIDTH,
+    DRAWER_CLOSED_X,
+    DRAWER_OPENED_X,
+    // FAST_SWIPE_THRESHOLD
 }
