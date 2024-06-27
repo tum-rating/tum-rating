@@ -39,6 +39,6 @@ services:
 
     depends_on:
       mongodb:
-        condition: service_started
+        condition: service_healthy 
       mailer:
         condition: service_started
