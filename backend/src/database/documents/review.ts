@@ -3,7 +3,10 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 
 import { User } from './user';
 
-@Schema()
+@Schema({
+    autoCreate: true, 
+    autoIndex: true
+})
 export class Review {
     @Prop({
         required: true,
