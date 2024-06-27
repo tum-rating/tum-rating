@@ -140,6 +140,7 @@ const Drawer = (props: DrawerProps) => {
     return (
         <>
             <div
+                data-testid='drawer'
                 style={{
                     willChange: 'transform',
                     transform: `translateX(${drawerX}px)`,
@@ -155,6 +156,7 @@ const Drawer = (props: DrawerProps) => {
                 }}
             >
                 <div
+                    data-testid="drawer-content"
                     className="content"
                     style={{
                         paddingTop: HEADER_HEIGHT,
@@ -164,6 +166,7 @@ const Drawer = (props: DrawerProps) => {
                 </div>
             </div>
             <div
+                data-testid='drawer-backdrop'
                 className="backdrop"
                 style={{
                     position: 'fixed',
