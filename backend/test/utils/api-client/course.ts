@@ -4,7 +4,6 @@ import { faker } from '@faker-js/faker';
 import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNumberOfLenght';
 import { baseUrlV1 } from './config';
 
-import { Review } from 'src/database/documents/review';
 import { CreateCourseRequestDto } from '@tum-rating/backend/src/modules/course/dto/CreateCourseRequest.dto';
 import { CourseWithPopulatedReviews } from '@tum-rating/backend/src/database/documents/course';
 import { AddReviewRequestDto } from '@tum-rating/backend/src/modules/course/dto/AddReviewRequest.dto';

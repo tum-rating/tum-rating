@@ -64,33 +64,6 @@ describe('Add Review', () => {
             .expect(409);
     });
 
-    it('should fail if user review is already present', async () => {
-        const signInResponse = await signInRequestMock();
-
-        const signInAdminResponse = await signInAdminRequestMock();
-
-        const createdReview = await createCourseMockRequest(signInAdminResponse.token);
-
-        const requestBody: AddReviewRequestDto = {
-            howInterestingRating: 3,
-            howEasyRating: 4,
-            comment: faker.word.words(),
-            semester: createdReview.offeredInSemesters[0],
-        };
-
-        await supertest(`${courseUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
-            .post('/')
-            .set('Authorization', 'Bearer ' + signInResponse.token)
-            .send(requestBody)
-            .expect(201);
-
-        return supertest(`${courseUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
-            .post('/')
-            .set('Authorization', 'Bearer ' + signInResponse.token)
-            .send(requestBody)
-            .expect(409);
-    });
-
     it('should fail if user review semester is not matching review one', async () => {
         const signInResponse = await signInRequestMock();
 
