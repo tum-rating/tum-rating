@@ -72,6 +72,6 @@ export class CourseRepository extends BaseRepository<Course> {
     }
 
     public async updateCourseStats(courseId: string, stats: Pick<Course, 'howEasyRatingAverage' | 'howInterestingRatingAverage' | 'votesNumber'>, session?: ClientSession) {
-        return this._courseModel.updateOne({ _id: courseId }, stats, { session });
+        return this._courseModel.findOneAndUpdate({ _id: courseId }, stats, { session });
     }
 }
