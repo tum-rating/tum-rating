@@ -6,7 +6,10 @@ export enum UserRole {
     admin,
 }
 
-@Schema()
+@Schema({
+    autoCreate: true, 
+    autoIndex: true
+})
 export class User {
     @Prop({ required: true, unique: true, message: 'username must be unique' })
     username: string;
