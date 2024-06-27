@@ -1,4 +1,3 @@
-import {Image, useMantineColorScheme} from "@mantine/core";
 import { closeAllModals, useModals } from '@mantine/modals';
 import { PropsWithChildren, useEffect, useMemo } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -23,7 +22,6 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
     const { courseId } = useParams();
     const { data: user } = useUser();
     let modalsContext = useModals();
-    const { colorScheme } = useMantineColorScheme();
     const modalSharedParams = useMemo(
         () => ({
             onClose: () => {

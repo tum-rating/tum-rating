@@ -4,7 +4,7 @@ import {ReactElement} from "react";
 
 interface AuthModalHeaderProps {
     title: string;
-    subTitle: string | ReactElement;
+    subTitle?: string | ReactElement;
     icon?: ReactElement;
 
 }
@@ -19,11 +19,12 @@ const AuthModalHeader = (props: AuthModalHeaderProps) => {
                 </ThemeIcon>
                 <Text fz={24} fw="bold">{title}</Text>
             </Flex>
-            <Text px="sm" fz="sm" fw="500">
-                {
-                    subTitle
-                }
-            </Text>
+            {subTitle &&
+                <Text px="sm" fz="sm" fw="500">
+                    {
+                        subTitle
+                    }
+                </Text>}
             <Divider/>
         </Flex>
     )

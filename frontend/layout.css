@@ -5,9 +5,9 @@
     --_content-height: 100% !important;
 }
 
-
 .mantine-Modal-body{
     height: calc(100% - 60px);
+    z-index: 99999;
 }
 
 .children-animation > * {

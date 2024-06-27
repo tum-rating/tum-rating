@@ -12,6 +12,7 @@ export const contextModalConfig = (config: ContextModalConfigProps) => {
     return {
         centered: true,
         height: '100%',
+        padding: 0,
         innerProps: {},
         ...config,
     };
