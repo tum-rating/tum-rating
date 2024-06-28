@@ -1,9 +1,9 @@
-import {fireEvent} from "@testing-library/react";
-import {vi} from "vitest";
+import { fireEvent } from '@testing-library/react';
+import { vi } from 'vitest';
 
-import {CloseButton} from "../CloseButton"
+import { CloseButton } from '../CloseButton';
 
-import {render} from "tests/unit/utils/render";
+import { render } from 'tests/unit/utils/render';
 
 describe('CloseButton', () => {
     it('should render without crashing', () => {

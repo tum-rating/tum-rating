@@ -1,5 +1,5 @@
 import { ContextModalProps } from '@mantine/modals';
-import {ReactNode} from "react";
+import { ReactNode } from 'react';
 
 type OptionalContextModalProps = Partial<Omit<ContextModalProps, 'modal'>>;
 
@@ -13,7 +13,7 @@ export const contextModalConfig = (config: ContextModalConfigProps) => {
         centered: true,
         padding: 0,
         innerProps: {
-            size: 'auto'
+            size: 'auto',
         },
         ...config,
     };

@@ -4,7 +4,7 @@ import { isMobile } from 'react-device-detect';
 import { DRAG_THRESHOLD, DRAWER_CLOSED_X, DRAWER_OPENED_X, DRAWER_WIDTH, SWIPEABLE_AREA } from './constans.ts';
 import { getPointerCoordinates } from './utils.ts';
 
-import {DRAWER_BACKDROP_Z_INDEX, DRAWER_Z_INDEX, HEADER_HEIGHT} from '@/constants';
+import { DRAWER_BACKDROP_Z_INDEX, DRAWER_Z_INDEX, HEADER_HEIGHT } from '@/constants';
 
 export interface SwipeState {
     swiping: boolean;
@@ -15,7 +15,6 @@ export interface SwipeState {
 const initialState: SwipeState = { swiping: false, alphaX: DRAWER_CLOSED_X, count: 0 };
 
 const isEqual = (prev: SwipeState, next: SwipeState): boolean => prev.swiping === next.swiping && prev.count === next.count && prev.alphaX === next.alphaX;
-
 
 interface DrawerProps {
     open: boolean;
@@ -64,7 +63,7 @@ const Drawer = (props: DrawerProps) => {
             setState((prevState) => ({
                 ...prevState,
                 swiping: false,
-                count: prevState.count++
+                count: prevState.count++,
             }));
         }
         isDraggingRef.current = false;
@@ -110,8 +109,8 @@ const Drawer = (props: DrawerProps) => {
         if (state.swiping) {
             setDrawerX(-state.alphaX - DRAWER_WIDTH);
         } else {
-            if(state.count > 0){
-                if(-state.alphaX >= startingPointRef.current){
+            if (state.count > 0) {
+                if (-state.alphaX >= startingPointRef.current) {
                     isOpenRef.current = true;
                     setDrawerX(DRAWER_OPENED_X);
                     toggle(true);
@@ -120,11 +119,11 @@ const Drawer = (props: DrawerProps) => {
                     setDrawerX(DRAWER_CLOSED_X);
                     toggle(false);
                 }
-            }else{
-                if(isOpenRef.current){
+            } else {
+                if (isOpenRef.current) {
                     setDrawerX(DRAWER_OPENED_X);
                     toggle(true);
-                }else{
+                } else {
                     setDrawerX(DRAWER_CLOSED_X);
                     toggle(false);
                 }
@@ -141,7 +140,7 @@ const Drawer = (props: DrawerProps) => {
     return (
         <>
             <div
-                data-testid='drawer'
+                data-testid="drawer"
                 style={{
                     willChange: 'transform',
                     transform: `translateX(${drawerX}px)`,
@@ -153,7 +152,7 @@ const Drawer = (props: DrawerProps) => {
                     background: 'var(--mantine-color-body)',
                     width: DRAWER_WIDTH,
                     height: '100%',
-                    zIndex: DRAWER_Z_INDEX
+                    zIndex: DRAWER_Z_INDEX,
                 }}
             >
                 <div
@@ -167,7 +166,7 @@ const Drawer = (props: DrawerProps) => {
                 </div>
             </div>
             <div
-                data-testid='drawer-backdrop'
+                data-testid="drawer-backdrop"
                 className="backdrop"
                 style={{
                     position: 'fixed',
@@ -180,7 +179,7 @@ const Drawer = (props: DrawerProps) => {
                     display: isOpenRef.current ? 'block' : 'none',
                     willChange: 'opacity, filter',
                     transition: 'opacity .4s, filter .4s',
-                    zIndex: DRAWER_BACKDROP_Z_INDEX
+                    zIndex: DRAWER_BACKDROP_Z_INDEX,
                 }}
                 onClick={() => toggle()}
             ></div>

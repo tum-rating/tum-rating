@@ -1,1 +1,1 @@
-export {CloseButton} from './CloseButton';
+export { CloseButton } from './CloseButton';

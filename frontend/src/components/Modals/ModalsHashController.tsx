@@ -11,7 +11,6 @@ import { openRecoveryModal } from '@/components/Modals/RecoveryModal';
 import { openSignInModal } from '@/components/Modals/SignInModal';
 import { openSignUpModal } from '@/components/Modals/SignUpModal';
 
-
 interface ModalsHashControllerProps extends PropsWithChildren {
     withinPortal?: boolean;
 }

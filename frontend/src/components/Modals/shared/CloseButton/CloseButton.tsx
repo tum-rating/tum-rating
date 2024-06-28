@@ -6,7 +6,7 @@ interface CloseButtonProps extends ActionIconProps {
 }
 
 const CloseButton = (props: CloseButtonProps) => {
-    const { style,onClick, ...rest } = props;
+    const { style, onClick, ...rest } = props;
     return (
         <ActionIcon
             data-testid="close-button"

@@ -1,7 +1,7 @@
 import { Badge, Button, Container, Divider, Flex, LoadingOverlay, Select, Stack, Text, Textarea } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
-import {IconStars} from "@tabler/icons-react";
+import { IconStars } from '@tabler/icons-react';
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,12 +9,12 @@ import { useUser } from '@/auth/useUser.tsx';
 import { HowEasyEditableRating } from '@/components/Course/HowEasyEditableRating.tsx';
 import { HowInterestingEditableRating } from '@/components/Course/HowInterestingEditableRating.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
-import {CloseButton} from "@/components/Modals/shared/CloseButton";
-import {ModalHeader} from "@/components/Modals/shared/ModalHeader";
+import { CloseButton } from '@/components/Modals/shared/CloseButton';
+import { ModalHeader } from '@/components/Modals/shared/ModalHeader';
 import { Skeleton } from '@/components/Skeleton';
 import { useAddUserReview, UserAddReviewInput } from '@/courses/useAddUserReview.tsx';
 import { useDetailCourse } from '@/courses/useCourse.tsx';
-import {useVisualViewportHeight} from "@/hooks/useVisualViewportHeight/useVisualViewportHeight.tsx";
+import { useVisualViewportHeight } from '@/hooks/useVisualViewportHeight/useVisualViewportHeight.tsx';
 import classes from '@/pages/PageNotFound/PageNotFound.module.css';
 import { Paths } from '@/routes/paths.ts';
 
@@ -105,8 +105,6 @@ const AddUserReviewModal = ({
         );
     }
 
-
-
     if (!user) {
         return (
             <Flex direction="column" gap="xs" h="100%" justify="center" align="center" py="md">
@@ -127,18 +125,23 @@ const AddUserReviewModal = ({
         );
     }
     return (
-        <Container px={0} pos="relative"  h={visualViewport}>
-             <ModalHeader title="Add review" subTitle={courseData.name} icon={<IconStars width={21}/>}/>
-            <CloseButton onClick={() => {
-                context.closeModal(id);
-            }}/>
+        <Container px={0} pos="relative" h={visualViewport}>
+            <ModalHeader title="Add review" subTitle={courseData.name} icon={<IconStars width={21} />} />
+            <CloseButton
+                onClick={() => {
+                    context.closeModal(id);
+                }}
+            />
             <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-            <form data-testid="form" className="modal-form" style={{ height: '100%', overflowY: 'auto' }}
+            <form
+                data-testid="form"
+                className="modal-form"
+                style={{ height: '100%', overflowY: 'auto' }}
                 onSubmit={form.onSubmit((e) => {
                     handleSubmit(e);
                 })}
             >
-                <Flex direction="column" gap="xs" h="100%"  p="sm">
+                <Flex direction="column" gap="xs" h="100%" p="sm">
                     <Textarea
                         data-testid="textarea"
                         autoFocus
@@ -173,7 +176,7 @@ const AddUserReviewModal = ({
                         </Stack>
                     </Flex>
 
-                    <Flex  justify="space-between" mb="xs">
+                    <Flex justify="space-between" mb="xs">
                         <Button onClick={() => closeModal()} color={'gray'} variant={'subtle'}>
                             Cancel
                         </Button>

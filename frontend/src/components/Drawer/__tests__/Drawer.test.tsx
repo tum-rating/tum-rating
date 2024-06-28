@@ -42,5 +42,4 @@ describe('Drawer', () => {
         fireEvent.click(screen.getByTestId('drawer-backdrop'));
         expect(toggleMock).toHaveBeenCalled();
     });
-
 });

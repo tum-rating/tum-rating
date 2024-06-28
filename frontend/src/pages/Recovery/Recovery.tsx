@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import classes from './Recovery.module.css';
 
 import { useRecovery } from '@/auth/useRecovery.tsx';
-import {useVisualViewportHeight} from "@/hooks/useVisualViewportHeight/useVisualViewportHeight.tsx";
+import { useVisualViewportHeight } from '@/hooks/useVisualViewportHeight/useVisualViewportHeight.tsx';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
 interface RecoveryFormProps {
@@ -43,7 +43,7 @@ export const Recovery = () => {
     const visualViewport = useVisualViewportHeight();
 
     return (
-        <Stack mx="auto" align="center" justify="center" className={classes.wrapper}  h={visualViewport}>
+        <Stack mx="auto" align="center" justify="center" className={classes.wrapper} h={visualViewport}>
             {!token ? (
                 <Center h="100%">
                     <Flex justify="center" align="center" direction="column" gap="md">
@@ -72,7 +72,7 @@ export const Recovery = () => {
                     </Button>
                 </Box>
             ) : (
-                <Box maw={300} >
+                <Box maw={300}>
                     <Text ta="center" fw="bold" fz="xl" mb="xs">
                         Reset Your Password
                     </Text>
