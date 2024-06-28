@@ -112,7 +112,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
     }
     return (
         <Container px={0} pos="relative"  h={visualViewport}>
-            <ModalHeader title="Edit your review" subTitle={courseData.name} icon={<IconStars width={21}/>}/>
+            <ModalHeader title="Edit your review" subTitle={courseData?.name} icon={<IconStars width={21}/>}/>
             <CloseButton onClick={() => {
                 context.closeModal(id);
             }}/>
