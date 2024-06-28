@@ -40,8 +40,8 @@ const addReviewToCourse = async ({ page, courseReview }: CourseAction) => {
     await page.getByTestId('select').click();
     await page.getByRole('option', { name: 'S' }).first().click();
 
-    await page.getByLabel('Add your review').getByText('How easy0No reviews').click();
-    await page.getByLabel('Add your review').getByText('How interesting0No reviews').click();
+    await page.getByTestId('form').getByText('How easy0No reviews').click();
+    await page.getByTestId('form').getByText('How interesting0No reviews').click();
     await page.getByRole('button', { name: 'Send' }).click();
     await page.waitForTimeout(1000);
 

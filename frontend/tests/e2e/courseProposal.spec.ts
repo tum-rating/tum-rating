@@ -46,7 +46,7 @@ test.describe('without authorization', () => {
         await page.getByRole('textbox', { name: 'Search...' }).fill(weirdQuery);
         await expect(page.getByText('No matching courses for', { exact: true })).toBeVisible();
         await page.getByRole('button', { name: 'Sign In to Add Course Proposal' }).click();
-        await expect(page.getByRole('dialog', { name: 'Sign In' })).toBeVisible();
+        await expect(page.getByText('Sign in', { exact: true })).toBeVisible();
     });
 
     test('[mobile] should display sign in dialog when trying to add course proposal without being signed in', async ({ page }) => {
@@ -56,6 +56,6 @@ test.describe('without authorization', () => {
         await page.getByRole('textbox', { name: 'Search...' }).fill(weirdQuery);
         await expect(page.getByText('No matching courses for', { exact: true })).toBeVisible();
         await page.getByRole('button', { name: 'Sign In to Add Course Proposal' }).click();
-        await expect(page.getByRole('dialog', { name: 'Sign In' })).toBeVisible();
+        await expect(page.getByText('Sign in', { exact: true })).toBeVisible();
     });
 });
