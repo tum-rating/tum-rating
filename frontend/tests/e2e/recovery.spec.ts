@@ -8,8 +8,8 @@ test('should set new password in recovery process and sign in with new credentia
     await page.goto('/');
     await expect(page.getByTestId('menu')).toBeVisible();
     await page.getByTestId('menu').click();
-    await page.getByTestId('username-loaded').click();
-    const email = await page.getByTestId('email-loaded').allInnerTexts();
+    await page.getByTestId('username-loaded-dropdown').click();
+    const email = await page.getByTestId('email-loaded-dropdown').allInnerTexts();
     await page.getByRole('menuitem', { name: 'Logout' }).click();
     await page.getByRole('button', { name: 'Sign In' }).click();
     await page.getByRole('button', { name: 'Forgot password?' }).click();
