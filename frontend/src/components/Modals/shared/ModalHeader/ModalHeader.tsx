@@ -14,7 +14,7 @@ const ModalHeader = (props: ModalHeaderProps) => {
     return (
         <Flex mx="auto" w="100%" justify="center" direction="column" gap={"xs"} bg="var(--primary-light-gradient)">
             <Flex align="center" gap={6} px="sm" pt="sm">
-                <ThemeIcon mb={1} variant="gradient" radius="sm">
+                <ThemeIcon mb={1} variant="gradient" radius="sm" data-testid="icon">
                     {icon}
                 </ThemeIcon>
                 <Text fz={24} fw="bold">{title}</Text>
