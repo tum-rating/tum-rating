@@ -1,7 +1,7 @@
-import { faker } from '@faker-js/faker';
-import { expect, Page } from '@playwright/test';
+import {faker} from '@faker-js/faker';
+import {expect, Page} from '@playwright/test';
 
-import { openMobileDrawer } from 'tests/e2e/utils/layout.ts';
+import {openMobileDrawer} from 'tests/e2e/utils/layout.ts';
 
 interface TestUserCredentials {
     email: string;
@@ -17,44 +17,49 @@ interface AuthAction {
 
 const generateTestUser = () => {
     return {
-        email: faker.internet.email({ provider: 'tum.de' }),
+        email: faker.internet.email({provider: 'tum.de'}),
         username: faker.internet.userName(),
         password: faker.internet.password(),
     };
 };
 
 const signUp = async (props: AuthAction) => {
-    const { page, user } = props;
-    await page.getByRole('button', { name: 'Sign up' }).click();
+    const {page, user} = props;
+    await page.getByRole('button', {name: 'Sign up'}).click();
     await page.getByTestId('email').fill(user.email);
     await page.getByTestId('username').fill(user.username);
     await page.getByTestId('password').fill(user.password);
     await page.getByTestId('submit').click();
-    await expect(page.getByText(user.email, { exact: true })).toBeVisible({ timeout: 60000 });
+    await expect(page.getByText(user.email, {exact: true})).toBeVisible({timeout: 60000});
 };
 
 const activateAccount = async (props: AuthAction) => {
-    const { page, user } = props;
+    const {page, user} = props;
     const token = await getActivationTokenFromMail(user.email);
     if (token === null) {
         throw new Error('Token not found');
     }
     await page.goto(`/auth/activate?token=${token}`);
-    await expect(page.getByText(`Your Account is Activated!`, { exact: true })).toBeVisible();
+    await expect(page.getByText(`Your Account is Activated!`, {exact: true})).toBeVisible();
 };
 
 const signIn = async (props: AuthAction) => {
-    const { page, user, mobile = false } = props;
-    await page.getByRole('button', { name: 'Sign In' }).first().click();
+    const {page, user, mobile = false} = props;
+    await page.getByRole('button', { name: 'Sign in', exact: true }).click()
     await page.getByTestId('email').fill(user.email);
     await page.getByTestId('password').fill(user.password);
     await page.getByTestId('submit').click();
     if (mobile) {
-        await openMobileDrawer({ page });
+        await openMobileDrawer({page});
     } else {
         await page.getByTestId('menu').click();
     }
-    await expect(page.getByTestId('email-loaded')).toHaveText(user.email);
+    if (mobile) {
+        await expect(page.getByTestId('email-loaded')).toHaveText(user.email);
+    } else {
+        await expect(page.getByTestId('email-loaded-dropdown')).toHaveText(user.email);
+    }
+
 };
 
 const getActivationTokenFromMail = async (email: string) => {
@@ -83,4 +88,4 @@ const getRecoveryTokenFromMail = async (email: string) => {
     return recoveryToken;
 };
 
-export { signUp, activateAccount, signIn, generateTestUser, getRecoveryTokenFromMail };
+export {signUp, activateAccount, signIn, generateTestUser, getRecoveryTokenFromMail};

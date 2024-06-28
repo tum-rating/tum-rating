@@ -48,7 +48,7 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                                 <Text w={120} data-testid="username-loaded" truncate="end" size="sm" fw={500}>
                                     {user?.username}
                                 </Text>
-                                <Text w={120} data-testid="email-loaded" truncate="end" c="dimmed" size="xs">
+                                <Text w={120} data-testid="email-loaded-dropdown" truncate="end" c="dimmed" size="xs">
                                     {user?.email}
                                 </Text>
                             </Stack>
