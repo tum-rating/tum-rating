@@ -20,7 +20,7 @@ import {useNavigate} from 'react-router-dom';
 import {RecoveryBody, useRecovery} from '@/auth/useRecovery.tsx';
 import {useUser} from '@/auth/useUser.tsx';
 import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
-import {ModalHeader} from "@/components/Modals/shared/ModalHeader";
+import {AuthModalHeader} from "@/components/Modals/shared/AuthModalHeader";
 import {CloseButton} from "@/components/Modals/shared/CloseButton";
 import {getPath, Paths} from '@/routes/paths.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
@@ -73,7 +73,7 @@ const RecoveryModal = ({context, id}: ContextModalProps) => {
                 context.closeModal(id);
             }}/>
             <form className="modal-form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
-                {!isRecoverySuccess && <ModalHeader title="Recovery"
+                {!isRecoverySuccess && <AuthModalHeader title="Recovery"
                                                         subTitle={'Send recovery link to your email.'}/>}
                 <LoadingOverlay visible={recoveryLoading} overlayProps={{radius: 'sm', blur: 2}}/>
                 {isRecoverySuccess ? (

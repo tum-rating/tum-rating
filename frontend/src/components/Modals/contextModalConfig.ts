@@ -11,10 +11,9 @@ interface ContextModalConfigProps extends OptionalContextModalProps {
 export const contextModalConfig = (config: ContextModalConfigProps) => {
     return {
         centered: true,
+        height: '100%',
         padding: 0,
-        innerProps: {
-            size: 'auto'
-        },
+        innerProps: {},
         ...config,
     };
 };

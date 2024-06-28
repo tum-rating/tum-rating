@@ -24,9 +24,8 @@ import {useNavigate} from 'react-router-dom';
 import {useSignUp} from '@/auth/useSignUp.tsx';
 import {useUser} from '@/auth/useUser.tsx';
 import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
+import {AuthModalHeader} from "@/components/Modals/shared/AuthModalHeader";
 import {CloseButton} from "@/components/Modals/shared/CloseButton";
-import {ModalHeader} from "@/components/Modals/shared/ModalHeader";
-import {useVisualViewportHeight} from "@/hooks/useVisualViewportHeight/useVisualViewportHeight.tsx";
 import {getPath, Paths} from '@/routes/paths.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
@@ -75,16 +74,13 @@ const SignUpModal = ({context, id}: ContextModalProps) => {
         },
     });
 
-
-    const visualViewport = useVisualViewportHeight();
-
     if ((userLoading || user) && !isSuccess) {
         return null;
     }
 
     return (
-        <Box pos="relative" h={visualViewport}>
-            {!isSuccess && <ModalHeader title="Sign up"
+        <Box pos="relative" h="100%">
+            {!isSuccess && <AuthModalHeader title="Sign up"
                                             subTitle={<>Sign up with your <Text mx={3} variant={"gradient"} fw="bold"
                                                                                 fz="sm" display="inline">TUM
                                                 University</Text>email.</>}/>}
@@ -92,7 +88,7 @@ const SignUpModal = ({context, id}: ContextModalProps) => {
                 context.closeModal(id);
             }}/>
             <LoadingOverlay visible={isLoading} overlayProps={{radius: 'sm', blur: 2}}/>
-            <Container p="sm" >
+            <Container p="sm">
                 {isSuccess ? (
                     <Flex direction="column" align="center" gap="xs" my="xl">
                         <Group>
@@ -125,14 +121,17 @@ const SignUpModal = ({context, id}: ContextModalProps) => {
                         <Stack h="100%">
                             <TextInput autoFocus data-autofocus data-testid="username" label={'Your name'} required
                                        placeholder={'Your name'} value={form.values.username}
+                                       onFocus={(event) => event.currentTarget.scrollIntoView({behavior: 'smooth'})}
                                        onChange={(event) => form.setFieldValue('username', event.currentTarget.value)}/>
 
                             <TextInput type="email" data-testid="email" required label="Email" placeholder="Email"
                                        value={form.values.email}
+                                       onFocus={(event) => event.currentTarget.scrollIntoView({behavior: 'smooth'})}
                                        onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
                                        error={form.errors.email}/>
                             <PasswordInput data-testid="password" autoComplete="on" required label="Password"
                                            placeholder="Password" value={form.values.password}
+                                           onFocus={(event) => event.currentTarget.scrollIntoView({behavior: 'smooth'})}
                                            onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
                                            error={form.errors.password}/>
                             <Checkbox data-testid="terms" label="Accept terms of usage" checked={form.values.terms}

@@ -1,14 +1,14 @@
 
-html, body {
-    overflow: auto;
-    height: 100vh;
+
+
+[data-full-screen] .m-54c44539{
+    --_content-height: 100% !important;
 }
 
-.mantine-Modal-body {
-    overflow: auto;
+.mantine-Modal-body{
+    height: calc(100% - 60px);
     z-index: 99999;
 }
-
 
 .children-animation > * {
     animation: slideUp .4s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
@@ -22,17 +22,5 @@ html, body {
     100% {
         transform: translateY(0);
         opacity: 1;
-    }
-}
-
-@media (max-width: $mantine-breakpoint-sm) {
-    .modal-form .mantine-Input-input {
-        font-size: var(--mantine-font-size-md);
-        height:  var(--input-height-md);
-    }
-
-    .modal-form .mantine-Button-root{
-        font-size: var(--mantine-font-size-md);
-        height:  var(--button-height-md);
     }
 }
