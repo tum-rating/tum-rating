@@ -19,11 +19,12 @@ import {useNavigate} from 'react-router-dom';
 
 import {useUser} from '@/auth/useUser.tsx';
 import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
+import {ModalHeader} from "@/components/Modals/shared/ModalHeader";
+import {CloseButton} from "@/components/Modals/shared/CloseButton";
 import {CourseInput, useAddCourseProposal} from '@/courses/useAddCourseProposal.tsx';
+import {useVisualViewportHeight} from "@/hooks/useVisualViewportHeight/useVisualViewportHeight.tsx";
 import classes from '@/pages/PageNotFound/PageNotFound.module.css';
 import {Paths} from '@/routes/paths.ts';
-import {AuthModalHeader} from "@/components/Modals/shared/AuthModalHeader";
-import {CloseButton} from "@/components/Modals/shared/CloseButton";
 
 const openAddCourseModal = ({...props}) => {
     modals.openContextModal({
@@ -71,6 +72,8 @@ const AddCourseModal = ({context, id}: ContextModalProps) => {
         addReview({...form});
     };
 
+    const visualViewport = useVisualViewportHeight();
+
     if (!user && !userLoading) {
         return (
             <Flex direction="column" gap="xs" h="100%" justify="center" align="center" py="md">
@@ -93,8 +96,8 @@ const AddCourseModal = ({context, id}: ContextModalProps) => {
     }
 
     return (
-        <Container p={0} data-testid="modal-content">
-            <AuthModalHeader title="Course proposal" icon={<IconBooks width={21}/>}/>
+        <Container p={0} data-testid="modal-content" h={visualViewport}>
+            <ModalHeader title="Course proposal" icon={<IconBooks width={21}/>}/>
             <CloseButton onClick={() => {
                 context.closeModal(id);
             }}/>

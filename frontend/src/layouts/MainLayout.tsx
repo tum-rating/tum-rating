@@ -13,7 +13,7 @@ import { Burger } from '@/components/Burger';
 import { Drawer } from '@/components/Drawer';
 import { SearchInputDesktop } from '@/components/Search';
 import { UserButton } from '@/components/UserButton';
-import { HEADER_HEIGHT, MAX_SITE_WIDTH } from '@/constants/styles.ts';
+import {HEADER_HEIGHT, HEADER_Z_INDEX, MAX_SITE_WIDTH} from '@/constants/styles.ts';
 import { getPath, Paths } from '@/routes/paths.ts';
 
 export const MainLayout = ({ children }: PropsWithChildren) => {
@@ -42,7 +42,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     zIndex: -1,
                 }}
             />
-            <AppShell.Header maw="100vw" zIndex={1001}>
+            <AppShell.Header maw="100vw" zIndex={HEADER_Z_INDEX}>
                 <Flex visibleFrom="sm" h="100%" px="md" justify="space-between" align="center">
                     <Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>
                     {!isMobileOnly && !smallerMode && (

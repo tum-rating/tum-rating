@@ -8,6 +8,8 @@ import { Notifications } from '@mantine/notifications';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
+import { isMobile } from 'react-device-detect';
+
 import buttonClasses from './customStyles/Buttons.module.css';
 import { queryClient } from './react-query/client.ts';
 import { RoutesApp } from './routes';
@@ -35,10 +37,10 @@ const resolver: CSSVariablesResolver = () => ({
 });
 
 export default function App() {
-    useEffect(() => {
-        //eslint-disable-next-line
-        console.log('%cTUM-RATING', 'font-family:monospace;background:#228be6;color:white;font-size:24px;padding:4px 8px;border-radius:4px;', 'Hello there👋');
-    }, []);
+    // useEffect(() => {
+    //     //eslint-disable-next-line
+    //     console.log('%cTUM-RATING', 'font-family:monospace;background:#228be6;color:white;font-size:24px;padding:4px 8px;border-radius:4px;', 'Hello there👋');
+    // }, []);
     return (
         <MantineProvider
             defaultColorScheme="light"
