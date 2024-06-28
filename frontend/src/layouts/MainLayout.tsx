@@ -53,7 +53,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     <Flex gap={20}>
                         {!user ? (
                             <>
-                                <Button loading={!user && isLoading} size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
+                                <Button data-testid="sign-in-btn" loading={!user && isLoading} size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
                                     Sign In
                                 </Button>
                                 <Button
@@ -126,6 +126,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                                         <Button
                                             fullWidth
                                             size="md"
+                                            data-testid="sign-in-btn"
                                             variant="outline"
                                             onClick={() => {
                                                 navigate(getPath(Paths.signIn));

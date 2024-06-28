@@ -46,7 +46,7 @@ const activateAccount = async (props: AuthAction) => {
 const signIn = async (props: AuthAction) => {
     const {page, user, mobile = false} = props;
     if (mobile) {
-        await page.getByRole('button', {name: 'Sign in', exact: true}).click();
+        await page.getByTestId('drawer-content').getByTestId('sign-in-btn').click();
     } else {
         await page.getByRole('button', {name: 'Sign In'}).first().click()
     }
