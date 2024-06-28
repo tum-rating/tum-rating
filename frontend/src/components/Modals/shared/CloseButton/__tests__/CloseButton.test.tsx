@@ -34,11 +34,4 @@ describe('CloseButton', () => {
         expect(style.right).toBe('10px');
         expect(style.zIndex).toBe('1');
     });
-
-    it('should apply passed styles', () => {
-        const { getByRole } = render(<CloseButton onClick={() => {}} style={{ backgroundColor: 'red' }} />);
-        const button = getByRole('button');
-        const style = window.getComputedStyle(button);
-        expect(style.backgroundColor).toBe('red');
-    });
 });

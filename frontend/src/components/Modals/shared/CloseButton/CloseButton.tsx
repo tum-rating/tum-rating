@@ -9,6 +9,7 @@ const CloseButton = (props: CloseButtonProps) => {
     const { style,onClick, ...rest } = props;
     return (
         <ActionIcon
+            data-testid="close-button"
             pos="absolute"
             variant="subtle"
             style={{
