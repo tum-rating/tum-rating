@@ -1,14 +1,28 @@
-import {ActionIcon} from "@mantine/core";
-import {IconX} from "@tabler/icons-react";
+import { ActionIcon, ActionIconProps } from '@mantine/core';
+import { IconX } from '@tabler/icons-react';
 
+interface CloseButtonProps extends ActionIconProps {
+    onClick: () => void;
+}
 
-const CloseButton = ({onClick}) =>
-    <ActionIcon pos="absolute" variant="subtle" onClick={onClick} style={{
-        top: 10,
-        right: 10,
-        zIndex: 1
-    }}>
-        <IconX/>
-    </ActionIcon>
+const CloseButton = (props: CloseButtonProps) => {
+    const { style,onClick, ...rest } = props;
+    return (
+        <ActionIcon
+            pos="absolute"
+            variant="subtle"
+            style={{
+                top: 10,
+                right: 10,
+                zIndex: 1,
+                ...style,
+            }}
+            onClick={onClick}
+            {...rest}
+        >
+            <IconX />
+        </ActionIcon>
+    );
+};
 
-export {CloseButton}
+export { CloseButton };
