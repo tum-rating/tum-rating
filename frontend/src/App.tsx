@@ -3,18 +3,17 @@ import '@mantine/notifications/styles.css';
 import '@mantine/dates/styles.css';
 import 'mantine-react-table/styles.css';
 
-import { Button, CSSVariablesResolver, Input, MantineProvider } from '@mantine/core';
+import { Button, CSSVariablesResolver, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import buttonClasses from './customStyles/Buttons.module.css';
-import inputClasses from './customStyles/Input.module.css';
 import { queryClient } from './react-query/client.ts';
 import { RoutesApp } from './routes';
 
 import { SearchProvider, TableScrollProvider } from '@/context';
-import { isMobile } from 'react-device-detect';
+
 
 const resolver: CSSVariablesResolver = () => ({
     variables: {
@@ -49,11 +48,6 @@ export default function App() {
                 components: {
                     Button: Button.extend({
                         classNames: buttonClasses,
-                    }),
-                    Input: Input.extend({
-                        classNames: {
-                            input: isMobile ? inputClasses.input : null,
-                        },
                     }),
                 },
             }}

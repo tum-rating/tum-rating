@@ -4,7 +4,7 @@ import { isMobile } from 'react-device-detect';
 import { DRAG_THRESHOLD, DRAWER_CLOSED_X, DRAWER_OPENED_X, DRAWER_WIDTH, SWIPEABLE_AREA } from './constans.ts';
 import { getPointerCoordinates } from './utils.ts';
 
-import { HEADER_HEIGHT } from '@/constants';
+import {DRAWER_BACKDROP_Z_INDEX, DRAWER_Z_INDEX, HEADER_HEIGHT} from '@/constants';
 
 export interface SwipeState {
     swiping: boolean;
@@ -15,6 +15,7 @@ export interface SwipeState {
 const initialState: SwipeState = { swiping: false, alphaX: DRAWER_CLOSED_X, count: 0 };
 
 const isEqual = (prev: SwipeState, next: SwipeState): boolean => prev.swiping === next.swiping && prev.count === next.count && prev.alphaX === next.alphaX;
+
 
 interface DrawerProps {
     open: boolean;
@@ -152,7 +153,7 @@ const Drawer = (props: DrawerProps) => {
                     background: 'var(--mantine-color-body)',
                     width: DRAWER_WIDTH,
                     height: '100%',
-                    zIndex: 1000,
+                    zIndex: DRAWER_Z_INDEX
                 }}
             >
                 <div
@@ -176,10 +177,10 @@ const Drawer = (props: DrawerProps) => {
                     filter: 'invert(1)',
                     opacity: '.1',
                     background: 'var(--mantine-color-body)',
-                    zIndex: 999,
                     display: isOpenRef.current ? 'block' : 'none',
                     willChange: 'opacity, filter',
                     transition: 'opacity .4s, filter .4s',
+                    zIndex: DRAWER_BACKDROP_Z_INDEX
                 }}
                 onClick={() => toggle()}
             ></div>

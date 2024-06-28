@@ -1,6 +1,7 @@
 import { Badge, Button, Container, Flex, LoadingOverlay, Select, Stack, Text, Textarea } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
+import {IconStars} from "@tabler/icons-react";
 import { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -8,16 +9,19 @@ import { useUser } from '@/auth/useUser.tsx';
 import { HowEasyEditableRating } from '@/components/Course/HowEasyEditableRating.tsx';
 import { HowInterestingEditableRating } from '@/components/Course/HowInterestingEditableRating.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
+import {CloseButton} from "@/components/Modals/shared/CloseButton";
+import {ModalHeader} from "@/components/Modals/shared/ModalHeader";
 import { Skeleton } from '@/components/Skeleton';
 import { DetailCourse } from '@/courses/types.ts';
 import { useAddUserReview, UserAddReviewInput } from '@/courses/useAddUserReview.tsx';
 import { useDetailCourse } from '@/courses/useCourse.tsx';
+import {useVisualViewportHeight} from "@/hooks/useVisualViewportHeight/useVisualViewportHeight.tsx";
+
 
 const openEditUserReviewModal = ({ courseId, userReview, ...props }) => {
     modals.openContextModal({
         ...contextModalConfig({
             modal: 'editUserReview',
-            title: <Text fw={600}>Edit your review</Text>,
         }),
         innerProps: {
             courseId,
@@ -88,6 +92,8 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
         context.closeModal(id);
     };
 
+    const visualViewport = useVisualViewportHeight();
+
     if (courseDetailsError) {
         return (
             <Stack>
@@ -105,7 +111,11 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
         );
     }
     return (
-        <Container px={0} pos="relative" h="100%">
+        <Container px={0} pos="relative"  h={visualViewport}>
+            <ModalHeader title="Edit your review" subTitle={courseData.name} icon={<IconStars width={21}/>}/>
+            <CloseButton onClick={() => {
+                context.closeModal(id);
+            }}/>
             <LoadingOverlay visible={isLoading || courseDetailsLoading} overlayProps={{ radius: 'sm', blur: 2 }} data-testid="loading" />
             <form
                 className="modal-form"
@@ -115,7 +125,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
                     onEditUserReview(e);
                 })}
             >
-                <Flex direction="column" gap="xs" h="100%">
+                <Flex direction="column" gap="xs" h="100%"  p="sm">
                     <Textarea data-testid="textarea" placeholder="Your comment" label="Your comment" autosize maxRows={6} minRows={6} value={form.values.comment} {...form.getInputProps('comment')} onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)} />
                     <Skeleton h={36} loading={courseDetailsLoading} component={<Select {...form.getInputProps('semester')} data-testid="select" label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={offeredInSemesters} />} />
                     <Flex w="100%" gap="xl" direction="row" justify="center" wrap="wrap" mt="md" mb="md">

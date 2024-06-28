@@ -2,14 +2,14 @@ import {Divider, Flex, Text, ThemeIcon} from "@mantine/core";
 import {IconKey} from "@tabler/icons-react";
 import {ReactElement} from "react";
 
-interface AuthModalHeaderProps {
+interface ModalHeaderProps {
     title: string;
     subTitle?: string | ReactElement;
     icon?: ReactElement;
 
 }
 
-const AuthModalHeader = (props: AuthModalHeaderProps) => {
+const ModalHeader = (props: ModalHeaderProps) => {
     const {title, subTitle, icon = <IconKey width={21}/>} = props;
     return (
         <Flex mx="auto" w="100%" justify="center" direction="column" gap={"xs"} bg="var(--primary-light-gradient)">
@@ -30,4 +30,4 @@ const AuthModalHeader = (props: AuthModalHeaderProps) => {
     )
 }
 
-export {AuthModalHeader}
+export {ModalHeader}

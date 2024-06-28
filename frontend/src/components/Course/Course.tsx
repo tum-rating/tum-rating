@@ -83,7 +83,7 @@ const Course = () => {
                                             </Text>
                                         }
                                     />
-                                    <Flex gap="xs">
+                                    <Flex gap="xs" wrap="wrap">
                                         <Skeleton
                                             w={180}
                                             h={26}
