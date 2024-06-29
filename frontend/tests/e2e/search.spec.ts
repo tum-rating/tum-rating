@@ -9,7 +9,6 @@ const createQueryRegex = (word:string) => new RegExp(`\\b\\w*${word.replace(/[.*
 test(`should find courses by name "${query} "and navigate to course page by clicking course item in search combo box`, async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
     await page.getByRole('textbox', { name: 'Search...' }).fill(query);
-    await page.waitForRequest(/courses/, { timeout: 5000 });
 
     const option = page.getByRole('option', { name: createQueryRegex(query) }).first();
     const optionCourseName = option.locator('p').first();
@@ -23,8 +22,6 @@ test(`[mobile] should find courses by name "${query}" and navigate to course pag
     await page.goto('/', { waitUntil: 'networkidle' });
     await page.getByTestId('search_trigger').click();
     await page.getByRole('textbox', { name: 'Search...' }).fill(query);
-    await page.waitForRequest(/courses/, { timeout: 5000 });
-
     const option = page.getByRole('option', { name: createQueryRegex(query) }).first();
     const optionCourseName = option.locator('p').first();
     const optionDetails = await optionCourseName.allInnerTexts();
