@@ -19,5 +19,6 @@ test('[mobile] should sign up, activate user account and sign in with new creden
     await openMobileDrawer({ page });
     await signUp({ page, user });
     await activateAccount({ page, user });
+    await openMobileDrawer({ page });
     await signIn({ page, user, mobile: true });
 });

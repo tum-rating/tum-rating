@@ -83,7 +83,7 @@ const Course = () => {
                                             </Text>
                                         }
                                     />
-                                    <Flex gap="xs">
+                                    <Flex gap="xs" wrap="wrap">
                                         <Skeleton
                                             w={180}
                                             h={26}
@@ -144,7 +144,7 @@ const Course = () => {
                                         )}
                                     </Box>
                                 </Flex>
-                                <Box>
+                                <Box pb="xl">
                                     <Flex direction="column" mih="300" gap="xs">
                                         {userReview ? (
                                             <>

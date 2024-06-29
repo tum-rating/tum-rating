@@ -45,10 +45,10 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                                 <IconLego size="1.2rem" />
                             </ThemeIcon>
                             <Stack gap={0}>
-                                <Text w={120} data-testid="username-loaded" truncate="end" size="sm" fw={500}>
+                                <Text w={120} data-testid="username-loaded-dropdown" truncate="end" size="sm" fw={500}>
                                     {user?.username}
                                 </Text>
-                                <Text w={120} data-testid="email-loaded" truncate="end" c="dimmed" size="xs">
+                                <Text w={120} data-testid="email-loaded-dropdown" truncate="end" c="dimmed" size="xs">
                                     {user?.email}
                                 </Text>
                             </Stack>

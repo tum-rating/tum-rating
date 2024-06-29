@@ -33,7 +33,7 @@ describe('UserButton', () => {
         it('should render UserButton with working dropdown', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <UserButton />
+                    <UserButton withoutDropdown={false} />
                 </QueryClientProvider>,
             );
             await waitFor(() => {
@@ -44,11 +44,14 @@ describe('UserButton', () => {
                 expect(menu).toBeInTheDocument();
             });
             await userEvent.click(menu);
-            await waitFor(() => {
-                expect(screen.getByTestId('username-loaded')).toHaveTextContent(user.username);
-                expect(screen.getByTestId('email-loaded')).toHaveTextContent(user.email);
-                expect(screen.getByTestId('logout')).toBeInTheDocument();
-            });
+            await waitFor(
+                () => {
+                    expect(screen.getByTestId('username-loaded-dropdown')).toHaveTextContent(user.username);
+                    expect(screen.getByTestId('email-loaded-dropdown')).toHaveTextContent(user.email);
+                    expect(screen.getByTestId('logout')).toBeInTheDocument();
+                },
+                { timeout: 2000 },
+            );
         });
         it('should render UserButton with working logout option', async () => {
             render(

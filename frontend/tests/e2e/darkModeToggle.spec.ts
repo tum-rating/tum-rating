@@ -4,7 +4,7 @@ import { openMobileDrawer } from 'tests/e2e/utils/layout.ts';
 
 test('should toggle dark mode', async ({ page }) => {
     await page.goto('/');
-    await page.getByTestId('color-scheme-toggle').click();
+    await page.getByRole('banner').getByTestId('color-scheme-toggle').click();
     const html = await page.locator('html');
     await expect(html).toHaveAttribute('data-mantine-color-scheme', 'dark');
 });
