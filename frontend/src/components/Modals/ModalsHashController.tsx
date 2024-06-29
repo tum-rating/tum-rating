@@ -1,6 +1,5 @@
 import { closeAllModals, useModals } from '@mantine/modals';
 import { PropsWithChildren, useEffect, useMemo } from 'react';
-import { isMobile } from 'react-device-detect';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { useUser } from '@/auth/useUser';
@@ -16,11 +15,14 @@ interface ModalsHashControllerProps extends PropsWithChildren {
 }
 
 export const ModalsHashController = ({ withinPortal = true }: ModalsHashControllerProps) => {
+
+    // style={{height: `calc(${visualViewport}px - 10dvh)`}}
     const location = useLocation();
     const navigate = useNavigate();
     const { courseId } = useParams();
     const { data: user } = useUser();
     let modalsContext = useModals();
+
     const modalSharedParams = useMemo(
         () => ({
             onClose: () => {
@@ -28,14 +30,14 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
                 navigate('#');
             },
             withinPortal: withinPortal,
-            fullScreen: isMobile,
             withCloseButton: false,
+            centered: false,
             overlayProps: {
                 backgroundOpacity: 0.55,
                 blur: 3,
             },
         }),
-        [navigate],
+        [navigate,visualViewport],
     );
     const modals = useMemo(
         () => ({

@@ -9,12 +9,12 @@ interface ContextModalConfigProps extends OptionalContextModalProps {
 }
 
 export const contextModalConfig = (config: ContextModalConfigProps) => {
+    const { modal: modalName, title: modalTitle } = config;
     return {
-        centered: true,
+        modal: modalName,
+        title: modalTitle,
         padding: 0,
-        innerProps: {
-            size: 'auto',
-        },
+        innerProps: {},
         ...config,
     };
 };
