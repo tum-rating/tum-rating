@@ -15,10 +15,10 @@ export default defineConfig({
     retries: process.env.CI ? 2 : 0,
 
     // Opt out of parallel tests on CI.
-    workers: process.env.CI ? 1 : undefined,
+    workers: 4,
 
     // Reporter to use, see https://playwright.dev/docs/test-reporters
-    reporter: 'html',
+    reporter: 'line', // Changed from 'html' to 'line'
 
     use: {
         // Base URL to use in actions like `await page.goto('/')`.
