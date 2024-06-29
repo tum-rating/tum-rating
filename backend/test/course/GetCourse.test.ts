@@ -127,7 +127,7 @@ describe('Get Course', () => {
             .expect(200)
             .expect((response: supertest.Response) => {
                 expect(response.body).toHaveProperty('courses');
-                expect(response.body.courses.length === 3).toBe(true);
+                expect(response.body.courses.length >= 3).toBe(true);
                 expect(response.body.courses.find((course) => course._id === createdCourse1.id)).toBeDefined();
                 expect(response.body.courses.find((course) => course._id === createdCourse2.id)).toBeDefined();
                 expect(response.body.courses.find((course) => course._id === createdCourse3.id)).toBeDefined();

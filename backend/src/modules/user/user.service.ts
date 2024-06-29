@@ -4,6 +4,8 @@ import { PinoLogger } from 'nestjs-pino';
 import { UserRepository } from 'src/database/repositories/user.repository';
 import { User } from 'src/database/documents/user';
 import { UserBanRepository } from 'src/database/repositories/userBan.repository';
+import { ReviewRepository } from 'src/database/repositories/review.repository';
+import { CourseRepository } from 'src/database/repositories/course.repository';
 import { NotFoundError } from 'src/utils/errors/errors';
 import { UserBan } from 'src/database/documents/userBan';
 import { DuplicateError } from 'src/utils/errors/errors';
@@ -14,6 +16,8 @@ import { CreateUserDto } from './dto/CreateUser.dto';
 export class UserService {
     constructor(
         private readonly _logger: PinoLogger,
+        private readonly _courseRepository: CourseRepository,
+        private readonly _reviewRepository: ReviewRepository,
         private readonly _userRepository: UserRepository,
         private readonly _userBanRepository: UserBanRepository,
     ) {
@@ -92,25 +96,45 @@ export class UserService {
     }
 
     public async toggleBan(userId: string, isBanned: boolean) {
-        const user = await this._userRepository.findOneById(userId)
+        const session = await this._userRepository.startSession();
 
-        if(!user) {
-            throw new NotFoundError(`User with id ${userId} not found`);
-        }
+        session.startTransaction();
 
-        if(isBanned) {
-            try {
-                await this._userBanRepository.create({ userId } as unknown as UserBan);
-            } catch(error) {
-                if (!(error instanceof DuplicateError && error.isConflictingKey('userId'))) {
-                    throw error;
-                }
+        try {
+            const user = await this._userRepository.findOneById(userId, session)
+
+            if(!user) {
+                throw new NotFoundError(`User with id ${userId} not found`);
             }
-        } else {
-            await this._userBanRepository.deleteByUserId(userId);
-        }
 
-        return this._userRepository.updateOneById(userId, { isBanned });
+            if (isBanned) {
+                await this._userBanRepository.upsert(userId, session);
+            } else {
+                await this._userBanRepository.deleteByUserId(userId, session);
+            }
+
+            await this._userRepository.updateOneById(userId, { isBanned }, session);
+
+            const reviewUpdateResults = await this._reviewRepository.toggleReviewVisibilityByUserID(userId, isBanned, session);
+
+            const coursesToUpdate: {[key: string]: boolean} = {};
+            for (const review of reviewUpdateResults) {
+                coursesToUpdate[review.courseId as unknown as string] = true;
+            };
+
+            for (const courseId in coursesToUpdate) {
+                const stats = await this._reviewRepository.getStatsByCourseId(courseId, session);
+
+                await this._courseRepository.updateCourseStats(courseId, stats, session);
+            }
+
+            await session.commitTransaction();
+        } catch(error) {
+            await session.abortTransaction();
+            throw error;
+        } finally {
+            await session.endSession();
+        }
     }
 
     public async isBanned(id: string) {
