@@ -28,7 +28,7 @@ const ModalResponsiveContainer = (props: React.PropsWithChildren) => {
     }, [isMobile]);
 
     return (
-        <div style={{
+        <div data-testid="modal-content" style={{
             position: 'relative',
             height: isMobile && keyboardVisible ? `calc(${height}px - 10dvh)` : '100%',
         }}>
