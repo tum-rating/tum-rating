@@ -1,11 +1,20 @@
+import { ContextModalProps } from '@mantine/modals';
 import { ReactNode } from 'react';
 
-export const contextModalConfig = (modalName: string, modalTitle: ReactNode | string) => {
+type OptionalContextModalProps = Partial<Omit<ContextModalProps, 'modal'>>;
+
+interface ContextModalConfigProps extends OptionalContextModalProps {
+    modal: string;
+    title?: ReactNode;
+}
+
+export const contextModalConfig = (config: ContextModalConfigProps) => {
+    const { modal: modalName, title: modalTitle } = config;
     return {
         modal: modalName,
         title: modalTitle,
-        centered: true,
-        height: '100%',
+        padding: 0,
         innerProps: {},
+        ...config,
     };
 };

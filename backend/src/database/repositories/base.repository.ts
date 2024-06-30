@@ -41,4 +41,8 @@ export abstract class BaseRepository<T> {
     public async deleteOneById(id: string, session?: ClientSession): Promise<WithId<T>> {
         return this.model.findByIdAndDelete(id, { session });
     }
+
+    public async startSession() {
+        return this.model.db.startSession();
+    }
 }

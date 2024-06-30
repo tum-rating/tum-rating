@@ -3,7 +3,10 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 
 import { Review } from './review';
 
-@Schema()
+@Schema({
+    autoCreate: true, 
+    autoIndex: true
+})
 export class Course {
     @Prop({ required: true, type: String })
     professor: string;
@@ -43,6 +46,8 @@ export class Course {
     })
     reviews: string[];
 }
+
+export type CourseWithPopulatedReviews = Omit<Course, 'reviews'> & { reviews: Review[] };
 
 export type CourseDocument = Course & Document;
 

@@ -1,5 +1,5 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema as MongooseSchema } from 'mongoose';
+import { Model, Schema as MongooseSchema, ClientSession } from 'mongoose';
 import * as mongoose from 'mongoose';
 
 import { Review, ReviewDocument } from 'src/database/documents/review';
@@ -43,9 +43,9 @@ export class ReviewRepository extends BaseRepository<Review> {
         return this._reviewModel.deleteOne({ userId, courseId });
     }
 
-    public async getStatsByCourseId(courseId: string) {
+    public async getStatsByCourseId(courseId: string, session?: ClientSession) {
         const result = await this._reviewModel.aggregate([
-            { $match: { courseId: new mongoose.Types.ObjectId(courseId) } },
+            { $match: { courseId: new mongoose.Types.ObjectId(courseId), isHidden: false } },
             {
                 $group: {
                     _id: 1,
@@ -62,12 +62,24 @@ export class ReviewRepository extends BaseRepository<Review> {
                     count: 1 
                 } 
             }
-        ]);
+        ], { session });
 
         return {
-            howInterestingRatingAverage: result[0].howInterestingRating,
-            howEasyRatingAverage: result[0].howEasyRating,
-            votesNumber: result[0].count,
+            howInterestingRatingAverage: result[0]?.howInterestingRating || 0,
+            howEasyRatingAverage: result[0]?.howEasyRating || 0,
+            votesNumber: result[0]?.count || 0,
         };
+    }
+
+    public async toggleReviewVisibilityByUserID(userId: string, hide: boolean, session?: ClientSession): Promise<WithId<Review>[]> {
+        const matchingReviews = await this._reviewModel.find({ userId }, undefined, { session });
+
+        const updateResulte = await this._reviewModel.updateMany({ userId }, { isHidden: hide }, { session });
+
+        if (updateResulte.matchedCount !== matchingReviews.length) {
+            throw new Error('Retreived reviews count does not match updated reviews count');
+        }
+
+        return matchingReviews as unknown as WithId<Review>[];
     }
 }

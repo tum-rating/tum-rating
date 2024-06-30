@@ -24,7 +24,7 @@ describe('SignUpModal', () => {
         it('should not display sign up form', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <SignUpModal />
+                    <SignUpModal context={null} id={null} innerProps={null} />
                 </QueryClientProvider>,
             );
 
@@ -42,7 +42,7 @@ describe('SignUpModal', () => {
         it('should display form without crashing', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <SignUpModal />
+                    <SignUpModal context={null} id={null} innerProps={null} />
                 </QueryClientProvider>,
             );
             await waitFor(() => {
@@ -55,7 +55,7 @@ describe('SignUpModal', () => {
         it('should display error message when form submission fails with wrong email or password', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <SignUpModal />
+                    <SignUpModal context={null} id={null} innerProps={null} />
                 </QueryClientProvider>,
             );
 
