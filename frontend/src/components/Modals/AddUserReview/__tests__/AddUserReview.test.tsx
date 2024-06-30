@@ -5,7 +5,6 @@ import { http, HttpResponse } from 'msw';
 import { endpoints } from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import { AddUserReviewModal } from '@/components/Modals/AddUserReview';
-import { EditUserReviewModal } from '@/components/Modals/EditUserReview';
 import { courseDetails, generateJwtToken } from 'tests/unit/mocks/dataGenerators.ts';
 import { server } from 'tests/unit/mocks/node.ts';
 import { render } from 'tests/unit/utils/render.tsx';
@@ -54,7 +53,7 @@ describe('AddUserReviewModal', () => {
         it('should display error messages when submitting wrongly filled form', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <EditUserReviewModal
+                    <AddUserReviewModal
                         id={null}
                         context={null}
                         innerProps={{
@@ -68,7 +67,7 @@ describe('AddUserReviewModal', () => {
                 expect(screen.getByTestId('select')).toBeInTheDocument();
             });
 
-            const submitButton = screen.getByRole('button', { name: 'Update' });
+            const submitButton = screen.getByRole('button', { name: 'Send' });
             const form = screen.getByTestId('form');
             fireEvent.submit(form, {
                 button: submitButton,

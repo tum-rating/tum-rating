@@ -1,0 +1,50 @@
+.burger {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 400ms;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    &.active {
+        transform: rotate(45deg);
+
+        & :global(.top) {
+            stroke-dashoffset: -64px;
+        }
+
+        & :global(.middle) {
+            transform: rotate(90deg);
+        }
+
+        & :global(.bottom) {
+            stroke-dashoffset: -64px;
+        }
+    }
+
+
+    & :global(.top) {
+        stroke-dasharray: 40 160;
+    }
+
+    & :global(.middle) {
+        stroke-dasharray: 40 142;
+        transform-origin: 50%;
+        transition: transform 400ms;
+    }
+
+    & :global(.bottom) {
+        stroke-dasharray: 40 85;
+        transform-origin: 50%;
+        transition: transform 400ms, stroke-dashoffset 400ms;
+    }
+}
+
+.line {
+    fill: none;
+    transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
+    stroke-width: 5.5;
+    stroke: light-dark(var(--mantine-color-blue-6), var(--mantine-color-blue-3));
+    stroke-linecap: round;
+}

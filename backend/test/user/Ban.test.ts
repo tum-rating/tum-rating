@@ -3,6 +3,7 @@ import * as supertest from 'supertest';
 
 import { connectMongo } from '@tum-rating/backend/test/utils';
 import { signInRequestMock, signInAdminRequestMock, banUser, unbanUser, userUrl } from '@tum-rating/backend/test/utils';
+import { createCourseMockRequest, addReviewMockRequest, getCourseById } from '@tum-rating/backend/test/utils/api-client/course';
 
 beforeAll(async () => {
     await connectMongo();

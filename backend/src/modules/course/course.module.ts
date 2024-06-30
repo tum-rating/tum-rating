@@ -8,6 +8,7 @@ import { UserModule } from 'src/modules/user/user.module';
 import { ReviewRepository } from 'src/database/repositories/review.repository';
 
 import { CourseControllerV1 } from './course.controller.v1';
+import { CourseControllerAdminV1 } from './course.controller.admin.v1';
 import { CourseService } from './course.service';
 
 @Module({
@@ -18,7 +19,7 @@ import { CourseService } from './course.service';
         ]),
         UserModule,
     ],
-    controllers: [CourseControllerV1],
+    controllers: [CourseControllerV1, CourseControllerAdminV1],
     providers: [JWTService, CourseService, CourseRepository, ReviewRepository, Logger],
     exports: [CourseService, CourseRepository],
 })

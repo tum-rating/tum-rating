@@ -1,7 +1,7 @@
-import { ActionIcon, Badge, Box, Flex, Group, Text, Tooltip } from '@mantine/core';
-import { IconPlus, IconRefresh } from '@tabler/icons-react';
+import { ActionIcon, Badge, Box, Flex, Text, Tooltip } from '@mantine/core';
+import { IconPlus } from '@tabler/icons-react';
 import clsx from 'clsx';
-import { MantineReactTable, MRT_GlobalFilterTextInput, type MRT_RowVirtualizer, MRT_ShowHideColumnsButton, type MRT_SortingState, MRT_ToggleFiltersButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMantineReactTable } from 'mantine-react-table';
+import { MantineReactTable, type MRT_RowVirtualizer, type MRT_SortingState, useMantineReactTable } from 'mantine-react-table';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import classes from '../Shared/styles/TableStyles.module.css';
 import { useCoursesProposals } from '@/admin/useCoursesProposals.ts';
 import { ProposalExpansion } from '@/components/AdminTable/CoursesProposals/ProposalExpansion.tsx';
 import { useProposalsColumns } from '@/components/AdminTable/CoursesProposals/useProposalsColumns.tsx';
+import { TableToolbox } from '@/components/AdminTable/Shared/TableToolbox';
 
 const AdminCoursesProposalsTable = () => {
     const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
@@ -59,31 +60,27 @@ const AdminCoursesProposalsTable = () => {
         rowVirtualizerOptions: { overscan: 15 },
         renderTopToolbar: ({ table }) => (
             <Flex justify="space-between" align="center" h={50} px="xs" bg="gray.1">
-                <Flex gap="xs">
+                <Flex gap="xs" w={240}>
                     <Flex gap="6" align="center" mr="auto">
                         <Badge radius="sm" fw={800} c="white" px={6}>
                             {data.length}
                         </Badge>
-                        <Text fw={600}>Active proposals</Text>
+                        <Text lineClamp={2} fw={600} className={classes.tableHeaderText}>
+                            Active proposals
+                        </Text>
                     </Flex>
                     <Tooltip label="Add course proposal" openDelay={400}>
-                        <ActionIcon variant="light" onClick={() => navigate('#modal=add-course')}>
-                            <IconPlus size={16} />
+                        <ActionIcon variant="lg" onClick={() => navigate('#modal=add-course')} visibleFrom={'sm'}>
+                            <IconPlus size={20} />
                         </ActionIcon>
                     </Tooltip>
                 </Flex>
-                <MRT_GlobalFilterTextInput size="sm" variant="default" hidden={false} table={table} />
-                <Group gap="xs">
-                    <MRT_ToggleGlobalFilterButton size="lg" variant="default" table={table} />
-                    <MRT_ToggleFiltersButton size="lg" variant="default" table={table} />
-                    <MRT_ShowHideColumnsButton size="lg" variant="default" table={table} />
-                    <MRT_ToggleFullScreenButton size="lg" variant="default" table={table} />
-                    <Tooltip label="Refresh proposals">
-                        <ActionIcon size="lg" variant="default" onClick={() => refetch()}>
-                            <IconRefresh size={20} />
-                        </ActionIcon>
-                    </Tooltip>
-                </Group>
+                <TableToolbox
+                    table={table}
+                    customActions={{
+                        refresh: refetch,
+                    }}
+                />
             </Flex>
         ),
         mantineDetailPanelProps: {

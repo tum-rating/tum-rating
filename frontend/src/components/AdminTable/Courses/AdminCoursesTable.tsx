@@ -1,8 +1,7 @@
-import { ActionIcon, Badge, Box, Flex, Group, Skeleton, Text, Tooltip } from '@mantine/core';
+import { Badge, Box, Flex, Skeleton, Text } from '@mantine/core';
 import { useDebouncedState } from '@mantine/hooks';
-import { IconRefresh } from '@tabler/icons-react';
 import clsx from 'clsx';
-import { MantineReactTable, MRT_GlobalFilterTextInput, MRT_ShowHideColumnsButton, MRT_ToggleFiltersButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMantineReactTable } from 'mantine-react-table';
+import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -10,6 +9,7 @@ import { useCoursesColumns } from './useCoursesColumns.tsx';
 import classes from '../Shared/styles/TableStyles.module.css';
 
 import { CourseExpansion } from '@/components/AdminTable/Courses/CourseExpansion.tsx';
+import { TableToolbox } from '@/components/AdminTable/Shared/TableToolbox';
 import { HEADER_HEIGHT, PAGE_SIZE } from '@/constants';
 import { Course } from '@/courses/types.ts';
 import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
@@ -119,28 +119,20 @@ const AdminCoursesTable = () => {
                         <Badge radius="sm" fw={800} c="white" px={6}>
                             {records.length}
                         </Badge>
-                        <Text fw={600}>Active courses</Text>
+                        <Text lineClamp={2} fw={600} className={classes.tableHeaderText}>
+                            Active courses
+                        </Text>
                     </Flex>
                 </Flex>
-
-                <MRT_GlobalFilterTextInput size="sm" variant="default" hidden={false} table={table} />
-                <Group gap="xs">
-                    <MRT_ToggleGlobalFilterButton size="lg" variant="default" table={table} />
-                    <MRT_ToggleFiltersButton size="lg" variant="default" table={table} />
-                    <MRT_ShowHideColumnsButton size="lg" variant="default" table={table} />
-                    <MRT_ToggleFullScreenButton size="lg" variant="default" table={table} />
-                    <Tooltip label="Refresh proposals">
-                        <ActionIcon
-                            size="lg"
-                            variant="default"
-                            onClick={() => {
-                                refetchSearchQuery();
-                            }}
-                        >
-                            <IconRefresh size={20} />
-                        </ActionIcon>
-                    </Tooltip>
-                </Group>
+                <TableToolbox
+                    table={table}
+                    config={{
+                        tableFilters: false,
+                    }}
+                    customActions={{
+                        refresh: refetchSearchQuery,
+                    }}
+                />
             </Flex>
         ),
         rowVirtualizerOptions: { overscan: 25 },

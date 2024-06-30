@@ -30,7 +30,7 @@ const signUp = async (props: AuthAction) => {
     await page.getByTestId('username').fill(user.username);
     await page.getByTestId('password').fill(user.password);
     await page.getByTestId('submit').click();
-    await expect(page.getByText(user.email, { exact: true })).toBeVisible({timeout: 60000});
+    await expect(page.getByText(user.email, { exact: true })).toBeVisible({ timeout: 60000 });
 };
 
 const activateAccount = async (props: AuthAction) => {
@@ -45,16 +45,21 @@ const activateAccount = async (props: AuthAction) => {
 
 const signIn = async (props: AuthAction) => {
     const { page, user, mobile = false } = props;
-    await page.getByRole('button', { name: 'Sign In' }).first().click();
+    if (mobile) {
+        await page.getByTestId('drawer-content').getByTestId('sign-in-btn').click();
+    } else {
+        await page.getByRole('button', { name: 'Sign In' }).first().click();
+    }
     await page.getByTestId('email').fill(user.email);
     await page.getByTestId('password').fill(user.password);
     await page.getByTestId('submit').click();
     if (mobile) {
         await openMobileDrawer({ page });
+        await expect(page.getByTestId('email-loaded')).toHaveText(user.email);
     } else {
         await page.getByTestId('menu').click();
+        await expect(page.getByTestId('email-loaded-dropdown')).toHaveText(user.email);
     }
-    await expect(page.getByTestId('email-loaded')).toHaveText(user.email);
 };
 
 const getActivationTokenFromMail = async (email: string) => {

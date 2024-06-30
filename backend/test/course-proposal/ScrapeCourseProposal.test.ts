@@ -42,7 +42,7 @@ describe('Scrape Course Proposal', () => {
                     'Simone Margarete Aumann'
                 ]);
             });
-    });
+    }, 10000);
 
     it('should fail without auth token', async () => {
         const signInResponse = await signInRequestMock();

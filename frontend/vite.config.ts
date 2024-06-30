@@ -1,9 +1,9 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
-import {fileURLToPath, URL} from 'url';
+import { fileURLToPath, URL } from 'url';
 
 import react from '@vitejs/plugin-react';
-import {defineConfig} from 'vitest/config';
+import { defineConfig } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
@@ -17,24 +17,20 @@ export default defineConfig({
     server: {
         port: 5174,
     },
-    plugins: [
-        react(),
-        tsconfigPaths(),
-    ],
+    plugins: [react(), tsconfigPaths()],
     build: {
         rollupOptions: {
             output: {
                 entryFileNames: '[hash].js',
                 chunkFileNames: '[hash].js',
-                assetFileNames: '[hash].[ext]'
-            }
-        }
+                assetFileNames: '[hash].[ext]',
+            },
+        },
     },
     test: {
         environment: 'jsdom',
         setupFiles: ['./vitest.setup.ts'],
-        exclude: [ '**/tests/e2e/**'],
-
+        exclude: ['**/tests/e2e/**'],
 
         globals: true,
     },

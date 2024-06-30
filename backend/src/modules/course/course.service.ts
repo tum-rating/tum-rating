@@ -62,10 +62,14 @@ export class CourseService {
         return this._reviewRepository.deleteOneByUserIdAndCourseId(userId, courseId);
     }
 
-    public async updateCourseStats(courseId: string) {
+    public async updateCourseStats(courseId: string): Promise<WithId<Course>> {
         const stats = await this._reviewRepository.getStatsByCourseId(courseId);
 
-        return this._courseRepository.updateCourseStats(courseId, stats);
+        const course = await this._courseRepository.updateCourseStats(courseId, stats) as unknown as WithId<Course>;
+
+        if (course === null) throw new NotFoundError('course not found');
+
+        return course;
     }
 
     public async updateCourse(id: string, course: Partial<Course>) {

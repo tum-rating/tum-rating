@@ -1,21 +1,27 @@
-import { Badge, Button, Container, Flex, LoadingOverlay, Select, Stack, Text, Textarea } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { ContextModalProps, modals } from '@mantine/modals';
-import { useEffect, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {Badge, Button, Flex, LoadingOverlay, Select, Stack, Text, Textarea} from '@mantine/core';
+import {useForm} from '@mantine/form';
+import {ContextModalProps, modals} from '@mantine/modals';
+import {IconStars} from '@tabler/icons-react';
+import {useEffect, useMemo} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 
-import { useUser } from '@/auth/useUser.tsx';
-import { HowEasyEditableRating } from '@/components/Course/HowEasyEditableRating.tsx';
-import { HowInterestingEditableRating } from '@/components/Course/HowInterestingEditableRating.tsx';
-import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
-import { Skeleton } from '@/components/Skeleton';
-import { DetailCourse } from '@/courses/types.ts';
-import { useAddUserReview, UserAddReviewInput } from '@/courses/useAddUserReview.tsx';
-import { useDetailCourse } from '@/courses/useCourse.tsx';
+import {useUser} from '@/auth/useUser.tsx';
+import {HowEasyEditableRating} from '@/components/Course/HowEasyEditableRating.tsx';
+import {HowInterestingEditableRating} from '@/components/Course/HowInterestingEditableRating.tsx';
+import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
+import {CloseButton} from '@/components/Modals/shared/CloseButton';
+import {ModalHeader} from '@/components/Modals/shared/ModalHeader';
+import {ModalResponsiveContainer} from "@/components/Modals/shared/ModalResponsiveContainer";
+import {Skeleton} from '@/components/Skeleton';
+import {DetailCourse} from '@/courses/types.ts';
+import {useAddUserReview, UserAddReviewInput} from '@/courses/useAddUserReview.tsx';
+import {useDetailCourse} from '@/courses/useCourse.tsx';
 
-const openEditUserReviewModal = ({ courseId, userReview, ...props }) => {
+const openEditUserReviewModal = ({courseId, userReview, ...props}) => {
     modals.openContextModal({
-        ...contextModalConfig('editUserReview', <Text fw={600}>Edit your review</Text>),
+        ...contextModalConfig({
+            modal: 'editUserReview',
+        }),
         innerProps: {
             courseId,
             userReview,
@@ -24,12 +30,16 @@ const openEditUserReviewModal = ({ courseId, userReview, ...props }) => {
     });
 };
 
-const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ courseId: string }>) => {
-    const { courseId } = innerProps;
-    const { mutate: editUserReview, isSuccess, isLoading } = useAddUserReview(courseId, 'PATCH');
-    const { data: courseData, isLoading: courseDetailsLoading, isError: courseDetailsError } = useDetailCourse(courseId || '');
-    const { data: user } = useUser();
-    const { data: userReview }: { data: DetailCourse } = useDetailCourse(courseId, { retry: 0 });
+const EditUserReviewModal = ({context, id, innerProps}: ContextModalProps<{ courseId: string }>) => {
+    const {courseId} = innerProps;
+    const {mutate: editUserReview, isSuccess, isLoading} = useAddUserReview(courseId, 'PATCH');
+    const {
+        data: courseData,
+        isLoading: courseDetailsLoading,
+        isError: courseDetailsError
+    } = useDetailCourse(courseId || '');
+    const {data: user} = useUser();
+    const {data: userReview}: { data: DetailCourse } = useDetailCourse(courseId, {retry: 0});
     const location = useLocation();
     const navigate = useNavigate();
     useEffect(() => {
@@ -45,7 +55,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
     const offeredInSemesters = useMemo(
         () =>
             courseData?.offeredInSemesters.map((semester) => {
-                return { value: semester, label: semester };
+                return {value: semester, label: semester};
             }),
         [courseData],
     );
@@ -53,7 +63,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
     useEffect(() => {
         const userReviewComment = userReview?.reviews.find((data) => data.userId === user.id);
         if (userReviewComment) {
-            const { howEasyRating, howInterestingRating, comment, semester } = userReviewComment;
+            const {howEasyRating, howInterestingRating, comment, semester} = userReviewComment;
             form.setFieldValue('howEasyRating', howEasyRating);
             form.setFieldValue('howInterestingRating', howInterestingRating);
             form.setFieldValue('comment', comment);
@@ -81,7 +91,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
 
     const onEditUserReview = (form: UserAddReviewInput) => {
         if (form.howInterestingRating === 0 || form.howEasyRating === 0) return;
-        editUserReview({ ...form });
+        editUserReview({...form});
         context.closeModal(id);
     };
 
@@ -102,21 +112,36 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
         );
     }
     return (
-        <Container px={0} pos="relative" h="100%">
-            <LoadingOverlay visible={isLoading || courseDetailsLoading} overlayProps={{ radius: 'sm', blur: 2 }} data-testid="loading" />
+        <ModalResponsiveContainer>
+            <ModalHeader title="Edit your review" subTitle={courseData?.name} icon={<IconStars width={21}/>}/>
+            <CloseButton
+                onClick={() => {
+                    context.closeModal(id);
+                }}
+            />
+            <LoadingOverlay visible={isLoading || courseDetailsLoading} overlayProps={{radius: 'sm', blur: 2}}
+                            data-testid="loading"/>
             <form
+                className="modal-form"
                 data-testid="form"
-                style={{ height: '100%' }}
+                style={{height: '100%'}}
                 onSubmit={form.onSubmit((e) => {
                     onEditUserReview(e);
                 })}
             >
-                <Flex direction="column" gap="xs" h="100%">
-                    <Textarea data-testid="textarea" placeholder="Your comment" label="Your comment" autosize maxRows={6} minRows={6} value={form.values.comment} {...form.getInputProps('comment')} onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)} />
-                    <Skeleton h={36} loading={courseDetailsLoading} component={<Select {...form.getInputProps('semester')} data-testid="select" label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={offeredInSemesters} />} />
+                <Flex direction="column" gap="xs" h="100%" p="sm">
+                    <Textarea data-testid="textarea" placeholder="Your comment" label="Your comment" autosize
+                              maxRows={6} minRows={6} value={form.values.comment} {...form.getInputProps('comment')}
+                              onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)}/>
+                    <Skeleton h={36} loading={courseDetailsLoading}
+                              component={<Select {...form.getInputProps('semester')} data-testid="select"
+                                                 label="Semester" placeholder="Semester" value={form.values.semester}
+                                                 onChange={(value: string) => form.setFieldValue('semester', value)}
+                                                 data={offeredInSemesters}/>}/>
                     <Flex w="100%" gap="xl" direction="row" justify="center" wrap="wrap" mt="md" mb="md">
                         <Stack>
-                            <HowEasyEditableRating onChange={(value) => form.setFieldValue('howEasyRating', value)} score={form.values.howEasyRating} />
+                            <HowEasyEditableRating onChange={(value) => form.setFieldValue('howEasyRating', value)}
+                                                   score={form.values.howEasyRating}/>
                             {form.errors.howEasyRating && (
                                 <Badge data-testid="how-easy-error" variant="light" color="red">
                                     {form.errors.howEasyRating}
@@ -124,7 +149,9 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
                             )}
                         </Stack>
                         <Stack>
-                            <HowInterestingEditableRating onChange={(value) => form.setFieldValue('howInterestingRating', value)} score={form.values.howInterestingRating} />
+                            <HowInterestingEditableRating
+                                onChange={(value) => form.setFieldValue('howInterestingRating', value)}
+                                score={form.values.howInterestingRating}/>
                             {form.errors.howInterestingRating && (
                                 <Badge data-testid="how-interesting-error" variant="light" color="red">
                                     {form.errors.howInterestingRating}
@@ -140,8 +167,8 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
                     </Flex>
                 </Flex>
             </form>
-        </Container>
+        </ModalResponsiveContainer>
     );
 };
 
-export { EditUserReviewModal, openEditUserReviewModal };
+export {EditUserReviewModal, openEditUserReviewModal};
