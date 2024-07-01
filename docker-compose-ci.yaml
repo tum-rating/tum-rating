@@ -1,12 +1,11 @@
 version: "3.9"
-include: 
+include:
   - ./docker-compose.yaml
 services:
   server:
     build:
       context: .
       dockerfile: backend/Dockerfile
-    
     ports:
       - "3000:3000"
     environment:
@@ -15,12 +14,12 @@ services:
       NODE_ENV: production
 
       #MONGO
-      MONGO_URI: mongodb://root-user:root-password@mongodb:27017
+      MONGO_URI: mongodb://root-user:root-password@mongodb:27017/?directConnection=true
       MONGO_DB: tum-rating
 
       #JWT
-      JWT_SECRET: jwt-secret 
-      JWT_EXPIRATION: 1d 
+      JWT_SECRET: jwt-secret
+      JWT_EXPIRATION: 1d
 
       #MAILER
       MAILER_HOST: mailer
@@ -37,7 +36,9 @@ services:
       WEBAPP_PROTOCOL: http
       WEBAPP_HOST: localhost
       WEBAPP_PORT: 5174
-    depends_on:
-      - mongodb
-      - mailer
 
+    depends_on:
+      mongodb:
+        condition: service_healthy 
+      mailer:
+        condition: service_started

@@ -1,19 +1,24 @@
-import { Alert, Anchor, Button, Container, Divider, Flex, LoadingOverlay, Stack, Text, Textarea } from '@mantine/core';
+import { Alert, Anchor, Box, Button, Divider, Flex, LoadingOverlay, Stack, Text, Textarea } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
-import { IconFaceIdError, IconInfoCircle } from '@tabler/icons-react';
+import { IconBooks, IconFaceIdError, IconInfoCircle } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUser } from '@/auth/useUser.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
+import { CloseButton } from '@/components/Modals/shared/CloseButton';
+import { ModalHeader } from '@/components/Modals/shared/ModalHeader';
+import { ModalResponsiveContainer } from '@/components/Modals/shared/ModalResponsiveContainer';
 import { CourseInput, useAddCourseProposal } from '@/courses/useAddCourseProposal.tsx';
 import classes from '@/pages/PageNotFound/PageNotFound.module.css';
 import { Paths } from '@/routes/paths.ts';
 
 const openAddCourseModal = ({ ...props }) => {
     modals.openContextModal({
-        ...contextModalConfig('addCourse', <Text fw={600}>Add Course Proposal</Text>),
+        ...contextModalConfig({
+            modal: 'addCourse',
+        }),
         ...props,
     });
 };
@@ -76,37 +81,45 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
     }
 
     return (
-        <Container p={0} data-testid="modal-content">
+        <ModalResponsiveContainer>
+            <ModalHeader title="Course proposal" icon={<IconBooks width={21} />} />
+            <CloseButton
+                onClick={() => {
+                    context.closeModal(id);
+                }}
+            />
             <LoadingOverlay visible={addReviewLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-            <form data-testid="form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
-                <Stack>
-                    <Textarea data-testid="textarea" label="Course URL" required placeholder={`Example: ${example_course}`} description="Provide a valid course URL from TUM Campus Portal" value={form.values.url} onChange={(event) => form.setFieldValue('url', event.currentTarget.value)} error={form.errors.url} radius="md" minRows={5} maxRows={10} autosize />
-                    {apiError && error && (
-                        <Alert data-testid="error-message" variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
-                            <Text size="xs">{error.message || 'An error occurred'}</Text>
-                        </Alert>
-                    )}
-                    <Button data-testid="submit-button" loading={addReviewLoading} mt="xs" type="submit" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
-                        Add Course Proposal
-                    </Button>
-                    <Alert variant="light" color="green" title="How to add a course" icon={<IconInfoCircle />}>
-                        <Text size="sm">
-                            To add a course you are interested in, you must first find it on{' '}
-                            <Anchor size="sm" fw={600} target={'_blank'} href={tum_portal}>
-                                TUM Campus Portal
-                            </Anchor>
-                            . Copy the link and paste it into our form. If everything is ok, the course will appear within 24 hours.
-                            <Text span fw={500} mt="xs" display="block">
-                                Example course URL:{' '}
-                                <Anchor style={{ overflowWrap: 'anywhere' }} target={'_blank'} href={example_course}>
-                                    {example_course}
+            <form className="modal-form" data-testid="form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
+                <Box p="sm">
+                    <Stack>
+                        <Textarea data-testid="textarea" label="Course URL" required placeholder={`Example: ${example_course}`} description="Provide a valid course URL from TUM Campus Portal" value={form.values.url} onChange={(event) => form.setFieldValue('url', event.currentTarget.value)} error={form.errors.url} radius="md" minRows={5} maxRows={10} autosize />
+                        {apiError && error && (
+                            <Alert data-testid="error-message" variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
+                                <Text size="xs">{error.message || 'An error occurred'}</Text>
+                            </Alert>
+                        )}
+                        <Button data-testid="submit-button" loading={addReviewLoading} mt="xs" type="submit" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
+                            Add Course Proposal
+                        </Button>
+                        <Alert variant="light" color="green" title="How to add a course" icon={<IconInfoCircle />}>
+                            <Text size="sm">
+                                To add a course you are interested in, you must first find it on{' '}
+                                <Anchor size="sm" fw={600} target={'_blank'} href={tum_portal}>
+                                    TUM Campus Portal
                                 </Anchor>
+                                . Copy the link and paste it into our form. If everything is ok, the course will appear within 24 hours.
+                                <Text span fw={500} mt="xs" display="block">
+                                    Example course URL:{' '}
+                                    <Anchor style={{ overflowWrap: 'anywhere' }} target={'_blank'} href={example_course}>
+                                        {example_course}
+                                    </Anchor>
+                                </Text>
                             </Text>
-                        </Text>
-                    </Alert>
-                </Stack>
+                        </Alert>
+                    </Stack>
+                </Box>
             </form>
-        </Container>
+        </ModalResponsiveContainer>
     );
 };
 

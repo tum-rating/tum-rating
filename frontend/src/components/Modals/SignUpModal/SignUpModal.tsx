@@ -1,4 +1,4 @@
-import { Alert, Anchor, Box, Button, Checkbox, Container, Flex, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput, ThemeIcon } from '@mantine/core';
+import { Alert, Anchor, Button, Checkbox, Container, Flex, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput, ThemeIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
@@ -9,6 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import { useSignUp } from '@/auth/useSignUp.tsx';
 import { useUser } from '@/auth/useUser.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
+import { CloseButton } from '@/components/Modals/shared/CloseButton';
+import { ModalHeader } from '@/components/Modals/shared/ModalHeader';
+import { ModalResponsiveContainer } from '@/components/Modals/shared/ModalResponsiveContainer';
 import { getPath, Paths } from '@/routes/paths.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
@@ -16,17 +19,16 @@ interface SignUpModalProps extends ContextModalProps {}
 
 const openSignUpModal = ({ ...props }: SignUpModalProps) => {
     modals.openContextModal({
-        ...contextModalConfig('signUp', <Text fw={600}>Sign Up</Text>),
+        ...contextModalConfig({ modal: 'signUp' }),
         closeOnClickOutside: false,
         ...props,
     });
 };
 
-const SignUpModal = () => {
+const SignUpModal = ({ context, id }: ContextModalProps) => {
     const { isSuccess, isPending: isLoading, mutate: signUp, error, isError } = useSignUp();
     const [apiError, setApiError] = useState(null);
     const navigate = useNavigate();
-
     const { data: user, isLoading: userLoading } = useUser();
 
     useEffect(() => {
@@ -62,9 +64,28 @@ const SignUpModal = () => {
     }
 
     return (
-        <Box pos="relative">
+        <ModalResponsiveContainer>
+            {!isSuccess && (
+                <ModalHeader
+                    title="Sign up"
+                    subTitle={
+                        <>
+                            Sign up with your{' '}
+                            <Text mx={3} variant={'gradient'} fw="bold" fz="sm" display="inline">
+                                TUM University
+                            </Text>
+                            email.
+                        </>
+                    }
+                />
+            )}
+            <CloseButton
+                onClick={() => {
+                    context.closeModal(id);
+                }}
+            />
             <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-            <Container p={0}>
+            <Container p="sm">
                 {isSuccess ? (
                     <Flex direction="column" align="center" gap="xs" my="xl">
                         <Group>
@@ -86,13 +107,16 @@ const SignUpModal = () => {
                     </Flex>
                 ) : (
                     <form
+                        className="modal-form"
+                        style={{ height: '100%' }}
                         data-testid="form"
                         onSubmit={form.onSubmit((e) => {
                             signUp(e);
                         })}
                     >
-                        <Stack>
+                        <Stack h="100%">
                             <TextInput autoFocus data-autofocus data-testid="username" label={'Your name'} required placeholder={'Your name'} value={form.values.username} onChange={(event) => form.setFieldValue('username', event.currentTarget.value)} />
+
                             <TextInput type="email" data-testid="email" required label="Email" placeholder="Email" value={form.values.email} onChange={(event) => form.setFieldValue('email', event.currentTarget.value)} error={form.errors.email} />
                             <PasswordInput data-testid="password" autoComplete="on" required label="Password" placeholder="Password" value={form.values.password} onChange={(event) => form.setFieldValue('password', event.currentTarget.value)} error={form.errors.password} />
                             <Checkbox data-testid="terms" label="Accept terms of usage" checked={form.values.terms} onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)} />
@@ -125,7 +149,7 @@ const SignUpModal = () => {
                     </form>
                 )}
             </Container>
-        </Box>
+        </ModalResponsiveContainer>
     );
 };
 

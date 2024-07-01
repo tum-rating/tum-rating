@@ -1,6 +1,7 @@
-import { Badge, Button, Container, Divider, Flex, LoadingOverlay, Select, Stack, Text, Textarea } from '@mantine/core';
+import { Badge, Button, Divider, Flex, LoadingOverlay, Select, Stack, Text, Textarea } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
+import { IconStars } from '@tabler/icons-react';
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +9,9 @@ import { useUser } from '@/auth/useUser.tsx';
 import { HowEasyEditableRating } from '@/components/Course/HowEasyEditableRating.tsx';
 import { HowInterestingEditableRating } from '@/components/Course/HowInterestingEditableRating.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
+import { CloseButton } from '@/components/Modals/shared/CloseButton';
+import { ModalHeader } from '@/components/Modals/shared/ModalHeader';
+import { ModalResponsiveContainer } from '@/components/Modals/shared/ModalResponsiveContainer';
 import { Skeleton } from '@/components/Skeleton';
 import { useAddUserReview, UserAddReviewInput } from '@/courses/useAddUserReview.tsx';
 import { useDetailCourse } from '@/courses/useCourse.tsx';
@@ -16,7 +20,12 @@ import { Paths } from '@/routes/paths.ts';
 
 const openAddUserReviewModal = ({ courseId, ...props }) => {
     modals.openContextModal({
-        ...contextModalConfig('addUserReview', <Text fw={600}>Add your review</Text>),
+        ...contextModalConfig({
+            modal: 'addUserReview',
+        }),
+        innerProps: {
+            courseId,
+        },
         ...props,
     });
 };
@@ -117,15 +126,23 @@ const AddUserReviewModal = ({
         );
     }
     return (
-        <Container px={0} pos="relative" h="100%">
+        <ModalResponsiveContainer>
+            <ModalHeader title="Add review" subTitle={courseData.name} icon={<IconStars width={21} />} />
+            <CloseButton
+                onClick={() => {
+                    context.closeModal(id);
+                }}
+            />
             <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
             <form
+                data-testid="form"
+                className="modal-form"
                 style={{ height: '100%', overflowY: 'auto' }}
                 onSubmit={form.onSubmit((e) => {
                     handleSubmit(e);
                 })}
             >
-                <Flex direction="column" gap="xs" h="100%">
+                <Flex direction="column" gap="xs" h="100%" p="sm">
                     <Textarea
                         data-testid="textarea"
                         autoFocus
@@ -160,7 +177,7 @@ const AddUserReviewModal = ({
                         </Stack>
                     </Flex>
 
-                    <Flex mt="auto" justify="space-between" mb="xs">
+                    <Flex justify="space-between" mb="xs">
                         <Button onClick={() => closeModal()} color={'gray'} variant={'subtle'}>
                             Cancel
                         </Button>
@@ -168,7 +185,7 @@ const AddUserReviewModal = ({
                     </Flex>
                 </Flex>
             </form>
-        </Container>
+        </ModalResponsiveContainer>
     );
 };
 

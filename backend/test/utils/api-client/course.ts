@@ -5,7 +5,7 @@ import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNum
 import { baseUrlV1 } from './config';
 
 import { CreateCourseRequestDto } from '@tum-rating/backend/src/modules/course/dto/CreateCourseRequest.dto';
-import { Course } from '@tum-rating/backend/src/database/documents/course';
+import { CourseWithPopulatedReviews } from '@tum-rating/backend/src/database/documents/course';
 import { AddReviewRequestDto } from '@tum-rating/backend/src/modules/course/dto/AddReviewRequest.dto';
 
 export const courseUrl = baseUrlV1 + '/courses';
@@ -31,10 +31,10 @@ export const createCourseMockRequest = async (token: string, review?: Partial<Cr
 
 export const getCourseById = async (id: string) => {
     const review = await axios.get(courseUrl + '/' + id);
-    return review.data as Course;
+    return review.data as CourseWithPopulatedReviews;
 };
 
-export const addReviewMockRequest = async (token: string, reviewId: string, userId: string, userReview?: Partial<AddReviewRequestDto>) => {
+export const addReviewMockRequest = async (token: string, reviewId: string, userId: string, userReview?: Partial<AddReviewRequestDto>): Promise<WithId<AddReviewRequestDto>> => {
     const requestBody: AddReviewRequestDto = {
         howInterestingRating: faker.number.int({ min: 0, max: 5 }),
         howEasyRating: faker.number.int({ min: 0, max: 5 }),
@@ -50,6 +50,7 @@ export const addReviewMockRequest = async (token: string, reviewId: string, user
     });
 
     return {
-        userReview: requestBody,
+        id: addUserReviewResponse.data.createdReviewUser['_id'],
+        ...requestBody
     };
 };

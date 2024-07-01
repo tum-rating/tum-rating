@@ -21,7 +21,7 @@ describe('RecoveryModal', () => {
         it('should not display recovery form', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <RecoveryModal />
+                    <RecoveryModal context={null} id={null} innerProps={null} />
                 </QueryClientProvider>,
             );
 
@@ -37,7 +37,7 @@ describe('RecoveryModal', () => {
         it('should display form without crashing', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <RecoveryModal />
+                    <RecoveryModal context={null} id={null} innerProps={null} />
                 </QueryClientProvider>,
             );
             await waitFor(() => {
@@ -48,7 +48,7 @@ describe('RecoveryModal', () => {
         it('should display error message when form submission fails with wrong email', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <RecoveryModal />
+                    <RecoveryModal context={null} id={null} innerProps={null} />
                 </QueryClientProvider>,
             );
 

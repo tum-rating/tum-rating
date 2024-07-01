@@ -38,6 +38,7 @@ export const Activation = () => {
                     variant="outline"
                     size="md"
                     mt="xl"
+                    data-testid="sign-in-btn"
                     className={classes.control}
                 >
                     Sign in

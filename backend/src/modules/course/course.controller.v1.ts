@@ -20,7 +20,6 @@ import { ApiBearerAuth, ApiTags, ApiQuery, ApiParam, ApiResponse, ApiOkResponse 
 import { PinoLogger } from 'nestjs-pino';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
-import { AdminGuard } from 'src/common/guards/admin.guard';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { OptionalIntPipeAtLeast1 } from 'src/common/pipes/OptionalIntAtLeast1.pipe';
 import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
@@ -31,11 +30,8 @@ import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { CourseReviewSemesterMismatch, DuplicateError, NotFoundError } from 'src/utils/errors/errors';
 
 import { CourseService } from './course.service';
-import { CreateCourseRequestDto, CreateCourseRequestSchema, CreateCourseResponseDto } from './dto/CreateCourseRequest.dto';
 import { AddReviewRequestDto, AddReviewRequestSchema } from './dto/AddReviewRequest.dto';
 import { PatchReviewRequestDto, PatchReviewRequestSchema } from './dto/PatchReviewRequest.dto';
-import { PatchCourseRequestDto, PatchCourseRequestSchema, PatchCourseResponseDto } from './dto/PatchCourseRequest.dto';
-import { DeleteCourseResponseDto } from './dto/DeleteCourseRequest.dto';
 
 @ApiTags('courses')
 @Controller('/api/v1/courses')
@@ -89,111 +85,6 @@ export class CourseControllerV1 {
         this._logger.info('Successfuly retrieved course with id: %s', review.id);
 
         return review;
-    }
-
-    @ApiBearerAuth()
-    @ApiParam({
-        name: 'user-id',
-        required: false,
-        description: '(Leave empty. It will be extracted from JWT token)',
-    })
-    @Post()
-    @UseGuards(AdminGuard)
-    public async createCourse(
-        @Headers(USER_ID) userId: string,
-        @Body(new JoiObjectSchemaPipe(CreateCourseRequestSchema))
-        body: CreateCourseRequestDto,
-    ): Promise<CreateCourseResponseDto> {
-        this._logger.info('Create course request received for course: %s, professor: %s', body.name, body.professor);
-
-        try {
-            const createdCourse = await this._courseService.createCourse(body);
-    
-            this._logger.info('Successfuly created course for course %s, %s', body.name, body.professor);
-    
-            return new CreateCourseResponseDto(createdCourse);
-        } catch(error) {
-            if (error instanceof DuplicateError) {
-                if (error.isConflictingKey('name') && error.isConflictingKey('professor')) {
-                    this._logger.debug('Course already exists with name %s and professor %s', body.name, body.professor);
-                    throw new ConflictException('Course already exists');
-                }
-            }
-
-            throw error;
-        }
-    }
-
-    @ApiBearerAuth()
-    @ApiParam({
-        name: 'user-id',
-        required: false,
-        description: '(Leave empty. It will be extracted from JWT token)',
-    })
-    @ApiOkResponse({
-        status: 200,
-        type: PatchCourseResponseDto,
-    })
-    @Patch('/:course_id')
-    @UseGuards(AdminGuard)
-    public async patchCourse(
-        @Headers(USER_ID) userId: string,
-        @Param('course_id', new JoiObjectSchemaPipe(MongoIdPipe)) courseId: string,
-        @Body(new JoiObjectSchemaPipe(PatchCourseRequestSchema)) body: PatchCourseRequestDto,
-    ): Promise<PatchCourseResponseDto> {
-        this._logger.info('Patch course request received for course: %s, by user: %s', courseId, userId);
-
-        try {
-            const createdCourse = await this._courseService.updateCourse(courseId, body);
-
-            this._logger.info('Successfuly patched course for course %s, by user %s', courseId, userId);
-
-            return new PatchCourseResponseDto(createdCourse);
-        } catch (error: any) {
-            if (error instanceof NotFoundError) {
-                this._logger.debug('Course not found with id %s', courseId);
-                throw new NotFoundException(error.message);
-            }
-
-            this._logger.error('Failed to patch course for course %s, by user %s: ', courseId, userId, error);
-            throw error;
-        }
-    }
-
-    @ApiBearerAuth()
-    @ApiParam({
-        name: 'user-id',
-        required: false,
-        description: '(Leave empty. It will be extracted from JWT token)',
-    })
-    @ApiOkResponse({
-        status: 200,
-        type: DeleteCourseResponseDto,
-    })
-    @Delete('/:course_id')
-    @UseGuards(AdminGuard)
-    public async deleteCourse(
-        @Headers(USER_ID) userId: string,
-        @Param('course_id', new JoiObjectSchemaPipe(MongoIdPipe)) courseId: string,
-        @Body(new JoiObjectSchemaPipe(PatchCourseRequestSchema)) body: PatchCourseRequestDto,
-    ): Promise<DeleteCourseResponseDto> {
-        this._logger.info('Delete course request received for course: %s, by user: %s', courseId, userId);
-
-        try {
-            const createdCourse = await this._courseService.deleteCourse(courseId);
-
-            this._logger.info('Successfuly deleted course for course %s, by user %s', courseId, userId);
-
-            return new DeleteCourseResponseDto(createdCourse);
-        } catch (error: any) {
-            if (error instanceof NotFoundError) {
-                this._logger.debug('Course not found with id %s', courseId);
-                throw new NotFoundException(error.message);
-            }
-
-            this._logger.error('Failed to delete course for course %s, by user %s: ', courseId, userId, error);
-            throw error;
-        }
     }
 
     @Get('/:courseId/user/me')
@@ -264,7 +155,7 @@ export class CourseControllerV1 {
             courseId: courseId as unknown as ObjectId,
         };
 
-        let createdReview: Review;
+        let createdReview: WithId<Review>;
         try {
             createdReview = await this._courseService.addReview(review);
         } catch (error: any) {

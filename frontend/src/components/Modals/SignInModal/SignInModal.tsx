@@ -1,4 +1,4 @@
-import { Alert, Anchor, Box, Button, Container, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput } from '@mantine/core';
+import { Alert, Anchor, Button, Container, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { ContextModalProps, modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
@@ -9,6 +9,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginInput, useSignIn } from '@/auth/useSignIn.tsx';
 import { useUser } from '@/auth/useUser.tsx';
 import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
+import { CloseButton } from '@/components/Modals/shared/CloseButton';
+import { ModalHeader } from '@/components/Modals/shared/ModalHeader';
+import { ModalResponsiveContainer } from '@/components/Modals/shared/ModalResponsiveContainer';
 import { getPath, Paths } from '@/routes/paths.ts';
 import { ResponseError } from '@/utils/Errors/ResponseError.ts';
 
@@ -16,7 +19,7 @@ interface SignInModalProps extends ContextModalProps {}
 
 const openSignInModal = ({ ...props }: SignInModalProps) => {
     modals.openContextModal({
-        ...contextModalConfig('signIn', <Text fw={600}>Sign In</Text>),
+        ...contextModalConfig({ modal: 'signIn' }),
         ...props,
     });
 };
@@ -65,16 +68,32 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
     const handleSubmit = (e: LoginInput) => {
         signIn(e);
     };
-
     if ((userLoading || user) && !isSignInSuccess) {
         return null;
     }
 
     return (
-        <Box pos="relative">
-            <Container p={0}>
+        <ModalResponsiveContainer>
+            <ModalHeader
+                title="Sign in"
+                subTitle={
+                    <>
+                        Sign in with your{' '}
+                        <Text mx={3} variant={'gradient'} fw="bold" fz="sm" display="inline">
+                            TUM University
+                        </Text>
+                        email.
+                    </>
+                }
+            />
+            <CloseButton
+                onClick={() => {
+                    context.closeModal(id);
+                }}
+            />
+            <Container p="sm">
                 <LoadingOverlay visible={signInLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-                <form data-testid="form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
+                <form className="modal-form" data-testid="form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
                     <Stack>
                         <TextInput autoFocus data-autofocus type="email" leftSection={<IconAt size="1.1rem" />} data-testid="email" required label="Email" placeholder="Email" {...form.getInputProps('email')} />
                         <PasswordInput leftSection={<IconLock size="1.1rem" />} data-testid="password" autoComplete="on" required label="Password" placeholder="Password" {...form.getInputProps('password')} />
@@ -111,7 +130,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
                     </Stack>
                 </form>
             </Container>
-        </Box>
+        </ModalResponsiveContainer>
     );
 };
 
