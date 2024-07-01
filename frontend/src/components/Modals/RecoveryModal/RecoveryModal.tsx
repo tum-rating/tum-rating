@@ -82,9 +82,6 @@ const RecoveryModal = ({ context, id }: ContextModalProps) => {
                             </Text>
                             for instructions to recover your password.
                         </Text>
-                        <Button variant="subtle" color="indigo" mt="xl">
-                            Resend email
-                        </Button>
                     </Flex>
                 ) : (
                     <Stack p="sm">
