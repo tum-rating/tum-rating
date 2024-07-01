@@ -1,2 +1,2 @@
-export {ThemeToggleActionIcon} from "./ThemeToggleActionIcon"
-export {ThemeToggleFloatingIndicator} from "./ThemeToggleFloatingIndicator"
+export { ThemeToggleActionIcon } from './ThemeToggleActionIcon';
+export { ThemeToggleFloatingIndicator } from './ThemeToggleFloatingIndicator';
