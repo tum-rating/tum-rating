@@ -1,23 +1,13 @@
-import {
-    Button,
-    Divider,
-    Drawer as DrawerComponent,
-    Flex,
-    Stack,
-    Switch,
-    Text,
-    useMantineColorScheme
-} from '@mantine/core';
-import {IconMoonStars, IconSun} from "@tabler/icons-react";
-import {useNavigate} from "react-router-dom";
+import { Button, Divider, Drawer as DrawerComponent, Flex, Stack, Switch, Text, useMantineColorScheme } from '@mantine/core';
+import { IconMoonStars, IconSun } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
 
-import {useSignOut} from "@/auth/useSignOut.tsx";
-import {useUser} from "@/auth/useUser.tsx";
-import {ThemeToggleFloatingIndicator} from "@/components/ThemeToggle";
-import {UserButton} from "@/components/UserButton";
+import { useSignOut } from '@/auth/useSignOut.tsx';
+import { useUser } from '@/auth/useUser.tsx';
+import { ThemeToggleFloatingIndicator } from '@/components/ThemeToggle';
+import { UserButton } from '@/components/UserButton';
 import { DRAWER_Z_INDEX } from '@/constants';
-import {getPath, Paths} from "@/routes/paths.ts";
-
+import { getPath, Paths } from '@/routes/paths.ts';
 
 interface DrawerProps {
     open: boolean;
@@ -43,44 +33,35 @@ const Drawer = (props: DrawerProps) => {
                     zIndex: DRAWER_Z_INDEX,
                 }}
             >
-
                 <Stack h="100%" justify="space-between" p={0}>
                     <Flex>
                         <UserButton withoutDropdown />
                     </Flex>
-                    <ThemeToggleFloatingIndicator/>
-                    {
-                        user ? (
-                            <>
-                                <Button
-                                    variant="primary-gradient"
-                                    onClick={()=> navigate(getPath(Paths.admin))}>
-                                    Admin panel
-                                </Button>
-                                <Button variant="default" onClick={()=>signOut()}>
-                                    Log out
-                                </Button>
-                            </>
-
-                        ) : (
-                            <>
-                                <Button onClick={()=>navigate(getPath(Paths.signIn))}>
-                                    Sign In
-                                </Button>
-                                <Button onClick={()=>navigate(getPath(Paths.signUp))}>
-                                    Sign Up
-                                </Button>
-                            </>
-
-                        )
-                    }
-                    <Divider/>
-                    <Stack>
-
-                    </Stack>
+                    <ThemeToggleFloatingIndicator />
+                    {user ? (
+                        <>
+                            <Button variant="primary-gradient" onClick={() => navigate(getPath(Paths.admin))}>
+                                Admin panel
+                            </Button>
+                            <Button variant="default" onClick={() => signOut()}>
+                                Log out
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button data-testid="sign-in-btn" onClick={() => navigate(getPath(Paths.signIn))}>
+                                Sign In
+                            </Button>
+                            <Button data-testid="sign-up-btn" onClick={() => navigate(getPath(Paths.signUp))}>
+                                Sign Up
+                            </Button>
+                        </>
+                    )}
+                    <Divider />
+                    <Stack></Stack>
                 </Stack>
 
-                <Stack h="100%" justify="space-between" p="sm" style={{display:"none"}}>
+                <Stack h="100%" justify="space-between" p="sm" style={{ display: 'none' }}>
                     <Flex align="center" justify="space-between">
                         {user ? <UserButton withoutDropdown /> : <Text>Hello</Text>}
                         <Switch data-testid="color-scheme-toggle" size="md" onChange={toggleColorScheme} checked={colorScheme === 'light'} onLabel={<IconSun size="1.1rem" />} offLabel={<IconMoonStars size="1.1rem" />} />

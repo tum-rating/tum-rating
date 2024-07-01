@@ -3,8 +3,7 @@ import { test } from '@playwright/test';
 import { checkCourseRender } from 'tests/e2e/utils/courses.ts';
 
 const query = 'advanced';
-const createQueryRegex = (word:string) => new RegExp(`\\b\\w*${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\w*\\b`, 'i');
-
+const createQueryRegex = (word: string) => new RegExp(`\\b\\w*${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\w*\\b`, 'i');
 
 test(`should find courses by name "${query} "and navigate to course page by clicking course item in search combo box`, async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
