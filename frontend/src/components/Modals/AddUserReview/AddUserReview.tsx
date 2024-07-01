@@ -1,24 +1,24 @@
-import {Badge, Button, Divider, Flex, LoadingOverlay, Select, Stack, Text, Textarea} from '@mantine/core';
-import {useForm} from '@mantine/form';
-import {ContextModalProps, modals} from '@mantine/modals';
-import {IconStars} from '@tabler/icons-react';
-import {useEffect, useMemo} from 'react';
-import {useNavigate} from 'react-router-dom';
+import { Badge, Button, Divider, Flex, LoadingOverlay, Select, Stack, Text, Textarea } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { ContextModalProps, modals } from '@mantine/modals';
+import { IconStars } from '@tabler/icons-react';
+import { useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import {useUser} from '@/auth/useUser.tsx';
-import {HowEasyEditableRating} from '@/components/Course/HowEasyEditableRating.tsx';
-import {HowInterestingEditableRating} from '@/components/Course/HowInterestingEditableRating.tsx';
-import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
-import {CloseButton} from '@/components/Modals/shared/CloseButton';
-import {ModalHeader} from '@/components/Modals/shared/ModalHeader';
-import {ModalResponsiveContainer} from "@/components/Modals/shared/ModalResponsiveContainer";
-import {Skeleton} from '@/components/Skeleton';
-import {useAddUserReview, UserAddReviewInput} from '@/courses/useAddUserReview.tsx';
-import {useDetailCourse} from '@/courses/useCourse.tsx';
+import { useUser } from '@/auth/useUser.tsx';
+import { HowEasyEditableRating } from '@/components/Course/HowEasyEditableRating.tsx';
+import { HowInterestingEditableRating } from '@/components/Course/HowInterestingEditableRating.tsx';
+import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
+import { CloseButton } from '@/components/Modals/shared/CloseButton';
+import { ModalHeader } from '@/components/Modals/shared/ModalHeader';
+import { ModalResponsiveContainer } from '@/components/Modals/shared/ModalResponsiveContainer';
+import { Skeleton } from '@/components/Skeleton';
+import { useAddUserReview, UserAddReviewInput } from '@/courses/useAddUserReview.tsx';
+import { useDetailCourse } from '@/courses/useCourse.tsx';
 import classes from '@/pages/PageNotFound/PageNotFound.module.css';
-import {Paths} from '@/routes/paths.ts';
+import { Paths } from '@/routes/paths.ts';
 
-const openAddUserReviewModal = ({courseId, ...props}) => {
+const openAddUserReviewModal = ({ courseId, ...props }) => {
     modals.openContextModal({
         ...contextModalConfig({
             modal: 'addUserReview',
@@ -31,29 +31,25 @@ const openAddUserReviewModal = ({courseId, ...props}) => {
 };
 
 const AddUserReviewModal = ({
-                                context,
-                                id,
-                                innerProps,
-                            }: ContextModalProps<{
+    context,
+    id,
+    innerProps,
+}: ContextModalProps<{
     courseId: string;
 }>) => {
-    const {courseId} = innerProps;
+    const { courseId } = innerProps;
 
-    const {data: user} = useUser();
+    const { data: user } = useUser();
 
-    const {
-        data: courseData,
-        isLoading: courseDetailsLoading,
-        isError: courseDetailsError
-    } = useDetailCourse(courseId || '');
+    const { data: courseData, isLoading: courseDetailsLoading, isError: courseDetailsError } = useDetailCourse(courseId || '');
 
     const navigate = useNavigate();
-    const {mutate: addUserReview, isSuccess, isLoading} = useAddUserReview(courseId, 'POST');
+    const { mutate: addUserReview, isSuccess, isLoading } = useAddUserReview(courseId, 'POST');
 
     const offeredInSemesters = useMemo(
         () =>
             courseData?.offeredInSemesters.map((semester) => {
-                return {value: semester, label: semester};
+                return { value: semester, label: semester };
             }),
         [courseData],
     );
@@ -85,7 +81,7 @@ const AddUserReviewModal = ({
 
     const handleSubmit = (form: UserAddReviewInput) => {
         if (form.howInterestingRating === 0 || form.howEasyRating === 0) return;
-        addUserReview({...form});
+        addUserReview({ ...form });
         if (id) closeModal();
     };
 
@@ -134,17 +130,17 @@ const AddUserReviewModal = ({
     }
     return (
         <ModalResponsiveContainer>
-            <ModalHeader title="Add review" subTitle={courseData.name} icon={<IconStars width={21}/>}/>
+            <ModalHeader title="Add review" subTitle={courseData.name} icon={<IconStars width={21} />} />
             <CloseButton
                 onClick={() => {
                     context.closeModal(id);
                 }}
             />
-            <LoadingOverlay visible={isLoading} overlayProps={{radius: 'sm', blur: 2}}/>
+            <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
             <form
                 data-testid="form"
                 className="modal-form"
-                style={{height: '100%', overflowY: 'auto'}}
+                style={{ height: '100%', overflowY: 'auto' }}
                 onSubmit={form.onSubmit((e) => {
                     handleSubmit(e);
                 })}
@@ -164,15 +160,10 @@ const AddUserReviewModal = ({
                         onChange={(event) => form.setFieldValue('comment', event.currentTarget.value)}
                         placeholder="Course Review: Loved the course! Learned a lot... &#10;&#10;Exercise: Challenging but fun... &#10;&#10;Exam: The exams were difficult and I recommend a lot of studying before them. "
                     />
-                    <Skeleton h={36} loading={courseDetailsLoading}
-                              component={<Select data-testid="select" {...form.getInputProps('semester')}
-                                                 label="Semester" placeholder="Semester" value={form.values.semester}
-                                                 onChange={(value: string) => form.setFieldValue('semester', value)}
-                                                 data={offeredInSemesters}/>}/>
+                    <Skeleton h={36} loading={courseDetailsLoading} component={<Select data-testid="select" {...form.getInputProps('semester')} label="Semester" placeholder="Semester" value={form.values.semester} onChange={(value: string) => form.setFieldValue('semester', value)} data={offeredInSemesters} />} />
                     <Flex w="100%" gap="xl" direction="row" justify="center" wrap="wrap" mt="md" mb="md">
                         <Stack>
-                            <HowEasyEditableRating onChange={(value) => form.setFieldValue('howEasyRating', value)}
-                                                   score={form.values.howEasyRating}/>
+                            <HowEasyEditableRating onChange={(value) => form.setFieldValue('howEasyRating', value)} score={form.values.howEasyRating} />
                             {form.errors.howEasyRating && (
                                 <Badge variant="light" color="red">
                                     {form.errors.howEasyRating}
@@ -180,9 +171,7 @@ const AddUserReviewModal = ({
                             )}
                         </Stack>
                         <Stack>
-                            <HowInterestingEditableRating
-                                onChange={(value) => form.setFieldValue('howInterestingRating', value)}
-                                score={form.values.howInterestingRating}/>
+                            <HowInterestingEditableRating onChange={(value) => form.setFieldValue('howInterestingRating', value)} score={form.values.howInterestingRating} />
                             {form.errors.howInterestingRating && (
                                 <Badge variant="light" color="red">
                                     {form.errors.howInterestingRating}
@@ -203,4 +192,4 @@ const AddUserReviewModal = ({
     );
 };
 
-export {AddUserReviewModal, openAddUserReviewModal};
+export { AddUserReviewModal, openAddUserReviewModal };
