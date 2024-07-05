@@ -51,33 +51,20 @@ export const Comment = (props: CommentProps) => {
                             </Text>
                         </Flex>
                     </Flex>
-                    <Menu position="bottom-end">
-                        <Menu.Target data-testid="menu">
-                            <ActionIcon variant="outline" color={userCommentFlag ? 'green' : 'auto'}>
-                                <IconDotsVertical width={16} height={16} />
-                            </ActionIcon>
-                        </Menu.Target>
-                        <Menu.Dropdown>
-                            {userCommentFlag ? (
-                                <>
-                                    <Menu.Item data-testid="menu-edit-review" onClick={() => navigate(getPath(Paths.editUserReview))}>
-                                        <Text size="sm">Edit your review</Text>
-                                    </Menu.Item>
-                                    <Menu.Item data-testid="menu-delete-review">
-                                        <Text size="sm" c="red">
-                                            Delete your review
-                                        </Text>
-                                    </Menu.Item>
-                                </>
-                            ) : (
-                                <Menu.Item data-testid="menu-report-review">
-                                    <Text c="red" size="sm">
-                                        Report
-                                    </Text>
+                    {userCommentFlag ? (
+                        <Menu position="bottom-end">
+                            <Menu.Target data-testid="menu">
+                                <ActionIcon variant="outline" color={userCommentFlag ? 'green' : 'auto'}>
+                                    <IconDotsVertical width={16} height={16} />
+                                </ActionIcon>
+                            </Menu.Target>
+                            <Menu.Dropdown>
+                                <Menu.Item data-testid="menu-edit-review" onClick={() => navigate(getPath(Paths.editUserReview))}>
+                                    <Text size="sm">Edit your review</Text>
                                 </Menu.Item>
-                            )}
-                        </Menu.Dropdown>
-                    </Menu>
+                            </Menu.Dropdown>
+                        </Menu>
+                    ) : null}
                 </Flex>
                 <Flex direction="column">
                     <Flex mt="xs" align="center" gap={3}>

@@ -15,7 +15,6 @@ interface ModalsHashControllerProps extends PropsWithChildren {
 }
 
 export const ModalsHashController = ({ withinPortal = true }: ModalsHashControllerProps) => {
-
     // style={{height: `calc(${visualViewport}px - 10dvh)`}}
     const location = useLocation();
     const navigate = useNavigate();
@@ -37,7 +36,7 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
                 blur: 3,
             },
         }),
-        [navigate,visualViewport],
+        [navigate, visualViewport],
     );
     const modals = useMemo(
         () => ({
