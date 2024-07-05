@@ -16,10 +16,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18.18
-      - run: npm install
+      - run: yarn install
 
       - name: Run frontend unit tests
-        run: npm run test:unit -w frontend
+        run: yarn workspace frontend test:unit
 
       - name: Upgrade docker compose
         run: |
@@ -43,13 +43,13 @@ jobs:
           echo ---Containers up---
 
       - name: Run backend e2e tests
-        run: npm -w backend run test:e2e
+        run: yarn workspace backend test:e2e
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
       - name: Prepare frontend e2e tests
-        run: npm run bootstrap:frontendE2E -w backend
+        run: yarn workspace backend bootstrap:frontendE2E
 
       - name: Run frontend e2e tests
-        run: npm run test:e2e:ci -w frontend
+        run: yarn workspace frontend test:e2e:ci
