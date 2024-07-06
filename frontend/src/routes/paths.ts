@@ -12,6 +12,11 @@ export enum Paths {
     editUserReview = '#modal=edit-user-review',
     spotlight = '#modal=spotlight',
     forgotPassword = '#modal=forgot-password',
+    //---contact
+    contact = 'contact',
+    privacyPolicy = 'privacy-policy',
+    termsOfService = 'terms-of-service',
+    about = 'about',
     //---admin
     admin = 'admin',
     adminUsers = 'users',
@@ -52,6 +57,19 @@ const PATH_ELEMENTS: PathElement = {
         parent: null,
     },
     [Paths.spotlight]: {
+        parent: null,
+    },
+    //--contact
+    [Paths.contact]: {
+        parent: null,
+    },
+    [Paths.privacyPolicy]: {
+        parent: null,
+    },
+    [Paths.termsOfService]: {
+        parent: null,
+    },
+    [Paths.about]: {
         parent: null,
     },
     //---auth
