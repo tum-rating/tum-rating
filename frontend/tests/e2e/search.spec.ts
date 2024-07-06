@@ -18,8 +18,8 @@ test(`should find courses by name "${query} "and navigate to course page by clic
 
 test(`[mobile] should find courses by name "${query}" and navigate to course page by clicking course item in search combo box`, async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
-    await page.goto('/', { waitUntil: 'networkidle' });
-    await page.getByTestId('search_trigger').click();
+    await page.goto('/');
+    await page.getByTestId('search-trigger-mobile').click();
     await page.getByRole('textbox', { name: 'Search...' }).fill(query);
     const option = page.getByRole('option', { name: createQueryRegex(query) }).first();
     const optionCourseName = option.locator('p').first();

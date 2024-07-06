@@ -20,6 +20,20 @@ const generateCourseReview = () => {
     };
 };
 
+
+const addCourseProposal = async ({ page }) => {
+    const tumCourseLink = 'https://campus.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses/950600157?$scrollTo=toc_overview';
+    const form = page.getByTestId('add-course-proposal-form');
+    await form
+        .locator('[data-testid="textarea"]')
+        .fill(tumCourseLink);
+    await form
+        .locator('[data-testid="submit"]')
+        .click();
+
+    //TODO somehow check if the course proposal was added
+};
+
 const openCoursePageByClickingCourseRowInTable = async ({ page, browser }) => {
     let randomRowIndex: number;
     const browserType = browser.browserType().name();
@@ -52,4 +66,4 @@ const checkCourseRender = async ({ page, name }) => {
     await page.getByTestId('course-name').filter({ hasText: name }).isVisible();
 };
 
-export { openCoursePageByClickingCourseRowInTable, addReviewToCourse, checkCourseRender, generateCourseReview };
+export { openCoursePageByClickingCourseRowInTable, addReviewToCourse, checkCourseRender, generateCourseReview, addCourseProposal };
