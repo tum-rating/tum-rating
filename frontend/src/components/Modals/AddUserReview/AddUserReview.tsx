@@ -138,8 +138,7 @@ const AddUserReviewModal = ({
             />
             <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
             <form
-                data-testid="form"
-                className="modal-form"
+                data-testid="add-user-review-form"
                 style={{ height: '100%', overflowY: 'auto' }}
                 onSubmit={form.onSubmit((e) => {
                     handleSubmit(e);
