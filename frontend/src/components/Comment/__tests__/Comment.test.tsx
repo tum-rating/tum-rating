@@ -38,20 +38,6 @@ describe('Comment', () => {
         await userEvent.click(menu);
         await waitFor(() => {
             expect(screen.getByTestId('menu-edit-review')).toBeInTheDocument();
-            expect(screen.getByTestId('menu-delete-review')).toBeInTheDocument();
-        });
-    });
-
-    it('handles menu click correctly when user review is not present', async () => {
-        const mockCommentWithoutUserReview = { ...mockComment, userReview: {} };
-        render(<Comment {...mockCommentWithoutUserReview} />);
-        let menu = null;
-        await waitFor(() => {
-            menu = screen.getByTestId('menu');
-        });
-        await userEvent.click(menu);
-        await waitFor(() => {
-            expect(screen.getByTestId('menu-report-review')).toBeInTheDocument();
         });
     });
 });

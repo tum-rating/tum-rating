@@ -76,7 +76,7 @@ describe('SignUpModal', () => {
                 email = screen.getByTestId('email');
                 password = screen.getByTestId('password');
                 submit = screen.getByTestId('submit');
-                form = screen.getByTestId('form');
+                form = screen.getByTestId('sign-up-form');
             });
             act(() => {
                 fireEvent.change(username, { target: { value: 'wrongusername' } });

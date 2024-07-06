@@ -109,7 +109,7 @@ const SignUpModal = ({ context, id }: ContextModalProps) => {
                     <form
                         className="modal-form"
                         style={{ height: '100%' }}
-                        data-testid="form"
+                        data-testid="sign-up-form"
                         onSubmit={form.onSubmit((e) => {
                             signUp(e);
                         })}
