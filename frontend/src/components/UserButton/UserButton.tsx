@@ -35,9 +35,9 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
         );
     } else {
         return (
-            <Menu position="bottom-end" shadow="xl" width={200} data-testid="menu">
-                <Menu.Target data-testid="user-btn-desktop">
-                    <ActionIcon loading={isLoading} variant="outline" data-testid="menu-button">
+            <Menu position="bottom-end" shadow="xl" width={200} data-testid="user-btn-desktop">
+                <Menu.Target>
+                    <ActionIcon loading={isLoading} variant="outline">
                         <IconLego size="1.2rem" />
                     </ActionIcon>
                 </Menu.Target>
@@ -66,6 +66,7 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                         const Icon = page.icon;
                         return (
                             <Menu.Item
+                                key={page.path}
                                 leftSection={<Icon style={{ width: rem(14), height: rem(14) }} />}
                                 onClick={() => {
                                     navigate(page.path);
