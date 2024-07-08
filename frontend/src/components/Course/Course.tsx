@@ -137,7 +137,7 @@ const Course = () => {
                                             )
                                         ) : (
                                             <>
-                                                <Button loading={isLoading} size="sm" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => navigate(getPath(Paths.signIn))}>
+                                                <Button loading={isLoading} size="sm" variant="primary-gradient" onClick={() => navigate(getPath(Paths.signIn))}>
                                                     Sign In to add review
                                                 </Button>
                                             </>

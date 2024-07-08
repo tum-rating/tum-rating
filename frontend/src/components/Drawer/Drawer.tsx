@@ -1,12 +1,13 @@
-import { Button, Divider, Drawer as DrawerComponent, Flex, Stack, Switch, Text, useMantineColorScheme } from '@mantine/core';
-import { IconMoonStars, IconSun } from '@tabler/icons-react';
+import { Button, Divider, Drawer as DrawerComponent, Flex, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+
+import classes from "./Drawer.module.css";
 
 import { useSignOut } from '@/auth/useSignOut.tsx';
 import { useUser } from '@/auth/useUser.tsx';
 import { ThemeToggleFloatingIndicator } from '@/components/ThemeToggle';
 import { UserButton } from '@/components/UserButton';
-import { DRAWER_Z_INDEX } from '@/constants';
+import { DRAWER_Z_INDEX, INFO_PAGES } from '@/constants';
 import { getPath, Paths } from '@/routes/paths.ts';
 
 interface DrawerProps {
@@ -17,7 +18,6 @@ interface DrawerProps {
 const Drawer = (props: DrawerProps) => {
     const { data: user, isLoading } = useUser();
     const isAdmin = isLoading ? false : user?.isAdmin;
-    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const signOut = useSignOut();
     const navigate = useNavigate();
     const { open, toggle } = props;
@@ -40,9 +40,11 @@ const Drawer = (props: DrawerProps) => {
                     <ThemeToggleFloatingIndicator />
                     {user ? (
                         <>
-                            <Button variant="primary-gradient" onClick={() => navigate(getPath(Paths.admin))}>
-                                Admin panel
-                            </Button>
+                            {isAdmin && (
+                                <Button variant="primary-gradient" onClick={() => navigate(getPath(Paths.admin))}>
+                                    Admin panel
+                                </Button>
+                            )}
                             <Button variant="default" onClick={() => signOut()}>
                                 Log out
                             </Button>
@@ -58,62 +60,27 @@ const Drawer = (props: DrawerProps) => {
                         </>
                     )}
                     <Divider />
-                    <Stack></Stack>
-                </Stack>
-
-                <Stack h="100%" justify="space-between" p="sm" style={{ display: 'none' }}>
-                    <Flex align="center" justify="space-between">
-                        {user ? <UserButton withoutDropdown /> : <Text>Hello</Text>}
-                        <Switch data-testid="color-scheme-toggle" size="md" onChange={toggleColorScheme} checked={colorScheme === 'light'} onLabel={<IconSun size="1.1rem" />} offLabel={<IconMoonStars size="1.1rem" />} />
-                    </Flex>
-                    <Flex direction="column" w="100%" wrap="nowrap" gap="sm">
-                        {user ? (
-                            <>
-                                {isAdmin ?? (
+                    <Stack mt="auto">
+                        <Button.Group orientation="vertical" className={classes.drawerMenu}>
+                            {INFO_PAGES.map((page) => {
+                                const Icon = page.icon;
+                                return (
                                     <Button
+                                        key={page.title}
                                         fullWidth
-                                        size="lg"
-                                        variant="primary-gradient"
+                                        variant="default"
+                                        leftSection={<Icon style={{ width: '1.2rem', height: '1.2rem' }} />}
                                         onClick={() => {
-                                            navigate(getPath(Paths.admin));
+                                            navigate(page.path);
                                             toggle();
                                         }}
                                     >
-                                        Admin
+                                        {page.title}
                                     </Button>
-                                )}
-                                <Button fullWidth size="lg" variant="outline" onClick={() => signOut()}>
-                                    Log out
-                                </Button>
-                            </>
-                        ) : (
-                            <>
-                                <Button
-                                    fullWidth
-                                    size="md"
-                                    data-testid="sign-in-btn"
-                                    variant="outline"
-                                    onClick={() => {
-                                        navigate(getPath(Paths.signIn));
-                                        toggle();
-                                    }}
-                                >
-                                    Sign In
-                                </Button>
-                                <Button
-                                    fullWidth
-                                    size="md"
-                                    variant="primary-gradient"
-                                    onClick={() => {
-                                        navigate(getPath(Paths.signUp));
-                                        toggle();
-                                    }}
-                                >
-                                    Sign Up
-                                </Button>
-                            </>
-                        )}
-                    </Flex>
+                                );
+                            })}
+                        </Button.Group>
+                    </Stack>
                 </Stack>
             </DrawerComponent>
         </>

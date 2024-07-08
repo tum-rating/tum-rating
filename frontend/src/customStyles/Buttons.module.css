@@ -7,5 +7,9 @@
     &[data-variant='primary-gradient'] {
         background: var(--primary-gradient);
         color: var(--mantine-color-white);
+        transition: filter 0.2s ease-out;
+        &:hover {
+            filter: hue-rotate(30deg);
+        }
     }
 }

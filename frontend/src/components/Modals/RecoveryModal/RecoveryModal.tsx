@@ -65,7 +65,7 @@ const RecoveryModal = ({ context, id }: ContextModalProps) => {
                 {!isRecoverySuccess && <ModalHeader title="Recovery" subTitle={'Send recovery link to your email.'} />}
                 <LoadingOverlay visible={recoveryLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
                 {isRecoverySuccess ? (
-                    <Flex p="sm" direction="column" align="center" gap="xs" mt="xl" data-testid="success-message">
+                    <Flex p="sm" direction="column" align="center" gap="xs" mt="xl" mb="xl" data-testid="success-message">
                         <Group>
                             <ThemeIcon size="80px" radius={50} variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
                                 <IconMail size={55} />

@@ -142,7 +142,7 @@ const SignUpModal = ({ context, id }: ContextModalProps) => {
                                     Already have an account?
                                 </Anchor>
                             </Group>
-                            <Button data-testid="submit" type="submit" mt="xs" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
+                            <Button data-testid="submit" type="submit" mt="xs" variant="primary-gradient">
                                 Sign Up
                             </Button>
                         </Stack>
