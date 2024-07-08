@@ -13,11 +13,11 @@ import { CloseButton } from '@/components/Modals/shared/CloseButton';
 import { ModalHeader } from '@/components/Modals/shared/ModalHeader';
 import { ModalResponsiveContainer } from '@/components/Modals/shared/ModalResponsiveContainer';
 import { Skeleton } from '@/components/Skeleton';
+import { useFeedbackCTAContext } from '@/context';
 import { useAddUserReview, UserAddReviewInput } from '@/courses/useAddUserReview.tsx';
 import { useDetailCourse } from '@/courses/useCourse.tsx';
 import classes from '@/pages/PageNotFound/PageNotFound.module.css';
 import { Paths } from '@/routes/paths.ts';
-import { useFeedbackCTAContext } from '@/context';
 
 const openAddUserReviewModal = ({ courseId, ...props }) => {
     modals.openContextModal({
