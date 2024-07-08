@@ -19,6 +19,7 @@ const resolver: CSSVariablesResolver = () => ({
     variables: {
         '--primary-gradient': `linear-gradient(90deg, var(--mantine-color-indigo-filled) 0%, var(--mantine-color-blue-filled) 100%);`,
         '--green-gradient': `linear-gradient(170deg, var(--mantine-color-teal-filled) 0%, var(--mantine-color-lime-filled) 100%);`,
+        '--primary-gradient-reverse': 'linear-gradient(90deg, var(--mantine-color-blue-filled) 0%, var(--mantine-color-indigo-filled) 100%);',
     },
     light: {
         '--striped-background': 'repeating-linear-gradient(45deg,var(--mantine-color-white),var(--mantine-color-white), 10px,#fafafa 10px,#fafafa 20px)',
