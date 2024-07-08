@@ -3,6 +3,8 @@ import { IconLego, IconLogout } from '@tabler/icons-react';
 
 import { useSignOut } from '@/auth/useSignOut.tsx';
 import { useUser } from '@/auth/useUser.tsx';
+import { INFO_PAGES } from '@/constants';
+import { useNavigate } from 'react-router-dom';
 
 interface UserButtonProps {
     withoutDropdown?: boolean;
@@ -11,6 +13,7 @@ interface UserButtonProps {
 export function UserButton({ withoutDropdown = false }: UserButtonProps) {
     const signOut = useSignOut();
     const { data: user, isLoading } = useUser();
+    const navigate = useNavigate();
     if (isLoading || !user) return <div style={{ visibility: 'hidden', position: 'fixed' }} data-testid="no_user_provided" />;
     if (withoutDropdown) {
         return (
@@ -32,7 +35,7 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
         );
     } else {
         return (
-            <Menu position="bottom-end" shadow="md" width={200} data-testid="menu">
+            <Menu position="bottom-end" shadow="xl" width={200} data-testid="menu">
                 <Menu.Target data-testid="menu-button">
                     <ActionIcon loading={isLoading} variant="outline" data-testid="menu-button">
                         <IconLego size="1.2rem" />
@@ -58,6 +61,20 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                     <Menu.Item onClick={() => signOut()} leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} data-testid="logout" />}>
                         Logout
                     </Menu.Item>
+                    <Menu.Label>Information</Menu.Label>
+                    {INFO_PAGES.map((page) => {
+                        const Icon = page.icon;
+                        return (
+                            <Menu.Item
+                                leftSection={<Icon style={{ width: rem(14), height: rem(14) }} />}
+                                onClick={() => {
+                                    navigate(page.path);
+                                }}
+                            >
+                                {page.title}
+                            </Menu.Item>
+                        );
+                    })}
                 </Menu.Dropdown>
             </Menu>
         );
