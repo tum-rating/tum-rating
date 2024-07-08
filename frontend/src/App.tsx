@@ -55,7 +55,7 @@ export default function App() {
             }}
         >
             <QueryClientProvider client={queryClient}>
-                <ReactQueryDevtools initialIsOpen={false} />
+                <ReactQueryDevtools buttonPosition="bottom-left" initialIsOpen={false} />
                 <Notifications />
                 <TableScrollProvider>
                     <SearchProvider>
