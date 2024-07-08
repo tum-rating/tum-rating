@@ -4,13 +4,17 @@ import { render, RenderOptions } from '@testing-library/react';
 import { ReactElement, ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { SearchProvider } from '@/context';
+import {FeedbackCTAProvider, SearchProvider} from '@/context';
 
 const AllTheProviders = ({ children }: { children: ReactNode }) => {
     return (
         <BrowserRouter>
             <MantineProvider>
-                <SearchProvider>{children}</SearchProvider>
+                <SearchProvider>
+                    <FeedbackCTAProvider>
+                        {children}
+                    </FeedbackCTAProvider>
+                </SearchProvider>
             </MantineProvider>
         </BrowserRouter>
     );

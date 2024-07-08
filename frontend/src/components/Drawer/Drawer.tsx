@@ -1,18 +1,15 @@
-import {
-    Button,
-    Divider,
-    Drawer as DrawerComponent,
-    Flex,
-    Stack,
-} from '@mantine/core';
-import {useNavigate} from 'react-router-dom';
+import { Button, Divider, Drawer as DrawerComponent, Flex, Stack } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
 
-import {useSignOut} from '@/auth/useSignOut.tsx';
-import {useUser} from '@/auth/useUser.tsx';
-import {ThemeToggleFloatingIndicator} from '@/components/ThemeToggle';
-import {UserButton} from '@/components/UserButton';
-import {DRAWER_Z_INDEX} from '@/constants';
-import {getPath, Paths} from '@/routes/paths.ts';
+import classes from "./Drawer.module.css";
+
+import { useSignOut } from '@/auth/useSignOut.tsx';
+import { useUser } from '@/auth/useUser.tsx';
+import { ThemeToggleFloatingIndicator } from '@/components/ThemeToggle';
+import { UserButton } from '@/components/UserButton';
+import { DRAWER_Z_INDEX, INFO_PAGES } from '@/constants';
+import { getPath, Paths } from '@/routes/paths.ts';
+
 
 interface DrawerProps {
     open: boolean;
@@ -44,14 +41,11 @@ const Drawer = (props: DrawerProps) => {
                     <ThemeToggleFloatingIndicator/>
                     {user ? (
                         <>
-                            {
-                                isAdmin && (
-                                    <Button data-testid="admin-btn-mobile" variant="primary-gradient"
-                                            onClick={() => navigate(getPath(Paths.admin))}>
-                                        Admin panel
-                                    </Button>
-                                )
-                            }
+                            {isAdmin && (
+                                <Button variant="primary-gradient" onClick={() => navigate(getPath(Paths.admin))}>
+                                    Admin panel
+                                </Button>
+                            )}
                             <Button data-testid="log-out-btn-mobile" variant="default" onClick={() => signOut()}>
                                 Log out
                             </Button>
@@ -66,8 +60,28 @@ const Drawer = (props: DrawerProps) => {
                             </Button>
                         </>
                     )}
-                    <Divider/>
-                    <Stack></Stack>
+                    <Divider />
+                    <Stack mt="auto">
+                        <Button.Group orientation="vertical" className={classes.drawerMenu}>
+                            {INFO_PAGES.map((page) => {
+                                const Icon = page.icon;
+                                return (
+                                    <Button
+                                        key={page.title}
+                                        fullWidth
+                                        variant="default"
+                                        leftSection={<Icon style={{ width: '1.2rem', height: '1.2rem' }} />}
+                                        onClick={() => {
+                                            navigate(page.path);
+                                            toggle();
+                                        }}
+                                    >
+                                        {page.title}
+                                    </Button>
+                                );
+                            })}
+                        </Button.Group>
+                    </Stack>
                 </Stack>
             </DrawerComponent>
         </>

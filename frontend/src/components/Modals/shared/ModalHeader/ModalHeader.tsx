@@ -16,12 +16,12 @@ const ModalHeader = (props: ModalHeaderProps) => {
                 <ThemeIcon mb={1} variant="gradient" radius="sm" data-testid="icon">
                     {icon}
                 </ThemeIcon>
-                <Text fz={24} fw="bold">
+                <Text fz={24} fw="bold" lineClamp={1}>
                     {title}
                 </Text>
             </Flex>
             {subTitle && (
-                <Text px="sm" fz="sm" fw="500">
+                <Text px="sm" fz="sm" fw="500" lineClamp={1}>
                     {subTitle}
                 </Text>
             )}

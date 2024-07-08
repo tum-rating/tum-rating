@@ -1,0 +1,15 @@
+.pageWrapper {
+    position: absolute;
+    transform: translateX(7px);
+    border-top-left-radius: var(--mantine-radius-sm);
+    border-top-right-radius: var(--mantine-radius-sm);
+    width: 100%;
+    background: var(--mantine-color-body);
+    @media (max-width: $mantine-breakpoint-sm) {
+        border-radius: 0;
+        top: 54px;
+    }
+    @media (max-width: 1320px) {
+        transform: translateX(0);
+    }
+}

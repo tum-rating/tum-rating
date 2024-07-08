@@ -66,7 +66,7 @@ export const Recovery = () => {
                             </Text>
                         </Container>
 
-                        <Button mt={10} fullWidth variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} className={classes.control} onClick={() => navigate('/#modal=sign-in')}>
+                        <Button mt={10} fullWidth variant="primary-gradient" className={classes.control} onClick={() => navigate('/#modal=sign-in')}>
                             Log In
                         </Button>
                     </Box>

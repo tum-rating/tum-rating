@@ -98,7 +98,8 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
                                 <Text size="xs">{error.message || 'An error occurred'}</Text>
                             </Alert>
                         )}
-                        <Button data-testid="submit" loading={addReviewLoading} mt="xs" type="submit" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
+
+                        <Button data-testid="submit" loading={addReviewLoading} mt="xs" type="submit" variant="primary-gradient">
                             Add Course Proposal
                         </Button>
                         <Alert variant="light" color="green" title="How to add a course" icon={<IconInfoCircle />}>

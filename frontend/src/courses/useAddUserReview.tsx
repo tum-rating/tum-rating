@@ -1,6 +1,3 @@
-import { notifications } from '@mantine/notifications';
-import { IconCheck } from '@tabler/icons-react';
-
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
 import { endpoints, useMutationWithAuth } from '@/api';
@@ -43,12 +40,6 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any 
     return useMutationWithAuth({
         mutationFn: async (newReview: UserAddReviewInput) => addUserReview({ ...data, token: token }, newReview, courseId, type),
         onSuccess: () => {
-            notifications.show({
-                title: 'Success',
-                message: type === 'POST' ? 'Review added' : 'Review updated',
-                color: 'green',
-                icon: <IconCheck />,
-            });
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.detail_course, courseId],
             });
