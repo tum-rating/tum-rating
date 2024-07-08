@@ -145,7 +145,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
                             )}
                         </Stack>
                     </Flex>
-                    <Flex mt="auto" justify="space-between" mb="xs">
+                    <Flex justify="space-between" mb="xs">
                         <Button onClick={() => context.closeModal(id)} color={'gray'} variant={'subtle'}>
                             Cancel
                         </Button>

@@ -24,14 +24,14 @@ const ModalResponsiveContainer = (props: React.PropsWithChildren) => {
 
     useEffect(() => {
         setInitialHeight(window.innerHeight);
-    }, [isMobile]);
+    }, []);
 
     return (
         <div
             data-testid="modal-content"
             style={{
                 position: 'relative',
-                height: isMobile && keyboardVisible ? `calc(${height}px - 10dvh)` : '100%',
+                height: isMobile && keyboardVisible ? `calc(${height}px - 2dvh)` : '100%',
             }}
         >
             {props.children}
