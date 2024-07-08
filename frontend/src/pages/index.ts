@@ -4,7 +4,7 @@ export { ErrorBoundary } from './PageNotFound';
 export { Activation } from './Activation/Activation.tsx';
 export { Recovery } from './Recovery/Recovery.tsx';
 export { Admin } from './Admin/Admin.tsx';
-export { Contact } from './Contact/Contact.tsx';
+export { Feedback } from '@/pages/Feedback/Feedback.tsx';
 export { About } from './About/About.tsx';
 export { PrivacyPolicy } from './PrivacyPolicy';
 export { TermsOfService } from './TermsOfService/TermsOfService.tsx';

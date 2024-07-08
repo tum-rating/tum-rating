@@ -10,7 +10,7 @@ import {AddCourseModal} from '@/components/Modals/AddCourseModal/AddCourseModal.
 import {AddUserReviewModal} from '@/components/Modals/AddUserReview/AddUserReview.tsx';
 import {EditUserReviewModal} from '@/components/Modals/EditUserReview';
 import {AdminLayout, MainLayout} from '@/layouts';
-import {About, Activation, Contact, Course, ErrorBoundary, Home, PrivacyPolicy,TermsOfService, Recovery} from '@/pages';
+import {About, Activation, Feedback, Course, ErrorBoundary, Home, PrivacyPolicy,TermsOfService, Recovery} from '@/pages';
 
 
 const Admin = lazy(async () => {
@@ -103,8 +103,8 @@ const routes = [
                         element: <About/>,
                     },
                     {
-                        path: getPath(Paths.contact),
-                        element: <Contact/>,
+                        path: getPath(Paths.feedback),
+                        element: <Feedback/>,
                     },
                     {
                         path: getPath(Paths.privacyPolicy),

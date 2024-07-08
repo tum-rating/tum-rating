@@ -13,7 +13,7 @@ export enum Paths {
     spotlight = '#modal=spotlight',
     forgotPassword = '#modal=forgot-password',
     //---contact
-    contact = 'contact',
+    feedback = 'feedback',
     privacyPolicy = 'privacy-policy',
     termsOfService = 'terms-of-service',
     about = 'about',
@@ -60,7 +60,7 @@ const PATH_ELEMENTS: PathElement = {
         parent: null,
     },
     //--contact
-    [Paths.contact]: {
+    [Paths.feedback]: {
         parent: null,
     },
     [Paths.privacyPolicy]: {

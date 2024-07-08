@@ -5,7 +5,7 @@ import {useEffect} from "react";
 import {PageWrapper} from "@/components/PageWrapper";
 
 
-export const Contact = () => {
+export const Feedback = () => {
     useEffect(() => {
         const children = document.querySelectorAll('.children-animation > *');
         children.forEach((child: Element, index: number) => {
