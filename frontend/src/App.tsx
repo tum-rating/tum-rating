@@ -14,6 +14,7 @@ import { queryClient } from './react-query/client.ts';
 import { RoutesApp } from './routes';
 
 import { SearchProvider, TableScrollProvider } from '@/context';
+import { FeedbackCTAProvider } from '@/context/FeedbackCTAContext';
 
 const resolver: CSSVariablesResolver = () => ({
     variables: {
@@ -58,7 +59,9 @@ export default function App() {
                 <Notifications />
                 <TableScrollProvider>
                     <SearchProvider>
-                        <RoutesApp />
+                        <FeedbackCTAProvider>
+                            <RoutesApp />
+                        </FeedbackCTAProvider>
                     </SearchProvider>
                 </TableScrollProvider>
             </QueryClientProvider>
