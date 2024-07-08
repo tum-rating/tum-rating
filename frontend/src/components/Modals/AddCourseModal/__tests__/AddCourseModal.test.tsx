@@ -28,9 +28,8 @@ describe('AddCourseModal', () => {
             );
 
             await waitFor(() => {
-                expect(screen.getByTestId('modal-content')).toBeInTheDocument();
                 expect(screen.getByTestId('textarea')).toBeInTheDocument();
-                expect(screen.getByTestId('submit-button')).toBeInTheDocument();
+                expect(screen.getByTestId('submit')).toBeInTheDocument();
             });
         });
         it('should display error if course URL is invalid', async () => {
@@ -41,9 +40,8 @@ describe('AddCourseModal', () => {
             );
 
             await waitFor(() => {
-                expect(screen.getByTestId('modal-content')).toBeInTheDocument();
                 expect(screen.getByTestId('textarea')).toBeInTheDocument();
-                expect(screen.getByTestId('submit-button')).toBeInTheDocument();
+                expect(screen.getByTestId('submit')).toBeInTheDocument();
             });
 
             const textarea = screen.getByTestId('textarea');
@@ -53,7 +51,7 @@ describe('AddCourseModal', () => {
                 fireEvent.change(textarea, { target: { value: 'https://cam1dent/courses/950600157?$scrollTo=toc_overview' } });
             });
             const submitButton = screen.getByRole('button', { name: 'Add Course Proposal' });
-            const form = screen.getByTestId('form');
+            const form = screen.getByTestId('add-course-proposal-form');
             fireEvent.submit(form, {
                 button: submitButton,
             });

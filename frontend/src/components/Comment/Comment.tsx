@@ -30,7 +30,7 @@ export const Comment = (props: CommentProps) => {
     const userCommentFlag = (userReview || {}).userId === userId;
 
     return (
-        <Flex p="md" data-comment={userCommentFlag ? 'user-comment' : 'comment'} direction="column" className={classes.comment} data-testid="comment">
+        <Flex p="md" data-testid={userCommentFlag ? 'user-comment' : 'comment'} data-comment={userCommentFlag ? 'user-comment' : 'comment'} direction="column" className={classes.comment}>
             <Flex direction="column">
                 <Flex justify="space-between" w="100%">
                     <Flex gap="xs">

@@ -93,7 +93,7 @@ const SignInModal = ({ context, id }: ContextModalProps) => {
             />
             <Container p="sm">
                 <LoadingOverlay visible={signInLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-                <form className="modal-form" data-testid="form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
+                <form className="modal-form" data-testid="sign-in-form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
                     <Stack>
                         <TextInput autoFocus data-autofocus type="email" leftSection={<IconAt size="1.1rem" />} data-testid="email" required label="Email" placeholder="Email" {...form.getInputProps('email')} />
                         <PasswordInput leftSection={<IconLock size="1.1rem" />} data-testid="password" autoComplete="on" required label="Password" placeholder="Password" {...form.getInputProps('password')} />

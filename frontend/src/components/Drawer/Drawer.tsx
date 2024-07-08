@@ -10,24 +10,25 @@ import { UserButton } from '@/components/UserButton';
 import { DRAWER_Z_INDEX, INFO_PAGES } from '@/constants';
 import { getPath, Paths } from '@/routes/paths.ts';
 
+
 interface DrawerProps {
     open: boolean;
     toggle: (flag?: boolean) => void;
 }
 
 const Drawer = (props: DrawerProps) => {
-    const { data: user, isLoading } = useUser();
+    const {data: user, isLoading} = useUser();
     const isAdmin = isLoading ? false : user?.isAdmin;
     const signOut = useSignOut();
     const navigate = useNavigate();
-    const { open, toggle } = props;
+    const {open, toggle} = props;
 
     return (
         <>
             <DrawerComponent
                 opened={open}
                 onClose={toggle}
-                transitionProps={{ duration: 400, timingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)' }}
+                transitionProps={{duration: 400, timingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)'}}
                 size="xs"
                 style={{
                     zIndex: DRAWER_Z_INDEX,
@@ -35,9 +36,9 @@ const Drawer = (props: DrawerProps) => {
             >
                 <Stack h="100%" justify="space-between" p={0}>
                     <Flex>
-                        <UserButton withoutDropdown />
+                        <UserButton withoutDropdown/>
                     </Flex>
-                    <ThemeToggleFloatingIndicator />
+                    <ThemeToggleFloatingIndicator/>
                     {user ? (
                         <>
                             {isAdmin && (
@@ -45,16 +46,16 @@ const Drawer = (props: DrawerProps) => {
                                     Admin panel
                                 </Button>
                             )}
-                            <Button variant="default" onClick={() => signOut()}>
+                            <Button data-testid="log-out-btn-mobile" variant="default" onClick={() => signOut()}>
                                 Log out
                             </Button>
                         </>
                     ) : (
                         <>
-                            <Button data-testid="sign-in-btn" onClick={() => navigate(getPath(Paths.signIn))}>
+                            <Button data-testid="sign-in-btn-mobile" onClick={() => navigate(getPath(Paths.signIn))}>
                                 Sign In
                             </Button>
-                            <Button data-testid="sign-up-btn" onClick={() => navigate(getPath(Paths.signUp))}>
+                            <Button data-testid="sign-up-btn-mobile" onClick={() => navigate(getPath(Paths.signUp))}>
                                 Sign Up
                             </Button>
                         </>
@@ -87,4 +88,4 @@ const Drawer = (props: DrawerProps) => {
     );
 };
 
-export { Drawer };
+export {Drawer};

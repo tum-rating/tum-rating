@@ -17,16 +17,16 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
     if (isLoading || !user) return <div style={{ visibility: 'hidden', position: 'fixed' }} data-testid="no_user_provided" />;
     if (withoutDropdown) {
         return (
-            <Box>
+            <Box data-testid="user-btn-mobile">
                 <Group wrap="nowrap" p="xs">
                     <ThemeIcon>
                         <IconLego size="1.2rem" />
                     </ThemeIcon>
                     <Stack gap={0}>
-                        <Text data-testid="username-loaded" truncate="end" size="sm" fw={500}>
+                        <Text data-testid="user-btn-username-mobile" truncate="end" size="sm" fw={500}>
                             {user?.username}
                         </Text>
-                        <Text data-testid="email-loaded" truncate="end" c="dimmed" size="xs">
+                        <Text data-testid="user-btn-email-mobile" truncate="end" c="dimmed" size="xs">
                             {user?.email}
                         </Text>
                     </Stack>
@@ -36,7 +36,7 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
     } else {
         return (
             <Menu position="bottom-end" shadow="xl" width={200} data-testid="menu">
-                <Menu.Target data-testid="menu-button">
+                <Menu.Target data-testid="user-btn-desktop">
                     <ActionIcon loading={isLoading} variant="outline" data-testid="menu-button">
                         <IconLego size="1.2rem" />
                     </ActionIcon>
@@ -48,10 +48,10 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                                 <IconLego size="1.2rem" />
                             </ThemeIcon>
                             <Stack gap={0}>
-                                <Text w={120} data-testid="username-loaded-dropdown" truncate="end" size="sm" fw={500}>
+                                <Text w={120} data-testid="user-btn-username-desktop" truncate="end" size="sm" fw={500}>
                                     {user?.username}
                                 </Text>
-                                <Text w={120} data-testid="email-loaded-dropdown" truncate="end" c="dimmed" size="xs">
+                                <Text w={120} data-testid="user-btn-email-desktop" truncate="end" c="dimmed" size="xs">
                                     {user?.email}
                                 </Text>
                             </Stack>

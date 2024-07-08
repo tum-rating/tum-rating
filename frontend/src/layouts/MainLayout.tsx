@@ -54,11 +54,12 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                     <Flex gap={20}>
                         {!user ? (
                             <>
-                                <Button data-testid="sign-in-btn" loading={!user && isLoading} size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
+                                <Button data-testid="sign-in-btn-desktop" loading={!user && isLoading} size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
                                     Sign In
                                 </Button>
                                 <Button
                                     loading={!user && isLoading}
+                                    data-testid="sign-up-btn-desktop"
                                     size="xs"
                                     variant="primary-gradient"
                                     onClick={() => {

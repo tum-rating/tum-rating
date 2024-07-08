@@ -72,7 +72,7 @@ describe('SignInModal', () => {
                 email = screen.getByTestId('email');
                 password = screen.getByTestId('password');
                 submit = screen.getByTestId('submit');
-                form = screen.getByTestId('form');
+                form = screen.getByTestId('sign-in-form');
             });
             act(() => {
                 fireEvent.change(email, { target: { value: 'wrongemail@tum.de' } });
