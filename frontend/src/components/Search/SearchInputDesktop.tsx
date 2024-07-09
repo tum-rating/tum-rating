@@ -119,7 +119,7 @@ const SearchInputDesktop = () => {
         return (
             <>
                 <ActionIcon
-                    data-testid="search_trigger"
+                    data-testid="search-trigger-mobile"
                     variant="light"
                     onClick={() => {
                         if (isMobileOnly) {
@@ -174,7 +174,7 @@ const SearchInputDesktop = () => {
                                         setIsSearchOpen(false);
                                         combobox.closeDropdown();
                                     }}
-                                />
+                                />a
                             </form>
                         </Combobox.EventsTarget>
                         <Combobox.Options className={classes.searchInputMobileOptions}>
@@ -203,9 +203,10 @@ const SearchInputDesktop = () => {
             withinPortal={false}
             store={combobox}
         >
-            <Combobox.Target data-testid="search_trigger">
+            <Combobox.Target>
                 <form style={{ width: '100%' }} onSubmit={handleSubmit}>
                     <TextInput
+                        data-testid="search-trigger-desktop"
                         leftSection={
                             <ThemeIcon variant="light">
                                 <IconSearch width={16} height={16} />

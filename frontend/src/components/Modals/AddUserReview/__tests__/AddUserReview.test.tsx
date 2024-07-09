@@ -68,7 +68,7 @@ describe('AddUserReviewModal', () => {
             });
 
             const submitButton = screen.getByRole('button', { name: 'Send' });
-            const form = screen.getByTestId('form');
+            const form = screen.getByTestId('add-user-review-form');
             fireEvent.submit(form, {
                 button: submitButton,
             });

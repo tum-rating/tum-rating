@@ -21,8 +21,6 @@ interface TableToolboxProps {
     };
 }
 
-const options = [TableFilters, TableRefresh, TableFullscreen];
-
 const TableToolbox = (props: TableToolboxProps) => {
     const { config, ...rest } = props;
     const defaultConfig = {
@@ -53,18 +51,15 @@ const TableToolbox = (props: TableToolboxProps) => {
                     </Box>
                 </Menu.Target>
                 <Menu.Dropdown hiddenFrom={'sm'}>
-                    {options.map(
-                        (Option, index) =>
-                            defaultConfig?.[Option.name.replace(/^\w/, (c) => c.toLowerCase())] && (
-                                <Menu.Item key={index}>
-                                    <Option key={index} {...rest} />
-                                </Menu.Item>
-                            ),
-                    )}
+                    {defaultConfig.tableFilters && <Menu.Item><TableFilters {...rest} /></Menu.Item>}
+                    {defaultConfig.tableRefresh && <Menu.Item><TableRefresh {...rest} /></Menu.Item>}
+                    {defaultConfig.tableFullscreen && <Menu.Item><TableFullscreen {...rest} /></Menu.Item>}
                 </Menu.Dropdown>
             </Menu>
             <Group gap={4} visibleFrom={'sm'}>
-                {options.map((Option, index) => defaultConfig?.[Option.name.replace(/^\w/, (c) => c.toLowerCase())] && <Option key={index} {...rest} />)}
+                {defaultConfig.tableFilters && <TableFilters {...rest} />}
+                {defaultConfig.tableRefresh && <TableRefresh {...rest} />}
+                {defaultConfig.tableFullscreen && <TableFullscreen {...rest} />}
             </Group>
         </Flex>
     );

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {isMobile} from 'react-device-detect';
+import React, { useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
 
 const ModalResponsiveContainer = (props: React.PropsWithChildren) => {
     const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -19,22 +19,24 @@ const ModalResponsiveContainer = (props: React.PropsWithChildren) => {
             window.visualViewport.addEventListener('resize', handleResize);
             return () => window.visualViewport.removeEventListener('resize', handleResize);
         }
-        return () => {
-        };
+        return () => {};
     }, []);
 
     useEffect(() => {
         setInitialHeight(window.innerHeight);
-    }, [isMobile]);
+    }, []);
 
     return (
-        <div data-testid="modal-content" style={{
-            position: 'relative',
-            height: isMobile && keyboardVisible ? `calc(${height}px - 10dvh)` : '100%',
-        }}>
+        <div
+            data-testid="modal-content"
+            style={{
+                position: 'relative',
+                height: isMobile && keyboardVisible ? `calc(${height}px - 2dvh)` : '100%',
+            }}
+        >
             {props.children}
         </div>
     );
 };
 
-export {ModalResponsiveContainer};
+export { ModalResponsiveContainer };
