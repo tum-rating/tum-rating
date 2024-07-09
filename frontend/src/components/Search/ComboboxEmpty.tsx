@@ -43,6 +43,7 @@ export const ComboboxEmpty = (props: ComboboxEmptyProps) => {
                     </Button>
                 ) : (
                     <Button
+                        data-testid="sign-in-to-add-course-proposal"
                         onClick={() => {
                             navigate(getPath(Paths.signIn));
                         }}

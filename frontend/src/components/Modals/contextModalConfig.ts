@@ -13,6 +13,7 @@ export const contextModalConfig = (config: ContextModalConfigProps) => {
     return {
         modal: modalName,
         title: modalTitle,
+        centered: true,
         padding: 0,
         innerProps: {},
         ...config,

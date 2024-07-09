@@ -1,1 +1,1 @@
-export {ModalResponsiveContainer} from './ModalResponsiveContainer';
+export { ModalResponsiveContainer } from './ModalResponsiveContainer';
