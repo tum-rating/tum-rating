@@ -7,8 +7,8 @@
     justify-content: flex-end;
     align-items: center;
     border-radius: var(--mantine-radius-xl);
-    box-shadow: var(--mantine-shadow-xs);
-    transition: width 0.35s cubic-bezier(0.65, 0, .076, 1);
+    box-shadow: var(--mantine-shadow-xl);
+    transition: width 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940);
     padding: 2px;
     z-index: 0;
 
@@ -22,14 +22,12 @@
 
     &:hover .text {
         visibility: visible;
-        animation: text-pop-up-left 0.50s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        animation: text-pop-up-left 0.50s 0.05s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
     }
 
-
-    /*glow effect*/
     &:global(.glow) .text{
         visibility: visible;
-        animation: text-pop-up-left 0.50s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        animation: text-pop-up-left 0.50s 0.05s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
     }
 
     &:global(.glow){
