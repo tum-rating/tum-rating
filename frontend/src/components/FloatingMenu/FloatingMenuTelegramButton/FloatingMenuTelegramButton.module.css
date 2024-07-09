@@ -55,8 +55,8 @@
 
 .icon {
     fill: var(--mantine-color-blue-filled);
-    min-width: 39px;
-    min-height: 39px;
+    min-width: 35px;
+    min-height: 35px;
 }
 
 .progress {
