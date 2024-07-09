@@ -1,17 +1,16 @@
-import { Badge, Box, Flex, Text } from '@mantine/core';
+import {Badge, Box, Flex, Text} from '@mantine/core';
 import clsx from 'clsx';
-import { MantineReactTable, MRT_RowVirtualizer, MRT_SortingState, useMantineReactTable } from 'mantine-react-table';
-import { useRef, useState } from 'react';
+import {MantineReactTable, useMantineReactTable} from 'mantine-react-table';
 
-import { useUsersColumns } from './useUsersColumns.tsx';
+import {useUsersColumns} from './useUsersColumns.tsx';
 import rowClasses from '../Shared/styles/RowStyles.module.css';
 
-import { User } from '@/admin/types.ts';
-import { useAllUsers } from '@/admin/useAllUsers.ts';
-import { useBanUser } from '@/admin/useBanUser.tsx';
+import {User} from '@/admin/types.ts';
+import {useAllUsers} from '@/admin/useAllUsers.ts';
+import {useBanUser} from '@/admin/useBanUser.tsx';
 import classes from '@/components/AdminTable/Shared/styles/TableStyles.module.css';
-import { TableToolbox } from '@/components/AdminTable/Shared/TableToolbox';
-import { UserExpansion } from '@/components/AdminTable/Users/UserExpansion.tsx';
+import {TableToolbox} from '@/components/AdminTable/Shared/TableToolbox';
+import {UserExpansion} from '@/components/AdminTable/Users/UserExpansion.tsx';
 
 const rowClassFn = (user: User) => {
     if (user.isBanned) {
@@ -24,11 +23,9 @@ const rowClassFn = (user: User) => {
 };
 
 const AdminUsersTable = () => {
-    const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
-    const { data, isLoading, refetch } = useAllUsers();
-    const [sorting, setSorting] = useState<MRT_SortingState>([]);
-    const { isLoading: banLoading } = useBanUser();
-    const { columns } = useUsersColumns();
+    const {data, isLoading, refetch} = useAllUsers();
+    const {isLoading: banLoading} = useBanUser();
+    const {columns} = useUsersColumns();
 
     const table = useMantineReactTable({
         columns,
@@ -37,14 +34,13 @@ const AdminUsersTable = () => {
         enableGlobalFilterModes: true,
         enablePagination: false,
         enableRowVirtualization: true,
-        onSortingChange: setSorting,
         mantineTableProps: {
             withColumnBorders: true,
             highlightOnHover: false,
             withRowBorders: true,
             withTableBorder: true,
         },
-        state: { isLoading: isLoading || banLoading, sorting },
+        state: {isLoading: isLoading || banLoading},
         initialState: {
             density: 'xs',
             showGlobalFilter: true,
@@ -52,7 +48,7 @@ const AdminUsersTable = () => {
         mantineTableContainerProps: () => ({
             className: clsx(classes.table),
         }),
-        mantineTableBodyCellProps: ({ row }) => ({
+        mantineTableBodyCellProps: ({row}) => ({
             className: clsx(classes.tableCellRow, rowClassFn(row.original)),
         }),
         displayColumnDefOptions: {
@@ -60,8 +56,8 @@ const AdminUsersTable = () => {
                 grow: false,
             },
         },
-        rowVirtualizerOptions: { overscan: 15 },
-        renderTopToolbar: ({ table }) => (
+        rowVirtualizerOptions: {overscan: 15},
+        renderTopToolbar: ({table}) => (
             <Flex justify="space-between" align="center" h={50} px="xs" bg="gray.1">
                 <Flex gap="xs">
                     <Flex gap="6" align="center" mr="auto">
@@ -89,15 +85,15 @@ const AdminUsersTable = () => {
                 margin: 0,
             },
         },
-        rowVirtualizerInstanceRef,
-        renderDetailPanel: ({ row }) => <UserExpansion key={row.original.id} row={row} userId={row.original.id} />,
+        renderDetailPanel: ({row}) => <UserExpansion key={row.original.id} row={row} userId={row.original.id}/>,
     });
+
 
     return (
         <Box h="calc(100vh-110px)">
-            <MantineReactTable table={table} />
+            <MantineReactTable table={table}/>
         </Box>
     );
 };
 
-export { AdminUsersTable };
+export {AdminUsersTable};

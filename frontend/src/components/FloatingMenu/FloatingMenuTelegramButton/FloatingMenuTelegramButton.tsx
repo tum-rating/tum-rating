@@ -1,10 +1,10 @@
 import { Progress, Text, UnstyledButton } from '@mantine/core';
-import { useInterval } from '@mantine/hooks';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import classes from './FloatingMenuTelegramButton.module.css';
 import { TelegramIcon } from './TelegramIcon.tsx';
+
 import { useFeedbackCTAContext } from '@/context';
 
 const telegramLink = 'https://t.me/+ZoFa4DCe5-1jMDM0';
@@ -12,23 +12,28 @@ const telegramLink = 'https://t.me/+ZoFa4DCe5-1jMDM0';
 const FloatingMenuTelegramButton = () => {
     const [progress, setProgress] = useState(0);
     const { feedbackCTA, setFeedbackCTA } = useFeedbackCTAContext();
-    const interval = useInterval(
-        () =>
-            setProgress((current) => {
-                if (current < 100) {
-                    return current + 1;
-                }
-                interval.stop();
-                setFeedbackCTA(false);
-                return 0;
-            }),
-        100,
-    );
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         if (feedbackCTA) {
-            !interval.active && interval.start();
+            intervalRef.current = setInterval(() => {
+                setProgress((current) => {
+                    if (current < 100) {
+                        return current + 1;
+                    } else {
+                        clearInterval(intervalRef.current);
+                        setFeedbackCTA(false);
+                        return 0;
+                    }
+                });
+            }, 100);
         }
+
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+        };
     }, [feedbackCTA]);
 
     return (
@@ -36,9 +41,6 @@ const FloatingMenuTelegramButton = () => {
             component="a"
             href={telegramLink}
             target="_blank"
-            // onClick={() => {
-            //     !interval.active && interval.start();
-            // }}
             className={clsx(classes.button, {
                 glow: feedbackCTA,
             })}
