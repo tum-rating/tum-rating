@@ -1,13 +1,21 @@
-import { Badge, Flex, Rating, Text } from '@mantine/core';
+import {Badge, Flex, Rating, Text} from '@mantine/core';
+import {isMobile} from "react-device-detect";
 
-import { RatingBoxProps } from '@/components/Course/RatingBox.tsx';
+import {RatingBoxProps} from '@/components/Course/RatingBox.tsx';
 
 interface EditableRatingBoxProps extends RatingBoxProps {
     onChange?: (value: number) => void;
 }
 
 const EditableRatingBox = (props: EditableRatingBoxProps) => {
-    const { score, message, color, label, onChange = (_: number) => false } = props;
+    const {score, message, color, label, onChange = (_: number) => false} = props;
+
+    const handleOnChange = (value: number) => {
+        if (isMobile && document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+        }
+        onChange(value);
+    }
 
     return (
         <Flex direction="column" align="center" justify="center" pos="relative" data-testid="editable-rating">
@@ -15,24 +23,22 @@ const EditableRatingBox = (props: EditableRatingBoxProps) => {
                 {label}
             </Text>
             <Rating
+                tabIndex={0}
                 size="xl"
                 value={score}
                 visibleFrom="xs"
                 fractions={2}
                 readOnly={false}
-                onChange={(value) => {
-                    onChange(value);
-                }}
+                onChange={handleOnChange}
             />
             <Rating
+                tabIndex={0}
                 size="45"
                 value={score}
                 hiddenFrom="xs"
                 fractions={2}
                 readOnly={false}
-                onChange={(value) => {
-                    onChange(value);
-                }}
+                onChange={handleOnChange}
             />
             <Flex mt="3" align="center" gap={6} justify="center" w="100%">
                 <Flex mt={2}>
@@ -48,4 +54,4 @@ const EditableRatingBox = (props: EditableRatingBoxProps) => {
     );
 };
 
-export { EditableRatingBox, EditableRatingBoxProps };
+export {EditableRatingBox, EditableRatingBoxProps};
