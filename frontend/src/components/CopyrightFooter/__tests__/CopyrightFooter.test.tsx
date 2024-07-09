@@ -1,7 +1,7 @@
-import { screen } from '@testing-library/react';
+import {screen} from '@testing-library/react';
 
-import { CopyrightFooter } from '@/components/CopyrightFooter';
-import { render } from 'tests/unit/utils/render.tsx';
+import {CopyrightFooter} from '@/components/CopyrightFooter';
+import {render} from 'tests/unit/utils/render.tsx';
 
 describe('CopyrightFooter', () => {
     it('should render without crashing', () => {

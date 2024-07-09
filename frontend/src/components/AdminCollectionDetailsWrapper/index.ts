@@ -1,1 +1,1 @@
-export { AdminCollectionDetailsWrapper } from './AdminCollectionDetailsWrapper';
+export {AdminCollectionDetailsWrapper} from './AdminCollectionDetailsWrapper';

@@ -1,35 +1,35 @@
-import { Alert, Anchor, Button, Checkbox, Container, Flex, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput, ThemeIcon } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { ContextModalProps, modals } from '@mantine/modals';
-import { notifications } from '@mantine/notifications';
-import { IconFaceIdError, IconMail } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Alert, Anchor, Button, Checkbox, Container, Flex, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput, ThemeIcon} from '@mantine/core';
+import {useForm} from '@mantine/form';
+import {ContextModalProps, modals} from '@mantine/modals';
+import {notifications} from '@mantine/notifications';
+import {IconFaceIdError, IconMail} from '@tabler/icons-react';
+import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
-import { useSignUp } from '@/auth/useSignUp.tsx';
-import { useUser } from '@/auth/useUser.tsx';
-import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
-import { CloseButton } from '@/components/Modals/shared/CloseButton';
-import { ModalHeader } from '@/components/Modals/shared/ModalHeader';
-import { ModalResponsiveContainer } from '@/components/Modals/shared/ModalResponsiveContainer';
-import { getPath, Paths } from '@/routes/paths.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {useSignUp} from '@/auth/useSignUp.tsx';
+import {useUser} from '@/auth/useUser.tsx';
+import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
+import {CloseButton} from '@/components/Modals/shared/CloseButton';
+import {ModalHeader} from '@/components/Modals/shared/ModalHeader';
+import {ModalResponsiveContainer} from '@/components/Modals/shared/ModalResponsiveContainer';
+import {getPath, Paths} from '@/routes/paths.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 interface SignUpModalProps extends ContextModalProps {}
 
-const openSignUpModal = ({ ...props }: SignUpModalProps) => {
+const openSignUpModal = ({...props}: SignUpModalProps) => {
     modals.openContextModal({
-        ...contextModalConfig({ modal: 'signUp' }),
+        ...contextModalConfig({modal: 'signUp'}),
         closeOnClickOutside: false,
         ...props,
     });
 };
 
-const SignUpModal = ({ context, id }: ContextModalProps) => {
-    const { isSuccess, isPending: isLoading, mutate: signUp, error, isError } = useSignUp();
+const SignUpModal = ({context, id}: ContextModalProps) => {
+    const {isSuccess, isPending: isLoading, mutate: signUp, error, isError} = useSignUp();
     const [apiError, setApiError] = useState(null);
     const navigate = useNavigate();
-    const { data: user, isLoading: userLoading } = useUser();
+    const {data: user, isLoading: userLoading} = useUser();
 
     useEffect(() => {
         notifications.clean();
@@ -84,21 +84,21 @@ const SignUpModal = ({ context, id }: ContextModalProps) => {
                     context.closeModal(id);
                 }}
             />
-            <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
+            <LoadingOverlay visible={isLoading} overlayProps={{radius: 'sm', blur: 2}} />
             <Container p="sm">
                 {isSuccess ? (
                     <Flex direction="column" align="center" gap="xs" my="xl">
                         <Group>
-                            <ThemeIcon size="80px" radius={50} variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
+                            <ThemeIcon size="80px" radius={50} variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}}>
                                 <IconMail size={55} />
                             </ThemeIcon>
                         </Group>
-                        <Text size="xl" fw={900} variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
+                        <Text size="xl" fw={900} variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}}>
                             Check Your Email{' '}
                         </Text>
                         <Text fw={400} px={30} ta="center">
                             Please check you email
-                            <Text component="span" size="md" fw={900} variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
+                            <Text component="span" size="md" fw={900} variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}}>
                                 {' '}
                                 {form.values.email}{' '}
                             </Text>
@@ -108,7 +108,7 @@ const SignUpModal = ({ context, id }: ContextModalProps) => {
                 ) : (
                     <form
                         className="modal-form"
-                        style={{ height: '100%' }}
+                        style={{height: '100%'}}
                         data-testid="sign-up-form"
                         onSubmit={form.onSubmit((e) => {
                             signUp(e);
@@ -153,4 +153,4 @@ const SignUpModal = ({ context, id }: ContextModalProps) => {
     );
 };
 
-export { SignUpModal, openSignUpModal };
+export {SignUpModal, openSignUpModal};

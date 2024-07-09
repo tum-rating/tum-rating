@@ -1,1 +1,1 @@
-export {Feedback} from "./Feedback.tsx"
+export {Feedback} from './Feedback.tsx';

@@ -3,18 +3,19 @@ import '@mantine/notifications/styles.css';
 import '@mantine/dates/styles.css';
 import 'mantine-react-table/styles.css';
 
-import { Button, CSSVariablesResolver, MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { useEffect } from 'react';
+import {Button, CSSVariablesResolver, MantineProvider} from '@mantine/core';
+import {Notifications} from '@mantine/notifications';
+import {QueryClientProvider} from '@tanstack/react-query';
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
+import {useEffect} from 'react';
 
 import buttonClasses from './customStyles/Buttons.module.css';
-import { queryClient } from './react-query/client.ts';
-import { RoutesApp } from './routes';
+import notificationsClasses from './customStyles/Notifications.module.css';
+import {queryClient} from './react-query/client.ts';
+import {RoutesApp} from './routes';
 
-import { SearchProvider, TableScrollProvider } from '@/context';
-import { FeedbackCTAProvider } from '@/context/FeedbackCTAContext';
+import {SearchProvider, TableScrollProvider} from '@/context';
+import {FeedbackCTAProvider} from '@/context/FeedbackCTAContext';
 
 const resolver: CSSVariablesResolver = () => ({
     variables: {
@@ -50,6 +51,12 @@ export default function App() {
                 components: {
                     Button: Button.extend({
                         classNames: buttonClasses,
+                    }),
+                    Notifications: Notifications.extend({
+                        classNames: notificationsClasses,
+                        defaultProps: {
+                            position: 'bottom-center',
+                        },
                     }),
                 },
             }}

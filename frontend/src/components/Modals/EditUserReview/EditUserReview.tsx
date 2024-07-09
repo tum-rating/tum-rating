@@ -1,23 +1,23 @@
-import { Badge, Button, Flex, LoadingOverlay, Select, Stack, Text, Textarea } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { ContextModalProps, modals } from '@mantine/modals';
-import { IconStars } from '@tabler/icons-react';
-import { useEffect, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {Badge, Button, Flex, LoadingOverlay, Select, Stack, Text, Textarea} from '@mantine/core';
+import {useForm} from '@mantine/form';
+import {ContextModalProps, modals} from '@mantine/modals';
+import {IconStars} from '@tabler/icons-react';
+import {useEffect, useMemo} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 
-import { useUser } from '@/auth/useUser.tsx';
-import { HowEasyEditableRating } from '@/components/Course/HowEasyEditableRating.tsx';
-import { HowInterestingEditableRating } from '@/components/Course/HowInterestingEditableRating.tsx';
-import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
-import { CloseButton } from '@/components/Modals/shared/CloseButton';
-import { ModalHeader } from '@/components/Modals/shared/ModalHeader';
-import { ModalResponsiveContainer } from '@/components/Modals/shared/ModalResponsiveContainer';
-import { Skeleton } from '@/components/Skeleton';
-import { DetailCourse } from '@/courses/types.ts';
-import { useAddUserReview, UserAddReviewInput } from '@/courses/useAddUserReview.tsx';
-import { useDetailCourse } from '@/courses/useCourse.tsx';
+import {useUser} from '@/auth/useUser.tsx';
+import {HowEasyEditableRating} from '@/components/Course/HowEasyEditableRating.tsx';
+import {HowInterestingEditableRating} from '@/components/Course/HowInterestingEditableRating.tsx';
+import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
+import {CloseButton} from '@/components/Modals/shared/CloseButton';
+import {ModalHeader} from '@/components/Modals/shared/ModalHeader';
+import {ModalResponsiveContainer} from '@/components/Modals/shared/ModalResponsiveContainer';
+import {Skeleton} from '@/components/Skeleton';
+import {DetailCourse} from '@/courses/types.ts';
+import {useAddUserReview, UserAddReviewInput} from '@/courses/useAddUserReview.tsx';
+import {useDetailCourse} from '@/courses/useCourse.tsx';
 
-const openEditUserReviewModal = ({ courseId, userReview, ...props }) => {
+const openEditUserReviewModal = ({courseId, userReview, ...props}) => {
     modals.openContextModal({
         ...contextModalConfig({
             modal: 'editUserReview',
@@ -30,12 +30,12 @@ const openEditUserReviewModal = ({ courseId, userReview, ...props }) => {
     });
 };
 
-const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ courseId: string }>) => {
-    const { courseId } = innerProps;
-    const { mutate: editUserReview, isSuccess, isLoading } = useAddUserReview(courseId, 'PATCH');
-    const { data: courseData, isLoading: courseDetailsLoading, isError: courseDetailsError } = useDetailCourse(courseId || '');
-    const { data: user } = useUser();
-    const { data: userReview }: { data: DetailCourse } = useDetailCourse(courseId, { retry: 0 });
+const EditUserReviewModal = ({context, id, innerProps}: ContextModalProps<{courseId: string}>) => {
+    const {courseId} = innerProps;
+    const {mutate: editUserReview, isSuccess, isLoading} = useAddUserReview(courseId, 'PATCH');
+    const {data: courseData, isLoading: courseDetailsLoading, isError: courseDetailsError} = useDetailCourse(courseId || '');
+    const {data: user} = useUser();
+    const {data: userReview}: {data: DetailCourse} = useDetailCourse(courseId, {retry: 0});
     const location = useLocation();
     const navigate = useNavigate();
     useEffect(() => {
@@ -51,7 +51,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
     const offeredInSemesters = useMemo(
         () =>
             courseData?.offeredInSemesters.map((semester) => {
-                return { value: semester, label: semester };
+                return {value: semester, label: semester};
             }),
         [courseData],
     );
@@ -59,7 +59,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
     useEffect(() => {
         const userReviewComment = userReview?.reviews.find((data) => data.userId === user.id);
         if (userReviewComment) {
-            const { howEasyRating, howInterestingRating, comment, semester } = userReviewComment;
+            const {howEasyRating, howInterestingRating, comment, semester} = userReviewComment;
             form.setFieldValue('howEasyRating', howEasyRating);
             form.setFieldValue('howInterestingRating', howInterestingRating);
             form.setFieldValue('comment', comment);
@@ -87,7 +87,7 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
 
     const onEditUserReview = (form: UserAddReviewInput) => {
         if (form.howInterestingRating === 0 || form.howEasyRating === 0) return;
-        editUserReview({ ...form });
+        editUserReview({...form});
         context.closeModal(id);
     };
 
@@ -115,11 +115,11 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
                     context.closeModal(id);
                 }}
             />
-            <LoadingOverlay visible={isLoading || courseDetailsLoading} overlayProps={{ radius: 'sm', blur: 2 }} data-testid="loading" />
+            <LoadingOverlay visible={isLoading || courseDetailsLoading} overlayProps={{radius: 'sm', blur: 2}} data-testid="loading" />
             <form
                 className="modal-form"
                 data-testid="form"
-                style={{ height: '100%' }}
+                style={{height: '100%'}}
                 onSubmit={form.onSubmit((e) => {
                     onEditUserReview(e);
                 })}
@@ -157,4 +157,4 @@ const EditUserReviewModal = ({ context, id, innerProps }: ContextModalProps<{ co
     );
 };
 
-export { EditUserReviewModal, openEditUserReviewModal };
+export {EditUserReviewModal, openEditUserReviewModal};

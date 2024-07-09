@@ -1,9 +1,9 @@
-import { ActionIcon, Box, Menu, Tooltip } from '@mantine/core';
-import { IconColumns } from '@tabler/icons-react';
-import { MRT_ShowHideColumnsMenu } from 'mantine-react-table';
+import {ActionIcon, Box, Menu, Tooltip} from '@mantine/core';
+import {IconColumns} from '@tabler/icons-react';
+import {MRT_ShowHideColumnsMenu} from 'mantine-react-table';
 
-import { TableToolboxProps } from './TableToolbox.tsx';
-import { TableToolboxIndicator } from './TableToolboxIndicator.tsx';
+import {TableToolboxProps} from './TableToolbox.tsx';
+import {TableToolboxIndicator} from './TableToolboxIndicator.tsx';
 
 const TableColumnsVisibility = (props: TableToolboxProps) => {
     return (
@@ -24,4 +24,4 @@ const TableColumnsVisibility = (props: TableToolboxProps) => {
     );
 };
 
-export { TableColumnsVisibility };
+export {TableColumnsVisibility};

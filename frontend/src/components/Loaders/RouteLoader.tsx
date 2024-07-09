@@ -1,4 +1,4 @@
-import { Box, Text } from '@mantine/core';
+import {Box, Text} from '@mantine/core';
 
 import classes from './RouteLoader.module.css';
 
@@ -28,7 +28,7 @@ const RouteLoader = () => {
             </Box>
 
             <div className={classes.loader}>
-                {Array.from({ length: 12 }).map((_, index) => (
+                {Array.from({length: 12}).map((_, index) => (
                     <div key={index} className={classes.dot}></div>
                 ))}
             </div>
@@ -36,4 +36,4 @@ const RouteLoader = () => {
     );
 };
 
-export { RouteLoader };
+export {RouteLoader};

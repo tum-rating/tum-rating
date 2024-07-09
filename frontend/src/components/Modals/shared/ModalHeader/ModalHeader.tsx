@@ -1,6 +1,6 @@
-import { Divider, Flex, Text, ThemeIcon } from '@mantine/core';
-import { IconKey } from '@tabler/icons-react';
-import { ReactElement } from 'react';
+import {Divider, Flex, Text, ThemeIcon} from '@mantine/core';
+import {IconKey} from '@tabler/icons-react';
+import {ReactElement} from 'react';
 
 interface ModalHeaderProps {
     title: string;
@@ -9,7 +9,7 @@ interface ModalHeaderProps {
 }
 
 const ModalHeader = (props: ModalHeaderProps) => {
-    const { title, subTitle, icon = <IconKey width={21} /> } = props;
+    const {title, subTitle, icon = <IconKey width={21} />} = props;
     return (
         <Flex mx="auto" w="100%" justify="center" direction="column" gap={'xs'} bg="var(--primary-light-gradient)">
             <Flex align="center" gap={6} px="sm" pt="sm">
@@ -30,4 +30,4 @@ const ModalHeader = (props: ModalHeaderProps) => {
     );
 };
 
-export { ModalHeader };
+export {ModalHeader};

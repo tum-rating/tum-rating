@@ -1,9 +1,9 @@
-import { Box, Flex, Text } from '@mantine/core';
-import { IconUsersGroup } from '@tabler/icons-react';
+import {Box, Flex, Text} from '@mantine/core';
+import {IconUsersGroup} from '@tabler/icons-react';
 
 import classes from './RatingBox.module.css';
 
-import { Skeleton } from '@/components/Skeleton';
+import {Skeleton} from '@/components/Skeleton';
 
 interface ReviewsBoxProps {
     votes: number;
@@ -11,7 +11,7 @@ interface ReviewsBoxProps {
 }
 
 const ReviewsBox = (props: ReviewsBoxProps) => {
-    const { votes, isLoading } = props;
+    const {votes, isLoading} = props;
     let color = votes ? 'black' : 'gray';
     return (
         <Flex className={classes.ratingBox} direction="column" px="md" py="md" align="flex-start" pos="relative">
@@ -63,4 +63,4 @@ const ReviewsBox = (props: ReviewsBoxProps) => {
     );
 };
 
-export { ReviewsBox };
+export {ReviewsBox};

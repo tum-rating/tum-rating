@@ -1,4 +1,4 @@
-import { Badge } from '@mantine/core';
+import {Badge} from '@mantine/core';
 
 export const useUsersColumns = () => {
     const columns = [
@@ -21,14 +21,14 @@ export const useUsersColumns = () => {
         {
             accessorKey: 'isBanned',
             header: 'Banned',
-            Cell: ({ row }) => {
+            Cell: ({row}) => {
                 return <>{row.original.isBanned && <Badge color="red">Banned</Badge>}</>;
             },
         },
         {
             accessorKey: 'isEmailActivated',
             header: 'Activation',
-            Cell: ({ row }) => {
+            Cell: ({row}) => {
                 return (
                     <>
                         <Badge color={row.original.isEmailActivated ? 'green' : 'red'}>{row.original.isEmailActivated ? 'Activated' : 'Not activated'}</Badge>

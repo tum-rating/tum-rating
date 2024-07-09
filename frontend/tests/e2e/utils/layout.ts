@@ -1,4 +1,4 @@
-import {expect} from "@playwright/test";
+import {expect} from '@playwright/test';
 
 const openMobileDrawer = async ({page}) => {
     await page.getByTestId('burger').click();

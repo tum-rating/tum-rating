@@ -1,1 +1,1 @@
-export { AddCourseModal, openAddCourseModal } from './AddCourseModal.tsx';
+export {AddCourseModal, openAddCourseModal} from './AddCourseModal.tsx';

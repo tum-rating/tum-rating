@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import {useLayoutEffect, useRef} from 'react';
 
 interface UseScrollLockOptions {
     autoLock: boolean;
@@ -46,16 +46,16 @@ type OriginalStyle = {
  * }
  */
 export function useScrollLock(options: Partial<UseScrollLockOptions> = {}): UseScrollLockResult {
-    const { autoLock = true, lockTarget, widthReflow = true } = options;
+    const {autoLock = true, lockTarget, widthReflow = true} = options;
     const target = useRef<HTMLElement | null>(null);
     const originalStyle = useRef<OriginalStyle | null>(null);
 
     const lock = () => {
         if (target.current) {
-            const { overflow, paddingRight } = window.getComputedStyle(target.current);
+            const {overflow, paddingRight} = window.getComputedStyle(target.current);
 
             // Save the original styles
-            originalStyle.current = { overflow, paddingRight };
+            originalStyle.current = {overflow, paddingRight};
 
             // Lock the scroll
             target.current.style.overflow = 'hidden';
@@ -93,5 +93,5 @@ export function useScrollLock(options: Partial<UseScrollLockOptions> = {}): UseS
         };
     }, [autoLock, lockTarget, widthReflow]);
 
-    return { lock, unlock };
+    return {lock, unlock};
 }

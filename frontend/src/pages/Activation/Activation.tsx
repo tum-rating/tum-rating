@@ -1,15 +1,15 @@
-import { Button, Flex, Text, Title } from '@mantine/core';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Button, Flex, Text, Title} from '@mantine/core';
+import {useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import classes from './Activation.module.css';
 
-import { useActivate } from '@/auth/useActivate.tsx';
-import { ActivationImg } from '@/pages/Activation/ActivationImg.tsx';
-import { getPath, Paths } from '@/routes/paths.ts';
+import {useActivate} from '@/auth/useActivate.tsx';
+import {ActivationImg} from '@/pages/Activation/ActivationImg.tsx';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 export const Activation = () => {
-    const { mutate, isError } = useActivate();
+    const {mutate, isError} = useActivate();
     const navigate = useNavigate();
     useEffect(() => {
         mutate();

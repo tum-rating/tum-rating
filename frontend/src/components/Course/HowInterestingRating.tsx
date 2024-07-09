@@ -1,5 +1,5 @@
-import { RatingBox } from '@/components/Course/RatingBox.tsx';
-import { useHowInterestingRating } from '@/hooks';
+import {RatingBox} from '@/components/Course/RatingBox.tsx';
+import {useHowInterestingRating} from '@/hooks';
 
 interface HowInterestingRatingProps {
     score?: number;
@@ -8,9 +8,9 @@ interface HowInterestingRatingProps {
 }
 
 const HowInterestingRating = (props: HowInterestingRatingProps) => {
-    const { score, ...rest } = props;
-    const { message, color } = useHowInterestingRating(score);
+    const {score, ...rest} = props;
+    const {message, color} = useHowInterestingRating(score);
     return <RatingBox label="How interesting" score={score} message={message} color={color} {...rest} />;
 };
 
-export { HowInterestingRating };
+export {HowInterestingRating};

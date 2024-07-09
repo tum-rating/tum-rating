@@ -1,1 +1,1 @@
-export { EditUserReviewModal, openEditUserReviewModal } from './EditUserReview.tsx';
+export {EditUserReviewModal, openEditUserReviewModal} from './EditUserReview.tsx';

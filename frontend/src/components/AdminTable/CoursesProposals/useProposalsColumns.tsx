@@ -1,6 +1,6 @@
-import { MRT_ColumnDef } from 'mantine-react-table';
+import {MRT_ColumnDef} from 'mantine-react-table';
 
-import { CourseProposal } from '@/admin/types.ts';
+import {CourseProposal} from '@/admin/types.ts';
 
 export const useProposalsColumns = () => {
     const columns: MRT_ColumnDef<CourseProposal>[] = [

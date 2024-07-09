@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { isMobile } from 'react-device-detect';
+import React, {useEffect, useState} from 'react';
+import {isMobile} from 'react-device-detect';
 
 const ModalResponsiveContainer = (props: React.PropsWithChildren) => {
     const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -39,4 +39,4 @@ const ModalResponsiveContainer = (props: React.PropsWithChildren) => {
     );
 };
 
-export { ModalResponsiveContainer };
+export {ModalResponsiveContainer};

@@ -1,8 +1,8 @@
-import { http, HttpResponse } from 'msw';
+import {http, HttpResponse} from 'msw';
 
-import { courseDetailsWithLoggedUserReview, courses, user } from './dataGenerators.ts';
+import {courseDetailsWithLoggedUserReview, courses, user} from './dataGenerators.ts';
 
-import { endpoints } from '@/api';
+import {endpoints} from '@/api';
 
 export const handlers = [
     // User
@@ -18,11 +18,11 @@ export const handlers = [
         return HttpResponse.json(courses);
     }),
     // Courses list (with pagination)
-    http.get(endpoints.getAllCourses, async ({ request }) => {
+    http.get(endpoints.getAllCourses, async ({request}) => {
         const url = new URL(request.url);
         const pageNumber = url.searchParams.get('page-number');
         const pageSize = url.searchParams.get('page-size');
-        return HttpResponse.json({ courses, nextPageNumber: pageNumber + 1, pageSize });
+        return HttpResponse.json({courses, nextPageNumber: pageNumber + 1, pageSize});
     }),
     // Add user review
     http.post(endpoints.postSpecificReview(':courseId', ':userId'), async () => {

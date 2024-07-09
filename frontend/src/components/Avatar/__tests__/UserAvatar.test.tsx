@@ -1,8 +1,8 @@
-import { MantineProvider } from '@mantine/core';
-import { screen } from '@testing-library/react';
+import {MantineProvider} from '@mantine/core';
+import {screen} from '@testing-library/react';
 
-import { UserAvatar } from '@/components/Avatar/UserAvatar';
-import { render } from 'tests/unit/utils/render.tsx';
+import {UserAvatar} from '@/components/Avatar/UserAvatar';
+import {render} from 'tests/unit/utils/render.tsx';
 
 describe('UserAvatar', () => {
     it('should render without crashing', () => {

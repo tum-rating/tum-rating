@@ -1,29 +1,29 @@
-import { Button, Divider, Flex, Stack, TagsInput, Text, TextInput } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { IconEditCircle, IconTrashX } from '@tabler/icons-react';
-import { MRT_Row } from 'mantine-react-table';
-import { HTMLAttributes, useEffect, useState } from 'react';
+import {Button, Divider, Flex, Stack, TagsInput, Text, TextInput} from '@mantine/core';
+import {useForm} from '@mantine/form';
+import {IconEditCircle, IconTrashX} from '@tabler/icons-react';
+import {MRT_Row} from 'mantine-react-table';
+import {HTMLAttributes, useEffect, useState} from 'react';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
-import { useEditCourse } from '@/admin/useEditCourse.tsx';
-import { useRemoveCourse } from '@/admin/useRemoveCourse.tsx';
-import { CollectionDetailsStatusAlert } from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
-import { Skeleton } from '@/components/Skeleton';
-import { Course } from '@/courses/types.ts';
-import { useDetailCourse } from '@/courses/useCourse.tsx';
-import { getPath, Paths } from '@/routes/paths.ts';
+import {useEditCourse} from '@/admin/useEditCourse.tsx';
+import {useRemoveCourse} from '@/admin/useRemoveCourse.tsx';
+import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
+import {Skeleton} from '@/components/Skeleton';
+import {Course} from '@/courses/types.ts';
+import {useDetailCourse} from '@/courses/useCourse.tsx';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 interface CourseExpansionProps extends HTMLAttributes<HTMLElement> {
     courseId: string;
     row?: MRT_Row<Course>;
 }
 
-const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
-    const { data: courseDetails, isLoading, isError, error, refetch } = useDetailCourse(courseId);
+const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
+    const {data: courseDetails, isLoading, isError, error, refetch} = useDetailCourse(courseId);
 
-    const { mutate: editCourse } = useEditCourse();
-    const { mutate: removeCourse, isSuccess: removeCourseIsSuccess } = useRemoveCourse();
+    const {mutate: editCourse} = useEditCourse();
+    const {mutate: removeCourse, isSuccess: removeCourseIsSuccess} = useRemoveCourse();
 
     const [editing, setEditing] = useState(false);
 
@@ -61,7 +61,7 @@ const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
     }, [isError || removeCourseIsSuccess]);
 
     return (
-        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" w="100vw" {...rest}>
+        <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md" w="100vw" {...rest}>
             {statusAlertFlag ? (
                 <Flex justify="center" w="100%" direction="column" gap="lg">
                     <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error" />
@@ -89,7 +89,7 @@ const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
                         <Flex direction="column" gap="xs">
                             <Flex justify="flex-start" gap="xs" wrap="wrap">
                                 <Flex align="center" gap="3">
-                                    <Text style={{ whiteSpace: 'nowrap' }} fz="xs" fw="bold">
+                                    <Text style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold">
                                         Course ID:{' '}
                                     </Text>
                                     <Skeleton
@@ -117,7 +117,7 @@ const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
                                     ></Skeleton>
                                 </Flex>
                                 <Flex align="center" gap="3">
-                                    <Text style={{ whiteSpace: 'nowrap' }} fz="xs" fw="bold">
+                                    <Text style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold">
                                         Created at:{' '}
                                     </Text>
                                     <Skeleton
@@ -136,15 +136,15 @@ const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
                             <form>
                                 <Flex wrap="wrap" gap="xs" direction="column">
                                     <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput label="Course Name" disabled={!editing} placeholder="Enter course name" value={form.values.name} error={form.errors.name} onChange={(event) => form.setFieldValue('name', event.currentTarget.value)} />}></Skeleton>
-                                    <Flex gap="xs" wrap={{ base: 'wrap', sm: 'nowrap' }} w="100%">
-                                        <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput w={{ base: '100%', sm: '50%' }} disabled={!editing} label="Course ID" placeholder="Enter course id" value={form.values.courseId} error={form.errors.courseId} onChange={(event) => form.setFieldValue('courseId', event.currentTarget.value)} />}></Skeleton>
-                                        <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput w={{ base: '100%', sm: '50%' }} disabled={!editing} label="Course Number" placeholder="Enter course number" value={form.values.courseNumber} error={form.errors.courseNumber} onChange={(event) => form.setFieldValue('courseNumber', event.currentTarget.value)} />}></Skeleton>
+                                    <Flex gap="xs" wrap={{base: 'wrap', sm: 'nowrap'}} w="100%">
+                                        <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput w={{base: '100%', sm: '50%'}} disabled={!editing} label="Course ID" placeholder="Enter course id" value={form.values.courseId} error={form.errors.courseId} onChange={(event) => form.setFieldValue('courseId', event.currentTarget.value)} />}></Skeleton>
+                                        <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput w={{base: '100%', sm: '50%'}} disabled={!editing} label="Course Number" placeholder="Enter course number" value={form.values.courseNumber} error={form.errors.courseNumber} onChange={(event) => form.setFieldValue('courseNumber', event.currentTarget.value)} />}></Skeleton>
                                     </Flex>
 
                                     <Flex direction="column" gap="xs" w="100%">
                                         <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput label="Main Professor" disabled={!editing} placeholder="Enter professor name" value={form.values.professor} error={form.errors.professor} onChange={(event) => form.setFieldValue('professor', event.currentTarget.value)} />}></Skeleton>
                                     </Flex>
-                                    <Flex gap="xs" wrap={{ base: 'wrap', sm: 'nowrap' }} w="100%">
+                                    <Flex gap="xs" wrap={{base: 'wrap', sm: 'nowrap'}} w="100%">
                                         <Skeleton
                                             height={104}
                                             radius="sm"
@@ -152,7 +152,7 @@ const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
                                             loading={isLoading}
                                             component={
                                                 <TagsInput
-                                                    w={{ base: '100%', sm: '50%' }}
+                                                    w={{base: '100%', sm: '50%'}}
                                                     disabled={!editing}
                                                     label="Semester"
                                                     error={form.errors.offeredInSemesters}
@@ -177,7 +177,7 @@ const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
                                             loading={isLoading}
                                             component={
                                                 <TagsInput
-                                                    w={{ base: '100%', sm: '50%' }}
+                                                    w={{base: '100%', sm: '50%'}}
                                                     disabled={!editing}
                                                     label="Other professors"
                                                     placeholder="Click enter to add other professors"
@@ -244,4 +244,4 @@ const CourseExpansion = ({ courseId, row, ...rest }: CourseExpansionProps) => {
     );
 };
 
-export { CourseExpansion };
+export {CourseExpansion};

@@ -1,1 +1,1 @@
-export {TermsOfService} from "./TermsOfService.tsx"
+export {TermsOfService} from './TermsOfService.tsx';

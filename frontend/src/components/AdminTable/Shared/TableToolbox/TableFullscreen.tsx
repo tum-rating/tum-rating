@@ -1,11 +1,11 @@
-import { ActionIcon, Box, Flex, ThemeIcon, Tooltip } from '@mantine/core';
-import { IconMaximize, IconMinimize } from '@tabler/icons-react';
+import {ActionIcon, Box, Flex, ThemeIcon, Tooltip} from '@mantine/core';
+import {IconMaximize, IconMinimize} from '@tabler/icons-react';
 
-import { TableToolboxProps } from './TableToolbox.tsx';
-import { TableToolboxIndicator } from './TableToolboxIndicator.tsx';
+import {TableToolboxProps} from './TableToolbox.tsx';
+import {TableToolboxIndicator} from './TableToolboxIndicator.tsx';
 
 const TableFullscreen = (props: TableToolboxProps) => {
-    const { isFullScreen } = props.table.getState();
+    const {isFullScreen} = props.table.getState();
 
     const handleToggleFullScreen = () => {
         props.table.setIsFullScreen((current: boolean) => !current);
@@ -27,4 +27,4 @@ const TableFullscreen = (props: TableToolboxProps) => {
     );
 };
 
-export { TableFullscreen };
+export {TableFullscreen};

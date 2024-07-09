@@ -1,9 +1,9 @@
-import { CourseProposal } from '@/admin/types.ts';
-import { endpoints } from '@/api';
-import { useQueryWithAuth } from '@/api/useQueryWithAuth.tsx';
+import {CourseProposal} from '@/admin/types.ts';
+import {endpoints} from '@/api';
+import {useQueryWithAuth} from '@/api/useQueryWithAuth.tsx';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function getCoursesProposals(token: string): Promise<CourseProposal[] | null> {
     const response = await fetch(endpoints.getAllProposals, {

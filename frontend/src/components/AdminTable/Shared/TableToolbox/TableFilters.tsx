@@ -1,8 +1,8 @@
-import { ActionIcon, Box, Flex, ThemeIcon, Tooltip } from '@mantine/core';
-import { IconFilter, IconFilterOff } from '@tabler/icons-react';
+import {ActionIcon, Box, Flex, ThemeIcon, Tooltip} from '@mantine/core';
+import {IconFilter, IconFilterOff} from '@tabler/icons-react';
 
-import { TableToolboxProps } from './TableToolbox.tsx';
-import { TableToolboxIndicator } from './TableToolboxIndicator.tsx';
+import {TableToolboxProps} from './TableToolbox.tsx';
+import {TableToolboxIndicator} from './TableToolboxIndicator.tsx';
 
 const TableFilters = (props: TableToolboxProps) => {
     return (
@@ -24,4 +24,4 @@ const TableFilters = (props: TableToolboxProps) => {
     );
 };
 
-export { TableFilters };
+export {TableFilters};
