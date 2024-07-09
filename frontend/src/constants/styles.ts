@@ -1,5 +1,5 @@
-import { getDefaultZIndex } from '@mantine/core';
-import { isMobileOnly } from 'react-device-detect';
+import {getDefaultZIndex} from '@mantine/core';
+import {isMobileOnly} from 'react-device-detect';
 
 const modalZIndex = getDefaultZIndex('modal');
 

@@ -1,1 +1,1 @@
-export { useScrollLock } from './useScrollLock';
+export {useScrollLock} from './useScrollLock';

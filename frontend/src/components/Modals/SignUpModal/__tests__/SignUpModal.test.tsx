@@ -1,14 +1,14 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { http, HttpResponse } from 'msw';
-import { act } from 'react';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {fireEvent, screen, waitFor} from '@testing-library/react';
+import {http, HttpResponse} from 'msw';
+import {act} from 'react';
 
-import { endpoints } from '@/api';
+import {endpoints} from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import { SignUpModal } from '@/components/Modals/SignUpModal/SignUpModal';
-import { generateJwtToken } from 'tests/unit/mocks/dataGenerators.ts';
-import { server } from 'tests/unit/mocks/node.ts';
-import { render } from 'tests/unit/utils/render.tsx';
+import {SignUpModal} from '@/components/Modals/SignUpModal/SignUpModal';
+import {generateJwtToken} from 'tests/unit/mocks/dataGenerators.ts';
+import {server} from 'tests/unit/mocks/node.ts';
+import {render} from 'tests/unit/utils/render.tsx';
 
 describe('SignUpModal', () => {
     let queryClient: QueryClient;
@@ -79,11 +79,11 @@ describe('SignUpModal', () => {
                 form = screen.getByTestId('sign-up-form');
             });
             act(() => {
-                fireEvent.change(username, { target: { value: 'wrongusername' } });
-                fireEvent.change(email, { target: { value: 'wrongemail@tum.de' } });
-                fireEvent.change(password, { target: { value: 'wrongpassword' } });
+                fireEvent.change(username, {target: {value: 'wrongusername'}});
+                fireEvent.change(email, {target: {value: 'wrongemail@tum.de'}});
+                fireEvent.change(password, {target: {value: 'wrongpassword'}});
             });
-            fireEvent.submit(form, { button: submit });
+            fireEvent.submit(form, {button: submit});
 
             await waitFor(() => {
                 expect(screen.getByTestId('error-message')).toBeInTheDocument();

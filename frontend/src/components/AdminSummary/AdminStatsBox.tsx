@@ -1,6 +1,6 @@
-import { Flex, Paper, Text, ThemeIcon } from '@mantine/core';
-import { ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Flex, Paper, Text, ThemeIcon} from '@mantine/core';
+import {ReactNode} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import classes from './AdminStatsBox.module.css';
 
@@ -16,9 +16,9 @@ interface AdminStatsBoxProps {
     link: string;
 }
 
-const AdminStatsBox = ({ options, title, icon, description, link }: AdminStatsBoxProps) => {
+const AdminStatsBox = ({options, title, icon, description, link}: AdminStatsBoxProps) => {
     const navigate = useNavigate();
-    const { value, diffInPercent, diffValue } = options;
+    const {value, diffInPercent, diffValue} = options;
     return (
         <Paper
             tabIndex={0}
@@ -59,4 +59,4 @@ const AdminStatsBox = ({ options, title, icon, description, link }: AdminStatsBo
     );
 };
 
-export { AdminStatsBox };
+export {AdminStatsBox};

@@ -1,8 +1,8 @@
-import { Button, Divider, Flex, Text, Title } from '@mantine/core';
-import { IconBrandTelegram } from '@tabler/icons-react';
-import { useEffect } from 'react';
+import {Button, Divider, Flex, Text, Title} from '@mantine/core';
+import {IconBrandTelegram} from '@tabler/icons-react';
+import {useEffect} from 'react';
 
-import { PageWrapper } from '@/components/PageWrapper';
+import {PageWrapper} from '@/components/PageWrapper';
 
 export const Feedback = () => {
     useEffect(() => {

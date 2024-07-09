@@ -1,6 +1,6 @@
-import { act, renderHook } from '@testing-library/react';
+import {act, renderHook} from '@testing-library/react';
 
-import { useScrollLock } from '../useScrollLock';
+import {useScrollLock} from '../useScrollLock';
 
 describe('useScrollLock()', () => {
     beforeEach(() => {
@@ -8,7 +8,7 @@ describe('useScrollLock()', () => {
     });
 
     it('should initially lock and unlock body', () => {
-        const { unmount } = renderHook(() => useScrollLock());
+        const {unmount} = renderHook(() => useScrollLock());
 
         expect(document.body.style.overflow).toBe('hidden');
         unmount();
@@ -20,7 +20,7 @@ describe('useScrollLock()', () => {
 
         document.body.appendChild(target);
 
-        const { unmount } = renderHook(() => useScrollLock({ lockTarget: target }));
+        const {unmount} = renderHook(() => useScrollLock({lockTarget: target}));
 
         expect(target.style.overflow).toBe('hidden');
         unmount();
@@ -33,7 +33,7 @@ describe('useScrollLock()', () => {
         target.id = 'target';
         document.body.appendChild(target);
 
-        const { unmount } = renderHook(() => useScrollLock({ lockTarget: '#target' }));
+        const {unmount} = renderHook(() => useScrollLock({lockTarget: '#target'}));
 
         expect(target.style.overflow).toBe('hidden');
         unmount();
@@ -41,7 +41,7 @@ describe('useScrollLock()', () => {
     });
 
     it('should not initially lock and unlock', () => {
-        const { unmount } = renderHook(() => useScrollLock({ autoLock: false }));
+        const {unmount} = renderHook(() => useScrollLock({autoLock: false}));
 
         expect(document.body.style.overflow).toBe('');
         unmount();
@@ -49,7 +49,7 @@ describe('useScrollLock()', () => {
     });
 
     it('should lock and unlock manually', () => {
-        const { result } = renderHook(() => useScrollLock({ autoLock: false }));
+        const {result} = renderHook(() => useScrollLock({autoLock: false}));
 
         expect(document.body.style.overflow).toBe('');
         act(() => {
@@ -68,7 +68,7 @@ describe('useScrollLock()', () => {
         target.style.overflow = 'auto';
         document.body.appendChild(target);
 
-        const { result } = renderHook(() => useScrollLock({ lockTarget: target }));
+        const {result} = renderHook(() => useScrollLock({lockTarget: target}));
 
         expect(target.style.overflow).toBe('hidden');
         act(() => {
@@ -78,7 +78,7 @@ describe('useScrollLock()', () => {
     });
 
     it('should unlock on unmount even with initial is locked', () => {
-        const { unmount, result } = renderHook(() => useScrollLock({ autoLock: false }));
+        const {unmount, result} = renderHook(() => useScrollLock({autoLock: false}));
 
         expect(document.body.style.overflow).toBe('');
         act(() => {
@@ -90,7 +90,7 @@ describe('useScrollLock()', () => {
     });
 
     it('should fallback to document.body if the target element is not found', () => {
-        const { unmount } = renderHook(() => useScrollLock({ lockTarget: '#non-existing' }));
+        const {unmount} = renderHook(() => useScrollLock({lockTarget: '#non-existing'}));
 
         expect(document.body.style.overflow).toBe('hidden');
         unmount();

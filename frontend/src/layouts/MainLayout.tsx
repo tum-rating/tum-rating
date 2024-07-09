@@ -1,25 +1,25 @@
-import { ActionIcon, Anchor, AppShell, Box, Button, Flex, Group, Image, Menu, rem, useMantineColorScheme } from '@mantine/core';
-import { useHotkeys, useMediaQuery } from '@mantine/hooks';
-import { IconDotsVertical } from '@tabler/icons-react';
-import { PropsWithChildren, useState } from 'react';
-import { isMobileOnly } from 'react-device-detect';
-import { useNavigate } from 'react-router-dom';
+import {ActionIcon, Anchor, AppShell, Box, Button, Flex, Group, Image, Menu, rem, useMantineColorScheme} from '@mantine/core';
+import {useHotkeys, useMediaQuery} from '@mantine/hooks';
+import {IconDotsVertical} from '@tabler/icons-react';
+import {PropsWithChildren, useState} from 'react';
+import {isMobileOnly} from 'react-device-detect';
+import {useNavigate} from 'react-router-dom';
 
 import logoDark from '@/assets/img/logo-dark.png';
 import logo from '@/assets/img/logo.png';
-import { useUser } from '@/auth/useUser';
-import { Burger } from '@/components/Burger';
-import { Drawer } from '@/components/Drawer';
-import { FloatingMenu } from '@/components/FloatingMenu';
-import { SearchInputDesktop } from '@/components/Search';
-import { ThemeToggleActionIcon } from '@/components/ThemeToggle';
-import { UserButton } from '@/components/UserButton';
-import { INFO_PAGES } from '@/constants';
-import { HEADER_HEIGHT, HEADER_Z_INDEX, MAX_SITE_WIDTH } from '@/constants/styles.ts';
-import { getPath, Paths } from '@/routes/paths.ts';
+import {useUser} from '@/auth/useUser';
+import {Burger} from '@/components/Burger';
+import {Drawer} from '@/components/Drawer';
+import {FloatingMenu} from '@/components/FloatingMenu';
+import {SearchInputDesktop} from '@/components/Search';
+import {ThemeToggleActionIcon} from '@/components/ThemeToggle';
+import {UserButton} from '@/components/UserButton';
+import {INFO_PAGES} from '@/constants';
+import {HEADER_HEIGHT, HEADER_Z_INDEX, MAX_SITE_WIDTH} from '@/constants/styles.ts';
+import {getPath, Paths} from '@/routes/paths.ts';
 
-export const MainLayout = ({ children }: PropsWithChildren) => {
-    const { data: user, isLoading } = useUser();
+export const MainLayout = ({children}: PropsWithChildren) => {
+    const {data: user, isLoading} = useUser();
     const isAdmin = isLoading ? false : user?.isAdmin;
     const navigate = useNavigate();
 
@@ -29,11 +29,11 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
         if (flag === undefined) setDrawerOpened(!drawerOpened);
         else setDrawerOpened(flag);
     };
-    const { colorScheme } = useMantineColorScheme();
+    const {colorScheme} = useMantineColorScheme();
     const smallerMode = useMediaQuery('(max-width: 48em)');
     useHotkeys([['/', () => navigate(getPath(Paths.spotlight))]]);
     return (
-        <AppShell header={{ height: HEADER_HEIGHT }} padding="md">
+        <AppShell header={{height: HEADER_HEIGHT}} padding="md">
             <FloatingMenu />
             <Box
                 style={{
@@ -47,7 +47,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                 <Flex visibleFrom="sm" h="100%" px="md" justify="space-between" align="center" gap={20}>
                     <Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>
                     {!isMobileOnly && !smallerMode && (
-                        <Flex maw={580} style={{ flexGrow: 1 }}>
+                        <Flex maw={580} style={{flexGrow: 1}}>
                             <SearchInputDesktop />
                         </Flex>
                     )}
@@ -81,7 +81,7 @@ export const MainLayout = ({ children }: PropsWithChildren) => {
                                             return (
                                                 <Menu.Item
                                                     key={page.path + page.title}
-                                                    leftSection={<Icon style={{ width: rem(14), height: rem(14) }} />}
+                                                    leftSection={<Icon style={{width: rem(14), height: rem(14)}} />}
                                                     onClick={() => {
                                                         navigate(page.path);
                                                     }}

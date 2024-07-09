@@ -1,14 +1,14 @@
-import { Button, Divider, Drawer as DrawerComponent, Flex, Stack } from '@mantine/core';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {Button, Divider, Drawer as DrawerComponent, Flex, Stack} from '@mantine/core';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import classes from './Drawer.module.css';
 
-import { useSignOut } from '@/auth/useSignOut.tsx';
-import { useUser } from '@/auth/useUser.tsx';
-import { ThemeToggleFloatingIndicator } from '@/components/ThemeToggle';
-import { UserButton } from '@/components/UserButton';
-import { DRAWER_Z_INDEX, INFO_PAGES } from '@/constants';
-import { getPath, Paths } from '@/routes/paths.ts';
+import {useSignOut} from '@/auth/useSignOut.tsx';
+import {useUser} from '@/auth/useUser.tsx';
+import {ThemeToggleFloatingIndicator} from '@/components/ThemeToggle';
+import {UserButton} from '@/components/UserButton';
+import {DRAWER_Z_INDEX, INFO_PAGES} from '@/constants';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 interface DrawerProps {
     open: boolean;
@@ -16,19 +16,19 @@ interface DrawerProps {
 }
 
 const Drawer = (props: DrawerProps) => {
-    const { data: user, isLoading } = useUser();
+    const {data: user, isLoading} = useUser();
     const isAdmin = isLoading ? false : user?.isAdmin;
     const signOut = useSignOut();
     const navigate = useNavigate();
     const location = useLocation();
-    const { open, toggle } = props;
+    const {open, toggle} = props;
 
     return (
         <>
             <DrawerComponent
                 opened={open}
                 onClose={toggle}
-                transitionProps={{ duration: 400, timingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)' }}
+                transitionProps={{duration: 400, timingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)'}}
                 size="xs"
                 style={{
                     zIndex: DRAWER_Z_INDEX,
@@ -59,7 +59,7 @@ const Drawer = (props: DrawerProps) => {
                                         key={page.title}
                                         fullWidth
                                         variant={location.pathname === page.path ? 'filled' : 'default'}
-                                        leftSection={<Icon style={{ width: '1.2rem', height: '1.2rem' }} />}
+                                        leftSection={<Icon style={{width: '1.2rem', height: '1.2rem'}} />}
                                         onClick={() => {
                                             navigate(page.path);
                                             toggle();
@@ -92,4 +92,4 @@ const Drawer = (props: DrawerProps) => {
     );
 };
 
-export { Drawer };
+export {Drawer};

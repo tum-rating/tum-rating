@@ -1,12 +1,12 @@
-import { ActionIcon, Box, Flex, Group, Menu } from '@mantine/core';
-import { IconSettings } from '@tabler/icons-react';
+import {ActionIcon, Box, Flex, Group, Menu} from '@mantine/core';
+import {IconSettings} from '@tabler/icons-react';
 
-import { TableColumnsVisibility } from './TableColumnsVisibility.tsx';
-import { TableFilters } from './TableFilters.tsx';
-import { TableFullscreen } from './TableFullscreen.tsx';
-import { TableRefresh } from './TableRefresh.tsx';
-import { TableSearch } from './TableSearch.tsx';
-import { TableToolboxIndicator } from './TableToolboxIndicator.tsx';
+import {TableColumnsVisibility} from './TableColumnsVisibility.tsx';
+import {TableFilters} from './TableFilters.tsx';
+import {TableFullscreen} from './TableFullscreen.tsx';
+import {TableRefresh} from './TableRefresh.tsx';
+import {TableSearch} from './TableSearch.tsx';
+import {TableToolboxIndicator} from './TableToolboxIndicator.tsx';
 
 interface TableToolboxProps {
     table: any;
@@ -22,7 +22,7 @@ interface TableToolboxProps {
 }
 
 const TableToolbox = (props: TableToolboxProps) => {
-    const { config, ...rest } = props;
+    const {config, ...rest} = props;
     const defaultConfig = {
         tableFilters: true,
         tableRefresh: true,
@@ -32,7 +32,7 @@ const TableToolbox = (props: TableToolboxProps) => {
     };
 
     const checkIfToolActive = () => {
-        const { showColumnFilters, isFullScreen } = props.table.getState();
+        const {showColumnFilters, isFullScreen} = props.table.getState();
         return showColumnFilters || isFullScreen;
     };
 
@@ -77,4 +77,4 @@ const TableToolbox = (props: TableToolboxProps) => {
     );
 };
 
-export { TableToolbox, TableToolboxProps };
+export {TableToolbox, TableToolboxProps};

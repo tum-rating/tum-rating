@@ -1,36 +1,36 @@
-import { ActionIcon, Badge, Flex, Skeleton } from '@mantine/core';
-import { IconX } from '@tabler/icons-react';
+import {ActionIcon, Badge, Flex, Skeleton} from '@mantine/core';
+import {IconX} from '@tabler/icons-react';
 import clsx from 'clsx';
-import { MantineReactTable, MRT_RowVirtualizer, useMantineReactTable } from 'mantine-react-table';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {MantineReactTable, MRT_RowVirtualizer, useMantineReactTable} from 'mantine-react-table';
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import classes from './CoursesTable.module.css';
 
-import { CoursesTableHelmet } from '@/components/CoursesTable/CoursesTableHelmet.tsx';
-import { useCoursesTableColumns } from '@/components/CoursesTable/useCoursesTableColumns.tsx';
-import { CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH, PAGE_SIZE } from '@/constants';
-import { useSearchContext, useTableScrollContext } from '@/context';
-import { Course } from '@/courses/types.ts';
-import { usePaginatedCourses } from '@/courses/usePaginatedCourses.tsx';
-import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
+import {CoursesTableHelmet} from '@/components/CoursesTable/CoursesTableHelmet.tsx';
+import {useCoursesTableColumns} from '@/components/CoursesTable/useCoursesTableColumns.tsx';
+import {CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH, PAGE_SIZE} from '@/constants';
+import {useSearchContext, useTableScrollContext} from '@/context';
+import {Course} from '@/courses/types.ts';
+import {usePaginatedCourses} from '@/courses/usePaginatedCourses.tsx';
+import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
 
 function CoursesTable() {
     const [tableTopSpacing, setTableTopSpacing] = useState<number>(CONTENT_TOP_SPACING);
-    const { scrollIndex, setScrollIndex } = useTableScrollContext();
+    const {scrollIndex, setScrollIndex} = useTableScrollContext();
     const tableContainerRef = useRef<HTMLDivElement>(null);
     const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
     const [records, setRecords] = useState<Course[]>([]);
-    const { searchQuery, setSearchQuery } = useSearchContext();
+    const {searchQuery, setSearchQuery} = useSearchContext();
     const [internalLoader, setInternalLoader] = useState(true);
 
-    const { data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage } = usePaginatedCourses();
+    const {data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage} = usePaginatedCourses();
 
-    const { data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, isError: isSearchError } = useSearchCourses(searchQuery);
+    const {data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, isError: isSearchError} = useSearchCourses(searchQuery);
 
     const navigate = useNavigate();
     const location = useLocation();
-    const { columns } = useCoursesTableColumns();
+    const {columns} = useCoursesTableColumns();
 
     //-----
 
@@ -75,7 +75,7 @@ function CoursesTable() {
     const fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
             if (containerRefElement) {
-                const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+                const {scrollHeight, scrollTop, clientHeight} = containerRefElement;
                 if (scrollHeight - scrollTop - clientHeight < clientHeight - tableTopSpacing - HEADER_HEIGHT && !isPaginatedFetching && !isSearchFetching) {
                     if (searchQuery) {
                         if (hasSearchNextPage) {
@@ -132,7 +132,7 @@ function CoursesTable() {
             className: classes.tablePaper,
             withBorder: false,
         },
-        mantineTableBodyRowProps: ({ row }) => ({
+        mantineTableBodyRowProps: ({row}) => ({
             onClick: () => {
                 if (row.original !== null) {
                     handleRowClick(row.original as Course);
@@ -152,7 +152,7 @@ function CoursesTable() {
         mantineTableHeadCellProps: {
             className: clsx(classes.tableHeadRow),
         },
-        mantineTableBodyCellProps: ({ row }) => ({
+        mantineTableBodyCellProps: ({row}) => ({
             className: clsx(classes.tableCellRow),
             children: row.original === null ? <Skeleton h={30} /> : undefined,
         }),
@@ -216,7 +216,7 @@ function CoursesTable() {
             isLoading: (isPaginatedLoading || !isSearchFetched || internalLoader) && (!isSearchError || !isPaginatedError),
         },
         rowVirtualizerInstanceRef,
-        rowVirtualizerOptions: { overscan: 15 },
+        rowVirtualizerOptions: {overscan: 15},
     });
 
     return (
@@ -227,4 +227,4 @@ function CoursesTable() {
     );
 }
 
-export { CoursesTable };
+export {CoursesTable};

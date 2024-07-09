@@ -1,1 +1,1 @@
-export { PageWrapper } from './PageWrapper.tsx';
+export {PageWrapper} from './PageWrapper.tsx';

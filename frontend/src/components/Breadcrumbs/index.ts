@@ -1,1 +1,1 @@
-export { Breadcrumbs } from './Breadcrumbs.tsx';
+export {Breadcrumbs} from './Breadcrumbs.tsx';

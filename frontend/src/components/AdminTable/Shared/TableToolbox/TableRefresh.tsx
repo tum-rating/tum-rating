@@ -1,7 +1,7 @@
-import { ActionIcon, Tooltip, Flex, Box, ThemeIcon } from '@mantine/core';
-import { IconRefresh } from '@tabler/icons-react';
+import {ActionIcon, Tooltip, Flex, Box, ThemeIcon} from '@mantine/core';
+import {IconRefresh} from '@tabler/icons-react';
 
-import { TableToolboxProps } from './TableToolbox.tsx';
+import {TableToolboxProps} from './TableToolbox.tsx';
 
 const TableRefresh = (props: TableToolboxProps) => {
     return (
@@ -21,4 +21,4 @@ const TableRefresh = (props: TableToolboxProps) => {
     );
 };
 
-export { TableRefresh };
+export {TableRefresh};

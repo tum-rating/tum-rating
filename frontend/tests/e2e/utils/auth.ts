@@ -1,5 +1,5 @@
-import { faker } from '@faker-js/faker';
-import { expect, Page } from '@playwright/test';
+import {faker} from '@faker-js/faker';
+import {expect, Page} from '@playwright/test';
 
 interface TestUserCredentials {
     email: string;
@@ -15,7 +15,7 @@ interface AuthAction {
 
 const generateTestUser = () => {
     return {
-        email: faker.internet.email({ provider: 'tum.de' }),
+        email: faker.internet.email({provider: 'tum.de'}),
         username: faker.internet.userName(),
         password: faker.internet.password(),
     };
@@ -48,7 +48,7 @@ const getRecoveryTokenFromMail = async (email: string) => {
 };
 
 const signUp = async (props: AuthAction) => {
-    const { page, user } = props;
+    const {page, user} = props;
 
     const form = page.getByTestId('sign-up-form');
 
@@ -66,17 +66,17 @@ const signUp = async (props: AuthAction) => {
 };
 
 const activateAccount = async (props: AuthAction) => {
-    const { page, user } = props;
+    const {page, user} = props;
     const token = await getActivationTokenFromMail(user.email);
     if (token === null) {
         throw new Error('Token not found');
     }
     await page.goto(`/auth/activate?token=${token}`);
-    await expect(page.getByText(`Your Account is Activated!`, { exact: true })).toBeVisible();
+    await expect(page.getByText(`Your Account is Activated!`, {exact: true})).toBeVisible();
 };
 
 const signIn = async (props: AuthAction) => {
-    const { page, user, mobile } = props;
+    const {page, user, mobile} = props;
 
     const form = page.getByTestId('sign-in-form');
 
@@ -85,6 +85,8 @@ const signIn = async (props: AuthAction) => {
     await form.locator('[data-testid="password"]').fill(user.password);
 
     await form.locator('[data-testid="submit"]').click();
+
+    await page.waitForTimeout(1000);
 
     if (mobile) {
         await page.locator('[data-testid="user-btn-mobile"]').isVisible();
@@ -109,4 +111,4 @@ const signIn = async (props: AuthAction) => {
     }
 };
 
-export { signUp, activateAccount, signIn, generateTestUser, getRecoveryTokenFromMail };
+export {signUp, activateAccount, signIn, generateTestUser, getRecoveryTokenFromMail};

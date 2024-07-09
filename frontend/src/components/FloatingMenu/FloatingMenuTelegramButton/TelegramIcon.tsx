@@ -1,5 +1,5 @@
-import { SVGProps } from 'react';
-import { JSX } from 'react/jsx-runtime';
+import {SVGProps} from 'react';
+import {JSX} from 'react/jsx-runtime';
 
 const TelegramIcon = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
     return (
@@ -9,4 +9,4 @@ const TelegramIcon = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) 
     );
 };
 
-export { TelegramIcon };
+export {TelegramIcon};

@@ -1,10 +1,10 @@
-import { NotificationData, notifications } from '@mantine/notifications';
-import { useQueryClient } from '@tanstack/react-query';
-import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {NotificationData, notifications} from '@mantine/notifications';
+import {useQueryClient} from '@tanstack/react-query';
+import {useCallback} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
 
 export interface useSignOutProps extends Partial<NotificationData> {}
 

@@ -1,18 +1,18 @@
-import { Progress, Text, UnstyledButton, Box } from '@mantine/core';
+import {Progress, Text, UnstyledButton, Box} from '@mantine/core';
 import clsx from 'clsx';
-import { useEffect, useState, useRef } from 'react';
-import { isMobile } from 'react-device-detect';
+import {useEffect, useState, useRef} from 'react';
+import {isMobile} from 'react-device-detect';
 
 import classes from './FloatingMenuTelegramButton.module.css';
-import { TelegramIcon } from './TelegramIcon.tsx';
+import {TelegramIcon} from './TelegramIcon.tsx';
 
-import { useFeedbackCTAContext } from '@/context';
+import {useFeedbackCTAContext} from '@/context';
 
 const telegramLink = 'https://t.me/+ZoFa4DCe5-1jMDM0';
 
 const FloatingMenuTelegramButton = () => {
     const [progress, setProgress] = useState(0);
-    const { feedbackCTA, setFeedbackCTA } = useFeedbackCTAContext();
+    const {feedbackCTA, setFeedbackCTA} = useFeedbackCTAContext();
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
     const [status, setStatus] = useState<'active' | 'inactive' | null>(null);
@@ -51,7 +51,7 @@ const FloatingMenuTelegramButton = () => {
                 [status]: !isMobile && !feedbackCTA ? status : '',
             })}
         >
-            <Box style={{ overflow: 'hidden' }} pl={7}>
+            <Box style={{overflow: 'hidden'}} pl={7}>
                 <Text lh={1.3} fw="600" className={classes.text} c="black" lineClamp={1}>
                     {' '}
                     Send Feedback
@@ -63,4 +63,4 @@ const FloatingMenuTelegramButton = () => {
     );
 };
 
-export { FloatingMenuTelegramButton };
+export {FloatingMenuTelegramButton};

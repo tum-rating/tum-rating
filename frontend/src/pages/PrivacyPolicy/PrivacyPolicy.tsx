@@ -1,9 +1,9 @@
-import { Box } from '@mantine/core';
-import { useEffect } from 'react';
+import {Box} from '@mantine/core';
+import {useEffect} from 'react';
 
-import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { PageWrapper } from '@/components/PageWrapper';
-import { COMPANY_NAME, CONTACT_PAGE_URL, COUNTRY, LAST_UPDATED_DATE, WEBSITE_URL } from '@/pages/PrivacyPolicy/constans.ts';
+import {Breadcrumbs} from '@/components/Breadcrumbs';
+import {PageWrapper} from '@/components/PageWrapper';
+import {COMPANY_NAME, CONTACT_PAGE_URL, COUNTRY, LAST_UPDATED_DATE, WEBSITE_URL} from '@/pages/PrivacyPolicy/constans.ts';
 
 export const PrivacyPolicy = () => {
     useEffect(() => {

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import {useMemo} from 'react';
 
 export function useHowInterestingRating(score: number | undefined) {
     return useMemo(() => {
@@ -15,6 +15,6 @@ export function useHowInterestingRating(score: number | undefined) {
             message = 'Interesting';
             color = 'green';
         }
-        return { message, color };
+        return {message, color};
     }, [score]);
 }

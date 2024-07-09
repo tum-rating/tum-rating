@@ -1,32 +1,32 @@
-import { Badge, Button, Divider, Flex, Stack, Text, TextInput } from '@mantine/core';
-import { IconEditCircle, IconHammer, IconHammerOff, IconTrashX } from '@tabler/icons-react';
-import { MRT_Row } from 'mantine-react-table';
-import { HTMLAttributes, useEffect, useState } from 'react';
+import {Badge, Button, Divider, Flex, Stack, Text, TextInput} from '@mantine/core';
+import {IconEditCircle, IconHammer, IconHammerOff, IconTrashX} from '@tabler/icons-react';
+import {MRT_Row} from 'mantine-react-table';
+import {HTMLAttributes, useEffect, useState} from 'react';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
-import { User } from '@/admin/types.ts';
-import { useBanUser } from '@/admin/useBanUser.tsx';
-import { useRemoveUser } from '@/admin/useRemoveUser.tsx';
-import { useUser } from '@/admin/useUser.ts';
-import { useUser as useLoggedUser } from '@/auth/useUser.tsx';
-import { CollectionDetailsStatusAlert } from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
-import { UserAvatar } from '@/components/Avatar';
-import { Skeleton } from '@/components/Skeleton';
-import { getPath, Paths } from '@/routes/paths.ts';
+import {User} from '@/admin/types.ts';
+import {useBanUser} from '@/admin/useBanUser.tsx';
+import {useRemoveUser} from '@/admin/useRemoveUser.tsx';
+import {useUser} from '@/admin/useUser.ts';
+import {useUser as useLoggedUser} from '@/auth/useUser.tsx';
+import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
+import {UserAvatar} from '@/components/Avatar';
+import {Skeleton} from '@/components/Skeleton';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 interface UserExpansionProps extends HTMLAttributes<HTMLElement> {
     userId: string;
     row?: MRT_Row<User>;
 }
 
-const UserExpansion = ({ userId, row, ...rest }: UserExpansionProps) => {
-    const { data: userDetails, isLoading, error, isError, refetch } = useUser(userId);
+const UserExpansion = ({userId, row, ...rest}: UserExpansionProps) => {
+    const {data: userDetails, isLoading, error, isError, refetch} = useUser(userId);
     const [user, setUser] = useState(userDetails);
     const [editing, setEditing] = useState(false);
-    const { data: loggedUser } = useLoggedUser();
-    const { mutate: changeBanStatus, isLoading: banLoading } = useBanUser();
-    const { mutate: removeUser, isLoading: userRemoveLoading, isSuccess: removesUserIsSuccess } = useRemoveUser();
+    const {data: loggedUser} = useLoggedUser();
+    const {mutate: changeBanStatus, isLoading: banLoading} = useBanUser();
+    const {mutate: removeUser, isLoading: userRemoveLoading, isSuccess: removesUserIsSuccess} = useRemoveUser();
     const [statusAlertFlag, setStatusAlertFlag] = useState(false);
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const UserExpansion = ({ userId, row, ...rest }: UserExpansionProps) => {
     }, [isError || removesUserIsSuccess]);
 
     return (
-        <Flex w="100%" wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" {...rest}>
+        <Flex w="100%" wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md" {...rest}>
             {statusAlertFlag ? (
                 <Flex justify="center" w="100%" direction="column" gap="lg">
                     <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error" />
@@ -60,7 +60,7 @@ const UserExpansion = ({ userId, row, ...rest }: UserExpansionProps) => {
                         </Flex>
                         <Divider variant="dashed" size="sm" />
                         <Flex align="center" gap="3">
-                            <Text style={{ whiteSpace: 'nowrap' }} fz="xs" fw="bold">
+                            <Text style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold">
                                 User ID:{' '}
                             </Text>
                             <Skeleton
@@ -159,7 +159,7 @@ const UserExpansion = ({ userId, row, ...rest }: UserExpansionProps) => {
                             leftSection={<IconHammerOff size={16} />}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                changeBanStatus({ userId: userDetails?.id, flag: false });
+                                changeBanStatus({userId: userDetails?.id, flag: false});
                             }}
                         >
                             Unban
@@ -173,7 +173,7 @@ const UserExpansion = ({ userId, row, ...rest }: UserExpansionProps) => {
                             leftSection={<IconHammer size={16} />}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                changeBanStatus({ userId: userDetails?.id, flag: true });
+                                changeBanStatus({userId: userDetails?.id, flag: true});
                             }}
                         >
                             Ban
@@ -217,4 +217,4 @@ const UserExpansion = ({ userId, row, ...rest }: UserExpansionProps) => {
     );
 };
 
-export { UserExpansion };
+export {UserExpansion};

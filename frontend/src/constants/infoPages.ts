@@ -1,6 +1,6 @@
-import { IconAlien, IconAddressBook, IconScript, IconStars } from '@tabler/icons-react';
+import {IconAlien, IconAddressBook, IconScript, IconStars} from '@tabler/icons-react';
 
-import { getPath, Paths } from '@/routes/paths.ts';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 const INFO_PAGES = [
     {
@@ -30,4 +30,4 @@ const INFO_PAGES = [
     },
 ];
 
-export { INFO_PAGES };
+export {INFO_PAGES};

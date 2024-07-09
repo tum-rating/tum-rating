@@ -1,53 +1,53 @@
-import { ModalsProvider } from '@mantine/modals';
-import { lazy, Suspense } from 'react';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import {ModalsProvider} from '@mantine/modals';
+import {lazy, Suspense} from 'react';
+import {createBrowserRouter, Outlet, RouterProvider} from 'react-router-dom';
 
-import { getPath, Paths } from './paths.ts';
+import {getPath, Paths} from './paths.ts';
 
-import { RouteLoader } from '@/components/Loaders';
-import { ModalsHashController, RecoveryModal, SignInModal, SignUpModal } from '@/components/Modals';
-import { AddCourseModal } from '@/components/Modals/AddCourseModal/AddCourseModal.tsx';
-import { AddUserReviewModal } from '@/components/Modals/AddUserReview/AddUserReview.tsx';
-import { EditUserReviewModal } from '@/components/Modals/EditUserReview';
-import { AdminLayout, MainLayout } from '@/layouts';
-import { About, Activation, Feedback, Course, ErrorBoundary, Home, PrivacyPolicy, TermsOfService, Recovery } from '@/pages';
+import {RouteLoader} from '@/components/Loaders';
+import {ModalsHashController, RecoveryModal, SignInModal, SignUpModal} from '@/components/Modals';
+import {AddCourseModal} from '@/components/Modals/AddCourseModal/AddCourseModal.tsx';
+import {AddUserReviewModal} from '@/components/Modals/AddUserReview/AddUserReview.tsx';
+import {EditUserReviewModal} from '@/components/Modals/EditUserReview';
+import {AdminLayout, MainLayout} from '@/layouts';
+import {About, Activation, Feedback, Course, ErrorBoundary, Home, PrivacyPolicy, TermsOfService, Recovery} from '@/pages';
 
 const Admin = lazy(async () => {
-    let { Admin } = await import('@/pages');
-    return { default: Admin };
+    let {Admin} = await import('@/pages');
+    return {default: Admin};
 });
 
 //--- TABLES
 const AdminCoursesTable = lazy(async () => {
-    let { AdminCoursesTable } = await import('@/components/AdminTable');
-    return { default: AdminCoursesTable };
+    let {AdminCoursesTable} = await import('@/components/AdminTable');
+    return {default: AdminCoursesTable};
 });
 
 const AdminCoursesProposalsTable = lazy(async () => {
-    let { AdminCoursesProposalsTable } = await import('@/components/AdminTable');
-    return { default: AdminCoursesProposalsTable };
+    let {AdminCoursesProposalsTable} = await import('@/components/AdminTable');
+    return {default: AdminCoursesProposalsTable};
 });
 
 const AdminUsersTable = lazy(async () => {
-    let { AdminUsersTable } = await import('@/components/AdminTable');
-    return { default: AdminUsersTable };
+    let {AdminUsersTable} = await import('@/components/AdminTable');
+    return {default: AdminUsersTable};
 });
 
 //--- ADMIN DETAILS
 
 const AdminUserDetails = lazy(async () => {
-    let { AdminUserDetails } = await import('@/pages/Admin/AdminUserDetails');
-    return { default: AdminUserDetails };
+    let {AdminUserDetails} = await import('@/pages/Admin/AdminUserDetails');
+    return {default: AdminUserDetails};
 });
 
 const AdminCoursesProposalsDetails = lazy(async () => {
-    let { AdminCoursesProposalsDetails } = await import('@/pages/Admin/AdminCoursesProposalsDetails');
-    return { default: AdminCoursesProposalsDetails };
+    let {AdminCoursesProposalsDetails} = await import('@/pages/Admin/AdminCoursesProposalsDetails');
+    return {default: AdminCoursesProposalsDetails};
 });
 
 const AdminCoursesDetails = lazy(async () => {
-    let { AdminCoursesDetails } = await import('@/pages/Admin/AdminCoursesDetails');
-    return { default: AdminCoursesDetails };
+    let {AdminCoursesDetails} = await import('@/pages/Admin/AdminCoursesDetails');
+    return {default: AdminCoursesDetails};
 });
 
 const SuspenseLayout = () => (
@@ -168,4 +168,4 @@ const RoutesApp = () => {
     );
 };
 
-export { RoutesApp, routes, modals };
+export {RoutesApp, routes, modals};

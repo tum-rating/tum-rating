@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup } from '@testing-library/react';
-import { afterEach, vi } from 'vitest';
+import {cleanup} from '@testing-library/react';
+import {afterEach, vi} from 'vitest';
 
-import { server } from './tests/unit/mocks/node';
+import {server} from './tests/unit/mocks/node';
 
 Object.defineProperty(window, 'matchMedia', {
     writable: true,

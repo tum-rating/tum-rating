@@ -1,12 +1,12 @@
-import { ActionIcon, Badge, Flex, Menu, Rating, Text } from '@mantine/core';
-import { IconDotsVertical } from '@tabler/icons-react';
-import { useNavigate } from 'react-router-dom';
+import {ActionIcon, Badge, Flex, Menu, Rating, Text} from '@mantine/core';
+import {IconDotsVertical} from '@tabler/icons-react';
+import {useNavigate} from 'react-router-dom';
 
 import classes from './Comment.module.css';
 
-import { UserAvatar } from '@/components/Avatar';
-import { NumberRatingBadge } from '@/components/Course';
-import { getPath, Paths } from '@/routes/paths.ts';
+import {UserAvatar} from '@/components/Avatar';
+import {NumberRatingBadge} from '@/components/Course';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 interface CommentProps {
     comment: string;
@@ -22,7 +22,7 @@ interface CommentProps {
 }
 
 export const Comment = (props: CommentProps) => {
-    const { userId, howInterestingRating, howEasyRating, comment, createdAt, userReview, userName } = props;
+    const {userId, howInterestingRating, howEasyRating, comment, createdAt, userReview, userName} = props;
 
     const navigate = useNavigate();
 
@@ -83,7 +83,7 @@ export const Comment = (props: CommentProps) => {
                     </Flex>
                 </Flex>
             </Flex>
-            <Text style={{ wordBreak: 'break-word' }} mt="xs" size="sm" c="">
+            <Text style={{wordBreak: 'break-word'}} mt="xs" size="sm" c="">
                 {comment}
             </Text>
         </Flex>

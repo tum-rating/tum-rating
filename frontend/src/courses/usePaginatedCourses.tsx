@@ -1,17 +1,17 @@
-import { Course } from './types.ts';
+import {Course} from './types.ts';
 
-import { endpoints } from '@/api';
-import { useInfiniteQueryWithAuth } from '@/api/useInfiniteQueryWithAuth.tsx';
-import { PAGE_SIZE } from '@/constants';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {endpoints} from '@/api';
+import {useInfiniteQueryWithAuth} from '@/api/useInfiniteQueryWithAuth.tsx';
+import {PAGE_SIZE} from '@/constants';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 export type PaginatedCourses = {
     courses: Course[];
     nextPageNumber: number;
 };
 
-async function getPaginatedCourses({ pageParam = 1 }): Promise<PaginatedCourses> {
+async function getPaginatedCourses({pageParam = 1}): Promise<PaginatedCourses> {
     const response = await fetch(endpoints.getPaginatedCourses(pageParam, PAGE_SIZE));
     const data = await response.json();
     if (!response.ok) throw new ResponseError(data.message, response, `page-${pageParam}`);

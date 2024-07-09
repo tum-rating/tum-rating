@@ -1,8 +1,8 @@
-import { CloseButton, TextInput } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import {CloseButton, TextInput} from '@mantine/core';
+import {IconSearch} from '@tabler/icons-react';
+import {useEffect, useState} from 'react';
 
-import { TableToolboxProps } from './TableToolbox.tsx';
+import {TableToolboxProps} from './TableToolbox.tsx';
 
 const TableSearch = (props: TableToolboxProps) => {
     const [inputValue, setInputValue] = useState(props.table.getState().globalFilter);
@@ -27,7 +27,7 @@ const TableSearch = (props: TableToolboxProps) => {
                 rightSection={
                     <CloseButton
                         aria-label="Clear input"
-                        style={inputValue ? { display: 'block' } : { display: 'none' }}
+                        style={inputValue ? {display: 'block'} : {display: 'none'}}
                         onClick={() => {
                             setInputValue('');
                             props.table.resetGlobalFilter();
@@ -39,4 +39,4 @@ const TableSearch = (props: TableToolboxProps) => {
     );
 };
 
-export { TableSearch };
+export {TableSearch};
