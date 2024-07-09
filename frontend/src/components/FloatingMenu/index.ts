@@ -1,1 +1,1 @@
-export {FloatingMenu} from './FloatingMenu';
+export { FloatingMenu } from './FloatingMenu';

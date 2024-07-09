@@ -174,7 +174,8 @@ const SearchInputDesktop = () => {
                                         setIsSearchOpen(false);
                                         combobox.closeDropdown();
                                     }}
-                                />a
+                                />
+                                a
                             </form>
                         </Combobox.EventsTarget>
                         <Combobox.Options className={classes.searchInputMobileOptions}>

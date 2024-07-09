@@ -51,9 +51,21 @@ const TableToolbox = (props: TableToolboxProps) => {
                     </Box>
                 </Menu.Target>
                 <Menu.Dropdown hiddenFrom={'sm'}>
-                    {defaultConfig.tableFilters && <Menu.Item><TableFilters {...rest} /></Menu.Item>}
-                    {defaultConfig.tableRefresh && <Menu.Item><TableRefresh {...rest} /></Menu.Item>}
-                    {defaultConfig.tableFullscreen && <Menu.Item><TableFullscreen {...rest} /></Menu.Item>}
+                    {defaultConfig.tableFilters && (
+                        <Menu.Item>
+                            <TableFilters {...rest} />
+                        </Menu.Item>
+                    )}
+                    {defaultConfig.tableRefresh && (
+                        <Menu.Item>
+                            <TableRefresh {...rest} />
+                        </Menu.Item>
+                    )}
+                    {defaultConfig.tableFullscreen && (
+                        <Menu.Item>
+                            <TableFullscreen {...rest} />
+                        </Menu.Item>
+                    )}
                 </Menu.Dropdown>
             </Menu>
             <Group gap={4} visibleFrom={'sm'}>

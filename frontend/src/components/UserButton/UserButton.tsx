@@ -1,10 +1,10 @@
 import { ActionIcon, Box, Group, Menu, rem, Stack, Text, ThemeIcon } from '@mantine/core';
 import { IconLego, IconLogout } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
 
 import { useSignOut } from '@/auth/useSignOut.tsx';
 import { useUser } from '@/auth/useUser.tsx';
 import { INFO_PAGES } from '@/constants';
-import { useNavigate } from 'react-router-dom';
 
 interface UserButtonProps {
     withoutDropdown?: boolean;

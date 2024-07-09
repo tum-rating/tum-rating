@@ -1,1 +1,1 @@
-export {PrivacyPolicy} from "./PrivacyPolicy.tsx"
+export { PrivacyPolicy } from './PrivacyPolicy.tsx';

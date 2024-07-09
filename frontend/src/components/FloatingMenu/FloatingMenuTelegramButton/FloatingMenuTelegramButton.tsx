@@ -1,7 +1,7 @@
 import { Progress, Text, UnstyledButton, Box } from '@mantine/core';
 import clsx from 'clsx';
 import { useEffect, useState, useRef } from 'react';
-import { isMobile} from "react-device-detect";
+import { isMobile } from 'react-device-detect';
 
 import classes from './FloatingMenuTelegramButton.module.css';
 import { TelegramIcon } from './TelegramIcon.tsx';

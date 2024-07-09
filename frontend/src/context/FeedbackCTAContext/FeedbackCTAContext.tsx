@@ -20,5 +20,3 @@ export const useFeedbackCTAContext = (): FeedbackCTAContextType => {
     }
     return context;
 };
-
-

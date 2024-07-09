@@ -1,15 +1,15 @@
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {screen, waitFor} from '@testing-library/react';
-import {userEvent} from '@testing-library/user-event';
-import {http, HttpResponse} from 'msw';
-import {describe, expect, it} from 'vitest';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { screen, waitFor } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
+import { http, HttpResponse } from 'msw';
+import { describe, expect, it } from 'vitest';
 
-import {endpoints} from '@/api';
+import { endpoints } from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import {UserButton} from '@/components/UserButton';
-import {generateJwtToken, user} from 'tests/unit/mocks/dataGenerators.ts';
-import {server} from 'tests/unit/mocks/node.ts';
-import {render} from 'tests/unit/utils/render.tsx';
+import { UserButton } from '@/components/UserButton';
+import { generateJwtToken, user } from 'tests/unit/mocks/dataGenerators.ts';
+import { server } from 'tests/unit/mocks/node.ts';
+import { render } from 'tests/unit/utils/render.tsx';
 
 describe('UserButton', () => {
     describe('when user is logged in', () => {
@@ -21,7 +21,7 @@ describe('UserButton', () => {
         it('should render UserButton without dropdown', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <UserButton withoutDropdown={true}/>
+                    <UserButton withoutDropdown={true} />
                 </QueryClientProvider>,
             );
             await waitFor(() => {
@@ -33,7 +33,7 @@ describe('UserButton', () => {
         it('should render UserButton with working dropdown', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <UserButton withoutDropdown={false}/>
+                    <UserButton withoutDropdown={false} />
                 </QueryClientProvider>,
             );
             await waitFor(() => {
@@ -50,13 +50,13 @@ describe('UserButton', () => {
                     expect(screen.getByTestId('user-btn-email-desktop')).toHaveTextContent(user.email);
                     expect(screen.getByTestId('logout')).toBeInTheDocument();
                 },
-                {timeout: 2000},
+                { timeout: 2000 },
             );
         });
         it('should render UserButton with working logout option', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <UserButton withoutDropdown={false}/>
+                    <UserButton withoutDropdown={false} />
                 </QueryClientProvider>,
             );
             let menu = null;
@@ -88,7 +88,7 @@ describe('UserButton', () => {
             );
             render(
                 <QueryClientProvider client={queryClient}>
-                    <UserButton/>
+                    <UserButton />
                 </QueryClientProvider>,
             );
             await waitFor(() => {
