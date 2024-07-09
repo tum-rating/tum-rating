@@ -23,8 +23,8 @@ const data = [
 ];
 
 function ThemeToggleFloatingIndicator() {
-    const { setColorScheme } = useMantineColorScheme();
-    return <SegmentedControl data={data} onChange={(value) => setColorScheme(value as MantineColorScheme)} />;
+    const {colorScheme, setColorScheme } = useMantineColorScheme();
+    return <SegmentedControl value={colorScheme} data={data} onChange={(value) => setColorScheme(value as MantineColorScheme)} />;
 }
 
 export { ThemeToggleFloatingIndicator };
