@@ -1,28 +1,28 @@
-import { ActionIcon, CloseButton, Combobox, Loader, ScrollArea, TextInput, ThemeIcon, useCombobox } from '@mantine/core';
-import { useDebouncedState, useMediaQuery } from '@mantine/hooks';
-import { IconArrowLeft, IconSearch } from '@tabler/icons-react';
+import {ActionIcon, CloseButton, Combobox, Loader, ScrollArea, TextInput, ThemeIcon, useCombobox} from '@mantine/core';
+import {useDebouncedState, useMediaQuery} from '@mantine/hooks';
+import {IconArrowLeft, IconSearch} from '@tabler/icons-react';
 import clsx from 'clsx';
-import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { isMobileOnly } from 'react-device-detect';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {FormEvent, useEffect, useMemo, useRef, useState} from 'react';
+import {isMobileOnly} from 'react-device-detect';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import classes from './SearchInputDesktop.module.css';
 
-import { CopyrightFooter } from '@/components/CopyrightFooter';
-import { SearchHighlight } from '@/components/Highlight';
-import { ComboboxEmpty } from '@/components/Search/ComboboxEmpty.tsx';
-import { PAGE_SIZE } from '@/constants';
-import { useSearchContext } from '@/context';
-import { Course } from '@/courses/types.ts';
-import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
-import { useScrollLock } from '@/hooks/useScrollLock';
+import {CopyrightFooter} from '@/components/CopyrightFooter';
+import {SearchHighlight} from '@/components/Highlight';
+import {ComboboxEmpty} from '@/components/Search/ComboboxEmpty.tsx';
+import {PAGE_SIZE} from '@/constants';
+import {useSearchContext} from '@/context';
+import {Course} from '@/courses/types.ts';
+import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
+import {useScrollLock} from '@/hooks/useScrollLock';
 
 const SearchInputDesktop = () => {
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
     });
     const scrollAreaRef = useRef(null);
-    const { searchQuery, setSearchQuery } = useSearchContext();
+    const {searchQuery, setSearchQuery} = useSearchContext();
     const [value, setValue] = useState('');
     const [empty, setEmpty] = useState(false);
     const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 350);
@@ -30,7 +30,7 @@ const SearchInputDesktop = () => {
     const smallerMode = useMediaQuery('(max-width: 48em)');
     const navigate = useNavigate();
     const location = useLocation();
-    const { lock, unlock } = useScrollLock({ autoLock: false });
+    const {lock, unlock} = useScrollLock({autoLock: false});
     const searchInputRef = useRef(null);
 
     useEffect(() => {
@@ -56,7 +56,7 @@ const SearchInputDesktop = () => {
         }
     }, [searchQuery]);
 
-    const { data, fetchNextPage, isLoading } = useSearchCourses(debouncedQuery);
+    const {data, fetchNextPage, isLoading} = useSearchCourses(debouncedQuery);
 
     const [previousData, setPreviousData] = useState([]);
 
@@ -142,7 +142,7 @@ const SearchInputDesktop = () => {
                         store={combobox}
                     >
                         <Combobox.EventsTarget>
-                            <form style={{ width: '100%' }} onSubmit={handleSubmit}>
+                            <form style={{width: '100%'}} onSubmit={handleSubmit}>
                                 <TextInput
                                     radius={0}
                                     height={100}
@@ -174,7 +174,8 @@ const SearchInputDesktop = () => {
                                         setIsSearchOpen(false);
                                         combobox.closeDropdown();
                                     }}
-                                />a
+                                />
+                                a
                             </form>
                         </Combobox.EventsTarget>
                         <Combobox.Options className={classes.searchInputMobileOptions}>
@@ -204,7 +205,7 @@ const SearchInputDesktop = () => {
             store={combobox}
         >
             <Combobox.Target>
-                <form style={{ width: '100%' }} onSubmit={handleSubmit}>
+                <form style={{width: '100%'}} onSubmit={handleSubmit}>
                     <TextInput
                         data-testid="search-trigger-desktop"
                         leftSection={
@@ -240,7 +241,7 @@ const SearchInputDesktop = () => {
                         viewportRef={scrollAreaRef}
                         type="scroll"
                         onScrollPositionChange={(event) => {
-                            const { y } = event;
+                            const {y} = event;
                             if (y >= PAGE_SIZE * 50 * data.pageParams.at(-1) - 10) {
                                 fetchNextPage();
                             }
@@ -257,4 +258,4 @@ const SearchInputDesktop = () => {
     );
 };
 
-export { SearchInputDesktop };
+export {SearchInputDesktop};

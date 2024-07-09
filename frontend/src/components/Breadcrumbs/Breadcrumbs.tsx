@@ -1,17 +1,17 @@
-import { Anchor, Box, Text, Tooltip } from '@mantine/core';
-import { ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Anchor, Box, Text, Tooltip} from '@mantine/core';
+import {ReactNode} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import classes from './Breadcrumbs.module.css';
 
-import { Skeleton } from '@/components/Skeleton';
+import {Skeleton} from '@/components/Skeleton';
 
 interface BreadcrumbsProps {
     courseName: ReactNode;
     isLoading: boolean;
 }
 
-const BreadcrumbsComponent = ({ courseName, isLoading }: BreadcrumbsProps) => {
+const BreadcrumbsComponent = ({courseName, isLoading}: BreadcrumbsProps) => {
     const navigate = useNavigate();
     return (
         <Box className={classes.courseBreadcrumbsContainer}>
@@ -28,7 +28,7 @@ const BreadcrumbsComponent = ({ courseName, isLoading }: BreadcrumbsProps) => {
                 Home
             </Anchor>
             <Text mx={7}>/</Text>
-            <Tooltip openDelay={500} label={courseName} multiline={true} transitionProps={{ transition: 'fade', duration: 100 }}>
+            <Tooltip openDelay={500} label={courseName} multiline={true} transitionProps={{transition: 'fade', duration: 100}}>
                 <Skeleton
                     radius="lg"
                     data-testid="skeleton"
@@ -46,4 +46,4 @@ const BreadcrumbsComponent = ({ courseName, isLoading }: BreadcrumbsProps) => {
     );
 };
 
-export { BreadcrumbsComponent as Breadcrumbs };
+export {BreadcrumbsComponent as Breadcrumbs};

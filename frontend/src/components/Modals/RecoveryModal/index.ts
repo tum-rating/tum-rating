@@ -1,1 +1,1 @@
-export { RecoveryModal, openRecoveryModal } from './RecoveryModal.tsx';
+export {RecoveryModal, openRecoveryModal} from './RecoveryModal.tsx';

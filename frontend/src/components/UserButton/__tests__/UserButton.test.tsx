@@ -21,7 +21,7 @@ describe('UserButton', () => {
         it('should render UserButton without dropdown', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <UserButton withoutDropdown={true}/>
+                    <UserButton withoutDropdown={true} />
                 </QueryClientProvider>,
             );
             await waitFor(() => {
@@ -33,7 +33,7 @@ describe('UserButton', () => {
         it('should render UserButton with working dropdown', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <UserButton withoutDropdown={false}/>
+                    <UserButton withoutDropdown={false} />
                 </QueryClientProvider>,
             );
             await waitFor(() => {
@@ -56,7 +56,7 @@ describe('UserButton', () => {
         it('should render UserButton with working logout option', async () => {
             render(
                 <QueryClientProvider client={queryClient}>
-                    <UserButton withoutDropdown={false}/>
+                    <UserButton withoutDropdown={false} />
                 </QueryClientProvider>,
             );
             let menu = null;
@@ -88,7 +88,7 @@ describe('UserButton', () => {
             );
             render(
                 <QueryClientProvider client={queryClient}>
-                    <UserButton/>
+                    <UserButton />
                 </QueryClientProvider>,
             );
             await waitFor(() => {

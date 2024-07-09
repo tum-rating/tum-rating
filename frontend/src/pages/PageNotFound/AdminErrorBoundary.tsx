@@ -1,5 +1,5 @@
-import { Button, Center, Container, Flex, Image, Text } from '@mantine/core';
-import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom';
+import {Button, Center, Container, Flex, Image, Text} from '@mantine/core';
+import {isRouteErrorResponse, useNavigate, useRouteError} from 'react-router-dom';
 
 import classes from './PageNotFound.module.css';
 
@@ -14,7 +14,7 @@ export function AdminErrorBoundary() {
                 <Center h="100%">
                     <Flex justify="center" align="center" direction="column" gap="xs">
                         <Image className={classes.whereAreYouGoing} src={wh} />
-                        <Text fw="500" style={{ zIndex: 1 }}>
+                        <Text fw="500" style={{zIndex: 1}}>
                             You are lost? 🤔
                         </Text>
                         <Button onClick={() => navigate('/')}>Go back to home</Button>
@@ -28,7 +28,7 @@ export function AdminErrorBoundary() {
             <Center h="100%">
                 <Flex justify="center" align="center" direction="column" gap="xs">
                     <Image className={classes.whereAreYouGoing} src={wh} />
-                    <Text fw="500" style={{ zIndex: 1 }}>
+                    <Text fw="500" style={{zIndex: 1}}>
                         Admin? 🤔
                     </Text>
                     <Button onClick={() => navigate('/')}>Go back to home</Button>

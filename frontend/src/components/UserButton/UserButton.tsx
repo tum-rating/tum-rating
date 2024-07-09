@@ -1,20 +1,20 @@
-import { ActionIcon, Box, Group, Menu, rem, Stack, Text, ThemeIcon } from '@mantine/core';
-import { IconLego, IconLogout } from '@tabler/icons-react';
+import {ActionIcon, Box, Group, Menu, rem, Stack, Text, ThemeIcon} from '@mantine/core';
+import {IconLego, IconLogout} from '@tabler/icons-react';
+import {useNavigate} from 'react-router-dom';
 
-import { useSignOut } from '@/auth/useSignOut.tsx';
-import { useUser } from '@/auth/useUser.tsx';
-import { INFO_PAGES } from '@/constants';
-import { useNavigate } from 'react-router-dom';
+import {useSignOut} from '@/auth/useSignOut.tsx';
+import {useUser} from '@/auth/useUser.tsx';
+import {INFO_PAGES} from '@/constants';
 
 interface UserButtonProps {
     withoutDropdown?: boolean;
 }
 
-export function UserButton({ withoutDropdown = false }: UserButtonProps) {
+export function UserButton({withoutDropdown = false}: UserButtonProps) {
     const signOut = useSignOut();
-    const { data: user, isLoading } = useUser();
+    const {data: user, isLoading} = useUser();
     const navigate = useNavigate();
-    if (isLoading || !user) return <div style={{ visibility: 'hidden', position: 'fixed' }} data-testid="no_user_provided" />;
+    if (isLoading || !user) return <div style={{visibility: 'hidden', position: 'fixed'}} data-testid="no_user_provided" />;
     if (withoutDropdown) {
         return (
             <Box data-testid="user-btn-mobile">
@@ -58,7 +58,7 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                         </Group>
                     </Box>
                     <Menu.Label>Application</Menu.Label>
-                    <Menu.Item onClick={() => signOut()} leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} data-testid="logout" />}>
+                    <Menu.Item onClick={() => signOut()} leftSection={<IconLogout style={{width: rem(14), height: rem(14)}} data-testid="logout" />}>
                         Logout
                     </Menu.Item>
                     <Menu.Label>Information</Menu.Label>
@@ -66,8 +66,8 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                         const Icon = page.icon;
                         return (
                             <Menu.Item
-                                key={page.path}
-                                leftSection={<Icon style={{ width: rem(14), height: rem(14) }} />}
+                                key={page.path + page.title}
+                                leftSection={<Icon style={{width: rem(14), height: rem(14)}} />}
                                 onClick={() => {
                                     navigate(page.path);
                                 }}

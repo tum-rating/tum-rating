@@ -60,7 +60,7 @@ const AdminCoursesProposalsTable = () => {
                     </Flex>
                     <Tooltip label="Add course proposal" openDelay={400}>
                         <ActionIcon variant="lg" onClick={() => navigate('#modal=add-course')} visibleFrom={'sm'}>
-                            <IconPlus size={20}/>
+                            <IconPlus size={20} />
                         </ActionIcon>
                     </Tooltip>
                 </Flex>
@@ -79,13 +79,12 @@ const AdminCoursesProposalsTable = () => {
                 margin: 0,
             },
         },
-        renderDetailPanel: ({row}) => <ProposalExpansion key={row.original.id} courseProposalId={row.original.id}
-                                                         row={row}/>,
+        renderDetailPanel: ({row}) => <ProposalExpansion key={row.original.id} courseProposalId={row.original.id} row={row} />,
     });
 
     return (
         <Box h="calc(100vh-110px)">
-            <MantineReactTable table={table}/>
+            <MantineReactTable table={table} />
         </Box>
     );
 };

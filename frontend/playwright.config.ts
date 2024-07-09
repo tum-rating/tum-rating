@@ -1,5 +1,5 @@
 // playwright.config.js
-import { defineConfig, devices } from '@playwright/test';
+import {defineConfig, devices} from '@playwright/test';
 
 export default defineConfig({
     // Look for test files in the "tests" directory, relative to this configuration file.
@@ -30,7 +30,7 @@ export default defineConfig({
     // Configure projects for major browsers.
     projects: [
         // Setup project
-        { name: 'setup', testMatch: /.*\.setup\.ts/ },
+        {name: 'setup', testMatch: /.*\.setup\.ts/},
 
         {
             name: 'chromium',

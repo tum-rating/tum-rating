@@ -1,13 +1,13 @@
-import { Badge, Button, Flex, HoverCard, Stack, Text, Tooltip } from '@mantine/core';
-import { ReactNode } from 'react';
+import {Badge, Button, Flex, HoverCard, Stack, Text, Tooltip} from '@mantine/core';
+import {ReactNode} from 'react';
 
-import { User } from '@/admin/types.ts';
-import { useBanUser } from '@/admin/useBanUser.tsx';
-import { useUser } from '@/admin/useUser.ts';
-import { useUser as useLoggedUser } from '@/auth/useUser.tsx';
-import { UserAvatar } from '@/components/Avatar';
-import { Skeleton } from '@/components/Skeleton';
-import { getPath, Paths } from '@/routes/paths.ts';
+import {User} from '@/admin/types.ts';
+import {useBanUser} from '@/admin/useBanUser.tsx';
+import {useUser} from '@/admin/useUser.ts';
+import {useUser as useLoggedUser} from '@/auth/useUser.tsx';
+import {UserAvatar} from '@/components/Avatar';
+import {Skeleton} from '@/components/Skeleton';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 interface UserInfoActionProps {
     userId: string;
@@ -15,11 +15,11 @@ interface UserInfoActionProps {
 }
 
 const UserInfoAction = (props: UserInfoActionProps) => {
-    const { userId, children } = props;
-    const { mutate: banUser } = useBanUser();
-    const { data: loggedUser } = useLoggedUser();
+    const {userId, children} = props;
+    const {mutate: banUser} = useBanUser();
+    const {data: loggedUser} = useLoggedUser();
 
-    const { data: user, isLoading } = useUser(userId);
+    const {data: user, isLoading} = useUser(userId);
     return (
         <HoverCard width={280} shadow="md">
             <HoverCard.Target>{children(user)}</HoverCard.Target>
@@ -32,7 +32,7 @@ const UserInfoAction = (props: UserInfoActionProps) => {
                             h={10}
                             loading={isLoading}
                             component={
-                                <Text ta="center" fz="xs" fw={600} style={user?.isBanned ? { textDecorationLine: 'line-through' } : {}}>
+                                <Text ta="center" fz="xs" fw={600} style={user?.isBanned ? {textDecorationLine: 'line-through'} : {}}>
                                     {user?.username}
                                 </Text>
                             }
@@ -42,7 +42,7 @@ const UserInfoAction = (props: UserInfoActionProps) => {
                             h={25}
                             loading={isLoading}
                             component={
-                                <Text mb="xs" ta="center" fz="xs" fw={500} c={user?.isBanned ? 'gray' : 'dimmed'} style={user?.isBanned ? { textDecorationLine: 'line-through' } : {}}>
+                                <Text mb="xs" ta="center" fz="xs" fw={500} c={user?.isBanned ? 'gray' : 'dimmed'} style={user?.isBanned ? {textDecorationLine: 'line-through'} : {}}>
                                     {user?.email}
                                 </Text>
                             }
@@ -79,7 +79,7 @@ const UserInfoAction = (props: UserInfoActionProps) => {
                                 size="xs"
                                 color="red"
                                 onClick={() => {
-                                    banUser({ userId: user?.id, flag: false });
+                                    banUser({userId: user?.id, flag: false});
                                 }}
                             >
                                 Unban
@@ -91,7 +91,7 @@ const UserInfoAction = (props: UserInfoActionProps) => {
                                 size="xs"
                                 color="red"
                                 onClick={() => {
-                                    banUser({ userId: user?.id, flag: true });
+                                    banUser({userId: user?.id, flag: true});
                                 }}
                             >
                                 Ban
@@ -104,4 +104,4 @@ const UserInfoAction = (props: UserInfoActionProps) => {
     );
 };
 
-export { UserInfoAction };
+export {UserInfoAction};

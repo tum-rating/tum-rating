@@ -1,1 +1,1 @@
-export { UserInfoAction } from './UserInfoAction.tsx';
+export {UserInfoAction} from './UserInfoAction.tsx';

@@ -35,4 +35,4 @@ type User = {
     role: number;
 };
 
-export type { CourseProposal, User, Course, ReadyCourseProposal };
+export type {CourseProposal, User, Course, ReadyCourseProposal};

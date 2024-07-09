@@ -1,11 +1,11 @@
-import { Badge, BadgeProps } from '@mantine/core';
+import {Badge, BadgeProps} from '@mantine/core';
 
 interface NumberRatingBadgeProps extends BadgeProps {
     score: number;
 }
 
 export const NumberRatingBadge = (props: NumberRatingBadgeProps) => {
-    const { score, ...badgeProps } = props;
+    const {score, ...badgeProps} = props;
     let color = 'gray';
     if (score > 0 && score < 2) {
         color = 'red';

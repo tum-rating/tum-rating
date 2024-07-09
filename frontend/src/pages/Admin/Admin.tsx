@@ -1,6 +1,6 @@
-import { Flex } from '@mantine/core';
+import {Flex} from '@mantine/core';
 
-import { AdminSummary } from '@/components/AdminSummary/AdminSummary.tsx';
+import {AdminSummary} from '@/components/AdminSummary/AdminSummary.tsx';
 
 const Admin = () => {
     return (
@@ -10,4 +10,4 @@ const Admin = () => {
     );
 };
 
-export { Admin };
+export {Admin};

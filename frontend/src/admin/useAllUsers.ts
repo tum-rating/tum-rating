@@ -1,9 +1,9 @@
-import { User } from '@/admin/types.ts';
-import { endpoints } from '@/api';
-import { useQueryWithAuth } from '@/api/useQueryWithAuth.tsx';
+import {User} from '@/admin/types.ts';
+import {endpoints} from '@/api';
+import {useQueryWithAuth} from '@/api/useQueryWithAuth.tsx';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function getAllUsers(token: string): Promise<User[] | undefined> {
     const response = await fetch(endpoints.getAllUsers, {

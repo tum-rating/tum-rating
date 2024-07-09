@@ -1,9 +1,9 @@
-import { screen, waitFor } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
+import {screen, waitFor} from '@testing-library/react';
+import {userEvent} from '@testing-library/user-event';
 
-import { Comment } from '@/components/Comment';
-import { courseReview } from 'tests/unit/mocks/dataGenerators.ts';
-import { render } from 'tests/unit/utils/render.tsx';
+import {Comment} from '@/components/Comment';
+import {courseReview} from 'tests/unit/mocks/dataGenerators.ts';
+import {render} from 'tests/unit/utils/render.tsx';
 
 describe('Comment', () => {
     const mockComment = courseReview;
@@ -25,12 +25,12 @@ describe('Comment', () => {
     });
 
     it('displays the correct user review', () => {
-        render(<Comment userReview={{ userId: mockComment.userId }} {...mockComment} />);
+        render(<Comment userReview={{userId: mockComment.userId}} {...mockComment} />);
         expect(screen.getByTestId('user-comment-badge')).toBeInTheDocument();
     });
 
     it('handles menu click correctly', async () => {
-        render(<Comment userReview={{ userId: mockComment.userId }} {...mockComment} />);
+        render(<Comment userReview={{userId: mockComment.userId}} {...mockComment} />);
         let menu = null;
         await waitFor(() => {
             menu = screen.getByTestId('menu');

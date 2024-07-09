@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import {useMemo} from 'react';
 
 export function useHowEasyRating(score: number | undefined) {
     return useMemo(() => {
@@ -16,6 +16,6 @@ export function useHowEasyRating(score: number | undefined) {
                 color = 'green';
             }
         }
-        return { message, color };
+        return {message, color};
     }, [score]);
 }

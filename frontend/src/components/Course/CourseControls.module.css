@@ -53,10 +53,11 @@
         right: 0;
         box-shadow: var(--mantine-shadow-lg);
         & .courseControlsOverlay {
+            transition: background 0.15s ease-in;
             z-index:-1;
             position: absolute;
             inset: -1px 0 0 0;
-            background: light-dark(rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.8));
+            background: light-dark(rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.6));
             border-bottom: light-dark(rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.8));
             backdrop-filter: blur(5px);
         }

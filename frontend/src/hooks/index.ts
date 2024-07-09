@@ -1,1 +1,1 @@
-export { useHowEasyRating, useHowInterestingRating } from './useRating';
+export {useHowEasyRating, useHowInterestingRating} from './useRating';

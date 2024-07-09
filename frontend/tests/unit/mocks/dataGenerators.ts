@@ -1,18 +1,18 @@
 import crypto from 'crypto';
 
-import { faker } from '@faker-js/faker';
+import {faker} from '@faker-js/faker';
 
-import { PAGE_SIZE } from '@/constants';
+import {PAGE_SIZE} from '@/constants';
 
 function withOverrides(generator: () => any) {
     return (overrides = {}) => {
         const data = generator();
-        return { ...data, ...overrides };
+        return {...data, ...overrides};
     };
 }
 
 const generateJwtToken = () => {
-    const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64');
+    const header = Buffer.from(JSON.stringify({alg: 'HS256', typ: 'JWT'})).toString('base64');
 
     const payload = {
         tokenType: 0,
@@ -42,22 +42,22 @@ const generateCourse = withOverrides(() => ({
     offeredInSemesters: [faker.date.future().getFullYear() + ' S'],
     createdAt: faker.date.past().toISOString(),
     updatedAt: faker.date.recent().toISOString(),
-    howInterestingRatingAverage: faker.number.int({ min: 0, max: 5 }),
+    howInterestingRatingAverage: faker.number.int({min: 0, max: 5}),
 }));
 
 const generateCourseDetails = withOverrides(() => ({
     courseId: faker.number.int().toString(),
     courseNumber: faker.number.int().toString(),
     createdAt: faker.date.past().toISOString(),
-    howEasyRatingAverage: faker.number.int({ min: 0, max: 5 }),
-    howInterestingRatingAverage: faker.number.int({ min: 0, max: 5 }),
+    howEasyRatingAverage: faker.number.int({min: 0, max: 5}),
+    howInterestingRatingAverage: faker.number.int({min: 0, max: 5}),
     name: faker.lorem.sentence(),
     offeredInSemesters: [faker.date.future().getFullYear() + ' S'],
     otherLecturers: [faker.person.fullName(), faker.person.fullName()],
     professor: faker.person.fullName(),
-    reviews: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, () => generateCourseReview()),
+    reviews: Array.from({length: faker.number.int({min: 1, max: 10})}, () => generateCourseReview()),
     updatedAt: faker.date.recent().toISOString(),
-    votesNumber: faker.number.int({ min: 0, max: 100 }),
+    votesNumber: faker.number.int({min: 0, max: 100}),
     _id: faker.string.uuid(),
     __v: faker.number.int(),
 }));
@@ -67,8 +67,8 @@ const generateCourseReview = withOverrides(() => ({
     courseId: faker.string.uuid(),
     userId: faker.string.uuid(),
     userName: faker.internet.userName(),
-    howInterestingRating: faker.number.int({ min: 0, max: 5 }),
-    howEasyRating: faker.number.int({ min: 0, max: 5 }),
+    howInterestingRating: faker.number.int({min: 0, max: 5}),
+    howEasyRating: faker.number.int({min: 0, max: 5}),
     comment: faker.lorem.sentence(),
     semester: faker.date.future().getFullYear() + ' S',
     createdAt: faker.date.past().toISOString(),
@@ -83,7 +83,7 @@ const user = {
     id: faker.number.int(),
 };
 
-const courses = Array.from({ length: PAGE_SIZE }, () => generateCourse());
+const courses = Array.from({length: PAGE_SIZE}, () => generateCourse());
 const course = generateCourse();
 const courseReview = generateCourseReview();
 const courseDetails = generateCourseDetails();
@@ -96,4 +96,4 @@ const courseDetailsWithLoggedUserReview = generateCourseDetails({
     ],
 });
 
-export { user, courses, course, courseReview, courseDetails, generateJwtToken, courseDetailsWithLoggedUserReview };
+export {user, courses, course, courseReview, courseDetails, generateJwtToken, courseDetailsWithLoggedUserReview};

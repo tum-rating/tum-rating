@@ -1,5 +1,5 @@
-import { endpoints, useMutationWithAuth } from '@/api';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {endpoints, useMutationWithAuth} from '@/api';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function recovery(props: RecoveryBody) {
     const requestBody = Object.entries(props).reduce((acc: RecoveryBody, [key, value]) => {
@@ -31,7 +31,7 @@ export interface RecoveryBody {
 
 export function useRecovery() {
     return useMutationWithAuth({
-        mutationFn: async ({ email, password, token }: RecoveryBody) =>
+        mutationFn: async ({email, password, token}: RecoveryBody) =>
             await recovery({
                 email,
                 password,

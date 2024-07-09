@@ -1,9 +1,9 @@
-import { Anchor, Breadcrumbs, Container } from '@mantine/core';
-import { PropsWithChildren, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {Anchor, Breadcrumbs, Container} from '@mantine/core';
+import {PropsWithChildren, useEffect, useState} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 
-import { HEADER_HEIGHT } from '@/constants';
-import { getPath, Paths } from '@/routes/paths.ts';
+import {HEADER_HEIGHT} from '@/constants';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 function prependAdminAndConvertToCamelCase(str: string) {
     let words = str.split('-');
@@ -13,7 +13,7 @@ function prependAdminAndConvertToCamelCase(str: string) {
     return 'admin' + words.join('');
 }
 
-export const AdminCollectionDetailsWrapper = ({ children }: PropsWithChildren) => {
+export const AdminCollectionDetailsWrapper = ({children}: PropsWithChildren) => {
     const [breadcrumbs, setBreadcrumbs] = useState([]);
     const location = useLocation();
     const navigate = useNavigate();

@@ -1,10 +1,10 @@
-import { Course } from './types.ts';
+import {Course} from './types.ts';
 
-import { endpoints } from '@/api';
-import { useInfiniteQueryWithAuth } from '@/api/useInfiniteQueryWithAuth.tsx';
-import { PAGE_SIZE } from '@/constants';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {endpoints} from '@/api';
+import {useInfiniteQueryWithAuth} from '@/api/useInfiniteQueryWithAuth.tsx';
+import {PAGE_SIZE} from '@/constants';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 type Courses = {
     courses: Course[];
@@ -23,7 +23,7 @@ export function useSearchCourses(query: string) {
     return useInfiniteQueryWithAuth({
         queryKey: [QUERY_KEY.search_query, query],
         // @ts-ignore
-        queryFn: ({ pageParam = 1 }) => getReviews(query, pageParam),
+        queryFn: ({pageParam = 1}) => getReviews(query, pageParam),
         getNextPageParam: (lastPage) => lastPage.nextPageNumber,
         refetchOnWindowFocus: false,
         initialPageParam: 1,

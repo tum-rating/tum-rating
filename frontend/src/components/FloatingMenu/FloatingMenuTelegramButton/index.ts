@@ -1,1 +1,1 @@
-export { FloatingMenuTelegramButton } from './FloatingMenuTelegramButton';
+export {FloatingMenuTelegramButton} from './FloatingMenuTelegramButton';

@@ -1,9 +1,9 @@
-import { Flex } from '@mantine/core';
-import { MRT_ColumnDef } from 'mantine-react-table';
-import { useMemo } from 'react';
+import {Flex} from '@mantine/core';
+import {MRT_ColumnDef} from 'mantine-react-table';
+import {useMemo} from 'react';
 
-import { NumberRatingBadge } from '@/components/Course';
-import { Course } from '@/courses/types.ts';
+import {NumberRatingBadge} from '@/components/Course';
+import {Course} from '@/courses/types.ts';
 
 export const useCoursesColumns = () => {
     const columns: MRT_ColumnDef<Course | null>[] = useMemo(() => {
@@ -17,7 +17,7 @@ export const useCoursesColumns = () => {
                         fontWeight: '500',
                     },
                 }),
-                Cell: ({ row }) => {
+                Cell: ({row}) => {
                     return (
                         <>
                             <span>{row.original.name} </span>
@@ -34,7 +34,7 @@ export const useCoursesColumns = () => {
                 header: 'How interesting',
                 accessorKey: 'howInterestingRatingAverage',
                 size: 60,
-                Cell: ({ row }) => {
+                Cell: ({row}) => {
                     return (
                         <>
                             <Flex align="center" gap="xs">
@@ -48,7 +48,7 @@ export const useCoursesColumns = () => {
                 header: 'How easy',
                 accessorKey: 'howEasyRatingAverage',
                 size: 50,
-                Cell: ({ row }) => {
+                Cell: ({row}) => {
                     return (
                         <>
                             <Flex align="center" gap="xs">
@@ -65,5 +65,5 @@ export const useCoursesColumns = () => {
             },
         ];
     }, []);
-    return { columns };
+    return {columns};
 };

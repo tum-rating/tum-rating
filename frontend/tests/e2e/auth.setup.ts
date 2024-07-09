@@ -11,7 +11,7 @@ setup('authenticate', async ({page}) => {
     await page.getByText('Sign up', {exact: true}).click();
     await signUp({page, user});
     await activateAccount({page, user});
-    await page.goto('/')
+    await page.goto('/');
     await page.getByTestId('sign-in-btn-desktop').click();
     await signIn({page, user});
     await page.context().storageState({path: authFile});

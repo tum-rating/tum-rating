@@ -1,9 +1,9 @@
-import { IconKey } from '@tabler/icons-react';
-import { screen } from '@testing-library/react';
+import {IconKey} from '@tabler/icons-react';
+import {screen} from '@testing-library/react';
 
-import { ModalHeader } from '../ModalHeader';
+import {ModalHeader} from '../ModalHeader';
 
-import { render } from 'tests/unit/utils/render.tsx';
+import {render} from 'tests/unit/utils/render.tsx';
 
 describe('ModalHeader', () => {
     it('should renders with correct title and subtitle', () => {
@@ -26,6 +26,6 @@ describe('ModalHeader', () => {
 
     it('shouldn not render with default icon when icon prop is provided', () => {
         render(<ModalHeader title="Test Title" subTitle="Test Subtitle" icon={<IconKey width={21} />} />);
-        expect(screen.queryByRole('img', { name: /default icon/i })).not.toBeInTheDocument();
+        expect(screen.queryByRole('img', {name: /default icon/i})).not.toBeInTheDocument();
     });
 });
