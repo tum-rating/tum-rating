@@ -10,6 +10,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useEffect } from 'react';
 
 import buttonClasses from './customStyles/Buttons.module.css';
+import notificationsClasses from './customStyles/Notifications.module.css';
 import { queryClient } from './react-query/client.ts';
 import { RoutesApp } from './routes';
 
@@ -50,6 +51,12 @@ export default function App() {
                 components: {
                     Button: Button.extend({
                         classNames: buttonClasses,
+                    }),
+                    Notifications: Notifications.extend({
+                        classNames: notificationsClasses,
+                        defaultProps: {
+                            position: 'bottom-center',
+                        },
                     }),
                 },
             }}

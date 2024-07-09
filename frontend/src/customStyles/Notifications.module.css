@@ -1,0 +1,16 @@
+.root {
+    max-width: 300px;
+
+    & :global(.mantine-Notification-root){
+        padding: 5px 17px;
+    }
+
+    & :global(.mantine-Notification-title) {
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+    & :global(.mantine-Notification-description){
+        font-size: 12px;
+    }
+}
