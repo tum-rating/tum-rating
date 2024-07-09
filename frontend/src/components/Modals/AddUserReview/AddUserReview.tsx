@@ -59,12 +59,16 @@ const AddUserReviewModal = ({
 
     useEffect(() => {
         if (isSuccess) {
-            document.querySelector("[data-comment='user-comment']")?.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-                inline: 'nearest',
-            });
             setFeedbackCTA(true);
+            const ref = document.querySelector('.comments-section');
+            if (ref) {
+                setTimeout(function () {
+                    ref.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                    });
+                }, 300);
+            }
         }
     }, [isSuccess]);
 

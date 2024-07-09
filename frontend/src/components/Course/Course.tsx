@@ -144,7 +144,7 @@ const Course = () => {
                                         )}
                                     </Box>
                                 </Flex>
-                                <Box pb="xl">
+                                <Box pb="xl" className="comments-section">
                                     <Flex direction="column" mih="300" gap="xs">
                                         {userReview ? (
                                             <>
