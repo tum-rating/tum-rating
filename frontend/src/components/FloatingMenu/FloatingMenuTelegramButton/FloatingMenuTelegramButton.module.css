@@ -12,36 +12,25 @@
     padding: 2px;
     z-index: 0;
 
-    &:hover {
+    &:global(.active) {
         width: 150px;
     }
 
-    &:hover .icon {
 
-    }
-
-    &:hover .text {
-        visibility: visible;
-        animation: text-pop-up-left 0.50s 0.05s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-    }
-
-    &:global(.glow) .text{
-        visibility: visible;
-        animation: text-pop-up-left 0.50s 0.05s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-    }
-
-    &:global(.glow){
+    &:global(.glow) {
         width: 150px;
     }
+
     &:global(.glow):after {
         position: absolute;
         content: '';
         border-radius: var(--mantine-radius-xl);
         inset: 3px;
         background: var(--mantine-color-white);
-        opacity: .85;
+        opacity: .70;
         z-index: -1;
     }
+
     &:global(.glow):before {
         content: '';
         background: linear-gradient(45deg, #00fffc, #ff00fe, #00ff00, #feff00, #00feff, #fe00ff, #00fffe, #feff00, #00fffc);
@@ -61,17 +50,13 @@
 }
 
 .text {
-    position: absolute;
-    visibility: hidden;
-    width: 120px;
-    animation: text-pop-up-right 0.1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    min-width: 150px;
 }
 
-
 .icon {
-    transform: translateX(0);
-    transition: transform .1s;
     fill: var(--mantine-color-blue-filled);
+    min-width: 39px;
+    min-height: 39px;
 }
 
 .progress {
@@ -92,31 +77,5 @@
     }
     100% {
         background-position: 0 0;
-    }
-}
-
-@keyframes text-pop-up-left {
-    0% {
-        transform: translateX(0);
-        visibility: hidden;
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-17px);
-    }
-}
-
-@keyframes text-pop-up-right {
-    0% {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-17px);
-    }
-    100% {
-        opacity: 0;
-        visibility: hidden;
-        transform: translateX(0);
     }
 }

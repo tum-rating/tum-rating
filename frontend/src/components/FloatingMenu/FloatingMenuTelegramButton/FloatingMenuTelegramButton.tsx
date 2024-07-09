@@ -1,4 +1,4 @@
-import { Progress, Text, UnstyledButton } from '@mantine/core';
+import { Progress, Text, UnstyledButton, Box } from '@mantine/core';
 import clsx from 'clsx';
 import { useEffect, useState, useRef } from 'react';
 
@@ -13,6 +13,8 @@ const FloatingMenuTelegramButton = () => {
     const [progress, setProgress] = useState(0);
     const { feedbackCTA, setFeedbackCTA } = useFeedbackCTAContext();
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+    const [status, setStatus] = useState<'active' | 'inactive' | null>(null);
 
     useEffect(() => {
         if (feedbackCTA) {
@@ -41,13 +43,19 @@ const FloatingMenuTelegramButton = () => {
             component="a"
             href={telegramLink}
             target="_blank"
+            onMouseEnter={() => setStatus('active')}
+            onMouseLeave={() => setStatus('inactive')}
             className={clsx(classes.button, {
                 glow: feedbackCTA,
+                [status]: status,
             })}
         >
-            <Text fz="13" lh={1.3} fw="600" className={classes.text} c="black">
-                Send Feedback
-            </Text>
+            <Box style={{ overflow: 'hidden' }} pl={7}>
+                <Text fz="13" lh={1.3} fw="600" className={classes.text} c="black" lineClamp={1}>
+                    {' '}
+                    Send Feedback
+                </Text>
+            </Box>
             {progress !== 0 && <Progress value={progress} className={classes.progress} color="white" radius="sm" />}
             <TelegramIcon className={classes.icon} height={35} width={35} />
         </UnstyledButton>
