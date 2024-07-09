@@ -1,15 +1,14 @@
-import { Button, Divider, Drawer as DrawerComponent, Flex, Stack } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
+import {Button, Divider, Drawer as DrawerComponent, Flex, Stack} from '@mantine/core';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import classes from "./Drawer.module.css";
 
-import { useSignOut } from '@/auth/useSignOut.tsx';
-import { useUser } from '@/auth/useUser.tsx';
-import { ThemeToggleFloatingIndicator } from '@/components/ThemeToggle';
-import { UserButton } from '@/components/UserButton';
-import { DRAWER_Z_INDEX, INFO_PAGES } from '@/constants';
-import { getPath, Paths } from '@/routes/paths.ts';
-
+import {useSignOut} from '@/auth/useSignOut.tsx';
+import {useUser} from '@/auth/useUser.tsx';
+import {ThemeToggleFloatingIndicator} from '@/components/ThemeToggle';
+import {UserButton} from '@/components/UserButton';
+import {DRAWER_Z_INDEX, INFO_PAGES} from '@/constants';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 interface DrawerProps {
     open: boolean;
@@ -21,6 +20,7 @@ const Drawer = (props: DrawerProps) => {
     const isAdmin = isLoading ? false : user?.isAdmin;
     const signOut = useSignOut();
     const navigate = useNavigate();
+    const location = useLocation();
     const {open, toggle} = props;
 
     return (
@@ -39,18 +39,7 @@ const Drawer = (props: DrawerProps) => {
                         <UserButton withoutDropdown/>
                     </Flex>
                     <ThemeToggleFloatingIndicator/>
-                    {user ? (
-                        <>
-                            {isAdmin && (
-                                <Button variant="primary-gradient" onClick={() => navigate(getPath(Paths.admin))}>
-                                    Admin panel
-                                </Button>
-                            )}
-                            <Button data-testid="log-out-btn-mobile" variant="default" onClick={() => signOut()}>
-                                Log out
-                            </Button>
-                        </>
-                    ) : (
+                    {!user && (
                         <>
                             <Button data-testid="sign-in-btn-mobile" onClick={() => navigate(getPath(Paths.signIn))}>
                                 Sign In
@@ -60,7 +49,7 @@ const Drawer = (props: DrawerProps) => {
                             </Button>
                         </>
                     )}
-                    <Divider />
+                    <Divider/>
                     <Stack mt="auto">
                         <Button.Group orientation="vertical" className={classes.drawerMenu}>
                             {INFO_PAGES.map((page) => {
@@ -69,8 +58,8 @@ const Drawer = (props: DrawerProps) => {
                                     <Button
                                         key={page.title}
                                         fullWidth
-                                        variant="default"
-                                        leftSection={<Icon style={{ width: '1.2rem', height: '1.2rem' }} />}
+                                        variant={location.pathname === page.path ? 'filled' : 'default'}
+                                        leftSection={<Icon style={{width: '1.2rem', height: '1.2rem'}}/>}
                                         onClick={() => {
                                             navigate(page.path);
                                             toggle();
@@ -81,6 +70,21 @@ const Drawer = (props: DrawerProps) => {
                                 );
                             })}
                         </Button.Group>
+                    </Stack>
+                    <Stack mt="auto">
+                        {user && (
+                            <>
+                                <Divider/>
+                                {isAdmin && (
+                                    <Button variant="primary-gradient" onClick={() => navigate(getPath(Paths.admin))}>
+                                        Admin panel
+                                    </Button>
+                                )}
+                                <Button data-testid="log-out-btn-mobile" variant="default" onClick={() => signOut()}>
+                                    Log out
+                                </Button>
+                            </>
+                        )}
                     </Stack>
                 </Stack>
             </DrawerComponent>
