@@ -1,10 +1,10 @@
-import { screen, waitFor } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import {screen, waitFor} from '@testing-library/react';
+import {beforeEach, describe, expect, it} from 'vitest';
 
 import '@testing-library/jest-dom';
-import { Skeleton } from '../Skeleton';
+import {Skeleton} from '../Skeleton';
 
-import { render } from 'tests/unit/utils/render.tsx';
+import {render} from 'tests/unit/utils/render.tsx';
 
 describe('Skeleton', () => {
     let component: any;

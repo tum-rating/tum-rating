@@ -58,4 +58,4 @@ const ActivationImg = () => {
     );
 };
 
-export { ActivationImg };
+export {ActivationImg};

@@ -50,27 +50,17 @@ const getRecoveryTokenFromMail = async (email: string) => {
 const signUp = async (props: AuthAction) => {
     const {page, user} = props;
 
-    const form = page.getByTestId('sign-up-form')
+    const form = page.getByTestId('sign-up-form');
 
-    await form
-        .locator('[data-testid="username"]')
-        .fill(user.username);
+    await form.locator('[data-testid="username"]').fill(user.username);
 
-    await form
-        .locator('[data-testid="email"]')
-        .fill(user.email);
+    await form.locator('[data-testid="email"]').fill(user.email);
 
-    await form
-        .locator('[data-testid="password"]')
-        .fill(user.password);
+    await form.locator('[data-testid="password"]').fill(user.password);
 
-    await form
-        .locator('[data-testid="terms"]')
-        .check();
+    await form.locator('[data-testid="terms"]').check();
 
-    await form
-        .locator('[data-testid="submit"]')
-        .click();
+    await form.locator('[data-testid="submit"]').click();
 
     await page.waitForSelector('text=Check Your Email');
 };
@@ -90,27 +80,21 @@ const signIn = async (props: AuthAction) => {
 
     const form = page.getByTestId('sign-in-form');
 
-    await form
-        .locator('[data-testid="email"]')
-        .fill(user.email);
+    await form.locator('[data-testid="email"]').fill(user.email);
 
-    await form
-        .locator('[data-testid="password"]')
-        .fill(user.password);
+    await form.locator('[data-testid="password"]').fill(user.password);
 
-    await form
-        .locator('[data-testid="submit"]')
-        .click();
+    await form.locator('[data-testid="submit"]').click();
+
+    await page.waitForTimeout(1000);
 
     if (mobile) {
-        await page
-            .locator('[data-testid="user-btn-mobile"]')
-            .isVisible();
+        await page.locator('[data-testid="user-btn-mobile"]').isVisible();
         await page
             .locator('[data-testid="user-btn-username-mobile"]')
             .textContent()
             .then((text) => {
-                return expect(text).toBe(user.username)
+                return expect(text).toBe(user.username);
             });
     } else {
         await page
@@ -121,11 +105,10 @@ const signIn = async (props: AuthAction) => {
                     .locator('[data-testid="user-btn-username-desktop"]')
                     .textContent()
                     .then((text) => {
-                        return expect(text).toBe(user.username)
+                        return expect(text).toBe(user.username);
                     });
-            })
+            });
     }
 };
-
 
 export {signUp, activateAccount, signIn, generateTestUser, getRecoveryTokenFromMail};

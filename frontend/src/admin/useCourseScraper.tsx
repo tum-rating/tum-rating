@@ -1,11 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
+import {useQuery} from '@tanstack/react-query';
 
-import { Course } from './types';
+import {Course} from './types';
 
-import { endpoints } from '@/api';
+import {endpoints} from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 interface ScrapedCourseProposal {
     statusCode: number;
@@ -34,4 +34,4 @@ const useGetScrapedCourseProposal = (proposalId: string) => {
     });
 };
 
-export { useGetScrapedCourseProposal };
+export {useGetScrapedCourseProposal};

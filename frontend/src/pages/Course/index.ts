@@ -1,1 +1,1 @@
-export { Course } from './Course.tsx';
+export {Course} from './Course.tsx';

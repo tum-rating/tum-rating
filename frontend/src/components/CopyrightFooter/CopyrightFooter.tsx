@@ -1,4 +1,4 @@
-import { Text } from '@mantine/core';
+import {Text} from '@mantine/core';
 
 const CopyrightFooter = () => (
     <Text fz="xs" c="dimmed">
@@ -6,4 +6,4 @@ const CopyrightFooter = () => (
     </Text>
 );
 
-export { CopyrightFooter };
+export {CopyrightFooter};

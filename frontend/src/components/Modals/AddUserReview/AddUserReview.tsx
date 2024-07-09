@@ -1,25 +1,25 @@
-import { Badge, Button, Divider, Flex, LoadingOverlay, Select, Stack, Text, Textarea } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { ContextModalProps, modals } from '@mantine/modals';
-import { IconStars } from '@tabler/icons-react';
-import { useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Badge, Button, Divider, Flex, LoadingOverlay, Select, Stack, Text, Textarea} from '@mantine/core';
+import {useForm} from '@mantine/form';
+import {ContextModalProps, modals} from '@mantine/modals';
+import {IconStars} from '@tabler/icons-react';
+import {useEffect, useMemo} from 'react';
+import {useNavigate} from 'react-router-dom';
 
-import { useUser } from '@/auth/useUser.tsx';
-import { HowEasyEditableRating } from '@/components/Course/HowEasyEditableRating.tsx';
-import { HowInterestingEditableRating } from '@/components/Course/HowInterestingEditableRating.tsx';
-import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
-import { CloseButton } from '@/components/Modals/shared/CloseButton';
-import { ModalHeader } from '@/components/Modals/shared/ModalHeader';
-import { ModalResponsiveContainer } from '@/components/Modals/shared/ModalResponsiveContainer';
-import { Skeleton } from '@/components/Skeleton';
-import { useFeedbackCTAContext } from '@/context';
-import { useAddUserReview, UserAddReviewInput } from '@/courses/useAddUserReview.tsx';
-import { useDetailCourse } from '@/courses/useCourse.tsx';
+import {useUser} from '@/auth/useUser.tsx';
+import {HowEasyEditableRating} from '@/components/Course/HowEasyEditableRating.tsx';
+import {HowInterestingEditableRating} from '@/components/Course/HowInterestingEditableRating.tsx';
+import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
+import {CloseButton} from '@/components/Modals/shared/CloseButton';
+import {ModalHeader} from '@/components/Modals/shared/ModalHeader';
+import {ModalResponsiveContainer} from '@/components/Modals/shared/ModalResponsiveContainer';
+import {Skeleton} from '@/components/Skeleton';
+import {useFeedbackCTAContext} from '@/context';
+import {useAddUserReview, UserAddReviewInput} from '@/courses/useAddUserReview.tsx';
+import {useDetailCourse} from '@/courses/useCourse.tsx';
 import classes from '@/pages/PageNotFound/PageNotFound.module.css';
-import { Paths } from '@/routes/paths.ts';
+import {Paths} from '@/routes/paths.ts';
 
-const openAddUserReviewModal = ({ courseId, ...props }) => {
+const openAddUserReviewModal = ({courseId, ...props}) => {
     modals.openContextModal({
         ...contextModalConfig({
             modal: 'addUserReview',
@@ -38,33 +38,37 @@ const AddUserReviewModal = ({
 }: ContextModalProps<{
     courseId: string;
 }>) => {
-    const { courseId } = innerProps;
+    const {courseId} = innerProps;
 
-    const { data: user } = useUser();
+    const {data: user} = useUser();
 
-    const { setFeedbackCTA } = useFeedbackCTAContext();
+    const {setFeedbackCTA} = useFeedbackCTAContext();
 
-    const { data: courseData, isLoading: courseDetailsLoading, isError: courseDetailsError } = useDetailCourse(courseId || '');
+    const {data: courseData, isLoading: courseDetailsLoading, isError: courseDetailsError} = useDetailCourse(courseId || '');
 
     const navigate = useNavigate();
-    const { mutate: addUserReview, isSuccess, isLoading } = useAddUserReview(courseId, 'POST');
+    const {mutate: addUserReview, isSuccess, isLoading} = useAddUserReview(courseId, 'POST');
 
     const offeredInSemesters = useMemo(
         () =>
             courseData?.offeredInSemesters.map((semester) => {
-                return { value: semester, label: semester };
+                return {value: semester, label: semester};
             }),
         [courseData],
     );
 
     useEffect(() => {
         if (isSuccess) {
-            document.querySelector("[data-comment='user-comment']")?.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-                inline: 'nearest',
-            });
             setFeedbackCTA(true);
+            const ref = document.querySelector('.comments-section');
+            if (ref) {
+                setTimeout(function () {
+                    ref.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                    });
+                }, 300);
+            }
         }
     }, [isSuccess]);
 
@@ -85,7 +89,7 @@ const AddUserReviewModal = ({
 
     const handleSubmit = (form: UserAddReviewInput) => {
         if (form.howInterestingRating === 0 || form.howEasyRating === 0) return;
-        addUserReview({ ...form });
+        addUserReview({...form});
         if (id) closeModal();
     };
 
@@ -139,10 +143,10 @@ const AddUserReviewModal = ({
                     context.closeModal(id);
                 }}
             />
-            <LoadingOverlay visible={isLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
+            <LoadingOverlay visible={isLoading} overlayProps={{radius: 'sm', blur: 2}} />
             <form
                 data-testid="add-user-review-form"
-                style={{ height: '100%', overflowY: 'auto' }}
+                style={{height: '100%', overflowY: 'auto'}}
                 onSubmit={form.onSubmit((e) => {
                     handleSubmit(e);
                 })}
@@ -194,4 +198,4 @@ const AddUserReviewModal = ({
     );
 };
 
-export { AddUserReviewModal, openAddUserReviewModal };
+export {AddUserReviewModal, openAddUserReviewModal};

@@ -85,13 +85,12 @@ const AdminUsersTable = () => {
                 margin: 0,
             },
         },
-        renderDetailPanel: ({row}) => <UserExpansion key={row.original.id} row={row} userId={row.original.id}/>,
+        renderDetailPanel: ({row}) => <UserExpansion key={row.original.id} row={row} userId={row.original.id} />,
     });
-
 
     return (
         <Box h="calc(100vh-110px)">
-            <MantineReactTable table={table}/>
+            <MantineReactTable table={table} />
         </Box>
     );
 };

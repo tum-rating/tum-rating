@@ -1,9 +1,9 @@
-import { Helmet } from 'react-helmet';
+import {Helmet} from 'react-helmet';
 
 import tumRatingLogo from '@/assets/img/logo.png';
-import { Course } from '@/courses/types.ts';
+import {Course} from '@/courses/types.ts';
 
-const CoursesTableHelmet = ({ courses }: { courses: Course[] }) => {
+const CoursesTableHelmet = ({courses}: {courses: Course[]}) => {
     if (!courses || !courses.length) return null;
 
     const structuredData = {
@@ -34,4 +34,4 @@ const CoursesTableHelmet = ({ courses }: { courses: Course[] }) => {
     );
 };
 
-export { CoursesTableHelmet };
+export {CoursesTableHelmet};

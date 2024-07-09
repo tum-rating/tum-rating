@@ -1,19 +1,19 @@
-import { act, renderHook } from '@testing-library/react';
+import {act, renderHook} from '@testing-library/react';
 
-import { TableScrollProvider, useTableScrollContext } from '@/context';
+import {TableScrollProvider, useTableScrollContext} from '@/context';
 
 describe('TableScrollContext', () => {
     it('should provide initial values', () => {
-        const wrapper = ({ children }) => <TableScrollProvider>{children}</TableScrollProvider>;
-        const { result } = renderHook(() => useTableScrollContext(), { wrapper });
+        const wrapper = ({children}) => <TableScrollProvider>{children}</TableScrollProvider>;
+        const {result} = renderHook(() => useTableScrollContext(), {wrapper});
 
         expect(result.current.scrollY).toBe(0);
         expect(result.current.scrollIndex).toBe(0);
     });
 
     it('should update scrollY value', () => {
-        const wrapper = ({ children }) => <TableScrollProvider>{children}</TableScrollProvider>;
-        const { result } = renderHook(() => useTableScrollContext(), { wrapper });
+        const wrapper = ({children}) => <TableScrollProvider>{children}</TableScrollProvider>;
+        const {result} = renderHook(() => useTableScrollContext(), {wrapper});
 
         act(() => {
             result.current.setScrollY(100);
@@ -23,8 +23,8 @@ describe('TableScrollContext', () => {
     });
 
     it('should update scrollIndex value', () => {
-        const wrapper = ({ children }) => <TableScrollProvider>{children}</TableScrollProvider>;
-        const { result } = renderHook(() => useTableScrollContext(), { wrapper });
+        const wrapper = ({children}) => <TableScrollProvider>{children}</TableScrollProvider>;
+        const {result} = renderHook(() => useTableScrollContext(), {wrapper});
 
         act(() => {
             result.current.setScrollIndex(5);

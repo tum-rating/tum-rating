@@ -1,6 +1,6 @@
-import { Alert } from '@mantine/core';
-import { IconDatabaseHeart, IconDatabaseX } from '@tabler/icons-react';
-import { ReactElement } from 'react';
+import {Alert} from '@mantine/core';
+import {IconDatabaseHeart, IconDatabaseX} from '@tabler/icons-react';
+import {ReactElement} from 'react';
 
 import classes from './CollectionDetailsStatusAlert.module.css';
 
@@ -31,10 +31,10 @@ const typeResolver = (type: 'error' | 'success') => {
 };
 
 const CollectionDetailsStatusAlert = (props: CollectionDetailsStatusAlertProps) => {
-    const { status, message, type = 'success' } = props;
+    const {status, message, type = 'success'} = props;
     if (status) {
         return <Alert className={classes.alert} maw="100%" title={message || 'Process status: true, message not provided'} {...typeResolver(type)}></Alert>;
     } else return null;
 };
 
-export { CollectionDetailsStatusAlert };
+export {CollectionDetailsStatusAlert};

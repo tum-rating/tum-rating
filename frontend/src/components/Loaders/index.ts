@@ -1,1 +1,1 @@
-export { RouteLoader } from './RouteLoader';
+export {RouteLoader} from './RouteLoader';

@@ -1,8 +1,8 @@
-import { Badge, Box, Flex, Rating, Text } from '@mantine/core';
+import {Badge, Box, Flex, Rating, Text} from '@mantine/core';
 
 import classes from './RatingBox.module.css';
 
-import { Skeleton } from '@/components/Skeleton';
+import {Skeleton} from '@/components/Skeleton';
 
 interface RatingBoxProps {
     label: string;
@@ -13,7 +13,7 @@ interface RatingBoxProps {
 }
 
 const RatingBox = (props: RatingBoxProps) => {
-    const { score, message, color, label, isLoading } = props;
+    const {score, message, color, label, isLoading} = props;
     return (
         <Flex className={classes.ratingBox} direction="column" px="md" py="md" align="flex-start" pos="relative">
             <Flex direction="column">
@@ -63,4 +63,4 @@ const RatingBox = (props: RatingBoxProps) => {
     );
 };
 
-export { RatingBox, RatingBoxProps };
+export {RatingBox, RatingBoxProps};

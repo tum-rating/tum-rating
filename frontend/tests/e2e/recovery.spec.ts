@@ -1,8 +1,8 @@
-import {faker} from "@faker-js/faker";
-import {expect, test} from "@playwright/test";
+import {faker} from '@faker-js/faker';
+import {expect, test} from '@playwright/test';
 
-import {getRecoveryTokenFromMail, signIn} from "tests/e2e/utils/auth.ts";
-import {openMobileDrawer} from "tests/e2e/utils/layout.ts";
+import {getRecoveryTokenFromMail, signIn} from 'tests/e2e/utils/auth.ts';
+import {openMobileDrawer} from 'tests/e2e/utils/layout.ts';
 
 test.describe.configure({mode: 'serial'});
 

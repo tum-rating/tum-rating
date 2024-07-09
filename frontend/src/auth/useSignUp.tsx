@@ -1,22 +1,22 @@
-import { Text } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
+import {Text} from '@mantine/core';
+import {notifications} from '@mantine/notifications';
 
-import { endpoints, useMutationWithAuth } from '@/api';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {endpoints, useMutationWithAuth} from '@/api';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
-async function signUp({ email, password, username }: RegisterInput): Promise<{ success: boolean }> {
+async function signUp({email, password, username}: RegisterInput): Promise<{success: boolean}> {
     const response = await fetch(endpoints.signup, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, username }),
+        body: JSON.stringify({email, password, username}),
     });
     if (!response.ok) {
         const data = await response.json();
         throw new ResponseError(data.message, response, 'sign-up');
     }
-    return { success: true };
+    return {success: true};
 }
 
 type RegisterInput = {
@@ -27,7 +27,7 @@ type RegisterInput = {
 
 export function useSignUp() {
     return useMutationWithAuth({
-        mutationFn: async ({ email, password, username }: RegisterInput) => await signUp({ email, password, username }),
+        mutationFn: async ({email, password, username}: RegisterInput) => await signUp({email, password, username}),
         onSuccess: () => {
             notifications.show({
                 title: 'Success',

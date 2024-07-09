@@ -1,10 +1,10 @@
-import { Button, Flex, Text } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
+import {Button, Flex, Text} from '@mantine/core';
+import {notifications} from '@mantine/notifications';
 
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import { useSignOutProps } from '@/auth/useSignOut.tsx';
-import { getPath, Paths } from '@/routes/paths.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {useSignOutProps} from '@/auth/useSignOut.tsx';
+import {getPath, Paths} from '@/routes/paths.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 interface handleAuthErrorsProps {
     error: any;
@@ -13,7 +13,7 @@ interface handleAuthErrorsProps {
     navigate?: any;
 }
 
-export function handleAuthErrors({ error, callback = () => null, signOut, navigate }: handleAuthErrorsProps) {
+export function handleAuthErrors({error, callback = () => null, signOut, navigate}: handleAuthErrorsProps) {
     if (error instanceof ResponseError) {
         const initialErrorConfig = {
             id: error.errorId,

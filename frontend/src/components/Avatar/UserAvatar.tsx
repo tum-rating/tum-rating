@@ -1,4 +1,4 @@
-import { Avatar, AvatarProps } from '@mantine/core';
+import {Avatar, AvatarProps} from '@mantine/core';
 
 const UserAvatar = (props: AvatarProps) => {
     return (
@@ -78,4 +78,4 @@ const UserAvatar = (props: AvatarProps) => {
     );
 };
 
-export { UserAvatar };
+export {UserAvatar};

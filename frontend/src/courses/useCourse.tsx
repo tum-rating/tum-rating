@@ -1,10 +1,10 @@
-import { UseQueryResult } from '@tanstack/react-query';
+import {UseQueryResult} from '@tanstack/react-query';
 
-import { endpoints } from '@/api';
-import { useQueryWithAuth } from '@/api/useQueryWithAuth.tsx';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { DetailCourse } from '@/courses/types.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {endpoints} from '@/api';
+import {useQueryWithAuth} from '@/api/useQueryWithAuth.tsx';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {DetailCourse} from '@/courses/types.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function getDetailCourse(_id: string) {
     const endpoint = endpoints.getSpecificCourse(_id);

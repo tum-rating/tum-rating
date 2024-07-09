@@ -1,4 +1,4 @@
-import { Highlight, TextProps } from '@mantine/core';
+import {Highlight, TextProps} from '@mantine/core';
 
 interface SearchHighlightProps {
     value: string[];
@@ -6,7 +6,7 @@ interface SearchHighlightProps {
     textStyles?: TextProps;
 }
 
-const SearchHighlight = ({ value, text, textStyles }: SearchHighlightProps) => {
+const SearchHighlight = ({value, text, textStyles}: SearchHighlightProps) => {
     return (
         <Highlight
             highlight={value}
@@ -23,4 +23,4 @@ const SearchHighlight = ({ value, text, textStyles }: SearchHighlightProps) => {
     );
 };
 
-export { SearchHighlight };
+export {SearchHighlight};
