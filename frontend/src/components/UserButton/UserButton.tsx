@@ -66,7 +66,7 @@ export function UserButton({ withoutDropdown = false }: UserButtonProps) {
                         const Icon = page.icon;
                         return (
                             <Menu.Item
-                                key={page.path}
+                                key={page.path + page.title}
                                 leftSection={<Icon style={{ width: rem(14), height: rem(14) }} />}
                                 onClick={() => {
                                     navigate(page.path);
