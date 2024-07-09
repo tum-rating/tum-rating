@@ -1,8 +1,13 @@
-import {IconAlien, IconAddressBook, IconScript} from "@tabler/icons-react";
+import { IconAlien, IconAddressBook, IconScript, IconStars } from '@tabler/icons-react';
 
 import { getPath, Paths } from '@/routes/paths.ts';
 
 const INFO_PAGES = [
+    {
+        title: 'Home',
+        icon: IconStars,
+        path: '/',
+    },
     {
         title: 'About Us',
         icon: IconAlien,
