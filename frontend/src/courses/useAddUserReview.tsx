@@ -24,7 +24,7 @@ async function addUserReview(user: UserWithToken | null | undefined, userReview:
     });
     const data = await response.json();
     if (!response.ok) throw new ResponseError(data.message, response, courseId);
-    return data;
+    return {success: true};
 }
 
 export interface UserAddReviewInput {

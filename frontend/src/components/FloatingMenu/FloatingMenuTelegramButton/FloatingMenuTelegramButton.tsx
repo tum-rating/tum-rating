@@ -25,19 +25,23 @@ const FloatingMenuTelegramButton = () => {
                         return current + 1;
                     } else {
                         clearInterval(intervalRef.current);
-                        setFeedbackCTA(false);
                         return 0;
                     }
                 });
             }, 100);
         }
-
         return () => {
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);
             }
         };
     }, [feedbackCTA]);
+
+    useEffect(() => {
+        if (progress === 100) {
+            setFeedbackCTA(false);
+        }
+    }, [progress]);
 
     return (
         <UnstyledButton
