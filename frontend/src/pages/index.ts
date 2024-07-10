@@ -1,6 +1,10 @@
-export { Home } from './Home/Home.tsx';
-export { Course } from './Course';
-export { ErrorBoundary } from './PageNotFound';
-export { Activation } from './Activation/Activation.tsx';
-export { Recovery } from './Recovery/Recovery.tsx';
-export { Admin } from './Admin/Admin.tsx';
+export {Home} from './Home/Home.tsx';
+export {Course} from './Course';
+export {ErrorBoundary} from './PageNotFound';
+export {Activation} from './Activation/Activation.tsx';
+export {Recovery} from './Recovery/Recovery.tsx';
+export {Admin} from './Admin/Admin.tsx';
+export {Feedback} from '@/pages/Feedback/Feedback.tsx';
+export {About} from './About/About.tsx';
+export {PrivacyPolicy} from './PrivacyPolicy';
+export {TermsOfService} from './TermsOfService/TermsOfService.tsx';

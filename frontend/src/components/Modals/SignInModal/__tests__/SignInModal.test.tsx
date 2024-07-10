@@ -1,14 +1,14 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { http, HttpResponse } from 'msw';
-import { act } from 'react';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {fireEvent, screen, waitFor} from '@testing-library/react';
+import {http, HttpResponse} from 'msw';
+import {act} from 'react';
 
-import { endpoints } from '@/api';
+import {endpoints} from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import { SignInModal } from '@/components/Modals/SignInModal/SignInModal';
-import { generateJwtToken } from 'tests/unit/mocks/dataGenerators.ts';
-import { server } from 'tests/unit/mocks/node.ts';
-import { render } from 'tests/unit/utils/render.tsx';
+import {SignInModal} from '@/components/Modals/SignInModal/SignInModal';
+import {generateJwtToken} from 'tests/unit/mocks/dataGenerators.ts';
+import {server} from 'tests/unit/mocks/node.ts';
+import {render} from 'tests/unit/utils/render.tsx';
 
 describe('SignInModal', () => {
     let queryClient: QueryClient;
@@ -72,13 +72,13 @@ describe('SignInModal', () => {
                 email = screen.getByTestId('email');
                 password = screen.getByTestId('password');
                 submit = screen.getByTestId('submit');
-                form = screen.getByTestId('form');
+                form = screen.getByTestId('sign-in-form');
             });
             act(() => {
-                fireEvent.change(email, { target: { value: 'wrongemail@tum.de' } });
-                fireEvent.change(password, { target: { value: 'wrongpassword' } });
+                fireEvent.change(email, {target: {value: 'wrongemail@tum.de'}});
+                fireEvent.change(password, {target: {value: 'wrongpassword'}});
             });
-            fireEvent.submit(form, { button: submit });
+            fireEvent.submit(form, {button: submit});
 
             await waitFor(() => {
                 expect(screen.getByTestId('error-message')).toBeInTheDocument();

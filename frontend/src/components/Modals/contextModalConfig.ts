@@ -1,5 +1,5 @@
-import { ContextModalProps } from '@mantine/modals';
-import { ReactNode } from 'react';
+import {ContextModalProps} from '@mantine/modals';
+import {ReactNode} from 'react';
 
 type OptionalContextModalProps = Partial<Omit<ContextModalProps, 'modal'>>;
 
@@ -9,10 +9,11 @@ interface ContextModalConfigProps extends OptionalContextModalProps {
 }
 
 export const contextModalConfig = (config: ContextModalConfigProps) => {
-    const { modal: modalName, title: modalTitle } = config;
+    const {modal: modalName, title: modalTitle} = config;
     return {
         modal: modalName,
         title: modalTitle,
+        centered: true,
         padding: 0,
         innerProps: {},
         ...config,

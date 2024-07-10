@@ -1,20 +1,20 @@
-import { Alert, Anchor, Box, Button, Divider, Flex, LoadingOverlay, Stack, Text, Textarea } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { ContextModalProps, modals } from '@mantine/modals';
-import { IconBooks, IconFaceIdError, IconInfoCircle } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Alert, Anchor, Box, Button, Divider, Flex, LoadingOverlay, Stack, Text, Textarea} from '@mantine/core';
+import {useForm} from '@mantine/form';
+import {ContextModalProps, modals} from '@mantine/modals';
+import {IconBooks, IconFaceIdError, IconInfoCircle} from '@tabler/icons-react';
+import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
-import { useUser } from '@/auth/useUser.tsx';
-import { contextModalConfig } from '@/components/Modals/contextModalConfig.ts';
-import { CloseButton } from '@/components/Modals/shared/CloseButton';
-import { ModalHeader } from '@/components/Modals/shared/ModalHeader';
-import { ModalResponsiveContainer } from '@/components/Modals/shared/ModalResponsiveContainer';
-import { CourseInput, useAddCourseProposal } from '@/courses/useAddCourseProposal.tsx';
+import {useUser} from '@/auth/useUser.tsx';
+import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
+import {CloseButton} from '@/components/Modals/shared/CloseButton';
+import {ModalHeader} from '@/components/Modals/shared/ModalHeader';
+import {ModalResponsiveContainer} from '@/components/Modals/shared/ModalResponsiveContainer';
+import {CourseInput, useAddCourseProposal} from '@/courses/useAddCourseProposal.tsx';
 import classes from '@/pages/PageNotFound/PageNotFound.module.css';
-import { Paths } from '@/routes/paths.ts';
+import {Paths} from '@/routes/paths.ts';
 
-const openAddCourseModal = ({ ...props }) => {
+const openAddCourseModal = ({...props}) => {
     modals.openContextModal({
         ...contextModalConfig({
             modal: 'addCourse',
@@ -26,11 +26,11 @@ const regex = /https:\/\/campus\.tum\.de\/tumonline\/.*\/student\/courses\/\d+/;
 const example_course = 'https://campus.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses/950600157?$scrollTo=toc_overview';
 const tum_portal = 'https://campus.tum.de/tumonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses';
 
-const AddCourseModal = ({ context, id }: ContextModalProps) => {
-    const { mutate: addReview, status, isLoading: addReviewLoading, error, isError } = useAddCourseProposal();
+const AddCourseModal = ({context, id}: ContextModalProps) => {
+    const {mutate: addReview, status, isLoading: addReviewLoading, error, isError} = useAddCourseProposal();
     const [apiError, setApiError] = useState(null);
     const navigate = useNavigate();
-    const { data: user, isLoading: userLoading } = useUser();
+    const {data: user, isLoading: userLoading} = useUser();
 
     useEffect(() => {
         setApiError(isError);
@@ -57,7 +57,7 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
     }, [context, id, status]);
 
     const handleSubmit = (form: CourseInput) => {
-        addReview({ ...form });
+        addReview({...form});
     };
 
     if (!user && !userLoading) {
@@ -88,8 +88,8 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
                     context.closeModal(id);
                 }}
             />
-            <LoadingOverlay visible={addReviewLoading} overlayProps={{ radius: 'sm', blur: 2 }} />
-            <form className="modal-form" data-testid="form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
+            <LoadingOverlay visible={addReviewLoading} overlayProps={{radius: 'sm', blur: 2}} />
+            <form className="modal-form" data-testid="add-course-proposal-form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
                 <Box p="sm">
                     <Stack>
                         <Textarea data-testid="textarea" label="Course URL" required placeholder={`Example: ${example_course}`} description="Provide a valid course URL from TUM Campus Portal" value={form.values.url} onChange={(event) => form.setFieldValue('url', event.currentTarget.value)} error={form.errors.url} radius="md" minRows={5} maxRows={10} autosize />
@@ -98,7 +98,8 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
                                 <Text size="xs">{error.message || 'An error occurred'}</Text>
                             </Alert>
                         )}
-                        <Button data-testid="submit-button" loading={addReviewLoading} mt="xs" type="submit" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }}>
+
+                        <Button data-testid="submit" loading={addReviewLoading} mt="xs" type="submit" variant="primary-gradient">
                             Add Course Proposal
                         </Button>
                         <Alert variant="light" color="green" title="How to add a course" icon={<IconInfoCircle />}>
@@ -110,7 +111,7 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
                                 . Copy the link and paste it into our form. If everything is ok, the course will appear within 24 hours.
                                 <Text span fw={500} mt="xs" display="block">
                                     Example course URL:{' '}
-                                    <Anchor style={{ overflowWrap: 'anywhere' }} target={'_blank'} href={example_course}>
+                                    <Anchor style={{overflowWrap: 'anywhere'}} target={'_blank'} href={example_course}>
                                         {example_course}
                                     </Anchor>
                                 </Text>
@@ -123,4 +124,4 @@ const AddCourseModal = ({ context, id }: ContextModalProps) => {
     );
 };
 
-export { AddCourseModal, openAddCourseModal };
+export {AddCourseModal, openAddCourseModal};

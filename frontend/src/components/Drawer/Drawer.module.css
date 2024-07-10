@@ -1,0 +1,5 @@
+.drawerMenu {
+    & > *:not(:last-of-type) {
+        border-bottom: none
+    }
+}

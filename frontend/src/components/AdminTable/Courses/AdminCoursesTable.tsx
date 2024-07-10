@@ -1,18 +1,18 @@
-import { Badge, Box, Flex, Skeleton, Text } from '@mantine/core';
-import { useDebouncedState } from '@mantine/hooks';
+import {Badge, Box, Flex, Skeleton, Text} from '@mantine/core';
+import {useDebouncedState} from '@mantine/hooks';
 import clsx from 'clsx';
-import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import {MantineReactTable, useMantineReactTable} from 'mantine-react-table';
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {useLocation} from 'react-router-dom';
 
-import { useCoursesColumns } from './useCoursesColumns.tsx';
+import {useCoursesColumns} from './useCoursesColumns.tsx';
 import classes from '../Shared/styles/TableStyles.module.css';
 
-import { CourseExpansion } from '@/components/AdminTable/Courses/CourseExpansion.tsx';
-import { TableToolbox } from '@/components/AdminTable/Shared/TableToolbox';
-import { HEADER_HEIGHT, PAGE_SIZE } from '@/constants';
-import { Course } from '@/courses/types.ts';
-import { useSearchCourses } from '@/courses/useSearchCourses.tsx';
+import {CourseExpansion} from '@/components/AdminTable/Courses/CourseExpansion.tsx';
+import {TableToolbox} from '@/components/AdminTable/Shared/TableToolbox';
+import {HEADER_HEIGHT, PAGE_SIZE} from '@/constants';
+import {Course} from '@/courses/types.ts';
+import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
 
 const AdminCoursesTable = () => {
     const tableContainerRef = useRef<HTMLDivElement>(null); //we can get access to the underlying TableContainer element and react to its scroll events
@@ -21,9 +21,9 @@ const AdminCoursesTable = () => {
     const [query, setQuery] = useState('');
     const [debouncedQuery, setDebouncedQuery] = useDebouncedState('', 350);
 
-    const { data: searchData, isError: isSearchDataError, isLoading: isSearchDataLoading, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, refetch: refetchSearchQuery } = useSearchCourses(debouncedQuery);
+    const {data: searchData, isError: isSearchDataError, isLoading: isSearchDataLoading, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, refetch: refetchSearchQuery} = useSearchCourses(debouncedQuery);
     const location = useLocation();
-    const { columns } = useCoursesColumns();
+    const {columns} = useCoursesColumns();
 
     useEffect(() => {
         if (searchData) {
@@ -50,7 +50,7 @@ const AdminCoursesTable = () => {
     let fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
             if (containerRefElement) {
-                const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+                const {scrollHeight, scrollTop, clientHeight} = containerRefElement;
                 if (scrollHeight - scrollTop - clientHeight < clientHeight - 110 - HEADER_HEIGHT && !isSearchFetching) {
                     if (hasSearchNextPage) {
                         const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
@@ -103,7 +103,7 @@ const AdminCoursesTable = () => {
                 event: UIEvent<HTMLDivElement>,
             ) => fetchMoreOnBottomReached(event.target as HTMLDivElement),
         }),
-        mantineTableBodyCellProps: ({ row }) => ({
+        mantineTableBodyCellProps: ({row}) => ({
             className: clsx(classes.tableCellRow),
             children: row.original === null ? <Skeleton h={30} /> : undefined,
         }),
@@ -112,7 +112,7 @@ const AdminCoursesTable = () => {
                 grow: false,
             },
         },
-        renderTopToolbar: ({ table }) => (
+        renderTopToolbar: ({table}) => (
             <Flex justify="space-between" align="center" h={50} px="xs" bg="gray.1">
                 <Flex gap="xs">
                     <Flex gap="6" align="center" mr="auto">
@@ -135,7 +135,7 @@ const AdminCoursesTable = () => {
                 />
             </Flex>
         ),
-        rowVirtualizerOptions: { overscan: 25 },
+        rowVirtualizerOptions: {overscan: 25},
         mantineDetailPanelProps: {
             style: {
                 width: '100%',
@@ -143,7 +143,7 @@ const AdminCoursesTable = () => {
                 margin: 0,
             },
         },
-        renderDetailPanel: ({ row }) => <CourseExpansion key={row.original._id} courseId={row.original._id} row={row} />,
+        renderDetailPanel: ({row}) => <CourseExpansion key={row.original._id} courseId={row.original._id} row={row} />,
     });
 
     return (
@@ -153,4 +153,4 @@ const AdminCoursesTable = () => {
     );
 };
 
-export { AdminCoursesTable };
+export {AdminCoursesTable};

@@ -1,25 +1,25 @@
-import { closeAllModals, useModals } from '@mantine/modals';
-import { PropsWithChildren, useEffect, useMemo } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import {closeAllModals, useModals} from '@mantine/modals';
+import {PropsWithChildren, useEffect, useMemo} from 'react';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 
-import { useUser } from '@/auth/useUser';
-import { openAddCourseModal } from '@/components/Modals/AddCourseModal';
-import { openAddUserReviewModal } from '@/components/Modals/AddUserReview';
-import { openEditUserReviewModal } from '@/components/Modals/EditUserReview';
-import { openRecoveryModal } from '@/components/Modals/RecoveryModal';
-import { openSignInModal } from '@/components/Modals/SignInModal';
-import { openSignUpModal } from '@/components/Modals/SignUpModal';
+import {useUser} from '@/auth/useUser';
+import {openAddCourseModal} from '@/components/Modals/AddCourseModal';
+import {openAddUserReviewModal} from '@/components/Modals/AddUserReview';
+import {openEditUserReviewModal} from '@/components/Modals/EditUserReview';
+import {openRecoveryModal} from '@/components/Modals/RecoveryModal';
+import {openSignInModal} from '@/components/Modals/SignInModal';
+import {openSignUpModal} from '@/components/Modals/SignUpModal';
 
 interface ModalsHashControllerProps extends PropsWithChildren {
     withinPortal?: boolean;
 }
 
-export const ModalsHashController = ({ withinPortal = true }: ModalsHashControllerProps) => {
+export const ModalsHashController = ({withinPortal = true}: ModalsHashControllerProps) => {
     // style={{height: `calc(${visualViewport}px - 10dvh)`}}
     const location = useLocation();
     const navigate = useNavigate();
-    const { courseId } = useParams();
-    const { data: user } = useUser();
+    const {courseId} = useParams();
+    const {data: user} = useUser();
     let modalsContext = useModals();
 
     const modalSharedParams = useMemo(
@@ -40,17 +40,17 @@ export const ModalsHashController = ({ withinPortal = true }: ModalsHashControll
     );
     const modals = useMemo(
         () => ({
-            'sign-in': { component: openSignInModal, params: { ...modalSharedParams }, notForLoggedUser: true },
-            'sign-up': { component: openSignUpModal, params: { ...modalSharedParams }, notForLoggedUser: true },
-            'forgot-password': { component: openRecoveryModal, params: { ...modalSharedParams }, notForLoggedUser: true },
-            'add-course': { component: openAddCourseModal, params: { ...modalSharedParams } },
+            'sign-in': {component: openSignInModal, params: {...modalSharedParams}, notForLoggedUser: true},
+            'sign-up': {component: openSignUpModal, params: {...modalSharedParams}, notForLoggedUser: true},
+            'forgot-password': {component: openRecoveryModal, params: {...modalSharedParams}, notForLoggedUser: true},
+            'add-course': {component: openAddCourseModal, params: {...modalSharedParams}},
             'add-user-review': {
                 component: openAddUserReviewModal,
-                params: { ...modalSharedParams, innerProps: { courseId } },
+                params: {...modalSharedParams, innerProps: {courseId}},
             },
             'edit-user-review': {
                 component: openEditUserReviewModal,
-                params: { ...modalSharedParams, innerProps: { courseId } },
+                params: {...modalSharedParams, innerProps: {courseId}},
             },
         }),
         [modalSharedParams, courseId],

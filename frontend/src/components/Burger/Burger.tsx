@@ -1,4 +1,4 @@
-import { ActionIcon, ThemeIcon } from '@mantine/core';
+import {ActionIcon, ThemeIcon} from '@mantine/core';
 import clsx from 'clsx';
 
 import classes from './Burger.module.css';
@@ -9,7 +9,7 @@ interface BurgerProps {
 }
 
 const Burger = (props: BurgerProps) => {
-    const { open, toggle } = props;
+    const {open, toggle} = props;
     return (
         <ActionIcon
             variant="light"
@@ -29,4 +29,4 @@ const Burger = (props: BurgerProps) => {
     );
 };
 
-export { Burger };
+export {Burger};

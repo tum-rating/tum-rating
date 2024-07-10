@@ -1,32 +1,32 @@
-import { ActionIcon, Button, Divider, Flex, Stack, TagsInput, Text, TextInput, Tooltip } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { IconExternalLink, IconMasksTheater, IconMoodCheck, IconTrashX } from '@tabler/icons-react';
-import { MRT_Row } from 'mantine-react-table';
-import { HTMLAttributes, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {ActionIcon, Button, Divider, Flex, Stack, TagsInput, Text, TextInput, Tooltip} from '@mantine/core';
+import {useForm} from '@mantine/form';
+import {IconExternalLink, IconMasksTheater, IconMoodCheck, IconTrashX} from '@tabler/icons-react';
+import {MRT_Row} from 'mantine-react-table';
+import {HTMLAttributes, useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
-import { Course, CourseProposal } from '@/admin/types.ts';
-import { useAddCourseProposal } from '@/admin/useAddCourseProposal.tsx';
-import { useCourseProposal } from '@/admin/useCourseProposal.tsx';
-import { useGetScrapedCourseProposal } from '@/admin/useCourseScraper.tsx';
-import { useRemoveProposal } from '@/admin/useRemoveProposal.tsx';
-import { CollectionDetailsStatusAlert } from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
-import { UserInfoAction } from '@/components/AdminTable/Shared/UserInfoAction';
-import { Skeleton } from '@/components/Skeleton';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { queryClient } from '@/react-query/client.ts';
-import { getPath, Paths } from '@/routes/paths.ts';
+import {Course, CourseProposal} from '@/admin/types.ts';
+import {useAddCourseProposal} from '@/admin/useAddCourseProposal.tsx';
+import {useCourseProposal} from '@/admin/useCourseProposal.tsx';
+import {useGetScrapedCourseProposal} from '@/admin/useCourseScraper.tsx';
+import {useRemoveProposal} from '@/admin/useRemoveProposal.tsx';
+import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
+import {UserInfoAction} from '@/components/AdminTable/Shared/UserInfoAction';
+import {Skeleton} from '@/components/Skeleton';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {queryClient} from '@/react-query/client.ts';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 interface ProposalExpansionProps extends HTMLAttributes<HTMLElement> {
     courseProposalId: string;
     row?: MRT_Row<CourseProposal>;
 }
 
-const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansionProps) => {
-    const { data: courseProposalDetails, isLoading, error, isError, refetch } = useCourseProposal(courseProposalId);
-    const { refetch: scrapeCourse, data: scrapedData, isLoading: scraperIsLoading, isError: scraperIsError, isSuccess: scraperIsSuccess } = useGetScrapedCourseProposal(courseProposalId);
+const ProposalExpansion = ({courseProposalId, row, ...rest}: ProposalExpansionProps) => {
+    const {data: courseProposalDetails, isLoading, error, isError, refetch} = useCourseProposal(courseProposalId);
+    const {refetch: scrapeCourse, data: scrapedData, isLoading: scraperIsLoading, isError: scraperIsError, isSuccess: scraperIsSuccess} = useGetScrapedCourseProposal(courseProposalId);
 
     const [statusAlertFlag, setStatusAlertFlag] = useState(false);
 
@@ -45,8 +45,8 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
         offeredInSemesters: [],
     });
 
-    const { mutate: acceptProposal, isPending: acceptProposalPending, isSuccess: acceptProposalSuccess } = useAddCourseProposal();
-    const { mutate: removeProposal, isSuccess: removeProposalSuccess } = useRemoveProposal();
+    const {mutate: acceptProposal, isPending: acceptProposalPending, isSuccess: acceptProposalSuccess} = useAddCourseProposal();
+    const {mutate: removeProposal, isSuccess: removeProposalSuccess} = useRemoveProposal();
 
     const navigate = useNavigate();
 
@@ -96,7 +96,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
     });
 
     return (
-        <Flex wrap={{ base: 'wrap', sm: 'nowrap' }} className={classes.expansionContainer} gap="md" {...rest}>
+        <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md" {...rest}>
             {statusAlertFlag ? (
                 <Flex justify="center" w="100%" direction="column" gap="lg">
                     <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error" />
@@ -125,7 +125,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                         <Flex direction="column" gap="xs">
                             <Flex justify="flex-start" gap="xs" wrap="wrap">
                                 <Flex align="center" gap="3">
-                                    <Text style={{ whiteSpace: 'nowrap' }} fz="xs" fw="bold">
+                                    <Text style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold">
                                         User:{' '}
                                     </Text>
                                     <Skeleton
@@ -136,7 +136,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                                         component={
                                             <UserInfoAction userId={courseProposalDetails?.userId}>
                                                 {(user) => (
-                                                    <Button px={4} m={0} h={20} variant="subtle" fz="xs" fw="600" c={user?.isBanned ? 'gray' : 'blue'} style={user?.isBanned ? { textDecorationLine: 'line-through' } : {}}>
+                                                    <Button px={4} m={0} h={20} variant="subtle" fz="xs" fw="600" c={user?.isBanned ? 'gray' : 'blue'} style={user?.isBanned ? {textDecorationLine: 'line-through'} : {}}>
                                                         {user?.username}
                                                     </Button>
                                                 )}
@@ -145,7 +145,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                                     ></Skeleton>
                                 </Flex>
                                 <Flex align="center" gap="3">
-                                    <Text style={{ whiteSpace: 'nowrap' }} fz="xs" fw="bold">
+                                    <Text style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold">
                                         Proposal ID:{' '}
                                     </Text>
                                     <Skeleton
@@ -173,7 +173,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                                     ></Skeleton>
                                 </Flex>
                                 <Flex align="center" gap="3">
-                                    <Text style={{ whiteSpace: 'nowrap' }} fz="xs" fw="bold">
+                                    <Text style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold">
                                         Created at:{' '}
                                     </Text>
                                     <Skeleton
@@ -208,15 +208,15 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                                 <form>
                                     <Flex wrap="wrap" gap="xs" direction="column">
                                         <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput label="Course Name" placeholder="Enter course name" value={form.values.name} error={form.errors.name} onChange={(event) => form.setFieldValue('name', event.currentTarget.value)} />}></Skeleton>
-                                        <Flex gap="xs" wrap={{ base: 'wrap', sm: 'nowrap' }} w="100%">
-                                            <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput w={{ base: '100%', sm: '50%' }} label="Course ID" placeholder="Enter course id" value={form.values.courseId} error={form.errors.courseId} onChange={(event) => form.setFieldValue('courseId', event.currentTarget.value)} />}></Skeleton>
-                                            <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput w={{ base: '100%', sm: '50%' }} label="Course Number" placeholder="Enter course number" value={form.values.courseNumber} error={form.errors.courseNumber} onChange={(event) => form.setFieldValue('courseNumber', event.currentTarget.value)} />}></Skeleton>
+                                        <Flex gap="xs" wrap={{base: 'wrap', sm: 'nowrap'}} w="100%">
+                                            <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput w={{base: '100%', sm: '50%'}} label="Course ID" placeholder="Enter course id" value={form.values.courseId} error={form.errors.courseId} onChange={(event) => form.setFieldValue('courseId', event.currentTarget.value)} />}></Skeleton>
+                                            <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput w={{base: '100%', sm: '50%'}} label="Course Number" placeholder="Enter course number" value={form.values.courseNumber} error={form.errors.courseNumber} onChange={(event) => form.setFieldValue('courseNumber', event.currentTarget.value)} />}></Skeleton>
                                         </Flex>
 
                                         <Flex direction="column" gap="xs" w="100%">
                                             <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput label="Main Professor" placeholder="Enter professor name" value={form.values.professor} error={form.errors.professor} onChange={(event) => form.setFieldValue('professor', event.currentTarget.value)} />}></Skeleton>
                                         </Flex>
-                                        <Flex gap="xs" wrap={{ base: 'wrap', sm: 'nowrap' }} w="100%">
+                                        <Flex gap="xs" wrap={{base: 'wrap', sm: 'nowrap'}} w="100%">
                                             <Skeleton
                                                 height={104}
                                                 radius="sm"
@@ -224,7 +224,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                                                 loading={isLoading}
                                                 component={
                                                     <TagsInput
-                                                        w={{ base: '100%', sm: '50%' }}
+                                                        w={{base: '100%', sm: '50%'}}
                                                         label="Semester"
                                                         error={form.errors.offeredInSemesters}
                                                         placeholder="Click enter to add semester"
@@ -248,7 +248,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                                                 loading={isLoading}
                                                 component={
                                                     <TagsInput
-                                                        w={{ base: '100%', sm: '50%' }}
+                                                        w={{base: '100%', sm: '50%'}}
                                                         label="Other professors"
                                                         placeholder="Click enter to add other professors"
                                                         value={form.values.otherLecturers}
@@ -303,7 +303,7 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
                         <Button
                             loading={isLoading}
                             onClick={() => {
-                                queryClient.removeQueries({ queryKey: [QUERY_KEY.scrape_course, fetchedProposal.courseId] });
+                                queryClient.removeQueries({queryKey: [QUERY_KEY.scrape_course, fetchedProposal.courseId]});
                                 setFetchedProposal({
                                     courseId: '',
                                     courseNumber: '',
@@ -352,4 +352,4 @@ const ProposalExpansion = ({ courseProposalId, row, ...rest }: ProposalExpansion
     );
 };
 
-export { ProposalExpansion };
+export {ProposalExpansion};

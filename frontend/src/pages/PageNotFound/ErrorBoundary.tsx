@@ -1,5 +1,5 @@
-import { Button, Center, Container, Flex, Text } from '@mantine/core';
-import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom';
+import {Button, Center, Container, Flex, Text} from '@mantine/core';
+import {isRouteErrorResponse, useNavigate, useRouteError} from 'react-router-dom';
 
 import classes from './PageNotFound.module.css';
 

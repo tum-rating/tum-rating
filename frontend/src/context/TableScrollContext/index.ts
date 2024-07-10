@@ -1,1 +1,1 @@
-export { useTableScrollContext, TableScrollProvider } from './TableScrollContext.tsx';
+export {useTableScrollContext, TableScrollProvider} from './TableScrollContext.tsx';

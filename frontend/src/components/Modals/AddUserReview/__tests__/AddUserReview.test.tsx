@@ -1,13 +1,13 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { http, HttpResponse } from 'msw';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {fireEvent, screen, waitFor} from '@testing-library/react';
+import {http, HttpResponse} from 'msw';
 
-import { endpoints } from '@/api';
+import {endpoints} from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import { AddUserReviewModal } from '@/components/Modals/AddUserReview';
-import { courseDetails, generateJwtToken } from 'tests/unit/mocks/dataGenerators.ts';
-import { server } from 'tests/unit/mocks/node.ts';
-import { render } from 'tests/unit/utils/render.tsx';
+import {AddUserReviewModal} from '@/components/Modals/AddUserReview';
+import {courseDetails, generateJwtToken} from 'tests/unit/mocks/dataGenerators.ts';
+import {server} from 'tests/unit/mocks/node.ts';
+import {render} from 'tests/unit/utils/render.tsx';
 
 describe('AddUserReviewModal', () => {
     let queryClient: QueryClient;
@@ -67,8 +67,8 @@ describe('AddUserReviewModal', () => {
                 expect(screen.getByTestId('select')).toBeInTheDocument();
             });
 
-            const submitButton = screen.getByRole('button', { name: 'Send' });
-            const form = screen.getByTestId('form');
+            const submitButton = screen.getByRole('button', {name: 'Send'});
+            const form = screen.getByTestId('add-user-review-form');
             fireEvent.submit(form, {
                 button: submitButton,
             });

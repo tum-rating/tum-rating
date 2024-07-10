@@ -1,9 +1,9 @@
-import { Button, Combobox, Container, Flex, Loader, Text, ThemeIcon } from '@mantine/core';
-import { IconSearchOff } from '@tabler/icons-react';
-import { useNavigate } from 'react-router-dom';
+import {Button, Combobox, Container, Flex, Loader, Text, ThemeIcon} from '@mantine/core';
+import {IconSearchOff} from '@tabler/icons-react';
+import {useNavigate} from 'react-router-dom';
 
-import { useUser } from '@/auth/useUser.tsx';
-import { getPath, Paths } from '@/routes/paths.ts';
+import {useUser} from '@/auth/useUser.tsx';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 interface ComboboxEmptyProps {
     value: string;
@@ -11,8 +11,8 @@ interface ComboboxEmptyProps {
 }
 
 export const ComboboxEmpty = (props: ComboboxEmptyProps) => {
-    const { value, isLoading } = props;
-    const { data: user } = useUser();
+    const {value, isLoading} = props;
+    const {data: user} = useUser();
     const navigate = useNavigate();
 
     return (
@@ -43,6 +43,7 @@ export const ComboboxEmpty = (props: ComboboxEmptyProps) => {
                     </Button>
                 ) : (
                     <Button
+                        data-testid="sign-in-to-add-course-proposal"
                         onClick={() => {
                             navigate(getPath(Paths.signIn));
                         }}

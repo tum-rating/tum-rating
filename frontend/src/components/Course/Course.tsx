@@ -1,30 +1,30 @@
 import '@mantine/core/styles.css';
-import { Badge, Box, Button, Center, Divider, Flex, Image, rem, Text } from '@mantine/core';
-import { IconAlien, IconCalendarMonth, IconCirclePlus, IconEditCircle } from '@tabler/icons-react';
+import {Badge, Box, Button, Center, Divider, Flex, Image, rem, Text} from '@mantine/core';
+import {IconAlien, IconCalendarMonth, IconCirclePlus, IconEditCircle} from '@tabler/icons-react';
 import clsx from 'clsx';
-import { Fragment, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import {Fragment, useEffect} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 
 import classes from './Course.module.css';
-import { CourseControls } from './CourseControls.tsx';
+import {CourseControls} from './CourseControls.tsx';
 
 import tumLogo from '@/assets/img/tum_logo.png';
-import { useUser } from '@/auth/useUser.tsx';
-import { Comment } from '@/components/Comment';
-import { CourseHelmet } from '@/components/Course/CourseHelmet.tsx';
-import { HowEasyRating } from '@/components/Course/HowEasyRating.tsx';
-import { HowInterestingRating } from '@/components/Course/HowInterestingRating.tsx';
-import { ReviewsBox } from '@/components/Course/ReviewsBox.tsx';
-import { Skeleton } from '@/components/Skeleton';
-import { CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH } from '@/constants';
-import { useDetailCourse } from '@/courses/useCourse.tsx';
-import { getPath, Paths } from '@/routes/paths.ts';
+import {useUser} from '@/auth/useUser.tsx';
+import {Comment} from '@/components/Comment';
+import {CourseHelmet} from '@/components/Course/CourseHelmet.tsx';
+import {HowEasyRating} from '@/components/Course/HowEasyRating.tsx';
+import {HowInterestingRating} from '@/components/Course/HowInterestingRating.tsx';
+import {ReviewsBox} from '@/components/Course/ReviewsBox.tsx';
+import {Skeleton} from '@/components/Skeleton';
+import {CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH} from '@/constants';
+import {useDetailCourse} from '@/courses/useCourse.tsx';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 const Course = () => {
-    const { courseId: id } = useParams();
-    const { data: user } = useUser();
+    const {courseId: id} = useParams();
+    const {data: user} = useUser();
     const navigate = useNavigate();
-    const { data, isLoading, isError } = useDetailCourse(id || '');
+    const {data, isLoading, isError} = useDetailCourse(id || '');
     useEffect(() => {
         const children = document.querySelectorAll('.children-animation > *');
         children.forEach((child: Element, index: number) => {
@@ -78,7 +78,7 @@ const Course = () => {
                                         radius="lg"
                                         loading={isLoading}
                                         component={
-                                            <Text data-testid="course-name" style={{ wordBreak: 'break-word' }} fz={24} fw="700" lineClamp={5}>
+                                            <Text data-testid="course-name" style={{wordBreak: 'break-word'}} fz={24} fw="700" lineClamp={5}>
                                                 {data?.name}{' '}
                                             </Text>
                                         }
@@ -103,9 +103,9 @@ const Course = () => {
                                     </Flex>
                                 </Flex>
                             </Flex>
-                            <Flex mt="xl" direction="column" className="children-animation" style={{ background: 'var(--mantine-color-body)' }}>
+                            <Flex mt="xl" direction="column" className="children-animation" style={{background: 'var(--mantine-color-body)'}}>
                                 <Flex align="center" gap="xs" mb="lg">
-                                    <Box bg="blue" w={10} h={30} style={{ borderRadius: '8px' }} />
+                                    <Box bg="blue" w={10} h={30} style={{borderRadius: '8px'}} />
                                     <Text fw="bold" fz="xl">
                                         Key Statistics
                                     </Text>
@@ -116,10 +116,10 @@ const Course = () => {
                                     <ReviewsBox isLoading={isLoading} votes={data?.votesNumber} />
                                 </Flex>
                             </Flex>
-                            <Flex style={{ flexGrow: 1, background: 'var(--mantine-color-body)' }} pt="xl" direction="column" className="children-animation">
+                            <Flex style={{flexGrow: 1, background: 'var(--mantine-color-body)'}} pt="xl" direction="column" className="children-animation">
                                 <Flex justify="space-between" align="center" mb="lg">
                                     <Flex align="center" gap="xs">
-                                        <Box bg="blue" w={10} h={30} style={{ borderRadius: '8px' }} />
+                                        <Box bg="blue" w={10} h={30} style={{borderRadius: '8px'}} />
                                         <Text fw="bold" fz="xl">
                                             Reviews
                                         </Text>
@@ -127,24 +127,24 @@ const Course = () => {
                                     <Box hiddenFrom="sm">
                                         {user ? (
                                             userReview ? (
-                                                <Button loading={isLoading} size="sm" variant="gradient" gradient={{ from: 'teal', to: 'lime', deg: 170 }} color="green" onClick={() => navigate(getPath(Paths.editUserReview))} leftSection={<IconEditCircle style={{ width: rem(16), height: rem(16) }} />}>
+                                                <Button data-testid="edit-review" loading={isLoading} size="sm" variant="gradient" gradient={{from: 'teal', to: 'lime', deg: 170}} color="green" onClick={() => navigate(getPath(Paths.editUserReview))} leftSection={<IconEditCircle style={{width: rem(16), height: rem(16)}} />}>
                                                     Edit your review
                                                 </Button>
                                             ) : (
-                                                <Button loading={isLoading} size="sm" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => navigate(getPath(Paths.addUserReview))} leftSection={<IconCirclePlus style={{ width: rem(16), height: rem(16) }} />}>
+                                                <Button data-testid="add-review" loading={isLoading} size="sm" variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}} onClick={() => navigate(getPath(Paths.addUserReview))} leftSection={<IconCirclePlus style={{width: rem(16), height: rem(16)}} />}>
                                                     Add review
                                                 </Button>
                                             )
                                         ) : (
                                             <>
-                                                <Button loading={isLoading} size="sm" variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} onClick={() => navigate(getPath(Paths.signIn))}>
+                                                <Button loading={isLoading} size="sm" variant="primary-gradient" onClick={() => navigate(getPath(Paths.signIn))}>
                                                     Sign In to add review
                                                 </Button>
                                             </>
                                         )}
                                     </Box>
                                 </Flex>
-                                <Box pb="xl">
+                                <Box pb="xl" className="comments-section">
                                     <Flex direction="column" mih="300" gap="xs">
                                         {userReview ? (
                                             <>
@@ -175,4 +175,4 @@ const Course = () => {
     );
 };
 
-export { Course };
+export {Course};

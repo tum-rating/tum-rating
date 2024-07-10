@@ -1,13 +1,11 @@
-import { notifications } from '@mantine/notifications';
-import { IconCheck } from '@tabler/icons-react';
-
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
-import { endpoints, useMutationWithAuth } from '@/api';
-import { User, useUser } from '@/auth/useUser.tsx';
-import { QUERY_KEY } from '@/constants/queryKeys.ts';
-import { queryClient } from '@/react-query/client.ts';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {endpoints, useMutationWithAuth} from '@/api';
+import {User, useUser} from '@/auth/useUser.tsx';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {queryClient} from '@/react-query/client.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
+import {useFeedbackCTAContext} from "@/context";
 
 interface UserWithToken extends User {
     token: string;
@@ -15,7 +13,7 @@ interface UserWithToken extends User {
 
 async function addUserReview(user: UserWithToken | null | undefined, userReview: UserAddReviewInput, courseId: string, type: 'POST' | 'PATCH'): Promise<any> {
     if (!user) return null;
-    const body = { ...userReview };
+    const body = {...userReview};
     const endpoint = endpoints.postSpecificReview(courseId, String(user.id));
     const response = await fetch(endpoint, {
         method: type,
@@ -27,7 +25,7 @@ async function addUserReview(user: UserWithToken | null | undefined, userReview:
     });
     const data = await response.json();
     if (!response.ok) throw new ResponseError(data.message, response, courseId);
-    return data;
+    return {success: true};
 }
 
 export interface UserAddReviewInput {
@@ -38,23 +36,29 @@ export interface UserAddReviewInput {
 }
 
 export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any {
-    const { data } = useUser();
+    const {data} = useUser();
+    const {setFeedbackCTA} = useFeedbackCTAContext();
     const token = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: async (newReview: UserAddReviewInput) => addUserReview({ ...data, token: token }, newReview, courseId, type),
+        mutationFn: async (newReview: UserAddReviewInput) => addUserReview({...data, token: token}, newReview, courseId, type),
         onSuccess: () => {
-            notifications.show({
-                title: 'Success',
-                message: type === 'POST' ? 'Review added' : 'Review updated',
-                color: 'green',
-                icon: <IconCheck />,
-            });
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.detail_course, courseId],
             });
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.courses],
             });
+            const ref = document.querySelector('.comments-section');
+            if (ref) {
+                setTimeout(function () {
+                    ref.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                    });
+                }, 300);
+            }
+            setFeedbackCTA(true)
+            return true;
         },
     });
 }

@@ -1,1 +1,1 @@
-export { SignUpModal, openSignUpModal } from './SignUpModal.tsx';
+export {SignUpModal, openSignUpModal} from './SignUpModal.tsx';

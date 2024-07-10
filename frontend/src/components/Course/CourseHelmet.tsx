@@ -1,9 +1,9 @@
-import { Helmet } from 'react-helmet';
+import {Helmet} from 'react-helmet';
 
 import tumRatingLogo from '@/assets/img/logo.png';
-import { DetailCourse } from '@/courses/types.ts';
+import {DetailCourse} from '@/courses/types.ts';
 
-const CourseHelmet = ({ course }: { course: DetailCourse }) => {
+const CourseHelmet = ({course}: {course: DetailCourse}) => {
     if (!course) return null;
     const courseReviews = course.reviews.map((review) => {
         return {
@@ -101,4 +101,4 @@ const CourseHelmet = ({ course }: { course: DetailCourse }) => {
     );
 };
 
-export { CourseHelmet };
+export {CourseHelmet};

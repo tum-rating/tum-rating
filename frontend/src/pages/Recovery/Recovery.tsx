@@ -1,14 +1,14 @@
-import { Alert, Box, Button, Center, Container, Flex, LoadingOverlay, PasswordInput, Stack, Text } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { IconFaceIdError } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {Alert, Box, Button, Center, Container, Flex, LoadingOverlay, PasswordInput, Stack, Text} from '@mantine/core';
+import {useForm} from '@mantine/form';
+import {IconFaceIdError} from '@tabler/icons-react';
+import {useEffect, useState} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import classes from './Recovery.module.css';
 
-import { useRecovery } from '@/auth/useRecovery.tsx';
-import { ModalResponsiveContainer } from '@/components/Modals/shared/ModalResponsiveContainer';
-import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+import {useRecovery} from '@/auth/useRecovery.tsx';
+import {ModalResponsiveContainer} from '@/components/Modals/shared/ModalResponsiveContainer';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 interface RecoveryFormProps {
     password: string;
@@ -20,7 +20,7 @@ export const Recovery = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get('token');
-    const { mutate: recovery, isPending: recoveryLoading, isSuccess: isRecoverySuccess, isError, error } = useRecovery();
+    const {mutate: recovery, isPending: recoveryLoading, isSuccess: isRecoverySuccess, isError, error} = useRecovery();
     const [apiError, setApiError] = useState(null);
     useEffect(() => {
         setApiError(isError);
@@ -37,7 +37,7 @@ export const Recovery = () => {
     });
 
     const handleResetPassword = (form: RecoveryFormProps) => {
-        recovery({ password: form.password, token: token });
+        recovery({password: form.password, token: token});
     };
 
     return (
@@ -66,7 +66,7 @@ export const Recovery = () => {
                             </Text>
                         </Container>
 
-                        <Button mt={10} fullWidth variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} className={classes.control} onClick={() => navigate('/#modal=sign-in')}>
+                        <Button mt={10} fullWidth variant="primary-gradient" className={classes.control} onClick={() => navigate('/#modal=sign-in')}>
                             Log In
                         </Button>
                     </Box>
@@ -94,7 +94,7 @@ export const Recovery = () => {
                                         <Text size="xs">{error instanceof ResponseError ? error?.message : 'An error occurred'}</Text>
                                     </Alert>
                                 )}
-                                <Button mt={10} fullWidth variant="gradient" gradient={{ from: 'indigo', to: 'blue', deg: 90 }} type="submit">
+                                <Button mt={10} fullWidth variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}} type="submit">
                                     Reset Password
                                 </Button>
                             </Stack>

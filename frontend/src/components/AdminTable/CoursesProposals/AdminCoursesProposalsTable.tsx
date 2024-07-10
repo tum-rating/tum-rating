@@ -1,30 +1,20 @@
-import { ActionIcon, Badge, Box, Flex, Text, Tooltip } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
+import {ActionIcon, Badge, Box, Flex, Text, Tooltip} from '@mantine/core';
+import {IconPlus} from '@tabler/icons-react';
 import clsx from 'clsx';
-import { MantineReactTable, type MRT_RowVirtualizer, type MRT_SortingState, useMantineReactTable } from 'mantine-react-table';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {MantineReactTable, useMantineReactTable} from 'mantine-react-table';
+import {useNavigate} from 'react-router-dom';
 
 import classes from '../Shared/styles/TableStyles.module.css';
 
-import { useCoursesProposals } from '@/admin/useCoursesProposals.ts';
-import { ProposalExpansion } from '@/components/AdminTable/CoursesProposals/ProposalExpansion.tsx';
-import { useProposalsColumns } from '@/components/AdminTable/CoursesProposals/useProposalsColumns.tsx';
-import { TableToolbox } from '@/components/AdminTable/Shared/TableToolbox';
+import {useCoursesProposals} from '@/admin/useCoursesProposals.ts';
+import {ProposalExpansion} from '@/components/AdminTable/CoursesProposals/ProposalExpansion.tsx';
+import {useProposalsColumns} from '@/components/AdminTable/CoursesProposals/useProposalsColumns.tsx';
+import {TableToolbox} from '@/components/AdminTable/Shared/TableToolbox';
 
 const AdminCoursesProposalsTable = () => {
-    const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
     const navigate = useNavigate();
-    const { data, isLoading, refetch } = useCoursesProposals();
-    const [sorting, setSorting] = useState<MRT_SortingState>([]);
-    const { columns } = useProposalsColumns();
-
-    useEffect(() => {
-        try {
-            //scroll to the top of the table when the sorting changes
-            rowVirtualizerInstanceRef.current?.scrollToIndex(0);
-        } catch (e) {}
-    }, [sorting]);
+    const {data, isLoading, refetch} = useCoursesProposals();
+    const {columns} = useProposalsColumns();
 
     const table = useMantineReactTable({
         columns,
@@ -33,7 +23,6 @@ const AdminCoursesProposalsTable = () => {
         enableGlobalFilterModes: true,
         enablePagination: false,
         enableRowVirtualization: true,
-        onSortingChange: setSorting,
         mantineTableProps: {
             striped: 'odd',
             withColumnBorders: true,
@@ -41,7 +30,7 @@ const AdminCoursesProposalsTable = () => {
             withRowBorders: true,
             withTableBorder: true,
         },
-        state: { isLoading, sorting },
+        state: {isLoading},
         initialState: {
             density: 'xs',
             showGlobalFilter: true,
@@ -57,8 +46,8 @@ const AdminCoursesProposalsTable = () => {
                 grow: false,
             },
         },
-        rowVirtualizerOptions: { overscan: 15 },
-        renderTopToolbar: ({ table }) => (
+        rowVirtualizerOptions: {overscan: 15},
+        renderTopToolbar: ({table}) => (
             <Flex justify="space-between" align="center" h={50} px="xs" bg="gray.1">
                 <Flex gap="xs" w={240}>
                     <Flex gap="6" align="center" mr="auto">
@@ -90,7 +79,7 @@ const AdminCoursesProposalsTable = () => {
                 margin: 0,
             },
         },
-        renderDetailPanel: ({ row }) => <ProposalExpansion key={row.original.id} courseProposalId={row.original.id} row={row} />,
+        renderDetailPanel: ({row}) => <ProposalExpansion key={row.original.id} courseProposalId={row.original.id} row={row} />,
     });
 
     return (
@@ -100,4 +89,4 @@ const AdminCoursesProposalsTable = () => {
     );
 };
 
-export { AdminCoursesProposalsTable };
+export {AdminCoursesProposalsTable};

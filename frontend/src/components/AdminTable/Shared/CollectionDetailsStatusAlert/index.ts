@@ -1,1 +1,1 @@
-export { CollectionDetailsStatusAlert } from './CollectionDetailsStatusAlert.tsx';
+export {CollectionDetailsStatusAlert} from './CollectionDetailsStatusAlert.tsx';

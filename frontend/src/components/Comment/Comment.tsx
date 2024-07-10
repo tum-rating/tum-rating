@@ -1,12 +1,12 @@
-import { ActionIcon, Badge, Flex, Menu, Rating, Text } from '@mantine/core';
-import { IconDotsVertical } from '@tabler/icons-react';
-import { useNavigate } from 'react-router-dom';
+import {ActionIcon, Badge, Flex, Menu, Rating, Text} from '@mantine/core';
+import {IconDotsVertical} from '@tabler/icons-react';
+import {useNavigate} from 'react-router-dom';
 
 import classes from './Comment.module.css';
 
-import { UserAvatar } from '@/components/Avatar';
-import { NumberRatingBadge } from '@/components/Course';
-import { getPath, Paths } from '@/routes/paths.ts';
+import {UserAvatar} from '@/components/Avatar';
+import {NumberRatingBadge} from '@/components/Course';
+import {getPath, Paths} from '@/routes/paths.ts';
 
 interface CommentProps {
     comment: string;
@@ -22,7 +22,7 @@ interface CommentProps {
 }
 
 export const Comment = (props: CommentProps) => {
-    const { userId, howInterestingRating, howEasyRating, comment, createdAt, userReview, userName } = props;
+    const {userId, howInterestingRating, howEasyRating, comment, createdAt, userReview, userName} = props;
 
     const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ export const Comment = (props: CommentProps) => {
     const userCommentFlag = (userReview || {}).userId === userId;
 
     return (
-        <Flex p="md" data-comment={userCommentFlag ? 'user-comment' : 'comment'} direction="column" className={classes.comment} data-testid="comment">
+        <Flex p="md" data-testid={userCommentFlag ? 'user-comment' : 'comment'} data-comment={userCommentFlag ? 'user-comment' : 'comment'} direction="column" className={classes.comment}>
             <Flex direction="column">
                 <Flex justify="space-between" w="100%">
                     <Flex gap="xs">
@@ -51,33 +51,20 @@ export const Comment = (props: CommentProps) => {
                             </Text>
                         </Flex>
                     </Flex>
-                    <Menu position="bottom-end">
-                        <Menu.Target data-testid="menu">
-                            <ActionIcon variant="outline" color={userCommentFlag ? 'green' : 'auto'}>
-                                <IconDotsVertical width={16} height={16} />
-                            </ActionIcon>
-                        </Menu.Target>
-                        <Menu.Dropdown>
-                            {userCommentFlag ? (
-                                <>
-                                    <Menu.Item data-testid="menu-edit-review" onClick={() => navigate(getPath(Paths.editUserReview))}>
-                                        <Text size="sm">Edit your review</Text>
-                                    </Menu.Item>
-                                    <Menu.Item data-testid="menu-delete-review">
-                                        <Text size="sm" c="red">
-                                            Delete your review
-                                        </Text>
-                                    </Menu.Item>
-                                </>
-                            ) : (
-                                <Menu.Item data-testid="menu-report-review">
-                                    <Text c="red" size="sm">
-                                        Report
-                                    </Text>
+                    {userCommentFlag ? (
+                        <Menu position="bottom-end">
+                            <Menu.Target data-testid="menu">
+                                <ActionIcon variant="outline" color={userCommentFlag ? 'green' : 'auto'}>
+                                    <IconDotsVertical width={16} height={16} />
+                                </ActionIcon>
+                            </Menu.Target>
+                            <Menu.Dropdown>
+                                <Menu.Item data-testid="menu-edit-review" onClick={() => navigate(getPath(Paths.editUserReview))}>
+                                    <Text size="sm">Edit your review</Text>
                                 </Menu.Item>
-                            )}
-                        </Menu.Dropdown>
-                    </Menu>
+                            </Menu.Dropdown>
+                        </Menu>
+                    ) : null}
                 </Flex>
                 <Flex direction="column">
                     <Flex mt="xs" align="center" gap={3}>
@@ -96,7 +83,7 @@ export const Comment = (props: CommentProps) => {
                     </Flex>
                 </Flex>
             </Flex>
-            <Text style={{ wordBreak: 'break-word' }} mt="xs" size="sm" c="">
+            <Text style={{wordBreak: 'break-word'}} mt="xs" size="sm" c="">
                 {comment}
             </Text>
         </Flex>
