@@ -5,6 +5,7 @@ import {User, useUser} from '@/auth/useUser.tsx';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {queryClient} from '@/react-query/client.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
+import {useFeedbackCTAContext} from "@/context";
 
 interface UserWithToken extends User {
     token: string;
@@ -36,6 +37,7 @@ export interface UserAddReviewInput {
 
 export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any {
     const {data} = useUser();
+    const {setFeedbackCTA} = useFeedbackCTAContext();
     const token = userLocalStorage.getUser();
     return useMutationWithAuth({
         mutationFn: async (newReview: UserAddReviewInput) => addUserReview({...data, token: token}, newReview, courseId, type),
@@ -46,6 +48,17 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any 
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.courses],
             });
+            const ref = document.querySelector('.comments-section');
+            if (ref) {
+                setTimeout(function () {
+                    ref.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                    });
+                }, 300);
+            }
+            setFeedbackCTA(true)
+            return true;
         },
     });
 }
