@@ -47,7 +47,8 @@ const AddUserReviewModal = ({
     const {data: courseData, isLoading: courseDetailsLoading, isError: courseDetailsError} = useDetailCourse(courseId || '');
 
     const navigate = useNavigate();
-    const {mutate: addUserReview, isSuccess, isLoading} = useAddUserReview(courseId, 'POST');
+
+    const {mutate: addUserReview, isPending, isSuccess} = useAddUserReview(courseId, 'POST');
 
     const offeredInSemesters = useMemo(
         () =>
@@ -58,7 +59,7 @@ const AddUserReviewModal = ({
     );
 
     useEffect(() => {
-        if (isSuccess) {
+        if (isSuccess && !isPending) {
             setFeedbackCTA(true);
             const ref = document.querySelector('.comments-section');
             if (ref) {
@@ -70,7 +71,7 @@ const AddUserReviewModal = ({
                 }, 300);
             }
         }
-    }, [isSuccess]);
+    }, [isSuccess, isPending]);
 
     const form = useForm({
         initialValues: {
@@ -143,7 +144,7 @@ const AddUserReviewModal = ({
                     context.closeModal(id);
                 }}
             />
-            <LoadingOverlay visible={isLoading} overlayProps={{radius: 'sm', blur: 2}} />
+            <LoadingOverlay visible={isPending} overlayProps={{radius: 'sm', blur: 2}} />
             <form
                 data-testid="add-user-review-form"
                 style={{height: '100%', overflowY: 'auto'}}
