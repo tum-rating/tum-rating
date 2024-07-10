@@ -1,6 +1,7 @@
 import {Progress, Text, UnstyledButton, Box} from '@mantine/core';
+import {useInterval} from '@mantine/hooks';
 import clsx from 'clsx';
-import {useEffect, useState, useRef} from 'react';
+import {useEffect, useState} from 'react';
 import {isMobile} from 'react-device-detect';
 
 import classes from './FloatingMenuTelegramButton.module.css';
@@ -13,43 +14,55 @@ const telegramLink = 'https://t.me/+ZoFa4DCe5-1jMDM0';
 const FloatingMenuTelegramButton = () => {
     const [progress, setProgress] = useState(0);
     const {feedbackCTA, setFeedbackCTA} = useFeedbackCTAContext();
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-    const [status, setStatus] = useState<'active' | 'inactive' | null>(null);
-
-    useEffect(() => {
-        if (feedbackCTA) {
-            intervalRef.current = setInterval(() => {
-                setProgress((current) => {
-                    if (current < 100) {
-                        return current + 1;
-                    } else {
-                        clearInterval(intervalRef.current);
-                        return 0;
-                    }
-                });
-            }, 100);
-        }
-        return () => {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
+    const interval = useInterval(() => {
+        setProgress((current) => {
+            if (current < 100) {
+                return current + 1;
+            } else {
+                return 0;
             }
-        };
-    }, [feedbackCTA]);
+        });
+    }, 100);
 
     useEffect(() => {
         if (progress === 100) {
+            setProgress(0);
             setFeedbackCTA(false);
         }
     }, [progress]);
+
+    useEffect(() => {
+        if (feedbackCTA) {
+            interval.start();
+        } else {
+            interval.stop();
+        }
+    }, [feedbackCTA]);
+
+    const [status, setStatus] = useState<'active' | 'inactive' | null>(null);
 
     return (
         <UnstyledButton
             component="a"
             href={telegramLink}
             target="_blank"
-            onMouseEnter={() => setStatus('active')}
-            onMouseLeave={() => setStatus('inactive')}
+            onClick={()=>{
+                setProgress(0);
+                setFeedbackCTA(false);
+            }}
+            onMouseEnter={() => {
+                if (isMobile) return;
+                if (!feedbackCTA) {
+                    setStatus('active');
+                }
+            }}
+            onMouseLeave={() => {
+                if (isMobile) return;
+                if (!feedbackCTA) {
+                    setStatus('inactive');
+                }
+            }}
             className={clsx(classes.button, {
                 glow: feedbackCTA,
                 [status]: !isMobile && !feedbackCTA ? status : '',
