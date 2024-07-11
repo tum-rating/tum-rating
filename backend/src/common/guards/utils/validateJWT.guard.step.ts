@@ -2,6 +2,7 @@ import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { JWTService } from 'src/utils/jwt/jwt.service';
 import { USER_ID, USER_ROLE } from 'src/utils/headers/context.headers';
 import { UserRole } from 'src/utils/jwt/jwt.interfaces';
+import { ErrorJWTExpirationClaimFalied } from 'src/utils/jwt/jwt.errors';
 
 export const validateJWTGuardStep = async (context: ExecutionContext, jwtService: JWTService) => {
     const request = context.switchToHttp().getRequest();
@@ -16,9 +17,15 @@ export const validateJWTGuardStep = async (context: ExecutionContext, jwtService
 
     const token = authHeaderSplit[1];
 
-    const { isValid, payload } = await jwtService.verifyJWTAccess(token);
+    const { isValid, payload, error } = await jwtService.verifyJWTAccess(token);
 
-    if (!isValid) throw new UnauthorizedException();
+    if (!isValid) {
+        if (error instanceof ErrorJWTExpirationClaimFalied) {
+            throw new UnauthorizedException('token expired');
+        }
+
+        throw new UnauthorizedException();
+    }
 
     request.headers[USER_ID] = payload.sub;
     request.headers[USER_ROLE] = payload.userRole ?? UserRole.user;

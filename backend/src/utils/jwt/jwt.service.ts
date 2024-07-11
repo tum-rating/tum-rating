@@ -4,6 +4,12 @@ import { KeyObject, createSecretKey } from 'crypto';
 import { SignJWT, jwtVerify } from 'jose';
 
 import { JWTSignOptions, TokenType, UserRole } from './jwt.interfaces';
+import { 
+    ErrorJWTInvalidTokenType, 
+    ErrorJWTUndefinedRole,
+    ErrorJWTExpirationClaimFalied,
+    JWTErrorCodes 
+} from './jwt.errors';
 
 @Injectable()
 export class JWTService {
@@ -44,7 +50,7 @@ export class JWTService {
 
     private async _signJWT(userId: string, tokenType: TokenType, options?: Partial<JWTSignOptions>) {
         const defaultJWTSignOptions: JWTSignOptions = {
-            expiration: this._jwtExpiration,
+            expiration: '1d',
             userRole: UserRole.user,
             ...options,
         };
@@ -65,13 +71,15 @@ export class JWTService {
         try {
             const { payload, protectedHeader } = await jwtVerify(token, this._jwtSecret);
 
-            if (payload.tokenType !== tokenType) return { isValid: false, payload: null };
+            if (payload.tokenType !== tokenType) return { isValid: false, payload: null, error: new ErrorJWTInvalidTokenType() };
 
-            if (payload.userRole === undefined) return { isValid: false, payload: null };
+            if (payload.userRole === undefined) return { isValid: false, payload: null, error: new ErrorJWTUndefinedRole() };
 
             return { isValid: true, payload };
         } catch (error) {
-            return { isValid: false, payload: null };
+            if (error && error.code === JWTErrorCodes.ERR_JWT_EXPIRED) return { isValid: false, payload: null, error: new ErrorJWTExpirationClaimFalied() };
+
+            return { isValid: false, payload: null, error: error };
         }
     }
 }
