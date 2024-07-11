@@ -14,18 +14,21 @@ import {
 @Injectable()
 export class JWTService {
     private readonly _jwtSecret: KeyObject;
-    private readonly _jwtExpiration: string;
+    private readonly _jwtExpirationToken: string;
+    private readonly _jwtExpirationAccessToken: string;
 
     constructor(private readonly _configService: ConfigService) {
         const jwtSecretString = this._configService.getOrThrow('jwt.secret');
-        const jwtExpiration = this._configService.getOrThrow('jwt.expiration');
+        const jwtExpirationToken = this._configService.getOrThrow('jwt.expiration_token');
+        const jwtExpirationAccessToken = this._configService.getOrThrow('jwt.expiration_access');
 
         this._jwtSecret = createSecretKey(jwtSecretString);
-        this._jwtExpiration = jwtExpiration || '1d';
+        this._jwtExpirationToken = jwtExpirationToken;
+        this._jwtExpirationAccessToken = jwtExpirationAccessToken;
     }
 
     public async signJWTAccess(userId: string, userRole = UserRole.user) {
-        return this._signJWT(userId, TokenType.access, { userRole });
+        return this._signJWT(userId, TokenType.access, { userRole, expiration: this._jwtExpirationAccessToken });
     }
 
     public async verifyJWTAccess(token: string) {
@@ -50,7 +53,7 @@ export class JWTService {
 
     private async _signJWT(userId: string, tokenType: TokenType, options?: Partial<JWTSignOptions>) {
         const defaultJWTSignOptions: JWTSignOptions = {
-            expiration: '1d',
+            expiration: this._jwtExpirationToken,
             userRole: UserRole.user,
             ...options,
         };
