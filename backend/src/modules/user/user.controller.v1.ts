@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, Headers, HttpCode, Patch, Post, NotFoundException, NotImplementedException, UnauthorizedException, UseGuards, Param } from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags, ApiParam, ApiHeader } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
@@ -14,6 +14,7 @@ import { UserService } from './user.service';
 import { GetUserPublicResponseDto } from './dto/GetUserPublicResponse.dto';
 import { GetUserAdminResponseDto } from './dto/GetUserAdminResponse.dto';
 import { GetUsersAdminResponseDto } from './dto/GetUsersAdminResponse.dto';
+import { de } from '@faker-js/faker';
 
 @ApiTags('users')
 @Controller('api/v1/users')
@@ -65,6 +66,43 @@ export class UserControllerV1 {
     @Patch('/me')
     public async patchMe() {
         throw new NotImplementedException();
+    }
+
+    @ApiBearerAuth('admin')
+    @ApiParam({
+        name: 'user-id',
+        required: false,
+        description: '(Leave empty. It will be extracted from JWT token)',
+    })
+    @ApiResponse({
+        status: 200,
+        type: GetUserPublicResponseDto,
+    })
+    @UseGuards(AuthGuard)
+    @Delete('/me')
+    public async deleteUserMe(
+        @Headers(USER_ID) userId: string
+    ): Promise<GetUserPublicResponseDto> {
+        this._logger.info('Delete user request me received for user %s', userId);
+
+        try {
+            const deletedUser = await this._userService.deleteUser(userId);
+
+            this._logger.info('Delete user request me completed for user %s', userId);
+            return new GetUserPublicResponseDto(
+                deletedUser.id,
+                deletedUser.email,
+                deletedUser.username,
+                deletedUser.role === UserRole.admin ?? undefined
+            );
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                throw new NotFoundException(error.message);
+            }
+
+            this._logger.error('Delete user request me failed for user %s', userId);
+            throw error;
+        }
     }
 
     @ApiBearerAuth('admin')
