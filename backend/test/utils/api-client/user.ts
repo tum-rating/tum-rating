@@ -129,3 +129,11 @@ export const unbanUser = async (adminToken: string, userId: string) => {
         },
     });
 };
+
+export const deleteUserByAdmin = async (adminToken: string, userId: string) => {
+    return await axios.delete(userUrl + '/' + userId, {
+        headers: {
+            Authorization: 'Bearer ' + adminToken,
+        }
+    });
+};
