@@ -226,6 +226,7 @@ describe('Patch Review', () => {
             .set('Authorization', 'Bearer ' + signInResponse.token)
             .send({
                 isHidden: false,
+                comment: faker.word.words(),
             })
             .expect(400);
 
