@@ -1,7 +1,9 @@
 import fs from "fs";
 import _ from "lodash";
 import prompt from "prompts";
-import { fetchAllPages, summariesFn } from "./utils.js";
+import { styleText } from "node:util";
+import { fetchAllPages, fetchSemestersList, summariesFn } from "./utils.js";
+import ora from "ora";
 
 function strToUnicode(str) {
   return Array.from(str)
@@ -76,46 +78,111 @@ const saveFile = (filename, data) => {
   console.info(`Data saved to ${filename}`);
 };
 
-fetchAllPages().then(async (newCourses) => {
-  summariesFn(newCourses).then(async (newSummaries) => {
-    const oldCourses = JSON.parse(fs.readFileSync("output.json", "utf8"));
-    // Temporarily save the new data
-    saveFile("temp.json", newSummaries);
+// const fetchCourses = fetchAllPages().then(async (newCourses) => {
+//   summariesFn(newCourses).then(async (newSummaries) => {
+//     const oldCourses = JSON.parse(fs.readFileSync("output.json", "utf8"));
+//     // Temporarily save the new data
+//     saveFile("temp.json", newSummaries);
+//
+//     // Compare the new data with the old data
+//     const { added, removed, modified } = compareDatasets(
+//       oldCourses,
+//       newSummaries,
+//     );
+//     const differences = { added, removed, modified };
+//
+//     // Save the differences into a new file
+//     saveFile("differences.json", differences);
+// })
+// }
+// );
 
-    // Compare the new data with the old data
-    const { added, removed, modified } = compareDatasets(
-      oldCourses,
-      newSummaries,
-    );
-    const differences = { added, removed, modified };
+(async () => {
+  const spinner = ora("Fetching semesters...").start();
 
-    // Save the differences into a new file
-    saveFile("differences.json", differences);
+  try {
+    await fetchSemestersList();
+    spinner.succeed("Semesters list fetched successfully.");
+  } catch (error) {
+    spinner.fail("Failed to fetch semesters");
+    console.error(error);
+    return;
+  }
+  console.log(
+    styleText(["underline", "bold", "magenta"], "TUM-RATING scraper"),
+  );
+  if (fs.existsSync("semesters.json")) {
+    const differencesExist = fs.existsSync("differences.json");
+
+    let choices = [
+      // {
+      //   title: "Merge output.json with changes from differences.json",
+      //   value: "merge",
+      // },
+      // { title: "Overwrite output.json with temp.json", value: "overwrite" },
+      { title: "Fetch courses (and merge if needed)", value: "fetch-and-merge" },
+      {
+        title: "Fetch semesters list and save to semesters.json",
+        value: "fetchSemestersList",
+      },
+      { title: "nara", value: "" },
+    ];
 
     const response = await prompt({
       type: "select",
       name: "value",
-      message: "Check differences.json and decide what to do:",
-      choices: [
-        {
-          title: "Merge output.json with changes from differences.json",
-          value: "merge",
-        },
-        { title: "Overwrite output.json with temp.json", value: "overwrite" },
-        { title: "nara", value: "" },
-      ],
+      message: "What you want to do",
+      choices: choices,
     });
 
     switch (response.value) {
+      case "fetch-and-merge":
+        const semestersData = JSON.parse(
+          fs.readFileSync("semesters.json", "utf8"),
+        );
+        const semesterChoices = Object.entries(semestersData)
+          .map(([id, name]) => ({
+            title: name,
+            value: id,
+          }))
+          .reverse();
+        const response = await prompt({
+          type: "multiselect",
+          name: "value",
+          hint: "If you fetch more than one semester, the data will have to be merged. Conflicts will be resolved interactively.",
+          message: "Pick semesters",
+          choices: semesterChoices,
+          min: 1,
+        });
+        if (response.value.length) {
+          for (let semesterId of response.value) {
+            try {
+              const courses = await fetchAllPages({
+                termId: semesterId,
+                totalPages: 5,
+                pageSize: 20,
+              });
+              const summaries = await summariesFn(courses);
+              saveFile(
+                `./fetched/${semesterId}-${new Date().toLocaleDateString()}.json`,
+                summaries,
+              );
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        }
+
+        break;
       case "merge":
-        const mergedData = mergeDatasets(oldCourses, newSummaries);
-        saveFile("output.json", mergedData);
-        deleteFile("temp.json");
+        // Implementation for merging
         break;
       case "overwrite":
-        saveFile("output.json", newSummaries);
-        deleteFile("temp.json");
+        // Implementation for overwriting
         break;
+      // Handle other cases as needed
     }
-  });
-});
+  } else {
+    console.log("Semesters data is not available. Please try again.");
+  }
+})();
