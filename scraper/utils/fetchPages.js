@@ -3,10 +3,10 @@ import fs from "fs";
 import cliProgress from "cli-progress";
 
 const baseUrl =
-  "https://campus.tum.de/tumonline/ee/rest/slc.tm.cp/student/courses";
+    "https://campus.tum.de/tumonline/ee/rest/slc.tm.cp/student/courses";
 
 const fetchPage = async (page, options) => {
-    const { pageSize, termId } = options;
+    const {pageSize, termId} = options;
     const queryParams = `$filter=courseNormKey-eq=LVEAB;orgId-eq=1;termId-eq=${termId}&$orderBy=title=ascnf`;
     const skip = (page - 1) * pageSize;
     const xmlUrl = `${baseUrl}?${queryParams}&$skip=${skip}&$top=${pageSize}`;
@@ -24,21 +24,18 @@ const fetchPageWithRetry = async (page, options, maxRetries = 10, retryDelay = 5
     let attempts = 0;
     while (attempts < maxRetries) {
         try {
-            return await fetchPage(page, options); // Return the successful response
+            return await fetchPage(page, options);
         } catch (error) {
             attempts++;
             console.error(`Attempt ${attempts} failed: ${error.message}`);
-            if (attempts === maxRetries) throw error; // All retries failed, throw the last error
-            await new Promise(resolve => setTimeout(resolve, retryDelay)); // Wait before retrying
+            if (attempts === maxRetries) throw error;
+            await new Promise(resolve => setTimeout(resolve, retryDelay));
         }
     }
 };
 
-const getNumberOfPages = async ({ pageSize, termId }) => {
+const getNumberOfPages = async ({pageSize, termId}) => {
     const url = `https://campus.tum.de/tumonline/ee/rest/slc.tm.cp/student/courses?$filter=courseNormKey-eq=LVEAB;orgId-eq=1;termId-eq=${termId}&$orderBy=title=ascnf&$skip=0&$top=${pageSize}`;
-    const totalCount = axios.get(url).then((response) => {
-        return response.data.totalCount;
-    });
     return axios.get(url).then((response) => {
         const totalCount = response.data.totalCount;
         return Math.ceil(totalCount / pageSize);
@@ -46,7 +43,7 @@ const getNumberOfPages = async ({ pageSize, termId }) => {
 };
 
 const fetchAllPages = async (options) => {
-    let { totalPages = 350, termId, pageSize } = options;
+    let {totalPages = 350, termId, pageSize} = options;
     const allCourses = [];
     const semesters = JSON.parse(fs.readFileSync("semesters.json", "utf8"));
     const semesterName = semesters[termId];
@@ -62,10 +59,10 @@ const fetchAllPages = async (options) => {
         totalPages,
     }).then(async (numberOfPages) => {
         const allCourses = [];
-        progressBar.start(numberOfPages, 0, { semester: semesterName })
+        progressBar.start(numberOfPages, 0, {semester: semesterName})
 
         for (let page = 1; page <= numberOfPages; page++) {
-            progressBar.update(page, { semester: semesterName });
+            progressBar.update(page, {semester: semesterName});
             await fetchPageWithRetry(page, options).then((data) => {
                 allCourses.push(...data);
             });

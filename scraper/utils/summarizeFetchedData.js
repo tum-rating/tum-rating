@@ -1,16 +1,14 @@
 const summarizeFetchedData = async (courses) => {
     return courses.map((course) => {
         const courseId = course.content.cpCourseDto.id;
-        const courseTitleTranslations =
-            course.content.cpCourseDto.courseTitle.translations.translation.reduce(
-                (acc, translation) => {
-                    acc[translation.lang] = translation.value;
-                    return acc;
-                },
-                {},
-            );
 
-        const semester = course.content.cpCourseDto.semesterDto.shortName.value;
+
+        const germanTitle = course.content.cpCourseDto.courseTitle.translations.translation.find(el => el.lang === 'de').value;
+        const englishTitle = course.content.cpCourseDto.courseTitle.translations.translation.find(el => el.lang === 'en').value;
+        const courseTitle = englishTitle || germanTitle;
+
+
+        const semester = [course.content.cpCourseDto.semesterDto.shortName.value];
         const semesterId = course.content.cpCourseDto.id;
         const mainLecturers = [];
         const otherLecturers = [];
@@ -36,13 +34,13 @@ const summarizeFetchedData = async (courses) => {
         });
 
         return {
-          courseId,
-          courseNumber: course.content.cpCourseDto.courseNumber,
-          courseTitleTranslations,
-          mainLecturers,
-          otherLecturers,
-          semester,
-          semesterId,
+            courseId,
+            courseNumber: course.content.cpCourseDto.courseNumber,
+            courseTitle,
+            mainLecturers,
+            otherLecturers,
+            semester,
+            semesterId,
         };
     });
 };
