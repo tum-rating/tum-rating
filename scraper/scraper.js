@@ -92,9 +92,12 @@ const main = async () => {
     console.log(styleText(['underline', 'bold', 'magenta'], 'TUM-RATING scraper'));
 
     if (fs.existsSync('semesters.json')) {
+        const fetchedDirExists = fs.existsSync('./fetched');
+        const fetchedDirLength = fetchedDirExists ? fs.readdirSync('./fetched').length : 0;
+        const fetchedDirNotEmpty = fetchedDirExists && fetchedDirLength > 0;
         const choices = [
             {title: 'Fetch courses (and merge if needed)', value: 'fetch-and-merge'},
-            {title: 'Merge existing files', value: 'merge-existing'},
+            {title: 'Merge existing files', value: 'merge-existing', disabled: !fetchedDirNotEmpty, hint: !fetchedDirNotEmpty ? `${fetchedDirLength} files in ./fetched` : 'No fetched data available'},
             {title: 'Fetch semesters list and save to semesters.json', value: 'fetchSemestersList'},
         ];
 
