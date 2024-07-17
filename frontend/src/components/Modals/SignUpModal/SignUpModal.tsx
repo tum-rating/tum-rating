@@ -58,7 +58,6 @@ const SignUpModal = ({context, id}: ContextModalProps) => {
             email: '',
             username: '',
             password: '',
-            terms: true,
         },
         validate: {
             email: (value) => {
