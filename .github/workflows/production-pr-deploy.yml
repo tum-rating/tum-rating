@@ -1,0 +1,41 @@
+name: Deploy to DigitalOcean Production
+permissions:
+  contents: write
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get package version
+        id: package-version
+        run: |
+          echo "Reading package.json from ./package.json"
+          PACKAGE_VERSION=$(cat ./package.json | jq '.version' | tr -d '"')
+          echo "Current version: ${PACKAGE_VERSION}"
+          echo "current-version=${PACKAGE_VERSION}" >> $GITHUB_OUTPUT
+
+      - name: DigitalOcean App Platform deployment
+        uses: digitalocean/app_action@v1.1.6 # replace this with current version from https://github.com/digitalocean/app_action/releases
+        env:
+            DO_REPOSITORY: ${{ vars.DO_REPOSITORY }}
+            DO_IMAGE_NAME: ${{ vars.DO_IMAGE_NAME }}
+            IMAGE_TAG: ${{ steps.package-version.outputs.current-version }}
+        with:
+          app_name: tum-rating-production
+          token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
+          images: '[{
+                  "name": "tum-rating",
+                  "repository": "${{env.DO_REPOSITORY}}/${{env.DO_IMAGE_NAME}}",
+                  "tag": "${{env.IMAGE_TAG}}"
+                }
+              ]'
