@@ -1,0 +1,33 @@
+name: Master Open PR from Staging
+permissions:
+  contents: write
+  pull-requests: write
+on:
+  workflow_dispatch:
+
+jobs:
+  master-open-pr-from-staging:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify if run from staging
+        run: |
+          if [ "${{ github.ref }}" != "refs/heads/staging" ]; then
+            echo "Workflow is NOT triggered from staging"
+            exit 1
+          fi
+          echo "Workflow is triggered from staging"
+
+      - name: Create branch from staging
+        run: |
+          git checkout -b release/production/v${{ steps.version-bump.outputs.current-version }} staging
+          git push --set-upstream origin release/production/v${{ steps.version-bump.outputs.current-version }}
+
+      - name: Create pull request
+        run: gh pr create -B master -H release/production/v${{ steps.version-bump.outputs.current-version }} --title 'Release production v${{ steps.version-bump.outputs.current-version }}' --body 'Staging production'
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
