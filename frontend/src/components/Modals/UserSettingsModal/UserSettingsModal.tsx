@@ -92,9 +92,10 @@ const UserSettingsModal = ({context, id}: ContextModalProps) => {
                             deleteUser();
                         })}>
                             <TextInput value={form.values.email} my="xs"
+                                       data-testid="user-settings-delete-email-input"
                                        onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
                                        error={form.errors.email}/>
-                            <Button loading={deleteUserLoading} color="red" fullWidth type="submit">
+                            <Button data-testid="user-settings-delete-final-button" loading={deleteUserLoading} color="red" fullWidth type="submit">
                                 Delete my account
                             </Button>
                         </form>
@@ -118,7 +119,7 @@ const UserSettingsModal = ({context, id}: ContextModalProps) => {
                                 </Text>
                             </Timeline.Item>
                         </Timeline>
-                        <Button variant="outline" mt="md" fullWidth color="gray"
+                        <Button data-testid="user-settings-delete-confirmation-button" variant="outline" mt="md" fullWidth color="gray"
                                 onClick={() => setLastStepOfDeletation(true)}>
                             I understand, delete my account
                         </Button>
@@ -141,13 +142,13 @@ const UserSettingsModal = ({context, id}: ContextModalProps) => {
                         <Flex>
                             <UserAvatar size="xl"/>
                             <Flex direction="column" gap="1" ml="sm">
-                                <Text fz="lg" fw="bold">{user?.username}</Text>
-                                <Text fz="md" c="dimmed">{user?.email}</Text>
+                                <Text data-testid="user-settings-username" fz="lg" fw="bold">{user?.username}</Text>
+                                <Text data-testid="user-settings-email" fz="md" c="dimmed">{user?.email}</Text>
                             </Flex>
                         </Flex>
 
                         <Divider my="sm"/>
-                        <Button color="red" onClick={toggle}>Delete account</Button>
+                        <Button data-testid="user-settings-delete-button" color="red" onClick={toggle}>Delete account</Button>
                     </Flex>
 
                 </Container>
