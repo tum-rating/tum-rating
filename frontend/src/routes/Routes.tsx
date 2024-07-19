@@ -9,8 +9,19 @@ import {ModalsHashController, RecoveryModal, SignInModal, SignUpModal} from '@/c
 import {AddCourseModal} from '@/components/Modals/AddCourseModal/AddCourseModal.tsx';
 import {AddUserReviewModal} from '@/components/Modals/AddUserReview/AddUserReview.tsx';
 import {EditUserReviewModal} from '@/components/Modals/EditUserReview';
+import {UserSettingsModal} from "@/components/Modals/UserSettingsModal";
 import {AdminLayout, MainLayout} from '@/layouts';
-import {About, Activation, Feedback, Course, ErrorBoundary, Home, PrivacyPolicy, TermsOfService, Recovery} from '@/pages';
+import {
+    About,
+    Activation,
+    Course,
+    ErrorBoundary,
+    Feedback,
+    Home,
+    PrivacyPolicy,
+    Recovery,
+    TermsOfService
+} from '@/pages';
 
 const Admin = lazy(async () => {
     let {Admin} = await import('@/pages');
@@ -51,8 +62,8 @@ const AdminCoursesDetails = lazy(async () => {
 });
 
 const SuspenseLayout = () => (
-    <Suspense fallback={<RouteLoader />}>
-        <Outlet />
+    <Suspense fallback={<RouteLoader/>}>
+        <Outlet/>
     </Suspense>
 );
 
@@ -63,55 +74,56 @@ const modals = {
     addUserReview: AddUserReviewModal,
     editUserReview: EditUserReviewModal,
     recovery: RecoveryModal,
+    userSettings: UserSettingsModal
 };
 
 const routes = [
     {
-        element: <SuspenseLayout />,
-        errorElement: <ErrorBoundary />,
+        element: <SuspenseLayout/>,
+        errorElement: <ErrorBoundary/>,
         children: [
             {
                 path: '/',
                 element: (
                     <MainLayout>
                         <ModalsProvider modals={modals}>
-                            <ModalsHashController />
-                            <Outlet />
+                            <ModalsHashController/>
+                            <Outlet/>
                         </ModalsProvider>
                     </MainLayout>
                 ),
                 children: [
                     {
                         path: '/',
-                        element: <Home />,
+                        element: <Home/>,
                     },
                     {
                         path: getPath(Paths.activate),
-                        element: <Activation />,
+                        element: <Activation/>,
                     },
                     {
                         path: getPath(Paths.recovery),
-                        element: <Recovery />,
+                        element: <Recovery/>,
                     },
                     {
                         path: getPath(Paths.courseDetail),
-                        element: <Course />,
+                        element: <Course/>,
                     },
                     {
                         path: getPath(Paths.about),
-                        element: <About />,
+                        element: <About/>,
                     },
                     {
                         path: getPath(Paths.feedback),
-                        element: <Feedback />,
+                        element: <Feedback/>,
                     },
                     {
                         path: getPath(Paths.privacyPolicy),
-                        element: <PrivacyPolicy />,
+                        element: <PrivacyPolicy/>,
                     },
                     {
                         path: getPath(Paths.termsOfService),
-                        element: <TermsOfService />,
+                        element: <TermsOfService/>,
                     },
                 ],
             },
@@ -120,39 +132,39 @@ const routes = [
                 element: (
                     <AdminLayout>
                         <ModalsProvider modals={modals}>
-                            <ModalsHashController />
-                            <Outlet />
+                            <ModalsHashController/>
+                            <Outlet/>
                         </ModalsProvider>
                     </AdminLayout>
                 ),
                 children: [
                     {
                         path: getPath(Paths.admin),
-                        element: <Admin />,
+                        element: <Admin/>,
                     },
                     {
                         path: getPath(Paths.adminAllCourses),
-                        element: <AdminCoursesTable />,
+                        element: <AdminCoursesTable/>,
                     },
                     {
                         path: getPath(Paths.adminCoursesProposals),
-                        element: <AdminCoursesProposalsTable />,
+                        element: <AdminCoursesProposalsTable/>,
                     },
                     {
                         path: getPath(Paths.adminUsers),
-                        element: <AdminUsersTable />,
+                        element: <AdminUsersTable/>,
                     },
                     {
                         path: getPath(Paths.adminUserDetails),
-                        element: <AdminUserDetails />,
+                        element: <AdminUserDetails/>,
                     },
                     {
                         path: getPath(Paths.adminCoursesProposalsDetails),
-                        element: <AdminCoursesProposalsDetails />,
+                        element: <AdminCoursesProposalsDetails/>,
                     },
                     {
                         path: getPath(Paths.adminCoursesDetails),
-                        element: <AdminCoursesDetails />,
+                        element: <AdminCoursesDetails/>,
                     },
                 ],
             },
@@ -163,7 +175,7 @@ const routes = [
 const RoutesApp = () => {
     return (
         <Suspense>
-            <RouterProvider router={createBrowserRouter(routes)} />
+            <RouterProvider router={createBrowserRouter(routes)}/>
         </Suspense>
     );
 };

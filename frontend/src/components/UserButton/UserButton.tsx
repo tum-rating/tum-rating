@@ -1,10 +1,11 @@
 import {ActionIcon, Box, Group, Menu, rem, Stack, Text, ThemeIcon} from '@mantine/core';
-import {IconLego, IconLogout} from '@tabler/icons-react';
+import {IconLego, IconLogout, IconSettings} from '@tabler/icons-react';
 import {useNavigate} from 'react-router-dom';
 
 import {useSignOut} from '@/auth/useSignOut.tsx';
 import {useUser} from '@/auth/useUser.tsx';
 import {INFO_PAGES} from '@/constants';
+import {getPath, Paths} from "@/routes/paths.ts";
 
 interface UserButtonProps {
     withoutDropdown?: boolean;
@@ -14,13 +15,14 @@ export function UserButton({withoutDropdown = false}: UserButtonProps) {
     const signOut = useSignOut();
     const {data: user, isLoading} = useUser();
     const navigate = useNavigate();
-    if (isLoading || !user) return <div style={{visibility: 'hidden', position: 'fixed'}} data-testid="no_user_provided" />;
+    if (isLoading || !user) return <div style={{visibility: 'hidden', position: 'fixed'}}
+                                        data-testid="no_user_provided"/>;
     if (withoutDropdown) {
         return (
             <Box data-testid="user-btn-mobile">
                 <Group wrap="nowrap" p="xs">
                     <ThemeIcon>
-                        <IconLego size="1.2rem" />
+                        <IconLego size="1.2rem"/>
                     </ThemeIcon>
                     <Stack gap={0}>
                         <Text data-testid="user-btn-username-mobile" truncate="end" size="sm" fw={500}>
@@ -38,14 +40,14 @@ export function UserButton({withoutDropdown = false}: UserButtonProps) {
             <Menu position="bottom-end" shadow="xl" width={200} data-testid="user-btn-desktop">
                 <Menu.Target>
                     <ActionIcon loading={isLoading} variant="outline">
-                        <IconLego size="1.2rem" />
+                        <IconLego size="1.2rem"/>
                     </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
                     <Box maw={300} mx="auto">
                         <Group wrap="nowrap" p="xs">
                             <ThemeIcon>
-                                <IconLego size="1.2rem" />
+                                <IconLego size="1.2rem"/>
                             </ThemeIcon>
                             <Stack gap={0}>
                                 <Text w={120} data-testid="user-btn-username-desktop" truncate="end" size="sm" fw={500}>
@@ -58,7 +60,14 @@ export function UserButton({withoutDropdown = false}: UserButtonProps) {
                         </Group>
                     </Box>
                     <Menu.Label>Application</Menu.Label>
-                    <Menu.Item onClick={() => signOut()} leftSection={<IconLogout style={{width: rem(14), height: rem(14)}} data-testid="logout" />}>
+                    <Menu.Item onClick={() => navigate(getPath(Paths.userSettings))}
+                               leftSection={<IconSettings style={{width: rem(14), height: rem(14)}}
+                                                          data-testid="settings"/>}>
+                        Settings
+                    </Menu.Item>
+                    <Menu.Item onClick={() => signOut()}
+                               leftSection={<IconLogout style={{width: rem(14), height: rem(14)}}
+                                                        data-testid="logout"/>}>
                         Logout
                     </Menu.Item>
                     <Menu.Label>Information</Menu.Label>
@@ -67,7 +76,7 @@ export function UserButton({withoutDropdown = false}: UserButtonProps) {
                         return (
                             <Menu.Item
                                 key={page.path + page.title}
-                                leftSection={<Icon style={{width: rem(14), height: rem(14)}} />}
+                                leftSection={<Icon style={{width: rem(14), height: rem(14)}}/>}
                                 onClick={() => {
                                     navigate(page.path);
                                 }}

@@ -9,6 +9,7 @@ import {openEditUserReviewModal} from '@/components/Modals/EditUserReview';
 import {openRecoveryModal} from '@/components/Modals/RecoveryModal';
 import {openSignInModal} from '@/components/Modals/SignInModal';
 import {openSignUpModal} from '@/components/Modals/SignUpModal';
+import {openUserSettingsModal} from "@/components/Modals/UserSettingsModal";
 
 interface ModalsHashControllerProps extends PropsWithChildren {
     withinPortal?: boolean;
@@ -52,6 +53,7 @@ export const ModalsHashController = ({withinPortal = true}: ModalsHashController
                 component: openEditUserReviewModal,
                 params: {...modalSharedParams, innerProps: {courseId}},
             },
+            'settings': {component: openUserSettingsModal, params: {...modalSharedParams}},
         }),
         [modalSharedParams, courseId],
     );
