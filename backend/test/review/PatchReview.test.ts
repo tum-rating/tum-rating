@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
-import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
+import { connectMongo, signInRequestMock, signInAdminRequestMock, updateReview } from '@tum-rating/backend/test/utils';
 import { addReviewMockRequest, courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
 import { createCourseMockRequest } from '@tum-rating/backend/test/utils/api-client/course';
 import { AddReviewRequestDto } from '@tum-rating/backend/src/modules/course/dto/AddReviewRequest.dto';
@@ -177,4 +177,65 @@ describe('Patch Review', () => {
                 expect(response.body.reviews.find((review) => review.userId === signInResponse2.user.id)).toBeDefined();
             });
     }, 10000);
+
+    it('should not allow user to modify isHidden review property', async () => {
+        const signInResponse = await signInRequestMock();
+
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const createdCourse = await createCourseMockRequest(signInAdminResponse.token);
+
+        let requestBody: AddReviewRequestDto = {
+            howInterestingRating: 1,
+            howEasyRating: 5,
+            comment: faker.word.words(),
+            semester: createdCourse.offeredInSemesters[0],
+        };
+
+        await supertest(`${courseUrl}/${createdCourse.id}/user/${signInResponse.user.id}`)
+            .post('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send(requestBody)
+            .expect(201);
+
+        const response = await supertest(courseUrl)
+            .get('/' + createdCourse.id)
+            .expect(200)
+            .expect((response: supertest.Response) => {
+                expect(response.body).toHaveProperty('reviews');
+                expect(response.body.reviews.length == 1).toBe(true);
+                expect(response.body.reviews.find((review) => review.userId === signInResponse.user.id)).toBeDefined();
+                expect(response.body.howInterestingRatingAverage).toEqual(requestBody.howInterestingRating);
+                expect(response.body.howEasyRatingAverage).toEqual(requestBody.howEasyRating);
+            });
+
+        const createdReviewId = response.body.reviews[0]._id;
+
+        const result = await updateReview(createdReviewId, { isHidden: true });
+
+        await supertest(courseUrl)
+            .get('/' + createdCourse.id)
+            .expect(200)
+            .expect((response: supertest.Response) => {
+                expect(response.body).toHaveProperty('reviews');
+                expect(response.body.reviews.length == 0).toBe(true);
+            });
+
+        await supertest(`${courseUrl}/${createdCourse.id}/user/${signInResponse.user.id}`)
+            .patch('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send({
+                isHidden: false,
+                comment: faker.word.words(),
+            })
+            .expect(400);
+
+        await supertest(courseUrl)
+            .get('/' + createdCourse.id)
+            .expect(200)
+            .expect((response: supertest.Response) => {
+                expect(response.body).toHaveProperty('reviews');
+                expect(response.body.reviews.length == 0).toBe(true);
+            });
+    });
 });
