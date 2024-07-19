@@ -34,7 +34,7 @@ jobs:
           app_name: tum-rating-production
           token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
           images: '[{
-                  "name": "tum-rating",
+                  "name": "tum-rating-server",
                   "repository": "${{env.DO_REPOSITORY}}/${{env.DO_IMAGE_NAME}}",
                   "tag": "${{env.IMAGE_TAG}}"
                 }
