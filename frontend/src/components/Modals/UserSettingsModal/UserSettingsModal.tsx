@@ -142,8 +142,8 @@ const UserSettingsModal = ({context, id}: ContextModalProps) => {
                         <Flex>
                             <UserAvatar size="xl"/>
                             <Flex direction="column" gap="1" ml="sm">
-                                <Text data-testid="user-settings-username" fz="lg" fw="bold">{user?.username}</Text>
-                                <Text data-testid="user-settings-email" fz="md" c="dimmed">{user?.email}</Text>
+                                <Text data-testid="user-settings-username" fz="md" fw="bold">{user?.username}</Text>
+                                <Text data-testid="user-settings-email" fz="sm" c="dimmed">{user?.email}</Text>
                             </Flex>
                         </Flex>
 
