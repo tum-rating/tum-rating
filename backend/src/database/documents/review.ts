@@ -53,3 +53,4 @@ export const ReviewSchema = SchemaFactory.createForClass(Review);
 
 ReviewSchema.index({ courseId: 1, userId: 1 }, { unique: true });
 ReviewSchema.index({ courseId: 1, isHidden: 1 });
+ReviewSchema.index({ userId: 1 });

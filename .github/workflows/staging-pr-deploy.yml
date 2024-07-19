@@ -1,4 +1,4 @@
-name: Deploy to DigitalOcean
+name: Deploy to DigitalOcean staging
 permissions:
   contents: write
 on:
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get package version 
+      - name: Get package version
         id: package-version
         run: |
           echo "Reading package.json from ./package.json"

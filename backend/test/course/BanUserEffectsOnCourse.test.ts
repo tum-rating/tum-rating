@@ -2,9 +2,8 @@ import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
 import { connectMongo } from '@tum-rating/backend/test/utils';
-import { signInRequestMock, signInAdminRequestMock, banUser, unbanUser, userUrl } from '@tum-rating/backend/test/utils';
+import { signInRequestMock, signInAdminRequestMock, userUrl } from '@tum-rating/backend/test/utils';
 import { createCourseMockRequest, addReviewMockRequest, getCourseById } from '@tum-rating/backend/test/utils/api-client/course';
-import { de } from '@faker-js/faker';
 
 beforeAll(async () => {
     await connectMongo();
@@ -14,7 +13,7 @@ afterAll(async () => {
     mongoose.disconnect();
 });
 
-describe('Ban effects on course', () => {
+describe('Ban user effects on course', () => {
     describe('banned user reviews visibility',  () => {
         it('should make reviews of banned user hidden with single review', async () => {
             const user = await signInRequestMock();

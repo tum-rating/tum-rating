@@ -80,11 +80,42 @@ export class UserService {
     }
 
     public async deleteUser(id: string) {
-        const deletedUser = await this._userRepository.deleteOneById(id);
+        const session = await this._userRepository.startSession();
 
-        if(!deletedUser) throw new NotFoundError(`User with id ${id} not found`);
+        session.startTransaction();
 
-        return deletedUser;
+        try {
+            const deletedUser = await this._userRepository.deleteOneById(id, session);
+
+            if(!deletedUser) throw new NotFoundError(`User with id ${id} not found`);
+
+            const deletedReview = await this._reviewRepository.deleteReviewsByUserID(id, session);
+
+            const coursesToUpdate: {[key: string]: boolean} = {};
+            for (const review of deletedReview) {
+                coursesToUpdate[review.courseId as unknown as string] = true;
+            };
+
+            for (const courseId in coursesToUpdate) {
+                const stats = await this._reviewRepository.getStatsByCourseId(courseId, session);
+
+                await this._courseRepository.updateCourseStats(courseId, stats, session);
+            }
+
+            await session.commitTransaction();
+
+            return deletedUser;
+        } catch(error) {
+            await session.abortTransaction();
+
+            if (error instanceof NotFoundError) {
+                throw error;
+            }
+
+            throw error;
+        } finally {
+            await session.endSession();
+        }
     }
 
     public async activateEmail(id: string) {
