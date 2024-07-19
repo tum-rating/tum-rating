@@ -3,12 +3,18 @@ import { Model, Schema as MongooseSchema, ClientSession } from 'mongoose';
 import * as mongoose from 'mongoose';
 
 import { Review, ReviewDocument } from 'src/database/documents/review';
+import { PaginationOptions } from 'src/utils/api/pagination';
 
 import { BaseRepository } from './base.repository';
+import { th } from '@faker-js/faker';
 
 export type CreateReviewType = Pick<Review, 'userId' | 'userName' | 'courseId' | 'howEasyRating' | 'howInterestingRating' | 'comment' | 'semester'>;
 
 export type PatchReviewType = Partial<Pick<Review, 'howEasyRating' | 'howInterestingRating' | 'comment' | 'semester'>>;
+
+export type QueryOptions = {
+    userId?: string;
+};
 
 export class ReviewRepository extends BaseRepository<Review> {
     constructor(
@@ -24,6 +30,17 @@ export class ReviewRepository extends BaseRepository<Review> {
 
     public async getOneByCourseIdAndUserId(courseId: string, userId: string) {
         return this._reviewModel.findOne({ courseId, userId });
+    }
+
+    public async getPaginatedReviews(paginationOptions: PaginationOptions, queryOptions?: QueryOptions) {
+        const alignedPageNumber = paginationOptions.pageNumber - 1;
+
+        if (alignedPageNumber < 0) throw new Error('Page number must be greater than 0');
+
+        return this._reviewModel
+            .find(queryOptions)
+            .skip(alignedPageNumber * paginationOptions.pageSize)
+            .limit(paginationOptions.pageSize);
     }
 
     public async updateOneByUserIdAndCourseId(userId: string, courseId: string, review: PatchReviewType) {
@@ -78,6 +95,18 @@ export class ReviewRepository extends BaseRepository<Review> {
 
         if (updateResulte.matchedCount !== matchingReviews.length) {
             throw new Error('Retreived reviews count does not match updated reviews count');
+        }
+
+        return matchingReviews as unknown as WithId<Review>[];
+    }
+    
+    public async deleteReviewsByUserID(userId: string, session?: ClientSession) {
+        const matchingReviews = await this._reviewModel.find({ userId }, undefined, { session });
+
+        const deleteResult = await this._reviewModel.deleteMany({ userId }, { session });
+
+        if (deleteResult.deletedCount !== matchingReviews.length) {
+            throw new Error('Retreived reviews count does not match deleted reviews count');
         }
 
         return matchingReviews as unknown as WithId<Review>[];

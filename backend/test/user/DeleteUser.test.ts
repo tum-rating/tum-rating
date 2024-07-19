@@ -43,6 +43,14 @@ describe('Delete User', () => {
             .expect(403);
     });
 
+    it('should fail with 401 if no token provided', async () => {
+        const user = await signInRequestMock();
+
+        await supertest(userUrl + '/' + user.user.id)
+            .delete('/')
+            .expect(401);
+    });
+
     it('should fail with 404 if user not found', async () => {
         const admin = await signInAdminRequestMock();
 

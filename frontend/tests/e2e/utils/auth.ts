@@ -58,8 +58,6 @@ const signUp = async (props: AuthAction) => {
 
     await form.locator('[data-testid="password"]').fill(user.password);
 
-    await form.locator('[data-testid="terms"]').check();
-
     await form.locator('[data-testid="submit"]').click();
 
     await page.waitForSelector('text=Check Your Email');

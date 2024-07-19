@@ -4,7 +4,11 @@ import { SignUpRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignU
 import { SignInRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignInRequest.dto';
 import { baseUrlV1 } from './config';
 
-import { activateUserEmail as activateUserEmailDB, changeUserRole as changeUserRoleDB } from '@tum-rating/backend/test/utils/db-client/user';
+import { 
+    activateUserEmail as activateUserEmailDB,
+    changeUserRole as changeUserRoleDB, 
+    changeUserRoleByEmail as changeUserRoleByEmailDB, 
+} from '@tum-rating/backend/test/utils/db-client/user';
 import { UserRole } from '@tum-rating/backend/src/database/documents/user';
 
 export const authUrl = baseUrlV1 + '/auth';
@@ -32,44 +36,81 @@ export const signUpRequestMock = async (request?: Partial<SignUpRequestDto>) => 
     return mockRequest;
 };
 
-export const signInRequestMock = async (request?: Partial<SignUpRequestDto>) => {
-    const signUpResponse = await signUpRequestMock(request);
+export const signInRequestMock = async (request?: Partial<SignUpRequestDto>, skipUserCreation = false) => {
+    let signInRequest: SignInRequestDto;
+    let signUpResponse: SignUpRequestDto;
 
-    const signInRequest: SignInRequestDto = {
-        email: signUpResponse.email,
-        password: signUpResponse.password,
-    };
+    if (!skipUserCreation) {
+        signUpResponse = await signUpRequestMock(request);
+        
+        signInRequest = {
+            email: signUpResponse.email,
+            password: signUpResponse.password,
+        };
+    } else {
+        if (!request) {
+            throw new Error('Request is required when user creation is skipped');
+        }
+
+        if (!request.email || !request.password) {
+            throw new Error('Email and password are required when user creation is skipped');
+        }
+
+        signInRequest = {
+            email: request.email,
+            password: request.password,
+        };
+    }
 
     const signInResponse = await axios.post(authUrl + '/signin', signInRequest);
 
     return {
         user: {
-            ...signUpResponse,
+            ...signInResponse.data.user,
             id: signInResponse.data.user.id,
+            password: skipUserCreation ? request.password : signUpResponse.password,
         },
         token: signInResponse.data.token,
     };
 };
 
-export const signInAdminRequestMock = async (request?: Partial<SignUpRequestDto>) => {
-    const signInResponse = await signInRequestMock(request);
+export const signInAdminRequestMock = async (request?: Partial<SignUpRequestDto>, skipUserCreation = false) => {
+    let signInRequest: SignInRequestDto;
+    let signUpResponse: SignUpRequestDto;
 
-    await changeUserRoleDB(signInResponse.user.id, UserRole.admin);
+    if (!skipUserCreation) {
+        signUpResponse = await signUpRequestMock(request);
+        
+        signInRequest = {
+            email: signUpResponse.email,
+            password: signUpResponse.password,
+        };
+    } else {
+        if (!request) {
+            throw new Error('Request is required when user creation is skipped');
+        }
+        
+        if (!request.email || !request.password) {
+            throw new Error('Email and password are required when user creation is skipped');
+        }
+        
+        signInRequest = {
+            email: request.email,
+            password: request.password,
+        };
+    }
 
-    const signInRequest: SignInRequestDto = {
-        email: signInResponse.user.email,
-        password: signInResponse.user.password,
-    };
+    await changeUserRoleByEmailDB(signInRequest.email, UserRole.admin);
 
-    const signInResponse2 = await axios.post(authUrl + '/signin', signInRequest);
+    const signInResponse = await axios.post(authUrl + '/signin', signInRequest);
 
     return {
         user: {
-            ...signInResponse2.data,
-            id: signInResponse2.data.user.id,
-            password: signInResponse.user.password,
+            ...signInResponse.data.user,
+            id: signInResponse.data.user.id,
+            password: skipUserCreation ? request.password : signUpResponse.password,
         },
-        token: signInResponse2.data.token,
+        token: signInResponse.data.token,
     };
 };
 
@@ -86,5 +127,13 @@ export const unbanUser = async (adminToken: string, userId: string) => {
         headers: {
             Authorization: 'Bearer ' + adminToken,
         },
+    });
+};
+
+export const deleteUserByAdmin = async (adminToken: string, userId: string) => {
+    return await axios.delete(userUrl + '/' + userId, {
+        headers: {
+            Authorization: 'Bearer ' + adminToken,
+        }
     });
 };

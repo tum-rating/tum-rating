@@ -19,7 +19,8 @@ services:
 
       #JWT
       JWT_SECRET: jwt-secret
-      JWT_EXPIRATION: 1d
+      JWT_EXPIRATION_TOKEN: 5m
+      JWT_EXPIRATION_ACCESS_TOKEN: 1d
 
       #MAILER
       MAILER_HOST: mailer
