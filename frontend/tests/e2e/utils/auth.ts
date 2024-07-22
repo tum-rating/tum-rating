@@ -1,5 +1,6 @@
 import {faker} from '@faker-js/faker';
 import {expect, Page} from '@playwright/test';
+import {openMobileDrawer} from 'tests/e2e/utils/layout.ts';
 
 interface TestUserCredentials {
     email: string;
@@ -9,7 +10,7 @@ interface TestUserCredentials {
 
 interface AuthAction {
     page: Page;
-    user: TestUserCredentials;
+    user?: TestUserCredentials;
     mobile?: boolean;
 }
 
@@ -19,6 +20,21 @@ const generateTestUser = () => {
         username: faker.internet.userName(),
         password: faker.internet.password(),
     };
+};
+
+const fullAuthProcess = async (page: Page, authFile: string) => {
+    const user = generateTestUser();
+    await page.goto('/');
+    await page.getByTestId('sign-up-btn-desktop').click();
+    await page.getByText('Sign up', {exact: true}).click();
+    await signUp({page, user});
+    await activateAccount({page, user});
+    await page.goto('/');
+    await page.getByTestId('sign-in-btn-desktop').click();
+    await signIn({page, user});
+    await page.context().storageState({path: authFile});
+    await page.goto('/');
+    await signOut({page, mobile: false});
 };
 
 const getActivationTokenFromMail = async (email: string) => {
@@ -109,4 +125,18 @@ const signIn = async (props: AuthAction) => {
     }
 };
 
-export {signUp, activateAccount, signIn, generateTestUser, getRecoveryTokenFromMail};
+const signOut = async (props: AuthAction) => {
+    const {page, mobile} = props;
+    if (mobile) {
+        await openMobileDrawer({page});
+        await page.getByRole('button', {name: 'Log out'}).click();
+    } else {
+        await page.getByTestId('user-btn-desktop').click();
+        await page.getByRole('menuitem', {name: 'Logout'}).click();
+        await expect(page.getByTestId('menu')).not.toBeVisible();
+    }
+    await expect(page.getByRole('button', {name: 'Sign In'})).toBeVisible();
+    await expect(page.getByRole('button', {name: 'Sign Up'})).toBeVisible();
+};
+
+export {signUp, signOut, activateAccount, signIn, generateTestUser, getRecoveryTokenFromMail, fullAuthProcess};

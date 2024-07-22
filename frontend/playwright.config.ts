@@ -20,6 +20,8 @@ export default defineConfig({
                 storageState: 'tests/e2e/utils/.auth/user.json',
             },
             dependencies: ['setup'],
+            testMatch: '!(userAccountDeletion|*.setup).spec.ts',
+
         },
         {
             name: 'firefox',
@@ -28,15 +30,16 @@ export default defineConfig({
                 storageState: 'tests/e2e/utils/.auth/user.json',
             },
             dependencies: ['setup'],
+            testMatch: '!(userAccountDeletion|*.setup).spec.ts',
         },
         {
-            name: 'userAccountDeletion',
-            testMatch: /.*userAccountDeletion\.spec\.ts/,
+            name: 'chromium: user-account-deletion',
             use: {
                 ...devices['Desktop Chrome'],
-                storageState: 'tests/e2e/utils/.auth/user.json',
+                storageState: 'tests/e2e/utils/.auth/userToRemove.json',
             },
-            dependencies: ['chromium', 'firefox'],
+            dependencies: ['setup'],
+            testMatch: 'userAccountDeletion.spec.ts'
         },
     ],
     webServer: {
