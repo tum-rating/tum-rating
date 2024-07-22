@@ -1,7 +1,7 @@
 import {test, expect} from '@playwright/test';
 
 test('should remove account of logged user',async ({page})=>{
-    await page.goto('/');
+    await page.goto('/', {waitUntil: 'domcontentloaded'});
     await page.getByTestId('user-btn-desktop').click();
     await page.getByRole('menuitem', {name: 'Settings'}).click();
     await expect(page.getByTestId('user-settings-username')).toBeVisible();
