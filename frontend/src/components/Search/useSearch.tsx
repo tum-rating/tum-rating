@@ -1,14 +1,15 @@
 import {Combobox, useCombobox} from "@mantine/core";
-import {useSearchContext} from "@/context";
-import {FormEvent, useEffect, useMemo, useState} from "react";
 import {useDebouncedState} from "@mantine/hooks";
-import {useLocation, useNavigate} from "react-router-dom";
-import {useScrollLock} from "@/hooks/useScrollLock";
+import {FormEvent, useEffect, useMemo, useState} from "react";
 import {isMobileOnly} from "react-device-detect";
-import {useSearchCourses} from "@/courses/useSearchCourses.tsx";
-import {Course} from "@/courses/types.ts";
-import classes from "@/components/Search/SearchInputDesktop.module.css";
+import {useLocation, useNavigate} from "react-router-dom";
+
 import {SearchHighlight} from "@/components/Highlight";
+import classes from "@/components/Search/SearchInputDesktop.module.css";
+import {useSearchContext} from "@/context";
+import {Course} from "@/courses/types.ts";
+import {useSearchCourses} from "@/courses/useSearchCourses.tsx";
+import {useScrollLock} from "@/hooks/useScrollLock";
 
 const useSearch = () => {
     const combobox = useCombobox({
