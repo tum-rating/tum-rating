@@ -1,4 +1,4 @@
-import {CloseButton, Combobox, ScrollArea, TextInput, ThemeIcon} from '@mantine/core';
+import {CloseButton, Combobox, LoadingOverlay, ScrollArea, TextInput, ThemeIcon} from '@mantine/core';
 import {IconSearch} from '@tabler/icons-react';
 import clsx from 'clsx';
 import {useRef} from 'react';
@@ -66,7 +66,8 @@ const DesktopSearchInput = ({combobox, value, setValue, empty, isLoading, option
                             }
                         }}
                     >
-                        {empty ? <ComboboxEmpty value={value} isLoading={isLoading} /> : options}
+                        {<LoadingOverlay overlayProps={{ radius: "sm", blur: 55 }} visible={isLoading} />}
+                        {empty && !isLoading ? <ComboboxEmpty value={value} isLoading={isLoading} /> : options}
                     </ScrollArea.Autosize>
                 </Combobox.Options>
                 <Combobox.Footer>
