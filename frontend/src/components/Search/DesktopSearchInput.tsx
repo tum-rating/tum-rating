@@ -66,8 +66,8 @@ const DesktopSearchInput = ({combobox, value, setValue, empty, isLoading, option
                             }
                         }}
                     >
-                        {<LoadingOverlay overlayProps={{ radius: "sm", blur: 55 }} visible={isLoading} />}
-                        {empty && !isLoading ? <ComboboxEmpty value={value} isLoading={isLoading} /> : options}
+                        <LoadingOverlay visible={isLoading} overlayProps={{blur: 15}} />
+                        {empty ? <ComboboxEmpty value={value} isLoading={isLoading}/> : options}
                     </ScrollArea.Autosize>
                 </Combobox.Options>
                 <Combobox.Footer>

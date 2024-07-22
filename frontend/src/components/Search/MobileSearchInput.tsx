@@ -76,8 +76,8 @@ const MobileSearchInput = ({combobox, value, setValue, isSearchOpen, setIsSearch
                     </Combobox.EventsTarget>
                     <Combobox.Options className={classes.searchInputMobileOptions}>
                         <ScrollArea.Autosize h="calc(100dvh - 58px)" ref={searchInputRef} type="scroll" className={classes.searchInputMobileScrollArea}>
-                            {<LoadingOverlay visible={isLoading} />}
-                            {empty && !isLoading ? <ComboboxEmpty value={value} isLoading={isLoading} /> : options}
+                            <LoadingOverlay visible={isLoading} overlayProps={{blur: 15}} />
+                            {empty ? <ComboboxEmpty value={value} isLoading={isLoading}/> : options}
                         </ScrollArea.Autosize>
                     </Combobox.Options>
                     <Combobox.Footer>

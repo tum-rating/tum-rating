@@ -28,7 +28,7 @@ const useSearch = () => {
     const debouncedUpdate = useDebouncedCallback((newValue) => {
         setDebouncedValue(newValue);
         setInternalLoading(false);
-    }, 550);
+    }, 400);
 
     const {data, fetchNextPage, isLoading: queryLoading} = useSearchCourses(debouncedValue);
 
@@ -74,10 +74,15 @@ const useSearch = () => {
         setEmpty(groupedActions.length === 0);
     }, [groupedActions]);
 
-    const searchWords = useMemo(() => value.split(' ').filter(Boolean), [value]);
+    const searchWords = useMemo(() => value.split(' ').filter(Boolean), [data]);
 
-    const countMatchingWords = (searchWordsSet: Set<string>, text: string) => {
-        const textWords = new Set(text.toLowerCase().split(' '));
+    const countMatchingWords = (searchWordsSet: Set<string>, text: string, separators: string[] = [' ', ',', '.', '-']) => {
+        let uniformText = text.toLowerCase();
+        separators.forEach((sep) => {
+            uniformText = uniformText.replace(new RegExp(`\\${sep}`, 'g'), ' ');
+        });
+
+        const textWords = new Set(uniformText.split(' ').filter(Boolean));
         return Array.from(searchWordsSet).reduce((count, word) => (textWords.has(word) ? count + 1 : count), 0);
     };
 
@@ -93,7 +98,7 @@ const useSearch = () => {
             .sort((a, b) => b.matchCount - a.matchCount)
             .map((item) => (
                 <Combobox.Option className={classes.option} value={item._id} key={item._id}>
-                    <SearchHighlight value={searchWords} text={item.name} />
+                    <SearchHighlight value={searchWords} text={item.name}/>
                     <SearchHighlight
                         value={searchWords}
                         text={item.professor}
