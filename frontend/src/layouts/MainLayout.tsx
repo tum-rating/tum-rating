@@ -11,7 +11,7 @@ import {useUser} from '@/auth/useUser';
 import {Burger} from '@/components/Burger';
 import {Drawer} from '@/components/Drawer';
 import {FloatingMenu} from '@/components/FloatingMenu';
-import {SearchInputDesktop} from '@/components/Search';
+import {SearchInput} from '@/components/Search';
 import {ThemeToggleActionIcon} from '@/components/ThemeToggle';
 import {UserButton} from '@/components/UserButton';
 import {INFO_PAGES} from '@/constants';
@@ -48,7 +48,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                     <Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>
                     {!isMobileOnly && !smallerMode && (
                         <Flex maw={580} style={{flexGrow: 1}}>
-                            <SearchInputDesktop />
+                            <SearchInput />
                         </Flex>
                     )}
                     <Flex gap={20}>
@@ -113,7 +113,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                 <Group hiddenFrom="sm" h="100%" px="md" justify="space-between" pos="relative">
                     <Burger open={drawerOpened} toggle={toggleDrawer}></Burger>
                     <Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>
-                    <SearchInputDesktop />
+                    <SearchInput />
                 </Group>
             </AppShell.Header>
             <AppShell.Main p={0} m={0}>
