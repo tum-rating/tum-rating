@@ -100,16 +100,10 @@ const useSearch = () => {
         const words = splitSearchQueryIntoWords(value);
         return sorter(previousData?.pages.flatMap((page: {courses: Course[]}) => page.courses) || []).map((item) => (
             <Combobox.Option className={classes.option} value={item._id} key={item._id}>
-                <SearchHighlight value={words} text={item.name} />
-                <SearchHighlight
-                    value={words}
-                    text={item.professor}
-                    textStyles={{
-                        fz: 'xs',
-                        fw: 500,
-                        c: 'dimmed',
-                    }}
-                />
+                <SearchHighlight highlight={words}>{item.name}</SearchHighlight>
+                <SearchHighlight highlight={words} fz="xs" fw={500} c="dimmed">
+                    {item.professor}
+                </SearchHighlight>
             </Combobox.Option>
         ));
     }, [previousData]);

@@ -23,20 +23,15 @@ const useCoursesTableColumns = () => {
                 accessorKey: 'name',
 
                 size: isMobileOnly ? 100 : 200,
-                mantineTableBodyCellProps: () => ({
-                    style: {
-                        fontWeight: '500',
-                    },
-                }),
                 Cell: ({row, renderedCellValue}) => {
                     return (
                         <>
                             <span>
-                                <SearchHighlight value={searchedWords} text={renderedCellValue} />
+                                <SearchHighlight fw="500" fz="sm" highlight={searchedWords}>{renderedCellValue}</SearchHighlight>
                                 {isMobileOnly ? (
                                     <>
-                                        <span style={{color: 'var(--mantine-color-dimmed'}}>
-                                            <SearchHighlight value={searchedWords} text={row.original.professor} />
+                                        <span>
+                                            <SearchHighlight highlight={searchedWords} fz="sm">{row.original.professor}</SearchHighlight>
                                         </span>
                                     </>
                                 ) : null}
@@ -54,7 +49,7 @@ const useCoursesTableColumns = () => {
                         <>
                             <span>
                                 {' '}
-                                <SearchHighlight value={searchedWords} text={renderedCellValue} />
+                                <SearchHighlight highlight={searchedWords} fz="sm">{renderedCellValue}</SearchHighlight>
                             </span>
                         </>
                     );
