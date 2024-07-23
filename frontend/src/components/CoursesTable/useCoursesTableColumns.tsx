@@ -5,8 +5,11 @@ import {isMobileOnly} from 'react-device-detect';
 
 import {NumberRatingBadge} from '@/components/Course';
 import {Course} from '@/courses/types.ts';
+import {useSearchContext} from "@/context";
+import {SearchHighlight} from "@/components/Highlight";
 
 const useCoursesTableColumns = () => {
+    const {searchQuery, setSearchQuery} = useSearchContext();
     const columns: MRT_ColumnDef<Course | null>[] = useMemo(() => {
         return [
             {
@@ -19,11 +22,11 @@ const useCoursesTableColumns = () => {
                         fontWeight: '500',
                     },
                 }),
-                Cell: ({row}) => {
+                Cell: ({row,renderedCellValue}) => {
                     return (
                         <>
                             <span>
-                                {row.original.name}{' '}
+                                <SearchHighlight value={[searchQuery]} text={renderedCellValue} />
                                 {isMobileOnly ? (
                                     <>
                                         <br /> <span style={{color: 'var(--mantine-color-dimmed'}}>{row.original.professor}</span>

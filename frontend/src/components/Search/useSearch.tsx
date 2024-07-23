@@ -74,16 +74,32 @@ const useSearch = () => {
         setEmpty(groupedActions.length === 0);
     }, [groupedActions]);
 
-    const searchWords = useMemo(() => value.split(' ').filter(Boolean), [data]);
 
-    const countMatchingWords = (searchWordsSet: Set<string>, text: string, separators: string[] = [' ', ',', '.', '-']) => {
-        let uniformText = text.toLowerCase();
+    const normalizeText = (text: string) => {
+        const separators = [' ', ',', '.', '-'];
+        let normalizedText = text.toLowerCase();
         separators.forEach((sep) => {
-            uniformText = uniformText.replace(new RegExp(`\\${sep}`, 'g'), ' ');
+            normalizedText = normalizedText.replace(new RegExp(`\\${sep}`, 'g'), ' ');
         });
+        return normalizedText;
+    };
 
+    const searchWords = useMemo(() => {
+        const normalizedValue = normalizeText(value);
+        return normalizedValue.split(' ').filter(Boolean);
+    }, [value]);
+
+    const countMatchingWords = (searchWordsSet: Set<string>, text: string) => {
+        const uniformText = normalizeText(text);
         const textWords = new Set(uniformText.split(' ').filter(Boolean));
-        return Array.from(searchWordsSet).reduce((count, word) => (textWords.has(word) ? count + 1 : count), 0);
+        const indexFactor = 0
+        return [...searchWordsSet].reduce((acc, word) => {
+            if (textWords.has(word)) {
+                return acc + 1;
+            }
+            return acc;
+        }, indexFactor);
+
     };
 
     const options = useMemo(() => {
