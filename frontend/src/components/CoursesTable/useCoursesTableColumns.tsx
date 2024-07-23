@@ -4,13 +4,19 @@ import {useMemo} from 'react';
 import {isMobileOnly} from 'react-device-detect';
 
 import {NumberRatingBadge} from '@/components/Course';
+import {SearchHighlight} from '@/components/Highlight';
+import {useSearchContext} from '@/context';
 import {Course} from '@/courses/types.ts';
-import {useSearchContext} from "@/context";
-import {SearchHighlight} from "@/components/Highlight";
 
 const useCoursesTableColumns = () => {
-    const {searchQuery, setSearchQuery} = useSearchContext();
+    const {searchQuery} = useSearchContext();
+    const splitSearchQueryIntoWords = (value: string) => {
+        const separators = [' ', ',', '.', '-'];
+        const words = value.split(new RegExp(`[${separators.join('')}]`));
+        return words.filter(Boolean);
+    };
     const columns: MRT_ColumnDef<Course | null>[] = useMemo(() => {
+        const searchedWords = splitSearchQueryIntoWords(searchQuery);
         return [
             {
                 header: 'Course',
@@ -22,14 +28,16 @@ const useCoursesTableColumns = () => {
                         fontWeight: '500',
                     },
                 }),
-                Cell: ({row,renderedCellValue}) => {
+                Cell: ({row, renderedCellValue}) => {
                     return (
                         <>
                             <span>
-                                <SearchHighlight value={[searchQuery]} text={renderedCellValue} />
+                                <SearchHighlight value={searchedWords} text={renderedCellValue} />
                                 {isMobileOnly ? (
                                     <>
-                                        <br /> <span style={{color: 'var(--mantine-color-dimmed'}}>{row.original.professor}</span>
+                                        <span style={{color: 'var(--mantine-color-dimmed'}}>
+                                            <SearchHighlight value={searchedWords} text={row.original.professor} />
+                                        </span>
                                     </>
                                 ) : null}
                             </span>
@@ -41,6 +49,16 @@ const useCoursesTableColumns = () => {
                 header: 'Professor',
                 accessorKey: 'professor',
                 size: 80,
+                Cell: ({renderedCellValue}) => {
+                    return (
+                        <>
+                            <span>
+                                {' '}
+                                <SearchHighlight value={searchedWords} text={renderedCellValue} />
+                            </span>
+                        </>
+                    );
+                },
             },
             {
                 header: 'How interesting',
@@ -76,7 +94,7 @@ const useCoursesTableColumns = () => {
             }
             return true;
         });
-    }, [isMobileOnly]);
+    }, [isMobileOnly, searchQuery]);
 
     return {columns};
 };

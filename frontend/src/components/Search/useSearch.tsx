@@ -1,13 +1,14 @@
 import {Combobox, useCombobox} from '@mantine/core';
 import {useDebouncedCallback} from '@mantine/hooks';
-import {FormEvent, useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {isMobileOnly} from 'react-device-detect';
 import {useLocation, useNavigate} from 'react-router-dom';
 
 import {SearchHighlight} from '@/components/Highlight';
 import classes from '@/components/Search/SearchInputDesktop.module.css';
 import {useSearchContext} from '@/context';
-import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
+import {Course} from '@/courses/types.ts';
+import {useSearchCourses} from '@/courses/useSearchCourses';
 import {useScrollLock} from '@/hooks/useScrollLock';
 
 const useSearch = () => {
@@ -15,123 +16,108 @@ const useSearch = () => {
         onDropdownClose: () => combobox.resetSelectedOption(),
     });
 
-    const {searchQuery, setSearchQuery} = useSearchContext();
+    const {setSearchQuery} = useSearchContext();
     const [value, setValue] = useState('');
-    const [empty, setEmpty] = useState(false);
+    const [debouncedValue, setDebouncedValue] = useState('');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [internalLoading, setInternalLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
     const {lock, unlock} = useScrollLock({autoLock: false});
+    const [previousData, setPreviousData] = useState(null);
 
-    const [debouncedValue, setDebouncedValue] = useState(value);
     const debouncedUpdate = useDebouncedCallback((newValue) => {
         setDebouncedValue(newValue);
-        setInternalLoading(false);
-    }, 400);
+        setIsLoading(false);
+    }, 250);
 
     const {data, fetchNextPage, isLoading: queryLoading} = useSearchCourses(debouncedValue);
 
-    const [previousData, setPreviousData] = useState([]);
-
     useEffect(() => {
-        if (isMobileOnly) {
-            setIsSearchOpen(location.hash === '#search');
-        } else {
-            setIsSearchOpen(false);
-        }
+        setIsSearchOpen(isMobileOnly && location.hash === '#search');
         const searchParams = new URLSearchParams(location.search);
         const search = searchParams.get('search');
-        if (search) {
-            setValue(search);
-        }
+        if (search) setValue(search);
     }, [location]);
 
     useEffect(() => {
-        if (searchQuery.length === 0) {
-            setValue('');
-        }
-    }, [searchQuery]);
+        if (!isSearchOpen) unlock();
+        else lock();
+    }, [isSearchOpen, lock, unlock]);
+
+    useEffect(() => {
+        setIsLoading(queryLoading);
+    }, [queryLoading]);
+
+    useEffect(() => {
+        debouncedUpdate(value);
+    }, [value]);
 
     useEffect(() => {
         if (data) {
-            const newRecords = data.pages.map((v) => v.courses.map((el) => el)).flat();
-            setPreviousData(newRecords);
+            setPreviousData(data);
         }
     }, [data]);
 
-    useEffect(() => {
-        if (!isSearchOpen) {
-            unlock();
-        } else {
-            lock();
-        }
-    }, [isSearchOpen]);
-
-    const groupedActions = useMemo(() => (previousData ? previousData : []), [previousData]);
-
-    useEffect(() => {
-        setEmpty(groupedActions.length === 0);
-    }, [groupedActions]);
-
-
-    const normalizeText = (text: string) => {
+    const splitSearchQueryIntoWords = (value: string) => {
         const separators = [' ', ',', '.', '-'];
-        let normalizedText = text.toLowerCase();
-        separators.forEach((sep) => {
-            normalizedText = normalizedText.replace(new RegExp(`\\${sep}`, 'g'), ' ');
-        });
-        return normalizedText;
+        const words = value.split(new RegExp(`[${separators.join('')}]`));
+        return words.filter(Boolean);
     };
 
-    const searchWords = useMemo(() => {
-        const normalizedValue = normalizeText(value);
-        return normalizedValue.split(' ').filter(Boolean);
-    }, [value]);
+    const sorter = (data: Course[]) => {
+        const dataLength = data.length;
+        const dataWithMatchingFactor = [];
+        const words = splitSearchQueryIntoWords(value.toLowerCase());
 
-    const countMatchingWords = (searchWordsSet: Set<string>, text: string) => {
-        const uniformText = normalizeText(text);
-        const textWords = new Set(uniformText.split(' ').filter(Boolean));
-        const indexFactor = 0
-        return [...searchWordsSet].reduce((acc, word) => {
-            if (textWords.has(word)) {
-                return acc + 1;
-            }
-            return acc;
-        }, indexFactor);
+        for (let i = 0; i < dataLength; i++) {
+            const item = data[i];
+            const name = item.name.toLowerCase();
+            const professor = item.professor.toLowerCase();
+            let matchingFactor = 0;
+            words.forEach((word) => {
+                const nameIndex = name.indexOf(word);
+                const professorIndex = professor.indexOf(word);
 
+                if (nameIndex !== -1) {
+                    matchingFactor += 100 - (nameIndex * 100) / name.length;
+                }
+
+                if (professorIndex !== -1) {
+                    matchingFactor += 100 - (professorIndex * 100) / professor.length;
+                }
+            });
+
+            dataWithMatchingFactor.push({
+                ...item,
+                matchingFactor,
+            });
+        }
+        return dataWithMatchingFactor.sort((a, b) => b.matchingFactor - a.matchingFactor);
     };
 
     const options = useMemo(() => {
-        const searchWordsSet = new Set(searchWords.map((word) => word.toLowerCase()));
+        const words = splitSearchQueryIntoWords(value);
+        return sorter(previousData?.pages.flatMap((page: {courses: Course[]}) => page.courses) || []).map((item) => (
+            <Combobox.Option className={classes.option} value={item._id} key={item._id}>
+                <SearchHighlight value={words} text={item.name} />
+                <SearchHighlight
+                    value={words}
+                    text={item.professor}
+                    textStyles={{
+                        fz: 'xs',
+                        fw: 500,
+                        c: 'dimmed',
+                    }}
+                />
+            </Combobox.Option>
+        ));
+    }, [previousData]);
 
-        return (groupedActions || [])
-            .map((item) => {
-                const nameMatchCount = countMatchingWords(searchWordsSet, item.name);
-                const professorMatchCount = countMatchingWords(searchWordsSet, item.professor);
-                return {...item, matchCount: nameMatchCount + professorMatchCount};
-            })
-            .sort((a, b) => b.matchCount - a.matchCount)
-            .map((item) => (
-                <Combobox.Option className={classes.option} value={item._id} key={item._id}>
-                    <SearchHighlight value={searchWords} text={item.name}/>
-                    <SearchHighlight
-                        value={searchWords}
-                        text={item.professor}
-                        textStyles={{
-                            fz: 'xs',
-                            fw: 500,
-                            c: 'dimmed',
-                        }}
-                    />
-                </Combobox.Option>
-            ));
-    }, [groupedActions, searchWords]);
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        if (value.length) {
-            navigate('/?search=' + value);
+        if (value) {
+            navigate(`/?search=${value}`);
             setSearchQuery(value);
             combobox.closeDropdown();
         }
@@ -145,25 +131,14 @@ const useSearch = () => {
         combobox.closeDropdown();
     };
 
-    useEffect(() => {
-        setInternalLoading(true);
-        debouncedUpdate(value);
-    }, [value]);
-
-    useEffect(() => {
-        if (!queryLoading) {
-            setInternalLoading(false);
-        }
-    }, [queryLoading]);
-
     return {
         combobox,
         value,
+        debouncedValue,
         setValue,
         isSearchOpen,
         setIsSearchOpen,
-        empty,
-        isLoading: internalLoading || queryLoading,
+        isLoading,
         options,
         handleSubmit,
         handleClear,

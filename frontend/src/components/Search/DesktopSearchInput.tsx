@@ -1,4 +1,4 @@
-import {CloseButton, Combobox, LoadingOverlay, ScrollArea, TextInput, ThemeIcon} from '@mantine/core';
+import {CloseButton, Combobox, ScrollArea, TextInput, ThemeIcon} from '@mantine/core';
 import {IconSearch} from '@tabler/icons-react';
 import clsx from 'clsx';
 import {useRef} from 'react';
@@ -9,10 +9,9 @@ import {ComboboxEmpty} from '@/components/Search/ComboboxEmpty.tsx';
 import classes from '@/components/Search/SearchInputDesktop.module.css';
 import {PAGE_SIZE} from '@/constants';
 
-const DesktopSearchInput = ({combobox, value, setValue, empty, isLoading, options, handleSubmit, handleClear, fetchNextPage, data}) => {
+const DesktopSearchInput = ({combobox, value, debouncedValue, setValue, isLoading, options, handleSubmit, handleClear, fetchNextPage, data}) => {
     const navigate = useNavigate();
     const scrollAreaRef = useRef(null);
-
     return (
         <Combobox
             onOptionSubmit={(optionValue) => {
@@ -57,6 +56,7 @@ const DesktopSearchInput = ({combobox, value, setValue, empty, isLoading, option
                 <Combobox.Options>
                     <ScrollArea.Autosize
                         mah="50vh"
+                        mih={300}
                         viewportRef={scrollAreaRef}
                         type="scroll"
                         onScrollPositionChange={(event) => {
@@ -66,8 +66,8 @@ const DesktopSearchInput = ({combobox, value, setValue, empty, isLoading, option
                             }
                         }}
                     >
-                        <LoadingOverlay visible={isLoading} overlayProps={{blur: 15}} />
-                        {empty ? <ComboboxEmpty value={value} isLoading={isLoading}/> : options}
+                        {!options.length && <ComboboxEmpty value={debouncedValue} isLoading={isLoading} />}
+                        {options}
                     </ScrollArea.Autosize>
                 </Combobox.Options>
                 <Combobox.Footer>
