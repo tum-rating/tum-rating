@@ -1,6 +1,4 @@
 export {Course} from './Course.tsx';
-export {HowInterestingRating} from './HowInterestingRating.tsx';
-export {HowEasyRating} from './HowEasyRating.tsx';
-export {HowEasyBadge} from './HowEasyBadge.tsx';
-export {HowInterestingBadge} from './HowInterestingBadge.tsx';
-export {NumberRatingBadge} from './NumberRatingBadge.tsx';
+export {HowInterestingRating} from './Rating/HowInterestingRating.tsx';
+export {HowEasyRating} from './Rating/HowEasyRating.tsx';
+export {HowEasyBadge, HowInterestingBadge, NumberRatingBadge} from './RatingBadge';

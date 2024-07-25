@@ -1,7 +1,7 @@
 import {Box, Flex, Text} from '@mantine/core';
 import {IconUsersGroup} from '@tabler/icons-react';
 
-import classes from './RatingBox.module.css';
+import classes from '../Rating/RatingBox.module.css';
 
 import {Skeleton} from '@/components/Skeleton';
 
