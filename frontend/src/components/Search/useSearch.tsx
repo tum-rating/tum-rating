@@ -69,6 +69,7 @@ const useSearch = () => {
         const dataLength = data.length;
         const dataWithMatchingFactor = [];
         const words = splitSearchQueryIntoWords(value.toLowerCase());
+        const exactMatchBonus = 10000;
 
         for (let i = 0; i < dataLength; i++) {
             const item = data[i];
@@ -87,6 +88,10 @@ const useSearch = () => {
                     matchingFactor += 100 - (professorIndex * 100) / professor.length;
                 }
             });
+
+            if (name === value.toLowerCase() || professor === value.toLowerCase()) {
+                matchingFactor += exactMatchBonus;
+            }
 
             dataWithMatchingFactor.push({
                 ...item,
