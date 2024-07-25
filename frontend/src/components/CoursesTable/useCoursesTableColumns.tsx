@@ -4,29 +4,35 @@ import {useMemo} from 'react';
 import {isMobileOnly} from 'react-device-detect';
 
 import {NumberRatingBadge} from '@/components/Course';
+import {SearchHighlight} from '@/components/Highlight';
+import {useSearchContext} from '@/context';
 import {Course} from '@/courses/types.ts';
 
 const useCoursesTableColumns = () => {
+    const {searchQuery} = useSearchContext();
+    const splitSearchQueryIntoWords = (value: string) => {
+        const separators = [' ', ',', '.', '-'];
+        const words = value.split(new RegExp(`[${separators.join('')}]`));
+        return words.filter(Boolean);
+    };
     const columns: MRT_ColumnDef<Course | null>[] = useMemo(() => {
+        const searchedWords = splitSearchQueryIntoWords(searchQuery);
         return [
             {
                 header: 'Course',
                 accessorKey: 'name',
 
                 size: isMobileOnly ? 100 : 200,
-                mantineTableBodyCellProps: () => ({
-                    style: {
-                        fontWeight: '500',
-                    },
-                }),
-                Cell: ({row}) => {
+                Cell: ({row, renderedCellValue}) => {
                     return (
                         <>
                             <span>
-                                {row.original.name}{' '}
+                                <SearchHighlight fw="500" fz="sm" highlight={searchedWords}>{renderedCellValue}</SearchHighlight>
                                 {isMobileOnly ? (
                                     <>
-                                        <br /> <span style={{color: 'var(--mantine-color-dimmed'}}>{row.original.professor}</span>
+                                        <span>
+                                            <SearchHighlight highlight={searchedWords} fz="sm">{row.original.professor}</SearchHighlight>
+                                        </span>
                                     </>
                                 ) : null}
                             </span>
@@ -38,6 +44,16 @@ const useCoursesTableColumns = () => {
                 header: 'Professor',
                 accessorKey: 'professor',
                 size: 80,
+                Cell: ({renderedCellValue}) => {
+                    return (
+                        <>
+                            <span>
+                                {' '}
+                                <SearchHighlight highlight={searchedWords} fz="sm">{renderedCellValue}</SearchHighlight>
+                            </span>
+                        </>
+                    );
+                },
             },
             {
                 header: 'How interesting',
@@ -73,7 +89,7 @@ const useCoursesTableColumns = () => {
             }
             return true;
         });
-    }, [isMobileOnly]);
+    }, [isMobileOnly, searchQuery]);
 
     return {columns};
 };

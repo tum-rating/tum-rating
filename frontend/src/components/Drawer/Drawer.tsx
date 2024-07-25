@@ -1,4 +1,5 @@
-import {Button, Divider, Drawer as DrawerComponent, Flex, Stack} from '@mantine/core';
+import {Button, Divider, Drawer as DrawerComponent, Flex, rem, Stack} from '@mantine/core';
+import {IconLogout, IconSettings} from "@tabler/icons-react";
 import {useLocation, useNavigate} from 'react-router-dom';
 
 import classes from './Drawer.module.css';
@@ -36,9 +37,9 @@ const Drawer = (props: DrawerProps) => {
             >
                 <Stack h="100%" justify="space-between" p={0}>
                     <Flex>
-                        <UserButton withoutDropdown />
+                        <UserButton withoutDropdown/>
                     </Flex>
-                    <ThemeToggleFloatingIndicator />
+                    <ThemeToggleFloatingIndicator/>
                     {!user && (
                         <>
                             <Button data-testid="sign-in-btn-mobile" onClick={() => navigate(getPath(Paths.signIn))}>
@@ -49,7 +50,7 @@ const Drawer = (props: DrawerProps) => {
                             </Button>
                         </>
                     )}
-                    <Divider />
+                    <Divider/>
                     <Stack mt="auto">
                         <Button.Group orientation="vertical" className={classes.drawerMenu}>
                             {INFO_PAGES.map((page) => {
@@ -59,7 +60,7 @@ const Drawer = (props: DrawerProps) => {
                                         key={page.title}
                                         fullWidth
                                         variant={location.pathname === page.path ? 'filled' : 'default'}
-                                        leftSection={<Icon style={{width: '1.2rem', height: '1.2rem'}} />}
+                                        leftSection={<Icon style={{width: '1.2rem', height: '1.2rem'}}/>}
                                         onClick={() => {
                                             navigate(page.path);
                                             toggle();
@@ -74,13 +75,21 @@ const Drawer = (props: DrawerProps) => {
                     <Stack mt="auto">
                         {user && (
                             <>
-                                <Divider />
+                                <Divider/>
                                 {isAdmin && (
                                     <Button variant="primary-gradient" onClick={() => navigate(getPath(Paths.admin))}>
                                         Admin panel
                                     </Button>
                                 )}
-                                <Button data-testid="log-out-btn-mobile" variant="default" onClick={() => signOut()}>
+                                {
+                                    user &&
+                                    <Button variant="default" onClick={() => navigate(getPath(Paths.userSettings))}
+                                            leftSection={<IconSettings style={{width: rem(14), height: rem(14)}}
+                                                                       data-testid="settings"/>}>
+                                        Settings</Button>
+                                }
+                                <Button data-testid="log-out-btn-mobile" variant="default" onClick={() => signOut()}
+                                        leftSection={<IconLogout style={{width: rem(14), height: rem(14)}}/>}>
                                     Log out
                                 </Button>
                             </>

@@ -1,1 +1,1 @@
-export {SearchInputDesktop} from './SearchInputDesktop.tsx';
+export {SearchInput} from './SearchInput.tsx';

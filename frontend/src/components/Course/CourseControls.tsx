@@ -40,11 +40,11 @@ const CourseControls = ({data, user, userReview, isLoading}: CourseControlsProps
                         Sign In to add review
                     </Button>
                 ) : userReview ? (
-                    <Button loading={isLoading} size={isMobile ? 'md' : 'sm'} variant="gradient" gradient={{from: 'teal', to: 'lime', deg: 170}} onClick={() => navigate(getPath(Paths.editUserReview))} leftSection={<IconEditCircle style={{width: rem(16), height: rem(16)}} />}>
+                    <Button data-testid="edit-review" loading={isLoading} size={isMobile ? 'md' : 'sm'} variant="gradient" gradient={{from: 'teal', to: 'lime', deg: 170}} onClick={() => navigate(getPath(Paths.editUserReview))} leftSection={<IconEditCircle style={{width: rem(16), height: rem(16)}} />}>
                         Edit your review
                     </Button>
                 ) : (
-                    <Button loading={isLoading} size={isMobile ? 'md' : 'sm'} variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}} onClick={() => navigate(getPath(Paths.addUserReview))} leftSection={<IconCirclePlus style={{width: rem(16), height: rem(16)}} />}>
+                    <Button data-testid="add-review" loading={isLoading} size={isMobile ? 'md' : 'sm'} variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}} onClick={() => navigate(getPath(Paths.addUserReview))} leftSection={<IconCirclePlus style={{width: rem(16), height: rem(16)}} />}>
                         Add review
                     </Button>
                 )}

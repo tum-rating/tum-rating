@@ -32,8 +32,6 @@ function CoursesTable() {
     const location = useLocation();
     const {columns} = useCoursesTableColumns();
 
-    //-----
-
     useEffect(() => {
         const spacingTopBarDiff = !!searchQuery ? 0 : 25;
         setTableTopSpacing(spacingTopBarDiff);

@@ -8,7 +8,7 @@ test.describe.configure({mode: 'serial'});
 
 test('should set new password in recovery process and sign in with new credentials', async ({page}) => {
     const newPassword = faker.internet.password();
-    await page.goto('/');
+    await page.goto('/', {waitUntil: 'domcontentloaded'});
     await page.getByTestId('user-btn-desktop').click();
     const username = await page.getByTestId('user-btn-username-desktop').allInnerTexts();
     const email = await page.getByTestId('user-btn-email-desktop').allInnerTexts();
@@ -20,7 +20,7 @@ test('should set new password in recovery process and sign in with new credentia
     await page.getByTestId('submit').click();
     await expect(page.getByText('Check Your Email')).toBeVisible();
     const token = await getRecoveryTokenFromMail(email[0]);
-    await page.goto(`/auth/recovery?token=${token}`);
+    await page.goto(`/auth/recovery?token=${token}`, {waitUntil: 'domcontentloaded'});
     await page.getByTestId('password').fill(newPassword);
     await page.getByTestId('confirm-password').fill(newPassword);
     await page.getByRole('button', {name: 'Reset Password'}).click();
@@ -33,7 +33,7 @@ test('should set new password in recovery process and sign in with new credentia
 test('[mobile] should set new password in recovery process and sign in with new credentials', async ({page}) => {
     const newPassword = faker.internet.password();
     await page.setViewportSize({width: 375, height: 667});
-    await page.goto('/');
+    await page.goto('/', {waitUntil: 'domcontentloaded'});
     await openMobileDrawer({page});
     const username = await page.getByTestId('user-btn-username-mobile').allInnerTexts();
     const email = await page.getByTestId('user-btn-email-mobile').allInnerTexts();
@@ -47,7 +47,7 @@ test('[mobile] should set new password in recovery process and sign in with new 
     await page.getByTestId('submit').click();
     await expect(page.getByText('Check Your Email')).toBeVisible();
     const token = await getRecoveryTokenFromMail(email[0]);
-    await page.goto(`/auth/recovery?token=${token}`);
+    await page.goto(`/auth/recovery?token=${token}`, {waitUntil: 'domcontentloaded'});
     await page.getByTestId('password').fill(newPassword);
     await page.getByTestId('confirm-password').fill(newPassword);
     await page.getByRole('button', {name: 'Reset Password'}).click();
