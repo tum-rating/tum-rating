@@ -66,7 +66,7 @@ const Course = () => {
                 ) : (
                     <>
                         <CourseControls data={data} isLoading={isLoading} user={user} userReview={userReview}></CourseControls>
-                        <Box className={classes.courseContent}>
+                        <Box className={classes.courseContent} data-testid="course-content">
                             <Flex className={clsx(classes.courseBanner, 'children-animation')}>
                                 <Box className={classes.image}>
                                     <Skeleton radius="lg" mah={90} w={280} h={100} loading={isLoading} component={<Image radius="lg" h={100} mah={90} w={280} fit="contain" fallbackSrc={tumLogo} />} />
