@@ -1,7 +1,7 @@
 import {Badge, Flex, Rating, Text} from '@mantine/core';
 import {isMobile} from 'react-device-detect';
 
-import {RatingBoxProps} from '@/components/Course/RatingBox.tsx';
+import {RatingBoxProps} from '@/components/Course/Rating/RatingBox.tsx';
 
 interface EditableRatingBoxProps extends RatingBoxProps {
     onChange?: (value: number) => void;
@@ -38,4 +38,4 @@ const EditableRatingBox = (props: EditableRatingBoxProps) => {
     );
 };
 
-export {EditableRatingBox, EditableRatingBoxProps};
+export {EditableRatingBox, type EditableRatingBoxProps};
