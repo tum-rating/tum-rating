@@ -6,8 +6,7 @@ import {useEffect, useMemo} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 
 import {useUser} from '@/auth/useUser.tsx';
-import {HowEasyEditableRating} from '@/components/Course/HowEasyEditableRating.tsx';
-import {HowInterestingEditableRating} from '@/components/Course/HowInterestingEditableRating.tsx';
+import {HowEasyEditableRating,HowInterestingEditableRating} from '@/components/Course/EditableRating';
 import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
 import {CloseButton} from '@/components/Modals/shared/CloseButton';
 import {ModalHeader} from '@/components/Modals/shared/ModalHeader';

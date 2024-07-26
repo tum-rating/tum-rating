@@ -3,7 +3,7 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {CoursesTable} from '../CoursesTable';
 
 import {TableScrollProvider} from '@/context';
-import {render} from 'tests/unit/utils/render.tsx';
+import {render} from 'tests/unit/utils/render';
 
 describe('CoursesTable', () => {
     let queryClient: QueryClient;

@@ -6,19 +6,20 @@ import {Fragment, useEffect} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 
 import classes from './Course.module.css';
-import {CourseControls} from './CourseControls.tsx';
+import {CourseControls} from './CourseControls';
 
 import tumLogo from '@/assets/img/tum_logo.png';
 import {useUser} from '@/auth/useUser.tsx';
 import {Comment} from '@/components/Comment';
 import {CourseHelmet} from '@/components/Course/CourseHelmet.tsx';
-import {HowEasyRating} from '@/components/Course/HowEasyRating.tsx';
-import {HowInterestingRating} from '@/components/Course/HowInterestingRating.tsx';
-import {ReviewsBox} from '@/components/Course/ReviewsBox.tsx';
+import {HowEasyRating} from '@/components/Course/Rating/HowEasyRating.tsx';
+import {HowInterestingRating} from '@/components/Course/Rating/HowInterestingRating.tsx';
+import {ReviewsBox} from '@/components/Course/Reviews';
 import {Skeleton} from '@/components/Skeleton';
 import {CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH} from '@/constants';
 import {useDetailCourse} from '@/courses/useCourse.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
+import {CourseTitleAnchor} from '@/components/Course/CourseTitleAnchor';
 
 const Course = () => {
     const {courseId: id} = useParams();
@@ -78,9 +79,11 @@ const Course = () => {
                                         radius="lg"
                                         loading={isLoading}
                                         component={
-                                            <Text data-testid="course-name" style={{wordBreak: 'break-word'}} fz={24} fw="700" lineClamp={5}>
-                                                {data?.name}{' '}
-                                            </Text>
+                                            <CourseTitleAnchor courseId={data?.courseId}>
+                                                <Text data-testid="course-name" style={{wordBreak: 'break-word'}} fz={24} fw="700" lineClamp={5}>
+                                                    {data?.name}{' '}
+                                                </Text>
+                                            </CourseTitleAnchor>
                                         }
                                     />
                                     <Flex gap="xs" wrap="wrap">
