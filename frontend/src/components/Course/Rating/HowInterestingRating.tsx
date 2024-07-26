@@ -1,4 +1,4 @@
-import {RatingBox} from '@/components/Course/RatingBox.tsx';
+import {RatingBox} from '@/components/Course/Rating/RatingBox.tsx';
 import {useHowInterestingRating} from '@/hooks';
 
 interface HowInterestingRatingProps {
