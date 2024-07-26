@@ -38,4 +38,4 @@ const EditableRatingBox = (props: EditableRatingBoxProps) => {
     );
 };
 
-export {EditableRatingBox, EditableRatingBoxProps};
+export {EditableRatingBox, type EditableRatingBoxProps};
