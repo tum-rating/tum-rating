@@ -7,7 +7,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import classes from './Recovery.module.css';
 
 import {useRecovery} from '@/auth/useRecovery.tsx';
-import {ModalResponsiveContainer} from '@/components/Modals/shared/ModalResponsiveContainer';
+import {PageWrapper} from "@/components/PageWrapper";
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 interface RecoveryFormProps {
@@ -41,7 +41,7 @@ export const Recovery = () => {
     };
 
     return (
-        <ModalResponsiveContainer>
+        <PageWrapper autoHeight>
             <Stack mx="auto" align="center" justify="center" className={classes.wrapper}>
                 {!token ? (
                     <Center h="100%">
@@ -102,6 +102,6 @@ export const Recovery = () => {
                     </Box>
                 )}
             </Stack>
-        </ModalResponsiveContainer>
+        </PageWrapper>
     );
 };
