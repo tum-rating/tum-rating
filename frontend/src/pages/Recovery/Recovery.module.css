@@ -1,9 +1,10 @@
 
 .wrapper {
-    position: absolute;
-    inset:0;
     background: var(--mantine-color-body);
-    /*padding-top: rem(80px);*/
+    width: 100%;
+    margin-top: var(--mantine-spacing-xl);
+    padding: var(--mantine-spacing-xl);
+    /*padding-top: rem(60px);*/
     /*padding-bottom: rem(80px);*/
     @media (max-width: 47.99em) {
         /*padding-top: rem(0);*/
