@@ -19,6 +19,7 @@ import {Skeleton} from '@/components/Skeleton';
 import {CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH} from '@/constants';
 import {useDetailCourse} from '@/courses/useCourse.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
+import {CourseTitleAnchor} from '@/components/Course/CourseTitleAnchor';
 
 const Course = () => {
     const {courseId: id} = useParams();
@@ -78,9 +79,11 @@ const Course = () => {
                                         radius="lg"
                                         loading={isLoading}
                                         component={
-                                            <Text data-testid="course-name" style={{wordBreak: 'break-word'}} fz={24} fw="700" lineClamp={5}>
-                                                {data?.name}{' '}
-                                            </Text>
+                                            <CourseTitleAnchor courseId={data?.courseId}>
+                                                <Text data-testid="course-name" style={{wordBreak: 'break-word'}} fz={24} fw="700" lineClamp={5}>
+                                                    {data?.name}{' '}
+                                                </Text>
+                                            </CourseTitleAnchor>
                                         }
                                     />
                                     <Flex gap="xs" wrap="wrap">
