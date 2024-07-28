@@ -14,6 +14,7 @@ import {useSearchContext, useTableScrollContext} from '@/context';
 import {Course} from '@/courses/types.ts';
 import {usePaginatedCourses} from '@/courses/usePaginatedCourses.tsx';
 import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
+import {sortCoursesByMatchingFactor} from "@/utils/sortCoursesByMatchingFactor.ts";
 
 function CoursesTable() {
     const [tableTopSpacing, setTableTopSpacing] = useState<number>(CONTENT_TOP_SPACING);
@@ -50,8 +51,8 @@ function CoursesTable() {
     }, [searchQuery]);
 
     const records = useMemo(() => {
-        if (searchQuery) {
-            return searchData.pages.flatMap((page) => page.courses);
+        if (searchQuery && searchData) {
+            return sortCoursesByMatchingFactor(searchData.pages.flatMap((page) => page.courses), searchQuery);
         } else if (paginatedData) {
             return paginatedData.pages.flatMap((page) => page.courses);
         }
