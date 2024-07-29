@@ -3,9 +3,9 @@ import * as userLocalStorage from '../auth/user.localstore.ts';
 import {endpoints, useMutationWithAuth} from '@/api';
 import {User, useUser} from '@/auth/useUser.tsx';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {useFeedbackCTAContext} from "@/context";
 import {queryClient} from '@/react-query/client.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
-import {useFeedbackCTAContext} from "@/context";
 
 interface UserWithToken extends User {
     token: string;
@@ -25,7 +25,7 @@ async function addUserReview(user: UserWithToken | null | undefined, userReview:
     });
     const data = await response.json();
     if (!response.ok) throw new ResponseError(data.message, response, courseId);
-    return {success: true};
+    return {success: true, courseId: courseId};
 }
 
 export interface UserAddReviewInput {
@@ -40,7 +40,10 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any 
     const {setFeedbackCTA} = useFeedbackCTAContext();
     const token = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: async (newReview: UserAddReviewInput) => addUserReview({...data, token: token}, newReview, courseId, type),
+        mutationFn: async (newReview: UserAddReviewInput) => addUserReview({
+            ...data,
+            token: token
+        }, newReview, courseId, type),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.detail_course, courseId],
@@ -48,6 +51,7 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any 
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.courses],
             });
+
             const ref = document.querySelector('.comments-section');
             if (ref) {
                 setTimeout(function () {
@@ -57,8 +61,8 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any 
                     });
                 }, 300);
             }
-            setFeedbackCTA(true)
+            setFeedbackCTA(true);
             return true;
-        },
+        }
     });
 }
