@@ -12,6 +12,7 @@ export enum Paths {
     editUserReview = '#modal=edit-user-review',
     spotlight = '#modal=spotlight',
     forgotPassword = '#modal=forgot-password',
+    userSettings = '#modal=settings',
     //---contact
     feedback = 'feedback',
     privacyPolicy = 'privacy-policy',
@@ -87,6 +88,9 @@ const PATH_ELEMENTS: PathElement = {
         parent: null,
     },
     [Paths.forgotPassword]: {
+        parent: null,
+    },
+    [Paths.userSettings]: {
         parent: null,
     },
     //---admin

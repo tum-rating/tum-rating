@@ -10,18 +10,18 @@ const CloseButton = (props: CloseButtonProps) => {
     return (
         <ActionIcon
             data-testid="close-button"
-            pos="absolute"
             variant="subtle"
             style={{
                 top: 10,
                 right: 10,
                 zIndex: 1,
+                position: 'absolute',
                 ...style,
             }}
             onClick={onClick}
             {...rest}
         >
-            <IconX />
+            <IconX/>
         </ActionIcon>
     );
 };

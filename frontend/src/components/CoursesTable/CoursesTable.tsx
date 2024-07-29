@@ -2,64 +2,66 @@ import {ActionIcon, Badge, Flex, Skeleton} from '@mantine/core';
 import {IconX} from '@tabler/icons-react';
 import clsx from 'clsx';
 import {MantineReactTable, MRT_RowVirtualizer, useMantineReactTable} from 'mantine-react-table';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 
 import classes from './CoursesTable.module.css';
 
 import {CoursesTableHelmet} from '@/components/CoursesTable/CoursesTableHelmet.tsx';
 import {useCoursesTableColumns} from '@/components/CoursesTable/useCoursesTableColumns.tsx';
-import {CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH, PAGE_SIZE} from '@/constants';
+import {CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH} from '@/constants';
 import {useSearchContext, useTableScrollContext} from '@/context';
 import {Course} from '@/courses/types.ts';
 import {usePaginatedCourses} from '@/courses/usePaginatedCourses.tsx';
 import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
+import {sortCoursesByMatchingFactor} from "@/utils/sortCoursesByMatchingFactor.ts";
 
 function CoursesTable() {
     const [tableTopSpacing, setTableTopSpacing] = useState<number>(CONTENT_TOP_SPACING);
     const {scrollIndex, setScrollIndex} = useTableScrollContext();
     const tableContainerRef = useRef<HTMLDivElement>(null);
     const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
-    const [records, setRecords] = useState<Course[]>([]);
     const {searchQuery, setSearchQuery} = useSearchContext();
     const [internalLoader, setInternalLoader] = useState(true);
 
-    const {data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage} = usePaginatedCourses();
-
-    const {data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, isError: isSearchError} = useSearchCourses(searchQuery);
+    const {
+        data: paginatedData,
+        fetchNextPage: fetchPaginatedNextPage,
+        isFetching: isPaginatedFetching,
+        isLoading: isPaginatedLoading,
+        isError: isPaginatedError,
+        hasNextPage: hasPaginatedNextPage
+    } = usePaginatedCourses();
+    const {
+        data: searchData,
+        fetchNextPage: fetchSearchNextPage,
+        hasNextPage: hasSearchNextPage,
+        isFetching: isSearchFetching,
+        isFetched: isSearchFetched,
+        isError: isSearchError
+    } = useSearchCourses(searchQuery);
 
     const navigate = useNavigate();
     const location = useLocation();
     const {columns} = useCoursesTableColumns();
-
-    //-----
 
     useEffect(() => {
         const spacingTopBarDiff = !!searchQuery ? 0 : 25;
         setTableTopSpacing(spacingTopBarDiff);
     }, [searchQuery]);
 
-    useEffect(() => {
-        if (paginatedData) {
-            const newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
-            setRecords([...newRecords]);
-            setInternalLoader(false);
+    const records = useMemo(() => {
+        if (searchQuery && searchData) {
+            return sortCoursesByMatchingFactor(searchData.pages.flatMap((page) => page.courses), searchQuery);
+        } else if (paginatedData) {
+            return paginatedData.pages.flatMap((page) => page.courses);
         }
-    }, [paginatedData]);
+        return [];
+    }, [searchData, paginatedData]);
 
     useEffect(() => {
-        if (searchData) {
-            const newRecords = searchData.pages.map((v) => v.courses.map((el) => el)).flat();
-            setRecords([...newRecords]);
-            setInternalLoader(false);
-        } else {
-            if (paginatedData) {
-                const newRecords = paginatedData.pages.map((v) => v.courses.map((el) => el)).flat();
-                setRecords([...newRecords]);
-                setInternalLoader(false);
-            }
-        }
-    }, [searchData]);
+        setInternalLoader(false);
+    }, [records]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -79,21 +81,17 @@ function CoursesTable() {
                 if (scrollHeight - scrollTop - clientHeight < clientHeight - tableTopSpacing - HEADER_HEIGHT && !isPaginatedFetching && !isSearchFetching) {
                     if (searchQuery) {
                         if (hasSearchNextPage) {
-                            const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
-                            setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
+                            fetchSearchNextPage();
                         }
-                        fetchSearchNextPage();
                     } else {
                         if (hasPaginatedNextPage) {
-                            const newSkeletonLoaders = Array(PAGE_SIZE).fill(null);
-                            setRecords((prevRecords) => [...prevRecords, ...newSkeletonLoaders]);
+                            fetchPaginatedNextPage();
                         }
-                        fetchPaginatedNextPage();
                     }
                 }
             }
         },
-        [fetchPaginatedNextPage, fetchSearchNextPage, isPaginatedFetching, isSearchFetching],
+        [fetchPaginatedNextPage, fetchSearchNextPage, isPaginatedFetching, isSearchFetching, hasSearchNextPage, hasPaginatedNextPage, searchQuery, tableTopSpacing]
     );
 
     useEffect(() => {
@@ -115,7 +113,7 @@ function CoursesTable() {
         const dynamicPath = '/courses/' + record._id;
         setScrollIndex(rowVirtualizerInstanceRef.current.range.startIndex);
         navigate(dynamicPath);
-    }, []);
+    }, [navigate, setScrollIndex]);
 
     const removeQuery = () => {
         setSearchQuery('');
@@ -138,23 +136,22 @@ function CoursesTable() {
                     handleRowClick(row.original as Course);
                 }
             },
-            style:
-                !records.length || isPaginatedLoading || isSearchFetching || row.original === null
-                    ? {
-                          pointerEvents: 'none',
-                          cursor: 'not-allowed',
-                      }
-                    : {
-                          pointerEvents: 'auto',
-                          cursor: 'pointer',
-                      },
+            style: !records.length || isPaginatedLoading || isSearchFetching || row.original === null
+                ? {
+                    pointerEvents: 'none',
+                    cursor: 'not-allowed',
+                }
+                : {
+                    pointerEvents: 'auto',
+                    cursor: 'pointer',
+                },
         }),
         mantineTableHeadCellProps: {
             className: clsx(classes.tableHeadRow),
         },
         mantineTableBodyCellProps: ({row}) => ({
             className: clsx(classes.tableCellRow),
-            children: row.original === null ? <Skeleton h={30} /> : undefined,
+            children: row.original === null ? <Skeleton h={30}/> : undefined,
         }),
         enablePagination: false,
         enableFilters: false,
@@ -174,10 +171,8 @@ function CoursesTable() {
                 maxWidth: MAX_SITE_WIDTH + 'px',
                 width: '100vw',
             },
-            onScroll: (
-                // @ts-ignore
-                event: UIEvent<HTMLDivElement>,
-            ) => fetchMoreOnBottomReached(event.target as HTMLDivElement),
+            // @ts-ignore
+            onScroll: (event: UIEvent<HTMLDivElement>) => fetchMoreOnBottomReached(event.target as HTMLDivElement),
             className: classes.tableContainer,
         },
         mantineToolbarAlertBannerProps: {
@@ -193,19 +188,19 @@ function CoursesTable() {
         },
         renderTopToolbar: () => {
             return (
-                <Flex data-active={!!searchQuery} justify="space-between" align="center" className={classes.dataTableInfo}>
+                <Flex data-active={!!searchQuery} justify="space-between" align="center"
+                      className={classes.dataTableInfo}>
                     <Flex align="center" h="100%">
                         {searchQuery ? (
-                            <>
-                                <Badge color="green" radius="xs" fw={600}>
-                                    <Flex align="center">
-                                        {searchQuery}
-                                        <ActionIcon p={0} m={0} variant="transparent" c="white" aria-label="Remove query" loading={isSearchFetching}>
-                                            <IconX size={16} onClick={removeQuery} />
-                                        </ActionIcon>
-                                    </Flex>
-                                </Badge>
-                            </>
+                            <Badge color="green" radius="xs" fw={600}>
+                                <Flex align="center">
+                                    {searchQuery}
+                                    <ActionIcon p={0} m={0} variant="transparent" c="white" aria-label="Remove query"
+                                                loading={isSearchFetching}>
+                                        <IconX size={16} onClick={removeQuery}/>
+                                    </ActionIcon>
+                                </Flex>
+                            </Badge>
                         ) : null}
                     </Flex>
                 </Flex>
@@ -221,8 +216,8 @@ function CoursesTable() {
 
     return (
         <>
-            <CoursesTableHelmet courses={records} />
-            <MantineReactTable table={table} />
+            <CoursesTableHelmet courses={records}/>
+            <MantineReactTable table={table}/>
         </>
     );
 }

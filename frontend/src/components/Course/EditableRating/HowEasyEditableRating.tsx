@@ -1,4 +1,4 @@
-import {EditableRatingBox, EditableRatingBoxProps} from '@/components/Course/EditableRatingBox.tsx';
+import {EditableRatingBox, EditableRatingBoxProps} from '@/components/Course/EditableRating/EditableRatingBox.tsx';
 import {useHowEasyRating} from '@/hooks';
 
 interface HowEasyEditableRatingProps {

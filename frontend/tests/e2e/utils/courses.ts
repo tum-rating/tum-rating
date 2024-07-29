@@ -44,10 +44,11 @@ const openCoursePageByClickingCourseRowInTable = async ({page, browser}) => {
 };
 
 const addReviewToCourse = async ({page, courseReview}: CourseAction) => {
+    await page.waitForTimeout(1000);
     await page.getByRole('button', {name: 'Add review'}).click();
     await page.getByTestId('textarea').fill(courseReview.comment);
     await page.getByTestId('select').click();
-    await page.getByRole('option', {name: 'S'}).first().click();
+    await page.getByRole('option').first().click();
 
     await page.getByTestId('add-user-review-form').getByText('How easy0No reviews').click();
     await page.getByTestId('add-user-review-form').getByText('How interesting0No reviews').click();
