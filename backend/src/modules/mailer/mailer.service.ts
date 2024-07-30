@@ -31,6 +31,7 @@ const emailCssStyles = "email-template.css";
 const emailActivationTemplateFile = 'activation.html';
 const emailRecoveryTemplateFile = 'recovery.html';
 const emailEmailAlreadyExistsTemplateFile = 'email-already-exists.html';
+const telegramLink = 'https://t.me/+hYAM4t27bJgzNjdk';
 
 @Injectable()
 export class MailerService {
@@ -92,17 +93,21 @@ export class MailerService {
             BaseUrl: this._configService.getOrThrow('webapp.url'),
             CurrentYear: new Date().getFullYear().toString(),
             Styles: styles,
-            LogoUrl: "https://tum-rating.de/0YXZHm9A.png"
+            LogoUrl: "https://tum-rating.de/0YXZHm9A.png",
+            SupportMail: this._configService.getOrThrow('mailer.sender'),
+            TelegramLink: telegramLink,
         };
     }
 
     public async sendEmailActivationEmail(to: MailRecipient, activationToken: string) {
         const activationLink = `${this._configService.getOrThrow('webapp.url')}/auth/activate?token=${activationToken}`;
         const username = to.name || 'User';
+        const email = to.email || 'Email';
 
         const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.activation, {
             ...this._getCommonVariables(),
             Username: username,
+            Email: email,
             ActivationLink: activationLink,
         });
 
