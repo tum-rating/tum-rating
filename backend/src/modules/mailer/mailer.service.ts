@@ -124,6 +124,7 @@ export class MailerService {
             Username: username,
             PasswordResetLink: passwordResetLink,
             Email: email,
+            LinkExpirationHours: `${this._configService.getOrThrow('jwt.expiration_token')}`
         });
 
         return this.send(to, 'Password recovery', processedEmailTemplate);
@@ -144,6 +145,7 @@ export class MailerService {
             Username: username,
             Email: to.email,
             RecoveryLink: `${this._configService.getOrThrow('webapp.url')}#modal=forgot-password`,
+            LinkExpirationHours: `${this._configService.getOrThrow('jwt.expiration_token')}`
         });
 
         return this.send(to, 'Email is already registered', processedEmailTemplate);
