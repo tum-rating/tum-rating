@@ -5,7 +5,7 @@ import {isMobileOnly} from 'react-device-detect';
 import {useLocation, useNavigate} from 'react-router-dom';
 
 import {SearchHighlight} from '@/components/Highlight';
-import classes from '@/components/Search/SearchInputDesktop.module.css';
+import classes from '@/components/Search/SearchInput.module.css';
 import {useSearchContext} from '@/context';
 import {Course} from '@/courses/types.ts';
 import {useSearchCourses} from '@/courses/useSearchCourses';
