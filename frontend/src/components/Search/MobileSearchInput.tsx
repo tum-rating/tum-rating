@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router-dom';
 
 import {CopyrightFooter} from '@/components/CopyrightFooter';
 import {ComboboxEmpty} from '@/components/Search/ComboboxEmpty.tsx';
-import classes from '@/components/Search/SearchInputDesktop.module.css';
+import classes from '@/components/Search/SearchInput.module.css';
 
 const MobileSearchInput = ({combobox, value, setValue, isSearchOpen, setIsSearchOpen, isLoading, options, handleSubmit, handleClear, debouncedValue}) => {
     const navigate = useNavigate();
@@ -42,7 +42,7 @@ const MobileSearchInput = ({combobox, value, setValue, isSearchOpen, setIsSearch
                         <form style={{width: '100%'}} onSubmit={handleSubmit}>
                             <TextInput
                                 radius={0}
-                                height={100}
+                                height={54}
                                 size="xl"
                                 autoFocus
                                 leftSection={

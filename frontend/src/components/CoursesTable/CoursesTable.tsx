@@ -188,16 +188,14 @@ function CoursesTable() {
         },
         renderTopToolbar: () => {
             return (
-                <Flex data-active={!!searchQuery} justify="space-between" align="center"
-                      className={classes.dataTableInfo}>
-                    <Flex align="center" h="100%">
+                <Flex data-active={!!searchQuery} justify="space-between" align="center" className={classes.dataTableInfo}>
+                    <Flex align="center" h="100%" px="4">
                         {searchQuery ? (
-                            <Badge color="green" radius="xs" fw={600}>
+                            <Badge color="green" radius="xs" fw={600} pl={8} pr={0}>
                                 <Flex align="center">
                                     {searchQuery}
-                                    <ActionIcon p={0} m={0} variant="transparent" c="white" aria-label="Remove query"
-                                                loading={isSearchFetching}>
-                                        <IconX size={16} onClick={removeQuery}/>
+                                    <ActionIcon p={0} m={0} variant="transparent" c="white" aria-label="Remove query" loading={isSearchFetching}>
+                                        <IconX size={16} onClick={removeQuery} />
                                     </ActionIcon>
                                 </Flex>
                             </Badge>
