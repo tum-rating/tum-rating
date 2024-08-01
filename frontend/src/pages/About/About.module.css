@@ -1,0 +1,46 @@
+.signatureContainer {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 25px;
+    max-width: 480px;
+}
+
+@keyframes draw {
+    0% {
+        stroke-dasharray: 0, 100;
+        stroke-dashoffset: 0;
+        fill: none;
+    }
+    50% {
+        stroke-dasharray: 50, 50;
+        stroke-dashoffset: 25;
+        fill: none;
+    }
+    100% {
+        stroke-dasharray: 100, 0;
+        stroke-dashoffset: 0;
+        fill: #000; /* Fill the path at the end */
+    }
+}
+
+@keyframes transformPath {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(10deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.signature {
+    animation: draw 5s infinite;
+    stroke: #000;
+    stroke-width: 0.945;
+    fill: none;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+}

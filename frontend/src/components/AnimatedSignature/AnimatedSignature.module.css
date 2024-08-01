@@ -1,0 +1,14 @@
+.path {
+    fill: black;
+    stroke: var(--mantine-color-blue-filled);
+    stroke-dashoffset: 1000;
+    stroke-dasharray: 0;
+    animation: highlightWithBlue 25s linear both;
+
+}
+@keyframes highlightWithBlue {
+    to {
+        stroke-dasharray: 4;
+    }
+}
+
