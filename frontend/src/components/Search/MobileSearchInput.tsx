@@ -8,6 +8,7 @@ import {useNavigate} from 'react-router-dom';
 import {CopyrightFooter} from '@/components/CopyrightFooter';
 import {ComboboxEmpty} from '@/components/Search/ComboboxEmpty.tsx';
 import classes from '@/components/Search/SearchInput.module.css';
+import {HEADER_HEIGHT} from '@/constants';
 
 const MobileSearchInput = ({combobox, value, setValue, isSearchOpen, setIsSearchOpen, isLoading, options, handleSubmit, handleClear, debouncedValue}) => {
     const navigate = useNavigate();
@@ -75,7 +76,7 @@ const MobileSearchInput = ({combobox, value, setValue, isSearchOpen, setIsSearch
                         </form>
                     </Combobox.EventsTarget>
                     <Combobox.Options className={classes.searchInputMobileOptions}>
-                        <ScrollArea.Autosize h="calc(100dvh - 58px)" ref={searchInputRef} type="scroll" className={classes.searchInputMobileScrollArea}>
+                        <ScrollArea.Autosize h={`calc(100dvh - ${HEADER_HEIGHT}px)`} ref={searchInputRef} type="scroll" className={classes.searchInputMobileScrollArea}>
                             {!options.length && <ComboboxEmpty value={debouncedValue} isLoading={isLoading} />}
                             {options}
                         </ScrollArea.Autosize>
