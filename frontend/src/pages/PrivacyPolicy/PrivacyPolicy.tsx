@@ -3,7 +3,7 @@ import {useEffect} from 'react';
 
 import {Breadcrumbs} from '@/components/Breadcrumbs';
 import {PageWrapper} from '@/components/PageWrapper';
-import {COMPANY_NAME, CONTACT_PAGE_URL, COUNTRY, LAST_UPDATED_DATE, WEBSITE_URL} from '@/pages/PrivacyPolicy/constans.ts';
+import {COMPANY_NAME, CONTACT_PAGE_URL, COUNTRY, LAST_TERMS_UPDATED_DATE, WEBSITE_URL} from '@/constants/general';
 
 export const PrivacyPolicy = () => {
     useEffect(() => {
@@ -18,7 +18,7 @@ export const PrivacyPolicy = () => {
             <Box p="xl" className="children-animation">
                 <Breadcrumbs courseName={'Privacy policy'} isLoading={false} />
                 <h1>Privacy Policy</h1>
-                <p>Last updated: {LAST_UPDATED_DATE}</p>
+                <p>Last updated: {LAST_TERMS_UPDATED_DATE}</p>
                 <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
                 <p>
                     We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the{' '}

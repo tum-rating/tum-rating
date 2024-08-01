@@ -1,10 +1,9 @@
 import {Box} from '@mantine/core';
 import {useEffect} from 'react';
 
-import {COMPANY_NAME, WEBSITE_URL} from './constans.ts';
-
 import {Breadcrumbs} from '@/components/Breadcrumbs';
 import {PageWrapper} from '@/components/PageWrapper';
+import {COMPANY_NAME, WEBSITE_URL} from '@/constants/general';
 
 export const TermsOfService = () => {
     useEffect(() => {
