@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom';
 
 import {CopyrightFooter} from '@/components/CopyrightFooter';
 import {ComboboxEmpty} from '@/components/Search/ComboboxEmpty.tsx';
-import classes from '@/components/Search/SearchInputDesktop.module.css';
+import classes from '@/components/Search/SearchInput.module.css';
 import {PAGE_SIZE} from '@/constants';
 
 const DesktopSearchInput = ({combobox, value, debouncedValue, setValue, isLoading, options, handleSubmit, handleClear, fetchNextPage, data}) => {

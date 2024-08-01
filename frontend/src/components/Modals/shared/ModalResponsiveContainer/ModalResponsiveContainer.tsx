@@ -32,7 +32,6 @@ const ModalResponsiveContainer = (props: React.PropsWithChildren) => {
             style={{
                 position: 'relative',
                 height: isMobile && keyboardVisible ? `calc(${height}px - 2dvh)` : '100%',
-                minHeight: '300px',
             }}
         >
             {props.children}

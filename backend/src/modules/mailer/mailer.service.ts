@@ -99,6 +99,27 @@ export class MailerService {
         };
     }
 
+    public convertJwtExpiration(expirationToken: string): string {
+        const mappings: { [key: string]: string } = {
+            'd': 'day',
+            'h': 'hour',
+            'm': 'minute',
+            's': 'second'
+        };
+        const numericValue = parseInt(expirationToken.slice(0, -1));
+        const unit = expirationToken.slice(-1);
+        if (unit in mappings) {
+            let fullUnit = mappings[unit];
+            if (numericValue !== 1) {
+                fullUnit += 's';
+            }
+            const fullSentence = `${numericValue} ${fullUnit}`;
+            return fullSentence;
+        } else {
+            return "24h";
+        }
+    }
+
     public async sendEmailActivationEmail(to: MailRecipient, activationToken: string) {
         const activationLink = `${this._configService.getOrThrow('webapp.url')}/auth/activate?token=${activationToken}`;
         const username = to.name || 'User';
@@ -124,7 +145,7 @@ export class MailerService {
             Username: username,
             PasswordResetLink: passwordResetLink,
             Email: email,
-            LinkExpirationHours: `${this._configService.getOrThrow('jwt.expiration_token')}`
+            LinkExpirationHours: `${this.convertJwtExpiration(this._configService.getOrThrow('jwt.expiration_token'))}`
         });
 
         return this.send(to, 'Password recovery', processedEmailTemplate);

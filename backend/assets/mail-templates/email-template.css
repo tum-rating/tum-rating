@@ -8,14 +8,14 @@ body {
 
 a {
     overflow-wrap: break-word;
-    color: #228be6;
+    color: #228be6 !important;
 }
 
 .container {
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
-    background-color: #ffffff;
+    background-color: #efeff1 !important;
 }
 
 .header, .content, .footer {
@@ -25,7 +25,7 @@ a {
 
 .header {
     padding: 20px 20px 10px 10px;
-    background-color: #efeff1;
+    background-color: #efeff1 !important;
     text-align: left;
     border-bottom: 5px solid #000000;
 }
@@ -48,7 +48,7 @@ a {
 .button {
     display: inline-block;
     text-decoration: none;
-    color: #ffffff;
+    color: #ffffff !important;
     background: linear-gradient(90deg, rgb(76, 110, 245) 0%, rgb(34, 139, 230) 100%);
     border-radius: 4px;
     padding: 10px 20px;

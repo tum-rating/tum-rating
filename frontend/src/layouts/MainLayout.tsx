@@ -113,7 +113,10 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                 <Group hiddenFrom="sm" h="100%" px="md" justify="space-between" pos="relative">
                     <Burger open={drawerOpened} toggle={toggleDrawer}></Burger>
                     <Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>
-                    <SearchInput />
+
+                   <Flex h={54} mah={54} align="center">
+                       <SearchInput />
+                   </Flex>
                 </Group>
             </AppShell.Header>
             <AppShell.Main p={0} m={0}>
