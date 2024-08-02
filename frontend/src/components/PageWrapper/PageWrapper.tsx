@@ -18,7 +18,7 @@ const PageWrapper = (props: PageWrapperProps) => {
             maw={MAX_SITE_WIDTH}
             style={{
                 top: HEADER_HEIGHT + CONTENT_TOP_SPACING + 'px',
-                bottom: autoHeight ? -HEADER_HEIGHT : 'unset',
+                bottom: 0,
                 ...style,
             }}
             {...rest}
