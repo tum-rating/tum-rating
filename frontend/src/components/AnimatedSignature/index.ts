@@ -1,0 +1,1 @@
+export {AnimatedSignature} from "./AnimatedSignature"

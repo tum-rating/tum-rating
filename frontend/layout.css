@@ -4,12 +4,16 @@ html, body {
     height: 100vh;
 }
 
+a {
+    color: var(--mantine-color-anchor);
+}
+
 .mantine-Modal-body {
     overflow: auto;
     z-index: 99999;
 }
 
-.mantine-Modal-inner{
+.mantine-Modal-inner {
     @media (max-width: $mantine-breakpoint-sm) {
         padding-top: var(--mantine-spacing-xs);
         padding-left: var(--mantine-spacing-xs);
@@ -17,6 +21,7 @@ html, body {
         padding-bottom: var(--mantine-spacing-xs);
     }
 }
+
 .mantine-Modal-content {
     max-height: calc(100dvh - var(--mantine-spacing-xs) * 2);
 }
@@ -40,11 +45,11 @@ html, body {
 @media (max-width: $mantine-breakpoint-sm) {
     .modal-form .mantine-Input-input {
         font-size: var(--mantine-font-size-md);
-        height:  var(--input-height-md);
+        height: var(--input-height-md);
     }
 
-    .modal-form .mantine-Button-root{
+    .modal-form .mantine-Button-root {
         font-size: var(--mantine-font-size-md);
-        height:  var(--button-height-md);
+        height: var(--button-height-md);
     }
 }
