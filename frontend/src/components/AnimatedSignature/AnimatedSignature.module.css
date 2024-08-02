@@ -1,0 +1,9 @@
+.path {
+    fill: black;
+}
+@keyframes highlightWithBlue {
+    to {
+        stroke-dasharray: 4;
+    }
+}
+
