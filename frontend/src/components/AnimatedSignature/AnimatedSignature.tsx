@@ -3,8 +3,6 @@ import {useEffect} from "react";
 import classes from './AnimatedSignature.module.css';
 
 const AnimatedSignature = () => {
-
-
     useEffect(() => {
         const children = document.querySelectorAll('#svg > *');
         children.forEach((child: Element, index: number) => {
