@@ -1,10 +1,12 @@
 .pageWrapper {
-    position: absolute;
+    position: fixed;
+    overflow-y: scroll;
     transform: translateX(7px);
     border-top-left-radius: var(--mantine-radius-sm);
     border-top-right-radius: var(--mantine-radius-sm);
     width: 100%;
     background: var(--mantine-color-body);
+    transition: height 5s;
     @media (max-width: $mantine-breakpoint-sm) {
         border-radius: 0;
         top: 54px;
