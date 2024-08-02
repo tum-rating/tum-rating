@@ -1,6 +1,10 @@
-import {Flex, Text, Title} from '@mantine/core';
+import {Box, Text} from '@mantine/core';
 import {useEffect} from 'react';
 
+import classes from './About.module.css';
+
+import {AnimatedSignature} from "@/components/AnimatedSignature";
+import {Breadcrumbs} from '@/components/Breadcrumbs';
 import {PageWrapper} from '@/components/PageWrapper';
 
 export const About = () => {
@@ -13,12 +17,16 @@ export const About = () => {
 
     return (
         <PageWrapper autoHeight>
-            <Flex direction="column" align="center" justify="center" mt="xl" gap="xs" p="xl" className="children-animation">
-                <Title>About Us</Title>
-                <Text c="dimmed" ta="center">
-                    We just wanted to make website with TUM University courses rating.
+            <Box p="xl" className="children-animation">
+                <Breadcrumbs courseName={'About'} isLoading={false} />
+                <h1>About Us</h1>
+                <Text c="dimmed" maw={500}>
+                    At TUM Rating, we make it easier for you to choose the best courses at the Technical University of Munich. Our platform lets you read and share reviews, rate courses, and see what other students think. We aim to simplify your course selection and help you make smart choices about your studies. Join us to connect with fellow students and get the most out of your time at TUM!
                 </Text>
-            </Flex>
+                <div className={classes.signatureContainer}>
+                  <AnimatedSignature/>
+                </div>
+            </Box>
         </PageWrapper>
     );
 };

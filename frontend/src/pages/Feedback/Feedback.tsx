@@ -3,6 +3,7 @@ import {IconBrandTelegram} from '@tabler/icons-react';
 import {useEffect} from 'react';
 
 import {PageWrapper} from '@/components/PageWrapper';
+import {TUM_RATING_TELEGRAM_URL} from '@/constants';
 
 export const Feedback = () => {
     useEffect(() => {
@@ -20,7 +21,7 @@ export const Feedback = () => {
                     Feel free to reach out to us with any questions or feedback.
                 </Text>
                 <Divider w={300} my="md" />
-                <Button variant="primary-gradient" w={180} leftSection={<IconBrandTelegram height={18} />}>
+                <Button target="_blank" rel="noreferrer" href={TUM_RATING_TELEGRAM_URL} component="a" variant="primary-gradient" w={180} leftSection={<IconBrandTelegram height={18} />}>
                     Telegram
                 </Button>
             </Flex>
