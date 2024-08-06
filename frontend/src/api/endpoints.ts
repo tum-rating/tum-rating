@@ -1,9 +1,18 @@
-const baseDomain = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+const baseDomain = import.meta.env.VITE_API_BASE || '';
 const api = '/api';
 const apiVersion = '/v1';
 const baseApiUrl = baseDomain + api + apiVersion;
 const authBase = baseApiUrl + '/auth';
 const coursesBase = baseApiUrl + '/courses';
+
+console.log(
+    baseDomain,
+    api,
+    apiVersion,
+    baseApiUrl,
+    authBase,
+    coursesBase,
+)
 
 type AuthEndpoints = {
     base: string;
