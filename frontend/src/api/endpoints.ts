@@ -5,15 +5,6 @@ const baseApiUrl = baseDomain + api + apiVersion;
 const authBase = baseApiUrl + '/auth';
 const coursesBase = baseApiUrl + '/courses';
 
-console.log(
-    baseDomain,
-    api,
-    apiVersion,
-    baseApiUrl,
-    authBase,
-    coursesBase,
-)
-
 type AuthEndpoints = {
     base: string;
     signup: string;
