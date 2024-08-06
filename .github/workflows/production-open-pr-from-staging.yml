@@ -32,10 +32,10 @@ jobs:
 
       - name: Create branch from staging
         run: |
-          git checkout -b release/production/v${{ steps.version-bump.outputs.current-version }} staging
-          git push --set-upstream origin release/production/v${{ steps.version-bump.outputs.current-version }}
+          git checkout -b release/production/v${{ steps.package-version.outputs.current-version }} staging
+          git push --set-upstream origin release/production/v${{ steps.package-version.outputs.current-version }}
 
       - name: Create pull request
-        run: gh pr create -B master -H release/production/v${{ steps.version-bump.outputs.current-version }} --title 'Release production v${{ steps.version-bump.outputs.current-version }}' --body 'Staging production'
+        run: gh pr create -B master -H release/production/v${{ steps.package-version.outputs.current-version }} --title 'Release production v${{ steps.package-version.outputs.current-version }}' --body 'Staging production'
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
