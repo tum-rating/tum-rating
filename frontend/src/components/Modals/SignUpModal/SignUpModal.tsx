@@ -143,9 +143,9 @@ const SignUpModal = ({context, id}: ContextModalProps) => {
                                            error={form.errors.password}/>
                             <Text fz="xs" fw="bold">
                                 By signing up, you agree to our {' '}
-                                <Anchor style={{whiteSpace: 'nowrap'}}  fz="xs" fw="bold" href={getPath(Paths.privacyPolicy)}>Privacy Policy</Anchor>
+                                <Anchor target="_blank" style={{whiteSpace: 'nowrap'}}  fz="xs" fw="bold" href={getPath(Paths.privacyPolicy)}>Privacy Policy</Anchor>
                                 {' '} and {' '}
-                                <Anchor style={{whiteSpace: 'nowrap'}}   fz="xs" fw="bold" href={getPath(Paths.termsOfService)}>Terms of
+                                <Anchor target="_blank" style={{whiteSpace: 'nowrap'}}   fz="xs" fw="bold" href={getPath(Paths.termsOfService)}>Terms of
                                     Service.</Anchor>
                             </Text>
                             {apiError && error && (

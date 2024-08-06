@@ -22,6 +22,14 @@ jobs:
           fi
           echo "Workflow is triggered from staging"
 
+      - name: Get package version
+        id: package-version
+        run: |
+          echo "Reading package.json from ./package.json"
+          PACKAGE_VERSION=$(cat ./package.json | jq '.version' | tr -d '"')
+          echo "Current version: ${PACKAGE_VERSION}"
+          echo "current-version=${PACKAGE_VERSION}" >> $GITHUB_OUTPUT
+
       - name: Create branch from staging
         run: |
           git checkout -b release/production/v${{ steps.version-bump.outputs.current-version }} staging
