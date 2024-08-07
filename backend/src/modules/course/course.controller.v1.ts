@@ -80,11 +80,21 @@ export class CourseControllerV1 {
     public async getCourseById(@Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string) {
         this._logger.info('Get course with id: %s', id);
 
-        const review = await this._courseService.getCourseByIdWihtPopulatedReviews(id);
+        try {
+            const review = await this._courseService.getCourseByIdWihtPopulatedReviews(id);
+    
+            this._logger.info('Successfuly retrieved course with id: %s', review.id);
+    
+            return review;
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                this._logger.debug('Course not found with id: %s', id);
+                throw new NotFoundException(error.message);
+            }
 
-        this._logger.info('Successfuly retrieved course with id: %s', review.id);
-
-        return review;
+            this._logger.error('Failed to get course with id: %s', id, error);
+            throw error;
+        }
     }
 
     @Get('/:courseId/user/me')
