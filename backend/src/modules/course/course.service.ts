@@ -35,6 +35,8 @@ export class CourseService {
     public async getCourseByIdWihtPopulatedReviews(id: string) {
         const course = await this._courseRepository.findOneByIdWithPopulatedReviews(id);
 
+        if (course === null) throw new NotFoundError(`course ${id} not found`);
+
         return course;
     }
 

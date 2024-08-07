@@ -6,6 +6,7 @@ import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-ra
 import { courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
 import { createCourseMockRequest } from '@tum-rating/backend/test/utils/api-client/course';
 import { deleteCoursesWithName } from '@tum-rating/backend/test/utils/db-client/course';
+import { MONGO_ZERO_ID } from '@tum-rating/backend/src/utils/const';
 
 beforeAll(async () => {
     await connectMongo();
@@ -29,6 +30,7 @@ describe('Get Course', () => {
                 expect(response.body.courses.length >= 1).toBe(true);
             });
     });
+
     it('should get course by id', async () => {
         const signInResponse = await signInAdminRequestMock();
 
@@ -46,6 +48,13 @@ describe('Get Course', () => {
                 expect(response.body.reviews).toBeDefined();
             });
     });
+
+    it('get course by if should return 404 if course not found', async () => {
+        return supertest(courseUrl)
+            .get('/' + MONGO_ZERO_ID)
+            .expect(404);
+    });
+
     it('should search course by its title', async () => {
         const signInResponse = await signInAdminRequestMock();
 
