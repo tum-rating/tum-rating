@@ -2,7 +2,7 @@ import axios from 'axios';
 import fs from 'fs';
 
 
-const adminToken = "eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjAsInVzZXJSb2xlIjoxLCJzdWIiOiI2NmIyN2Q3MGE5ZGZmM2I0ZjYwYmFiYTgiLCJleHAiOjE3MjQwODY4MTl9.5aY7WB260s5bmWr2slZBSsQ2Di3ajrzkiyWAEqWwo4s";
+const adminToken = "";
 const backendEndpoint = 'http://localhost:3000/api/v1/courses';
 const inputFile = './merged/output.json';
 
