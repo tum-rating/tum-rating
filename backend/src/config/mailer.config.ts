@@ -11,6 +11,6 @@ export default registerAs('mailer', () => {
         pass: process.env.MAILER_PASS,
         sender: process.env.MAILER_SENDER,
         adminEmails,
-        useHtmlTemplates: process.env.MAILER_USE_HTLM_TEMPLATES === 'true',
+        useHtmlTemplates: process.env.MAILER_USE_HTLM_TEMPLATES == 'true',
     }
 });
