@@ -1,6 +1,6 @@
 TUM-RATING
 
-Hello [Username]
+Hello [Username],
 Thank you for registering. To activate youraccount, please click the link below:
 
 [ActivationLink]
