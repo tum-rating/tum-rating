@@ -29,6 +29,7 @@ services:
       MAILER_PASS: pass
       MAILER_SENDER: TUM RATING<tumreview@gmail.com>
       MAILER_ADMIN_EMAILS: admin@email.com
+      MAILER_USE_HTLM_TEMPLATES: true
 
       #SIGNUP
       ACCEPTED_EMAILS_DOMAINS: mytum.de,tum.de
