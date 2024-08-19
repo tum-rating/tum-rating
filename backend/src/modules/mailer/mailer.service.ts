@@ -43,7 +43,6 @@ const telegramLink = 'https://t.me/+hYAM4t27bJgzNjdk';
 export class MailerService {
     private readonly _transporter: NodeMailer.Transporter;
     private readonly _sender: string;
-    private readonly _htmlTemplates: EmailTemplates;
     private readonly _templates: EmailTemplates;
 
     constructor(
@@ -133,7 +132,7 @@ export class MailerService {
         const username = to.name || 'User';
         const email = to.email || 'Email';
 
-        const processedEmailTemplate = this._injectVariablesToTemplate(this._htmlTemplates.activation, {
+        const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.activation, {
             ...this._getCommonVariables(),
             Username: username,
             Email: email,
@@ -148,7 +147,7 @@ export class MailerService {
         const username = to.name || 'User';
         const email = to.email || 'Email';
 
-        const processedEmailTemplate = this._injectVariablesToTemplate(this._htmlTemplates.passwordRecovery, {
+        const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.passwordRecovery, {
             ...this._getCommonVariables(),
             Username: username,
             PasswordResetLink: passwordResetLink,
@@ -169,7 +168,7 @@ export class MailerService {
     }
 
     public async sendEmailAlreadyExists(to: MailRecipient, username: string) {
-        const processedEmailTemplate = this._injectVariablesToTemplate(this._htmlTemplates.emailAlreadyExists, {
+        const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.emailAlreadyExists, {
             ...this._getCommonVariables(),
             Username: username,
             Email: to.email,
