@@ -5,6 +5,5 @@ Email [Email] is already registered in TUM-RATING. If you have forgotten your pa
 
 [RecoveryLink]
 
-
 🐛 regards,
 TUM-RATING
