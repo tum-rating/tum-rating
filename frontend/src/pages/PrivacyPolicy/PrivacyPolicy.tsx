@@ -1,9 +1,11 @@
 import {Box} from '@mantine/core';
 import {useEffect} from 'react';
+import {Helmet} from "react-helmet";
 
 import {Breadcrumbs} from '@/components/Breadcrumbs';
 import {PageWrapper} from '@/components/PageWrapper';
 import {COMPANY_NAME, CONTACT_PAGE_URL, COUNTRY, LAST_TERMS_UPDATED_DATE, WEBSITE_URL} from '@/constants/general';
+
 
 export const PrivacyPolicy = () => {
     useEffect(() => {
@@ -15,6 +17,14 @@ export const PrivacyPolicy = () => {
 
     return (
         <PageWrapper>
+            <Helmet>
+                <title>About Us - TUM Rating</title>
+                <meta name="description" content="Learn more about TUM Rating and our mission to help students choose the best courses at the Technical University of Munich." />
+                <meta property="og:title" content="About Us - TUM Rating" />
+                <meta property="og:description" content="Learn more about TUM Rating and our mission to help students choose the best courses at the Technical University of Munich." />
+                <meta name="twitter:title" content="About Us - TUM Rating" />
+                <meta name="twitter:description" content="Learn more about TUM Rating and our mission to help students choose the best courses at the Technical University of Munich." />
+            </Helmet>
             <Box p="xl" className="children-animation">
                 <Breadcrumbs courseName={'Privacy policy'} isLoading={false} />
                 <h1>Privacy Policy</h1>

@@ -1,5 +1,6 @@
 import {Box} from '@mantine/core';
 import {useEffect} from 'react';
+import {Helmet} from 'react-helmet';
 
 import {Breadcrumbs} from '@/components/Breadcrumbs';
 import {PageWrapper} from '@/components/PageWrapper';
@@ -15,6 +16,14 @@ export const TermsOfService = () => {
 
     return (
         <PageWrapper>
+            <Helmet>
+                <title>Terms of Service - TUM Rating</title>
+                <meta name="description" content="Read the terms of service for using TUM Rating. Understand the rules and regulations for accessing our platform." />
+                <meta property="og:title" content="Terms of Service - TUM Rating" />
+                <meta property="og:description" content="Read the terms of service for using TUM Rating. Understand the rules and regulations for accessing our platform." />
+                <meta name="twitter:title" content="Terms of Service - TUM Rating" />
+                <meta name="twitter:description" content="Read the terms of service for using TUM Rating. Understand the rules and regulations for accessing our platform." />
+            </Helmet>
             <Box p="xl" className="children-animation">
                 <Breadcrumbs courseName={'Terms of service'} isLoading={false} />
                 <h2>
