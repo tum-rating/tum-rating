@@ -117,6 +117,10 @@ const SignUpModal = ({context, id}: ContextModalProps) => {
                                 {form.values.email}{' '}
                             </Text>
                             for instructions to activate your account.
+                            Sending the email may take up to{' '}
+                            <Text component="span" size="md" fw={900} variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}}>
+                                15 minutes.
+                            </Text>
                         </Text>
                     </Flex>
                 ) : (
