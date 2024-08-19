@@ -1,0 +1,11 @@
+TUM-RATING
+
+Hello [Username]
+Thank you for registering. To activate youraccount, please click the link below:
+
+[ActivationLink]
+
+If the button above does not work, you can also copy and paste the following link into your browser:
+
+🐛 regards,
+TUM-RATING
