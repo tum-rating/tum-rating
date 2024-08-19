@@ -10,6 +10,7 @@ export default registerAs('mailer', () => {
         user: process.env.MAILER_USER,
         pass: process.env.MAILER_PASS,
         sender: process.env.MAILER_SENDER,
-        adminEmails
+        adminEmails,
+        useHtmlTemplates: process.env.MAILER_USE_HTLM_TEMPLATES == 'true',
     }
 });

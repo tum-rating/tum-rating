@@ -1,0 +1,9 @@
+TUM-RATING
+
+Hello [Username],
+Email [Email] is already registered in TUM-RATING. If you have forgotten your password, please use the recovery flow.
+
+[RecoveryLink]
+
+🐛 regards,
+TUM-RATING
