@@ -67,7 +67,7 @@ export class MailerService {
 
         this._sender = this._configService.getOrThrow('mailer.sender');
 
-        this._templates = this._configService.getOrThrow('mailer.useHtmlTemplates') === 'true' ? this._initHtlmTemplates() : this._initTextTemplates();
+        this._templates = this._configService.getOrThrow('mailer.useHtmlTemplates') ? this._initHtlmTemplates() : this._initTextTemplates();
     }
 
     public async send(to: MailRecipient, subject: string, html: string, text?: string) {
