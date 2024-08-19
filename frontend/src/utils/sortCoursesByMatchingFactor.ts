@@ -12,6 +12,13 @@ const sortCoursesByMatchingFactor = (data: Course[], value: string) => {
         const name = item.name.toLowerCase();
         const professor = item.professor.toLowerCase();
         let matchingFactor = 0;
+        let isExactMatch = false;
+
+        if (name.includes(value.toLowerCase()) || professor.includes(value.toLowerCase())) {
+            matchingFactor += exactMatchBonus;
+            isExactMatch = true;
+        }
+
         words.forEach((word) => {
             const nameIndex = name.indexOf(word);
             const professorIndex = professor.indexOf(word);
@@ -25,16 +32,18 @@ const sortCoursesByMatchingFactor = (data: Course[], value: string) => {
             }
         });
 
-        if (name === value.toLowerCase() || professor === value.toLowerCase()) {
-            matchingFactor += exactMatchBonus;
-        }
-
         dataWithMatchingFactor.push({
             ...item,
             matchingFactor,
+            isExactMatch,
         });
     }
-    return dataWithMatchingFactor.sort((a, b) => b.matchingFactor - a.matchingFactor);
+
+    return dataWithMatchingFactor.sort((a, b) => {
+        if (a.isExactMatch && !b.isExactMatch) return -1;
+        if (!a.isExactMatch && b.isExactMatch) return 1;
+        return b.matchingFactor - a.matchingFactor;
+    });
 };
 
 export {sortCoursesByMatchingFactor}

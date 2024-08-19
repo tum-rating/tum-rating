@@ -6,6 +6,13 @@
     max-width: 480px;
 }
 
+.contentContainer {
+    align-items: center;
+    @media (max-width: $mantine-breakpoint-sm) {
+        align-items: flex-start;
+    }
+}
+
 @keyframes draw {
     0% {
         stroke-dasharray: 0, 100;
