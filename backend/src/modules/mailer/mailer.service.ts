@@ -27,16 +27,23 @@ interface MailerConfig {
 }
 
 const emailTemplatesDir = '../../../assets/mail-templates';
+
 const emailCssStyles = "email-template.css";
 const emailActivationTemplateFile = 'activation.html';
 const emailRecoveryTemplateFile = 'recovery.html';
 const emailEmailAlreadyExistsTemplateFile = 'email-already-exists.html';
+
+const emailActivationTextFile = 'activation.txt';
+const emailRecoveryTextFile = 'recovery.txt';
+const emailEmailAlreadyExistsTextFile = 'email-already-exists.txt';
+
 const telegramLink = 'https://t.me/+hYAM4t27bJgzNjdk';
 
 @Injectable()
 export class MailerService {
     private readonly _transporter: NodeMailer.Transporter;
     private readonly _sender: string;
+    private readonly _htmlTemplates: EmailTemplates;
     private readonly _templates: EmailTemplates;
 
     constructor(
@@ -60,7 +67,8 @@ export class MailerService {
         this._transporter = NodeMailer.createTransport(mailerConfig);
 
         this._sender = this._configService.getOrThrow('mailer.sender');
-        this._templates = this._initTemplates();
+
+        this._templates = this._configService.getOrThrow('mailer.useHtmlTemplates') === 'true' ? this._initHtlmTemplates() : this._initTextTemplates();
     }
 
     public async send(to: MailRecipient, subject: string, html: string, text?: string) {
@@ -125,7 +133,7 @@ export class MailerService {
         const username = to.name || 'User';
         const email = to.email || 'Email';
 
-        const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.activation, {
+        const processedEmailTemplate = this._injectVariablesToTemplate(this._htmlTemplates.activation, {
             ...this._getCommonVariables(),
             Username: username,
             Email: email,
@@ -140,7 +148,7 @@ export class MailerService {
         const username = to.name || 'User';
         const email = to.email || 'Email';
 
-        const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.passwordRecovery, {
+        const processedEmailTemplate = this._injectVariablesToTemplate(this._htmlTemplates.passwordRecovery, {
             ...this._getCommonVariables(),
             Username: username,
             PasswordResetLink: passwordResetLink,
@@ -161,7 +169,7 @@ export class MailerService {
     }
 
     public async sendEmailAlreadyExists(to: MailRecipient, username: string) {
-        const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.emailAlreadyExists, {
+        const processedEmailTemplate = this._injectVariablesToTemplate(this._htmlTemplates.emailAlreadyExists, {
             ...this._getCommonVariables(),
             Username: username,
             Email: to.email,
@@ -176,7 +184,7 @@ export class MailerService {
         return `${recipient.name ? recipient.name.concat(' ') : ''}<${recipient.email}>`;
     }
 
-    private _initTemplates(): EmailTemplates {
+    private _initHtlmTemplates(): EmailTemplates {
         const activationTemplateFilePath = join(__dirname, emailTemplatesDir, emailActivationTemplateFile);
         const activationEmailTemplate = fs.readFileSync(activationTemplateFilePath, 'utf8');
 
@@ -190,6 +198,23 @@ export class MailerService {
             activation: activationEmailTemplate,
             passwordRecovery: passwordRecoveryEmailTemplate,
             emailAlreadyExists: emailAlreadyExistsEmailTemplate,
+        };
+    }
+
+    private _initTextTemplates(): EmailTemplates {
+        const activationTextFilePath = join(__dirname, emailTemplatesDir, emailActivationTextFile);
+        const activationEmailText = fs.readFileSync(activationTextFilePath, 'utf8');
+
+        const passwordRecoveryTextFilePath = join(__dirname, emailTemplatesDir, emailRecoveryTextFile);
+        const passwordRecoveryEmailText = fs.readFileSync(passwordRecoveryTextFilePath, 'utf8');
+
+        const emailAlreadyExistsTextFilePath = join(__dirname, emailTemplatesDir, emailEmailAlreadyExistsTextFile);
+        const emailAlreadyExistsEmailText = fs.readFileSync(emailAlreadyExistsTextFilePath, 'utf8');
+
+        return {
+            activation: activationEmailText,
+            passwordRecovery: passwordRecoveryEmailText,
+            emailAlreadyExists: emailAlreadyExistsEmailText,
         };
     }
 
