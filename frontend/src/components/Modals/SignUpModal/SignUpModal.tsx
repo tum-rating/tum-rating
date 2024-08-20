@@ -83,8 +83,8 @@ const SignUpModal = ({context, id}: ContextModalProps) => {
                     subTitle={
                         <>
                             Sign up with your{' '}
-                            <Text mx={3} variant={'gradient'} fw="bold" fz="sm" display="inline">
-                                TUM University
+                            <Text ml={3} mr={4} variant={'gradient'} fw="bold" fz="sm" display="inline">
+                                @mytum.de
                             </Text>
                             email.
                         </>
