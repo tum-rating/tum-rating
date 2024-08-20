@@ -26,10 +26,10 @@ export class Course {
     @Prop({ required: true, type: [String] })
     offeredInSemesters: string[];
 
-    @Prop({ required: true, type: Date, default: new Date() })
+    @Prop({ required: true, type: Date, default: Date.now })
     createdAt: Date;
 
-    @Prop({ required: true, type: Date, default: new Date() })
+    @Prop({ required: true, type: Date, default: Date.now })
     updatedAt: Date;
 
     @Prop({ type: Number, default: 0, min: 0, max: 100 })

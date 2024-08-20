@@ -40,10 +40,10 @@ export class Review {
     @Prop({ type: String, required: true })
     semester: string;
 
-    @Prop({ required: true, type: Date, default: new Date() })
+    @Prop({ required: true, type: Date, default: Date.now })
     createdAt: Date;
 
-    @Prop({ required: true, type: Date, default: new Date() })
+    @Prop({ required: true, type: Date, default: Date.now })
     updatedAt: Date;
 }
 
