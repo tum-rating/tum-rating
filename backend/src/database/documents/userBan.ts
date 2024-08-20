@@ -16,7 +16,7 @@ export class UserBan {
     })
     userId: MongooseSchema.Types.ObjectId;
     
-    @Prop({ required: true, type: Date, default: new Date() })
+    @Prop({ required: true, type: Date, default: Date.now() })
     createdAt: Date;
 }
 
