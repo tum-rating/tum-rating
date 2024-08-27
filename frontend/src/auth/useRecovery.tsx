@@ -1,5 +1,5 @@
 import {endpoints, useMutationWithAuth} from '@/api';
-import {fetchWithServices} from "@/api/fetchWithServices.ts";
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function recovery(props: RecoveryBody) {

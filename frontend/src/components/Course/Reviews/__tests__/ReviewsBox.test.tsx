@@ -1,8 +1,8 @@
-import { screen } from '@testing-library/react';
+import {screen} from '@testing-library/react';
 
-import { ReviewsBox } from '../ReviewsBox';
+import {ReviewsBox} from '../ReviewsBox';
 
-import {render} from "tests/unit/utils/render";
+import {render} from 'tests/unit/utils/render';
 
 describe('ReviewsBox', () => {
     it('should render the number of reviews correctly when votes are provided', () => {

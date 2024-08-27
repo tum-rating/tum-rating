@@ -3,7 +3,7 @@ import {useQuery} from '@tanstack/react-query';
 import {Course} from './types.ts';
 
 import {endpoints} from '@/api';
-import {fetchWithServices} from "@/api/fetchWithServices.ts";
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 

@@ -1,10 +1,10 @@
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
 import {endpoints, useMutationWithAuth} from '@/api';
-import {fetchWithServices} from "@/api/fetchWithServices.ts";
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {User, useUser} from '@/auth/useUser.tsx';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
-import {useFeedbackCTAContext} from "@/context";
+import {useFeedbackCTAContext} from '@/context';
 import {queryClient} from '@/react-query/client.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
@@ -41,10 +41,16 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any 
     const {setFeedbackCTA} = useFeedbackCTAContext();
     const token = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: async (newReview: UserAddReviewInput) => addUserReview({
-            ...data,
-            token: token
-        }, newReview, courseId, type),
+        mutationFn: async (newReview: UserAddReviewInput) =>
+            addUserReview(
+                {
+                    ...data,
+                    token: token,
+                },
+                newReview,
+                courseId,
+                type,
+            ),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.detail_course, courseId],
@@ -64,6 +70,6 @@ export function useAddUserReview(courseId: string, type: 'POST' | 'PATCH'): any 
             }
             setFeedbackCTA(true);
             return true;
-        }
+        },
     });
 }

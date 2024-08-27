@@ -1,5 +1,5 @@
 import {endpoints} from '@/api';
-import {fetchWithServices} from "@/api/fetchWithServices.ts";
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {useQueryWithAuth} from '@/api/useQueryWithAuth.tsx';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';

@@ -1,7 +1,7 @@
 import {useInfiniteQuery} from '@tanstack/react-query';
 
 import {endpoints} from '@/api';
-import {fetchWithServices} from "@/api/fetchWithServices.ts";
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {PAGE_SIZE} from '@/constants';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {Course} from '@/courses/types.ts';

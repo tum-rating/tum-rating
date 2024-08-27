@@ -12,6 +12,7 @@ import tumLogo from '@/assets/img/tum_logo.png';
 import {useUser} from '@/auth/useUser.tsx';
 import {Comment} from '@/components/Comment';
 import {CourseHelmet} from '@/components/Course/CourseHelmet.tsx';
+import {CourseTitleAnchor} from '@/components/Course/CourseTitleAnchor';
 import {HowEasyRating} from '@/components/Course/Rating/HowEasyRating.tsx';
 import {HowInterestingRating} from '@/components/Course/Rating/HowInterestingRating.tsx';
 import {ReviewsBox} from '@/components/Course/Reviews';
@@ -19,7 +20,6 @@ import {Skeleton} from '@/components/Skeleton';
 import {CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH} from '@/constants';
 import {useDetailCourse} from '@/courses/useCourse.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
-import {CourseTitleAnchor} from '@/components/Course/CourseTitleAnchor';
 
 const Course = () => {
     const {courseId: id} = useParams();

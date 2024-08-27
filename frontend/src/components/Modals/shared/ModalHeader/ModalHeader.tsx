@@ -9,24 +9,27 @@ interface ModalHeaderProps {
 }
 
 const ModalHeader = (props: ModalHeaderProps) => {
-    const {title, subTitle, icon = <IconKey width={21}/>} = props;
+    const {title, subTitle, icon = <IconKey width={21} />} = props;
     return (
-        <Flex mx="auto" w="100%" justify="center" direction="column" gap={'xs'}
-              bg="var(--primary-light-gradient)">
+        <Flex mx="auto" w="100%" justify="center" direction="column" gap={'xs'} bg="var(--primary-light-gradient)">
             <Flex mih={50} align="center" gap={6} px="sm" pt="sm">
-                {icon && <ThemeIcon mb={1} variant="gradient" radius="sm" data-testid="icon">
-                    {icon}
-                </ThemeIcon>}
-                {title && <Text fz="xl" fw="bold" lineClamp={1}>
-                    {title}
-                </Text>}
+                {icon && (
+                    <ThemeIcon mb={1} variant="gradient" radius="sm" data-testid="icon">
+                        {icon}
+                    </ThemeIcon>
+                )}
+                {title && (
+                    <Text fz="xl" fw="bold" lineClamp={1}>
+                        {title}
+                    </Text>
+                )}
             </Flex>
             {subTitle && (
                 <Text px="sm" fz="sm" fw="500" lineClamp={1}>
                     {subTitle}
                 </Text>
             )}
-            <Divider/>
+            <Divider />
         </Flex>
     );
 };

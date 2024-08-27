@@ -1,1 +1,1 @@
-export {ReviewsBox} from "./ReviewsBox"
+export {ReviewsBox} from './ReviewsBox';

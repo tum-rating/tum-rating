@@ -1,1 +1,1 @@
-export {AnimatedSignature} from "./AnimatedSignature"
+export {AnimatedSignature} from './AnimatedSignature';

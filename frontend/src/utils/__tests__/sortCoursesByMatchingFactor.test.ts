@@ -1,5 +1,5 @@
-import { Course } from '@/courses/types.ts';
-import { sortCoursesByMatchingFactor } from '@/utils/sortCoursesByMatchingFactor.ts';
+import {Course} from '@/courses/types.ts';
+import {sortCoursesByMatchingFactor} from '@/utils/sortCoursesByMatchingFactor.ts';
 
 describe('sortCoursesByMatchingFactor', () => {
     const courses: Course[] = [
@@ -14,7 +14,7 @@ describe('sortCoursesByMatchingFactor', () => {
             howInterestingRatingAverage: 4.5,
             howEasyRatingAverage: 3.8,
             votesNumber: 100,
-            offeredInSemesters: ['Fall 2023', 'Spring 2024']
+            offeredInSemesters: ['Fall 2023', 'Spring 2024'],
         },
         {
             _id: '2',
@@ -27,7 +27,7 @@ describe('sortCoursesByMatchingFactor', () => {
             howInterestingRatingAverage: 4.0,
             howEasyRatingAverage: 3.5,
             votesNumber: 80,
-            offeredInSemesters: ['Fall 2023', 'Spring 2024']
+            offeredInSemesters: ['Fall 2023', 'Spring 2024'],
         },
         {
             _id: '3',
@@ -40,8 +40,8 @@ describe('sortCoursesByMatchingFactor', () => {
             howInterestingRatingAverage: 4.7,
             howEasyRatingAverage: 3.9,
             votesNumber: 90,
-            offeredInSemesters: ['Fall 2023', 'Spring 2024']
-        }
+            offeredInSemesters: ['Fall 2023', 'Spring 2024'],
+        },
     ];
 
     it('should return courses sorted by matching factor for exact match in name', () => {
@@ -97,7 +97,7 @@ describe('sortCoursesByMatchingFactor', () => {
                 howInterestingRatingAverage: 0,
                 howEasyRatingAverage: 0,
                 votesNumber: 0,
-                offeredInSemesters: []
+                offeredInSemesters: [],
             },
             {
                 _id: '2',
@@ -110,8 +110,8 @@ describe('sortCoursesByMatchingFactor', () => {
                 howInterestingRatingAverage: 4.0,
                 howEasyRatingAverage: 3.5,
                 votesNumber: 80,
-                offeredInSemesters: ['Fall 2023', 'Spring 2024']
-            }
+                offeredInSemesters: ['Fall 2023', 'Spring 2024'],
+            },
         ];
         const result = sortCoursesByMatchingFactor(coursesWithEmptyFields, 'Mathematics');
         expect(result[0].name).toBe('Advanced Mathematics');

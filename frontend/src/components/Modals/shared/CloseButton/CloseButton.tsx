@@ -21,7 +21,7 @@ const CloseButton = (props: CloseButtonProps) => {
             onClick={onClick}
             {...rest}
         >
-            <IconX/>
+            <IconX />
         </ActionIcon>
     );
 };

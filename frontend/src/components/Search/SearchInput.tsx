@@ -1,7 +1,8 @@
 import {Loader} from '@mantine/core';
 import {useMediaQuery} from '@mantine/hooks';
-import {MobileSearchInput} from './MobileSearchInput';
+
 import {DesktopSearchInput} from './DesktopSearchInput';
+import {MobileSearchInput} from './MobileSearchInput';
 import {useSearch} from './useSearch';
 
 const SearchInput = () => {

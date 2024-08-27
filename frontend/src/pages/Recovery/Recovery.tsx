@@ -7,7 +7,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import classes from './Recovery.module.css';
 
 import {useRecovery} from '@/auth/useRecovery.tsx';
-import {PageWrapper} from "@/components/PageWrapper";
+import {PageWrapper} from '@/components/PageWrapper';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 interface RecoveryFormProps {

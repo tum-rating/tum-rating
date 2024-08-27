@@ -1,10 +1,10 @@
-import {notifications} from "@mantine/notifications";
+import {notifications} from '@mantine/notifications';
 
-import {endpoints, useMutationWithAuth} from "@/api";
-import {fetchWithServices} from "@/api/fetchWithServices.ts";
-import * as userLocalStorage from "@/auth/user.localstore.ts";
-import {useSignOut} from "@/auth/useSignOut.tsx";
-import {ResponseError} from "@/utils/Errors/ResponseError.ts";
+import {endpoints, useMutationWithAuth} from '@/api';
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
+import * as userLocalStorage from '@/auth/user.localstore.ts';
+import {useSignOut} from '@/auth/useSignOut.tsx';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 const deleteUser = async (token: string) => {
     const response = await fetchWithServices(endpoints.user, {
@@ -18,7 +18,7 @@ const deleteUser = async (token: string) => {
         throw new ResponseError(data.message, response, 'delete-user');
     }
     return data;
-}
+};
 
 const useDeleteUser = () => {
     const userTokenFromLocalStorage = userLocalStorage.getUser();
@@ -32,9 +32,9 @@ const useDeleteUser = () => {
                 withCloseButton: true,
                 className: 'sign-out-notification',
                 message: 'Your account has been deleted.',
-            })
-        }
-    })
-}
+            });
+        },
+    });
+};
 
-export {useDeleteUser}
+export {useDeleteUser};

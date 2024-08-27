@@ -3,7 +3,7 @@ import {notifications} from '@mantine/notifications';
 import {useLocation} from 'react-router-dom';
 
 import {endpoints, useMutationWithAuth} from '@/api';
-import {fetchWithServices} from "@/api/fetchWithServices.ts";
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function activate(token: string | null) {
