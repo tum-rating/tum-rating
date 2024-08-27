@@ -1,5 +1,5 @@
-import {ActionIcon, CloseButton, Combobox, ScrollArea, TextInput} from '@mantine/core';
-import {IconArrowLeft, IconSearch} from '@tabler/icons-react';
+import {ActionIcon, Combobox, ScrollArea, TextInput} from '@mantine/core';
+import {IconArrowLeft, IconSearch, IconX} from '@tabler/icons-react';
 import clsx from 'clsx';
 import {useRef} from 'react';
 import {isMobileOnly} from 'react-device-detect';
@@ -56,7 +56,22 @@ const MobileSearchInput = ({combobox, value, setValue, isSearchOpen, setIsSearch
                                         <IconArrowLeft width={16} height={16} />
                                     </ActionIcon>
                                 }
-                                rightSection={value !== '' && <CloseButton size="sm" onMouseDown={(event) => event.preventDefault()} onClick={handleClear} aria-label="Clear value" />}
+                                rightSection={
+                                    value !== '' && (
+                                        <ActionIcon
+                                            variant="subtle"
+                                            loading={isLoading}
+                                            size="sm"
+                                            onMouseDown={(event) => event.preventDefault()}
+                                            onClick={(e) => {
+                                                handleClear(e);
+                                            }}
+                                            aria-label="Clear value"
+                                        >
+                                            <IconX />
+                                        </ActionIcon>
+                                    )
+                                }
                                 classNames={{
                                     root: classes.searchInputMobileRoot,
                                     input: clsx(classes.searchInputMobileInput, combobox.dropdownOpened && classes.searchInputMobileInputActive),
