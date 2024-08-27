@@ -1,1 +1,1 @@
-export {CourseControls} from "./CourseControls"
+export {CourseControls} from './CourseControls';

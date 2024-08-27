@@ -2,7 +2,7 @@ import {screen} from '@testing-library/react';
 
 import {CourseTitleAnchor} from '@/components/Course/CourseTitleAnchor/CourseTitleAnchor';
 import {TUM_CAMPUS_COURSE_URL_FN} from '@/constants';
-import {render} from "tests/unit/utils/render";
+import {render} from 'tests/unit/utils/render';
 
 describe('CourseTitleAnchor', () => {
     const defaultProps = {
@@ -12,7 +12,7 @@ describe('CourseTitleAnchor', () => {
 
     it('should render the anchor with the correct href', () => {
         const {children, ...anchorProps} = defaultProps;
-        render(<CourseTitleAnchor {...anchorProps} >{children}</CourseTitleAnchor>);
+        render(<CourseTitleAnchor {...anchorProps}>{children}</CourseTitleAnchor>);
         const anchor = screen.getByText('Course Title');
         expect(anchor).toBeInTheDocument();
         expect(anchor).toHaveAttribute('href', TUM_CAMPUS_COURSE_URL_FN('123'));

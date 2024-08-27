@@ -21,7 +21,6 @@ export default defineConfig({
             },
             dependencies: ['setup'],
             testMatch: '!(userAccountDeletion|*.setup).spec.ts',
-
         },
         {
             name: 'firefox',
@@ -39,7 +38,7 @@ export default defineConfig({
                 storageState: 'tests/e2e/utils/.auth/userToRemove.json',
             },
             dependencies: ['setup'],
-            testMatch: 'userAccountDeletion.spec.ts'
+            testMatch: 'userAccountDeletion.spec.ts',
         },
     ],
     webServer: {

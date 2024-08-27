@@ -1,6 +1,6 @@
 import {Highlight, HighlightProps} from '@mantine/core';
 
-const SearchHighlight = ({children,...props}: HighlightProps) => {
+const SearchHighlight = ({children, ...props}: HighlightProps) => {
     return (
         <Highlight
             highlightStyles={{

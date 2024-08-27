@@ -1,5 +1,5 @@
-import {Course} from "@/courses/types.ts";
-import {splitSearchQueryIntoWords} from "@/utils/splitSearchQueryIntoWords.ts";
+import {Course} from '@/courses/types.ts';
+import {splitSearchQueryIntoWords} from '@/utils/splitSearchQueryIntoWords.ts';
 
 const sortCoursesByMatchingFactor = (data: Course[], value: string) => {
     const dataLength = data.length;
@@ -46,4 +46,4 @@ const sortCoursesByMatchingFactor = (data: Course[], value: string) => {
     });
 };
 
-export {sortCoursesByMatchingFactor}
+export {sortCoursesByMatchingFactor};

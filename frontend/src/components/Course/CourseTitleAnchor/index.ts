@@ -1,1 +1,1 @@
-export {CourseTitleAnchor} from "./CourseTitleAnchor"
+export {CourseTitleAnchor} from './CourseTitleAnchor';

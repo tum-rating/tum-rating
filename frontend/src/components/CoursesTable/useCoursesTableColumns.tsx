@@ -27,11 +27,15 @@ const useCoursesTableColumns = () => {
                     return (
                         <>
                             <span>
-                                <SearchHighlight fw="500" fz="sm" highlight={searchedWords}>{renderedCellValue}</SearchHighlight>
+                                <SearchHighlight fw="500" fz="sm" highlight={searchedWords}>
+                                    {renderedCellValue}
+                                </SearchHighlight>
                                 {isMobileOnly ? (
                                     <>
                                         <span>
-                                            <SearchHighlight highlight={searchedWords} fz="sm">{row.original.professor}</SearchHighlight>
+                                            <SearchHighlight highlight={searchedWords} fz="sm">
+                                                {row.original.professor}
+                                            </SearchHighlight>
                                         </span>
                                     </>
                                 ) : null}
@@ -49,7 +53,9 @@ const useCoursesTableColumns = () => {
                         <>
                             <span>
                                 {' '}
-                                <SearchHighlight highlight={searchedWords} fz="sm">{renderedCellValue}</SearchHighlight>
+                                <SearchHighlight highlight={searchedWords} fz="sm">
+                                    {renderedCellValue}
+                                </SearchHighlight>
                             </span>
                         </>
                     );

@@ -4,6 +4,7 @@ import {notifications} from '@mantine/notifications';
 import {User} from './useUser.tsx';
 
 import {endpoints, useMutationWithAuth} from '@/api';
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {USER_LOCAL_STORAGE_KEY} from '@/auth/user.localstore.ts';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {queryClient} from '@/react-query/client.ts';
@@ -15,7 +16,7 @@ interface LoggedUser {
 }
 
 export async function signIn({email, password}: LoginInput): Promise<LoggedUser> {
-    const response = await fetch(endpoints.signin, {
+    const response = await fetchWithServices(endpoints.signin, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
