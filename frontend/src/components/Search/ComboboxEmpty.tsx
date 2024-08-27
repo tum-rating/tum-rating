@@ -19,18 +19,18 @@ export const ComboboxEmpty = (props: ComboboxEmptyProps) => {
         <Combobox.Empty>
             <Flex direction="column" align="center" py="xl" gap="md">
                 <ThemeIcon variant="light" size="64">
-                    <IconSearchOff width={44} height={44} />
+                    {isLoading ? (
+                        <Loader size="md" />
+                    ) : (
+                        <IconSearchOff width={44} height={44} />
+                    )}
                 </ThemeIcon>
                 <Container>
                     {' '}
                     <Text size="sm">No matching courses for</Text>
-                    {isLoading ? (
-                        <Loader size="xs" />
-                    ) : (
                         <Text display="inline" fw="700">
                             "{value}"
                         </Text>
-                    )}
                 </Container>
                 {user ? (
                     <Button
