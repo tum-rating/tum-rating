@@ -1,4 +1,5 @@
 import {endpoints, useMutationWithAuth} from '@/api';
+import {fetchWithServices} from "@/api/fetchWithServices.ts";
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function recovery(props: RecoveryBody) {
@@ -9,7 +10,7 @@ async function recovery(props: RecoveryBody) {
         return acc;
     }, {});
 
-    const response = await fetch(endpoints.recovery, {
+    const response = await fetchWithServices(endpoints.recovery, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

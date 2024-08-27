@@ -2,10 +2,11 @@ import {Text} from '@mantine/core';
 import {notifications} from '@mantine/notifications';
 
 import {endpoints, useMutationWithAuth} from '@/api';
+import {fetchWithServices} from "@/api/fetchWithServices.ts";
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function signUp({email, password, username}: RegisterInput): Promise<{success: boolean}> {
-    const response = await fetch(endpoints.signup, {
+    const response = await fetchWithServices(endpoints.signup, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

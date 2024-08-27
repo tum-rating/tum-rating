@@ -4,6 +4,7 @@ import {IconCheck} from '@tabler/icons-react';
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
 import {endpoints, useMutationWithAuth} from '@/api';
+import {fetchWithServices} from "@/api/fetchWithServices.ts";
 import {User, useUser} from '@/auth/useUser.tsx';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {queryClient} from '@/react-query/client.ts';
@@ -13,7 +14,7 @@ async function deleteUserReview(user: User | null | undefined, userReview: UserA
     if (!user) return null;
     const body = {...userReview};
     const endpoint = endpoints.postSpecificReview(courseId, String(user.id));
-    const response = await fetch(endpoint, {
+    const response = await fetchWithServices(endpoint, {
         method: type,
         headers: {
             'Content-Type': 'application/json',

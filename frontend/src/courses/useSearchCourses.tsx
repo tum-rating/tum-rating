@@ -1,6 +1,7 @@
 import {Course} from './types.ts';
 
 import {endpoints} from '@/api';
+import {fetchWithServices} from "@/api/fetchWithServices.ts";
 import {useInfiniteQueryWithAuth} from '@/api/useInfiniteQueryWithAuth.tsx';
 import {PAGE_SIZE} from '@/constants';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
@@ -13,7 +14,7 @@ type Courses = {
 
 export async function getReviews(query: string, pageNumber: number = 1, pageSize: number = PAGE_SIZE): Promise<Courses | null> {
     const endpoint = endpoints.searchCoursesOnCurrentPage(pageNumber, pageSize, query);
-    const response = await fetch(endpoint);
+    const response = await fetchWithServices(endpoint);
     const data = await response.json();
     if (!response.ok) throw new ResponseError(data.message, response, query);
     return data;

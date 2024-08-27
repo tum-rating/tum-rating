@@ -1,12 +1,13 @@
 import {notifications} from "@mantine/notifications";
 
 import {endpoints, useMutationWithAuth} from "@/api";
+import {fetchWithServices} from "@/api/fetchWithServices.ts";
 import * as userLocalStorage from "@/auth/user.localstore.ts";
 import {useSignOut} from "@/auth/useSignOut.tsx";
 import {ResponseError} from "@/utils/Errors/ResponseError.ts";
 
 const deleteUser = async (token: string) => {
-    const response = await fetch(endpoints.user, {
+    const response = await fetchWithServices(endpoints.user, {
         method: 'DELETE',
         headers: {
             Authorization: `Bearer ${token}`,

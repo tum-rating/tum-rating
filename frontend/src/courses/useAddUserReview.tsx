@@ -1,6 +1,7 @@
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
 import {endpoints, useMutationWithAuth} from '@/api';
+import {fetchWithServices} from "@/api/fetchWithServices.ts";
 import {User, useUser} from '@/auth/useUser.tsx';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {useFeedbackCTAContext} from "@/context";
@@ -15,7 +16,7 @@ async function addUserReview(user: UserWithToken | null | undefined, userReview:
     if (!user) return null;
     const body = {...userReview};
     const endpoint = endpoints.postSpecificReview(courseId, String(user.id));
-    const response = await fetch(endpoint, {
+    const response = await fetchWithServices(endpoint, {
         method: type,
         headers: {
             'Content-Type': 'application/json',

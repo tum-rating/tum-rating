@@ -5,6 +5,7 @@ import * as userLocalStorage from '../auth/user.localstore.ts';
 
 import {Course} from '@/admin/types.ts';
 import {endpoints, useMutationWithAuth} from '@/api';
+import {fetchWithServices} from "@/api/fetchWithServices.ts";
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {queryClient} from '@/react-query/client.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
@@ -13,7 +14,7 @@ async function editCourse(token: string, course: Course): Promise<any> {
     const body = {...course};
     delete body._id;
     const endpoint = endpoints.editCourse(course._id);
-    const response = await fetch(endpoint, {
+    const response = await fetchWithServices(endpoint, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
