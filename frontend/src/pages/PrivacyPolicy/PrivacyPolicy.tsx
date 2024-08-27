@@ -1,11 +1,10 @@
 import {Box} from '@mantine/core';
 import {useEffect} from 'react';
-import {Helmet} from "react-helmet";
+import {Helmet} from 'react-helmet';
 
 import {Breadcrumbs} from '@/components/Breadcrumbs';
 import {PageWrapper} from '@/components/PageWrapper';
 import {COMPANY_NAME, CONTACT_PAGE_URL, COUNTRY, LAST_TERMS_UPDATED_DATE, WEBSITE_URL} from '@/constants/general';
-
 
 export const PrivacyPolicy = () => {
     useEffect(() => {

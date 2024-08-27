@@ -4,6 +4,7 @@ import {IconCheck} from '@tabler/icons-react';
 import * as userLocalStorage from '../auth/user.localstore.ts';
 
 import {endpoints, useMutationWithAuth} from '@/api';
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {useUser} from '@/auth/useUser.tsx';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {queryClient} from '@/react-query/client.ts';
@@ -11,7 +12,7 @@ import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function addCourseProposal(token: string | null, courseReview: CourseInput): Promise<string | null> {
     if (!token) return null;
-    const response = await fetch(endpoints.postCourseProposal, {
+    const response = await fetchWithServices(endpoints.postCourseProposal, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -1,4 +1,4 @@
-import {splitSearchQueryIntoWords} from "@/utils/splitSearchQueryIntoWords.ts";
+import {splitSearchQueryIntoWords} from '@/utils/splitSearchQueryIntoWords.ts';
 
 describe('splitSearchQueryIntoWords', () => {
     it('should split a query with spaces into words', () => {

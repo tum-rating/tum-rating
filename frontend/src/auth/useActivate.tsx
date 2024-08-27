@@ -3,10 +3,11 @@ import {notifications} from '@mantine/notifications';
 import {useLocation} from 'react-router-dom';
 
 import {endpoints, useMutationWithAuth} from '@/api';
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function activate(token: string | null) {
-    const response = await fetch(endpoints.activate, {
+    const response = await fetchWithServices(endpoints.activate, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

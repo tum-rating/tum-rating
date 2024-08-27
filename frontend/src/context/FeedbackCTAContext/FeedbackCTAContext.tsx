@@ -33,8 +33,7 @@ export const FeedbackCTAProvider = ({children}) => {
         }
     };
 
-    return <FeedbackCTAContext.Provider
-        value={{feedbackCTA, setFeedbackCTA: setFeedbackCTAWithCheck}}>{children}</FeedbackCTAContext.Provider>;
+    return <FeedbackCTAContext.Provider value={{feedbackCTA, setFeedbackCTA: setFeedbackCTAWithCheck}}>{children}</FeedbackCTAContext.Provider>;
 };
 
 export const useFeedbackCTAContext = (): FeedbackCTAContextType => {

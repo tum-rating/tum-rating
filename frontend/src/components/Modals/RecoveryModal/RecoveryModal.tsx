@@ -80,8 +80,7 @@ const RecoveryModal = ({context, id}: ContextModalProps) => {
                                 {' '}
                                 {form.values.email}{' '}
                             </Text>
-                            for instructions to recover your password.
-                            Sending the email may take up to{' '}
+                            for instructions to recover your password. Sending the email may take up to{' '}
                             <Text component="span" size="md" fw={900} variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}}>
                                 15 minutes.
                             </Text>

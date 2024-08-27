@@ -3,6 +3,7 @@ import {notifications} from '@mantine/notifications';
 
 import {ReadyCourseProposal} from '@/admin/types.ts';
 import {endpoints, useMutationWithAuth} from '@/api';
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {queryClient} from '@/react-query/client.ts';
@@ -13,7 +14,7 @@ const addCourseProposal = async (token: string, courseProposal: ReadyCoursePropo
         return null;
     }
     const endpoint = endpoints.addCourse;
-    const response = await fetch(endpoint, {
+    const response = await fetchWithServices(endpoint, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

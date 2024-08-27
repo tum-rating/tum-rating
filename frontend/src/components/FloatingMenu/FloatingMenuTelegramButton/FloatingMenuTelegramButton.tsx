@@ -7,7 +7,7 @@ import {isMobile} from 'react-device-detect';
 import classes from './FloatingMenuTelegramButton.module.css';
 import {TelegramIcon} from './TelegramIcon.tsx';
 
-import {TUM_RATING_TELEGRAM_URL} from "@/constants";
+import {TUM_RATING_TELEGRAM_URL} from '@/constants';
 import {useFeedbackCTAContext} from '@/context';
 
 const telegramLink = TUM_RATING_TELEGRAM_URL;
@@ -48,7 +48,7 @@ const FloatingMenuTelegramButton = () => {
             component="a"
             href={telegramLink}
             target="_blank"
-            onClick={()=>{
+            onClick={() => {
                 setProgress(0);
                 setFeedbackCTA(false);
             }}

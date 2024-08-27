@@ -3,6 +3,7 @@ import {useQuery} from '@tanstack/react-query';
 import {Course} from './types';
 
 import {endpoints} from '@/api';
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
@@ -14,7 +15,7 @@ interface ScrapedCourseProposal {
 }
 
 const getScrapedCourseProposal = async (token: string, proposalId: string): Promise<ScrapedCourseProposal> => {
-    const response = await fetch(endpoints.getScrapedProposal(proposalId), {
+    const response = await fetchWithServices(endpoints.getScrapedProposal(proposalId), {
         headers: {
             Authorization: `Bearer ${token}`,
         },

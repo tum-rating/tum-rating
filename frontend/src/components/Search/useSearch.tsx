@@ -10,8 +10,8 @@ import {useSearchContext} from '@/context';
 import {Course} from '@/courses/types.ts';
 import {useSearchCourses} from '@/courses/useSearchCourses';
 import {useScrollLock} from '@/hooks/useScrollLock';
-import {sortCoursesByMatchingFactor} from "@/utils/sortCoursesByMatchingFactor.ts";
-import {splitSearchQueryIntoWords} from "@/utils/splitSearchQueryIntoWords.ts";
+import {sortCoursesByMatchingFactor} from '@/utils/sortCoursesByMatchingFactor.ts';
+import {splitSearchQueryIntoWords} from '@/utils/splitSearchQueryIntoWords.ts';
 
 const useSearch = () => {
     const combobox = useCombobox({
@@ -31,7 +31,7 @@ const useSearch = () => {
     const debouncedUpdate = useDebouncedCallback((newValue) => {
         setDebouncedValue(newValue);
         setIsLoading(false);
-    }, 250);
+    }, 400);
 
     const {data, fetchNextPage, isLoading: queryLoading} = useSearchCourses(debouncedValue);
 
@@ -63,16 +63,14 @@ const useSearch = () => {
 
     const options = useMemo(() => {
         const words = splitSearchQueryIntoWords(value);
-        return sortCoursesByMatchingFactor(previousData?.pages.flatMap((page: {
-            courses: Course[]
-        }) => page.courses) || [], value).map((item) => (
+        return sortCoursesByMatchingFactor(previousData?.pages.flatMap((page: {courses: Course[]}) => page.courses) || [], value).map((item) => (
             <Combobox.Option className={classes.option} value={item._id} key={item._id}>
                 <SearchHighlight highlight={words}>{item.name}</SearchHighlight>
                 <SearchHighlight highlight={words} fz="xs" fw={500} c="dimmed">
                     {item.professor}
                 </SearchHighlight>
             </Combobox.Option>
-        ),);
+        ));
     }, [previousData]);
 
     const handleSubmit = (e) => {

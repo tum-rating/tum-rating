@@ -1,13 +1,14 @@
 import * as userLocalStorage from './user.localstore.ts';
 
 import {endpoints} from '@/api';
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {useQueryWithAuth} from '@/api/useQueryWithAuth.tsx';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function getUser(token: string | null): Promise<User | null> {
     if (!token) return null;
-    const response = await fetch(endpoints.user, {
+    const response = await fetchWithServices(endpoints.user, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

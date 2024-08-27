@@ -1,17 +1,4 @@
-import {
-    Alert,
-    Anchor,
-    Button,
-    Container,
-    Flex,
-    Group,
-    LoadingOverlay,
-    PasswordInput,
-    Stack,
-    Text,
-    TextInput,
-    ThemeIcon
-} from '@mantine/core';
+import {Alert, Anchor, Button, Container, Flex, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput, ThemeIcon} from '@mantine/core';
 import {useForm} from '@mantine/form';
 import {ContextModalProps, modals} from '@mantine/modals';
 import {notifications} from '@mantine/notifications';
@@ -28,8 +15,7 @@ import {ModalResponsiveContainer} from '@/components/Modals/shared/ModalResponsi
 import {getPath, Paths} from '@/routes/paths.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
-interface SignUpModalProps extends ContextModalProps {
-}
+interface SignUpModalProps extends ContextModalProps {}
 
 const openSignUpModal = ({...props}: SignUpModalProps) => {
     modals.openContextModal({
@@ -96,14 +82,13 @@ const SignUpModal = ({context, id}: ContextModalProps) => {
                     context.closeModal(id);
                 }}
             />
-            <LoadingOverlay visible={isLoading} overlayProps={{radius: 'sm', blur: 2}}/>
+            <LoadingOverlay visible={isLoading} overlayProps={{radius: 'sm', blur: 2}} />
             <Container p="sm">
                 {isSuccess ? (
                     <Flex direction="column" align="center" gap="xs" my="xl">
                         <Group>
-                            <ThemeIcon size="80px" radius={50} variant="gradient"
-                                       gradient={{from: 'indigo', to: 'blue', deg: 90}}>
-                                <IconMail size={55}/>
+                            <ThemeIcon size="80px" radius={50} variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}}>
+                                <IconMail size={55} />
                             </ThemeIcon>
                         </Group>
                         <Text size="xl" fw={900} variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}}>
@@ -111,13 +96,11 @@ const SignUpModal = ({context, id}: ContextModalProps) => {
                         </Text>
                         <Text fw={400} px={30} ta="center">
                             Please check you email
-                            <Text component="span" size="md" fw={900} variant="gradient"
-                                  gradient={{from: 'indigo', to: 'blue', deg: 90}}>
+                            <Text component="span" size="md" fw={900} variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}}>
                                 {' '}
                                 {form.values.email}{' '}
                             </Text>
-                            for instructions to activate your account.
-                            Sending the email may take up to{' '}
+                            for instructions to activate your account. Sending the email may take up to{' '}
                             <Text component="span" size="md" fw={900} variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}}>
                                 15 minutes.
                             </Text>
@@ -133,30 +116,23 @@ const SignUpModal = ({context, id}: ContextModalProps) => {
                         })}
                     >
                         <Stack h="100%">
-                            <TextInput autoFocus data-autofocus data-testid="username" label={'Your name'} required
-                                       placeholder={'Your name'} value={form.values.username}
-                                       onChange={(event) => form.setFieldValue('username', event.currentTarget.value)}/>
+                            <TextInput autoFocus data-autofocus data-testid="username" label={'Your name'} required placeholder={'Your name'} value={form.values.username} onChange={(event) => form.setFieldValue('username', event.currentTarget.value)} />
 
-                            <TextInput type="email" data-testid="email" required label="Email" placeholder="Email"
-                                       value={form.values.email}
-                                       onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
-                                       error={form.errors.email}/>
-                            <PasswordInput data-testid="password" autoComplete="on" required label="Password"
-                                           placeholder="Password" value={form.values.password}
-                                           onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
-                                           error={form.errors.password}/>
+                            <TextInput type="email" data-testid="email" required label="Email" placeholder="Email" value={form.values.email} onChange={(event) => form.setFieldValue('email', event.currentTarget.value)} error={form.errors.email} />
+                            <PasswordInput data-testid="password" autoComplete="on" required label="Password" placeholder="Password" value={form.values.password} onChange={(event) => form.setFieldValue('password', event.currentTarget.value)} error={form.errors.password} />
                             <Text fz="xs" fw="bold">
-                                By signing up, you agree to our {' '}
-                                <Anchor target="_blank" style={{whiteSpace: 'nowrap'}}  fz="xs" fw="bold" href={getPath(Paths.privacyPolicy)}>Privacy Policy</Anchor>
-                                {' '} and {' '}
-                                <Anchor target="_blank" style={{whiteSpace: 'nowrap'}}   fz="xs" fw="bold" href={getPath(Paths.termsOfService)}>Terms of
-                                    Service.</Anchor>
+                                By signing up, you agree to our{' '}
+                                <Anchor target="_blank" style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold" href={getPath(Paths.privacyPolicy)}>
+                                    Privacy Policy
+                                </Anchor>{' '}
+                                and{' '}
+                                <Anchor target="_blank" style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold" href={getPath(Paths.termsOfService)}>
+                                    Terms of Service.
+                                </Anchor>
                             </Text>
                             {apiError && error && (
-                                <Alert data-testid="error-message" variant="light" color="red" title="Error"
-                                       icon={<IconFaceIdError/>} withCloseButton onClose={() => setApiError(false)}>
-                                    <Text
-                                        size="xs">{error instanceof ResponseError ? error?.message : 'An error occurred'}</Text>
+                                <Alert data-testid="error-message" variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
+                                    <Text size="xs">{error instanceof ResponseError ? error?.message : 'An error occurred'}</Text>
                                 </Alert>
                             )}
                             <Group>
