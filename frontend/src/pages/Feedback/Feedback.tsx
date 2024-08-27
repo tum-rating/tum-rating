@@ -1,11 +1,10 @@
 import {Button, Divider, Flex, Text, Title} from '@mantine/core';
 import {IconBrandTelegram} from '@tabler/icons-react';
 import {useEffect} from 'react';
-import {Helmet} from "react-helmet";
+import {Helmet} from 'react-helmet';
 
 import {PageWrapper} from '@/components/PageWrapper';
 import {TUM_RATING_TELEGRAM_URL} from '@/constants';
-
 
 export const Feedback = () => {
     useEffect(() => {

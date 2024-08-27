@@ -1,6 +1,6 @@
 import {test, expect} from '@playwright/test';
 
-test('should remove account of logged user',async ({page})=>{
+test('should remove account of logged user', async ({page}) => {
     await page.goto('/', {waitUntil: 'domcontentloaded'});
     await page.getByTestId('user-btn-desktop').click();
     await page.getByRole('menuitem', {name: 'Settings'}).click();
@@ -17,4 +17,4 @@ test('should remove account of logged user',async ({page})=>{
     await expect(page.getByTestId('user-btn-desktop')).not.toBeVisible();
     await expect(page.getByTestId('sign-in-btn-desktop')).toBeVisible();
     await expect(page.getByTestId('sign-up-btn-desktop')).toBeVisible();
-})
+});

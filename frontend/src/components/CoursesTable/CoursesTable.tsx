@@ -14,7 +14,7 @@ import {useSearchContext, useTableScrollContext} from '@/context';
 import {Course} from '@/courses/types.ts';
 import {usePaginatedCourses} from '@/courses/usePaginatedCourses.tsx';
 import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
-import {sortCoursesByMatchingFactor} from "@/utils/sortCoursesByMatchingFactor.ts";
+import {sortCoursesByMatchingFactor} from '@/utils/sortCoursesByMatchingFactor.ts';
 
 function CoursesTable() {
     const [tableTopSpacing, setTableTopSpacing] = useState<number>(CONTENT_TOP_SPACING);
@@ -24,22 +24,8 @@ function CoursesTable() {
     const {searchQuery, setSearchQuery} = useSearchContext();
     const [internalLoader, setInternalLoader] = useState(true);
 
-    const {
-        data: paginatedData,
-        fetchNextPage: fetchPaginatedNextPage,
-        isFetching: isPaginatedFetching,
-        isLoading: isPaginatedLoading,
-        isError: isPaginatedError,
-        hasNextPage: hasPaginatedNextPage
-    } = usePaginatedCourses();
-    const {
-        data: searchData,
-        fetchNextPage: fetchSearchNextPage,
-        hasNextPage: hasSearchNextPage,
-        isFetching: isSearchFetching,
-        isFetched: isSearchFetched,
-        isError: isSearchError
-    } = useSearchCourses(searchQuery);
+    const {data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage} = usePaginatedCourses();
+    const {data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, isError: isSearchError} = useSearchCourses(searchQuery);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -52,7 +38,10 @@ function CoursesTable() {
 
     const records = useMemo(() => {
         if (searchQuery && searchData) {
-            return sortCoursesByMatchingFactor(searchData.pages.flatMap((page) => page.courses), searchQuery);
+            return sortCoursesByMatchingFactor(
+                searchData.pages.flatMap((page) => page.courses),
+                searchQuery,
+            );
         } else if (paginatedData) {
             return paginatedData.pages.flatMap((page) => page.courses);
         }
@@ -91,7 +80,7 @@ function CoursesTable() {
                 }
             }
         },
-        [fetchPaginatedNextPage, fetchSearchNextPage, isPaginatedFetching, isSearchFetching, hasSearchNextPage, hasPaginatedNextPage, searchQuery, tableTopSpacing]
+        [fetchPaginatedNextPage, fetchSearchNextPage, isPaginatedFetching, isSearchFetching, hasSearchNextPage, hasPaginatedNextPage, searchQuery, tableTopSpacing],
     );
 
     useEffect(() => {
@@ -109,11 +98,14 @@ function CoursesTable() {
         }
     }, [rowVirtualizerInstanceRef.current, records]);
 
-    const handleRowClick = useCallback((record: Course) => {
-        const dynamicPath = '/courses/' + record._id;
-        setScrollIndex(rowVirtualizerInstanceRef.current.range.startIndex);
-        navigate(dynamicPath);
-    }, [navigate, setScrollIndex]);
+    const handleRowClick = useCallback(
+        (record: Course) => {
+            const dynamicPath = '/courses/' + record._id;
+            setScrollIndex(rowVirtualizerInstanceRef.current.range.startIndex);
+            navigate(dynamicPath);
+        },
+        [navigate, setScrollIndex],
+    );
 
     const removeQuery = () => {
         setSearchQuery('');
@@ -136,22 +128,23 @@ function CoursesTable() {
                     handleRowClick(row.original as Course);
                 }
             },
-            style: !records.length || isPaginatedLoading || isSearchFetching || row.original === null
-                ? {
-                    pointerEvents: 'none',
-                    cursor: 'not-allowed',
-                }
-                : {
-                    pointerEvents: 'auto',
-                    cursor: 'pointer',
-                },
+            style:
+                !records.length || isPaginatedLoading || isSearchFetching || row.original === null
+                    ? {
+                          pointerEvents: 'none',
+                          cursor: 'not-allowed',
+                      }
+                    : {
+                          pointerEvents: 'auto',
+                          cursor: 'pointer',
+                      },
         }),
         mantineTableHeadCellProps: {
             className: clsx(classes.tableHeadRow),
         },
         mantineTableBodyCellProps: ({row}) => ({
             className: clsx(classes.tableCellRow),
-            children: row.original === null ? <Skeleton h={30}/> : undefined,
+            children: row.original === null ? <Skeleton h={30} /> : undefined,
         }),
         enablePagination: false,
         enableFilters: false,
@@ -214,8 +207,8 @@ function CoursesTable() {
 
     return (
         <>
-            <CoursesTableHelmet courses={records}/>
-            <MantineReactTable table={table}/>
+            <CoursesTableHelmet courses={records} />
+            <MantineReactTable table={table} />
         </>
     );
 }

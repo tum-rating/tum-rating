@@ -1,1 +1,1 @@
-export {openUserSettingsModal,UserSettingsModal} from './UserSettingsModal.tsx'
+export {openUserSettingsModal, UserSettingsModal} from './UserSettingsModal.tsx';
