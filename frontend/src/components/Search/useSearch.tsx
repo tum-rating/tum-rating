@@ -31,7 +31,7 @@ const useSearch = () => {
     const debouncedUpdate = useDebouncedCallback((newValue) => {
         setDebouncedValue(newValue);
         setIsLoading(false);
-    }, 250);
+    }, 400);
 
     const {data, fetchNextPage, isLoading: queryLoading} = useSearchCourses(debouncedValue);
 
