@@ -49,7 +49,7 @@ const ReviewsBox = (props: ReviewsBoxProps) => {
                     />
 
                     <IconUsersGroup
-                        data-testid='reviews-box-icon'
+                        data-testid="reviews-box-icon"
                         strokeWidth="2"
                         width={30}
                         height={40}

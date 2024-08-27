@@ -1,5 +1,5 @@
-import {CloseButton, Combobox, ScrollArea, TextInput, ThemeIcon} from '@mantine/core';
-import {IconSearch} from '@tabler/icons-react';
+import {ActionIcon, Combobox, ScrollArea, TextInput, ThemeIcon} from '@mantine/core';
+import {IconSearch, IconX} from '@tabler/icons-react';
 import clsx from 'clsx';
 import {useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
@@ -31,7 +31,22 @@ const DesktopSearchInput = ({combobox, value, debouncedValue, setValue, isLoadin
                                 <IconSearch width={16} height={16} />
                             </ThemeIcon>
                         }
-                        rightSection={value !== '' && <CloseButton size="sm" onMouseDown={(event) => event.preventDefault()} onClick={handleClear} aria-label="Clear value" />}
+                        rightSection={
+                            value !== '' && (
+                                <ActionIcon
+                                    variant="subtle"
+                                    loading={isLoading}
+                                    size="sm"
+                                    onMouseDown={(event) => event.preventDefault()}
+                                    onClick={(e) => {
+                                        handleClear(e);
+                                    }}
+                                    aria-label="Clear value"
+                                >
+                                    <IconX />
+                                </ActionIcon>
+                            )
+                        }
                         classNames={{
                             root: classes.searchInputDesktopRoot,
                             input: clsx(classes.searchInputDesktopInput, combobox.dropdownOpened && classes.searchInputDesktopInputActive),

@@ -6,7 +6,6 @@ import {Course} from '@/courses/types.ts';
 import {render} from 'tests/unit/utils/render';
 
 describe('CourseControls', () => {
-
     const defaultProps = {
         data: {name: 'Test Course'} as Course,
         isLoading: false,
