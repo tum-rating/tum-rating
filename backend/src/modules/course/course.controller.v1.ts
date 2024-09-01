@@ -16,7 +16,7 @@ import {
     BadRequestException,
 } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
-import { ApiBearerAuth, ApiTags, ApiQuery, ApiParam, ApiResponse, ApiOkResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
@@ -32,6 +32,7 @@ import { CourseReviewSemesterMismatch, DuplicateError, NotFoundError } from 'src
 import { CourseService } from './course.service';
 import { AddReviewRequestDto, AddReviewRequestSchema } from './dto/AddReviewRequest.dto';
 import { PatchReviewRequestDto, PatchReviewRequestSchema } from './dto/PatchReviewRequest.dto';
+import { GetCourseWithoutReviewResponseDto } from './dto/GetCourseRequest.dto';
 
 @ApiTags('courses')
 @Controller('/api/v1/courses')
@@ -74,6 +75,35 @@ export class CourseControllerV1 {
         this._logger.info('Successfuly retrieved courses with count %d', paginetedResults.courses.length);
 
         return paginetedResults;
+    }
+
+    @Get('/trending')
+    @ApiQuery({
+        name: 'page-number',
+        required: false,
+        type: Number,
+        description: 'Does not work for now, just to be pagination compliant.'
+    })
+    @ApiQuery({
+        name: 'page-size',
+        required: false,
+        type: Number,
+    })
+    public async getTrendingCourses(
+        @Query('page-number', new JoiObjectSchemaPipe(OptionalIntPipeAtLeast1))
+        pageNumber: number = 1,
+        @Query('page-size', new JoiObjectSchemaPipe(OptionalIntPipeAtLeast1))
+        pageSize: number = 20,
+    ) {
+        this._logger.info('Get trending courses requested');
+
+        const validatedPageSize = pageSize < 100 ? pageSize : 100;
+
+        const trendingCourses = await this._courseService.getTrendingCourses(validatedPageSize);
+
+        this._logger.info('Successfuly retrieved trending courses with count %d', trendingCourses.length);
+
+        return trendingCourses.map(trendingCourse => new GetCourseWithoutReviewResponseDto(trendingCourse));
     }
 
     @Get('/:id')

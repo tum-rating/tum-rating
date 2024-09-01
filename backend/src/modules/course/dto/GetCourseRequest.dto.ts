@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ObjectId } from 'mongoose';
-import { Course } from 'src/database/documents/course';
+import { Course, CourseWithoutReviews } from 'src/database/documents/course';
 import { Review } from 'src/database/documents/review';
 import { CourseWithReviews } from 'src/database/repositories/course.repository';
 
@@ -58,6 +58,10 @@ export class GetCourseResponseDto {
         this.otherLecturers = course.otherLecturers;
         this.name = course.name;
         this.offeredInSemesters = course.offeredInSemesters;
+        this.howInterestingRatingAverage = course.howInterestingRatingAverage;
+        this.howEasyRatingAverage = course.howEasyRatingAverage;
+        this.votesNumber = course.votesNumber;
+        this.reviews = course.reviews;
     }
 
     @ApiProperty()
@@ -82,6 +86,15 @@ export class GetCourseResponseDto {
     offeredInSemesters: string[];
 
     @ApiProperty()
+    howInterestingRatingAverage: number;
+
+    @ApiProperty()
+    howEasyRatingAverage: number;
+
+    @ApiProperty()
+    votesNumber: number;
+
+    @ApiProperty()
     reviews: string[];
 }
 
@@ -94,6 +107,9 @@ export class GetCourseWithReviewsResponseDto {
         this.otherLecturers = course.otherLecturers;
         this.name = course.name;
         this.offeredInSemesters = course.offeredInSemesters;
+        this.howInterestingRatingAverage = course.howInterestingRatingAverage;
+        this.howEasyRatingAverage = course.howEasyRatingAverage;
+        this.votesNumber = course.votesNumber;
         this.reviews = course.reviews.map(review => new GetReviewResponseDto(review));
     }
 
@@ -119,5 +135,59 @@ export class GetCourseWithReviewsResponseDto {
     offeredInSemesters: string[];
 
     @ApiProperty()
+    howInterestingRatingAverage: number;
+
+    @ApiProperty()
+    howEasyRatingAverage: number;
+
+    @ApiProperty()
+    votesNumber: number;
+
+    @ApiProperty()
     reviews: GetReviewResponseDto[];
+}
+
+    export class GetCourseWithoutReviewResponseDto {
+    constructor(course: WithId<CourseWithReviews> | WithId<CourseWithoutReviews>) {
+        this.id  = course.id;
+        this.courseId = course.courseId;
+        this.courseNumber = course.courseNumber;
+        this.professor = course.professor;
+        this.otherLecturers = course.otherLecturers;
+        this.name = course.name;
+        this.offeredInSemesters = course.offeredInSemesters;
+        this.howInterestingRatingAverage = course.howInterestingRatingAverage;
+        this.howEasyRatingAverage = course.howEasyRatingAverage;
+        this.votesNumber = course.votesNumber;
+    }
+
+    @ApiProperty()
+    id: string;
+
+    @ApiProperty()
+    courseId: string;
+
+    @ApiProperty()
+    courseNumber: string;
+
+    @ApiProperty()
+    professor: string;
+
+    @ApiProperty()
+    otherLecturers?: string[];
+
+    @ApiProperty()
+    name: string;
+
+    @ApiProperty()
+    offeredInSemesters: string[];
+
+    @ApiProperty()
+    howInterestingRatingAverage: number;
+
+    @ApiProperty()
+    howEasyRatingAverage: number;
+
+    @ApiProperty()
+    votesNumber: number;
 }
