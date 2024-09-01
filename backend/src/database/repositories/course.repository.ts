@@ -1,6 +1,6 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { ClientSession, Model } from 'mongoose';
-import { Course, CourseDocument } from 'src/database/documents/course';
+import { Course, CourseDocument, CourseWithoutReviews} from 'src/database/documents/course';
 import { Review } from 'src/database/documents/review';
 import { BaseRepository } from './base.repository';
 
@@ -52,6 +52,14 @@ export class CourseRepository extends BaseRepository<Course> {
             .select('-reviews -__v')
             .skip(alignedPageNumber * pageSize)
             .limit(pageSize);
+    }
+
+    public async getCoursesWithMostReviews(limit: number): Promise<WithId<CourseWithoutReviews>[]> {
+        return this._courseModel
+            .find()
+            .sort({ votesNumber: -1 })
+            .limit(limit)
+            .select('-reviews -__v');
     }
 
     public async findOneByIdWithPopulatedReviews(id: string): Promise<WithId<CourseWithReviews>> {
