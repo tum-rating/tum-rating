@@ -2,6 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 
 import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
 
+import { CacheModule } from 'src/utils/cache/cache.module';
 import { ConfigModule } from 'src/config/config.module';
 import { MailerModule } from 'src/modules/mailer/mailer.module';
 import { MongoModule } from 'src/database/mongo.module';
@@ -17,6 +18,7 @@ import { CourseProposalModule } from './modules/course-proposal/courseProposal.m
 
 @Module({
     imports: [
+        CacheModule,
         ConfigModule,
         MailerModule,
         MongoModule,
