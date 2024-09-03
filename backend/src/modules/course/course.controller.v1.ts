@@ -28,6 +28,7 @@ import { User } from 'src/database/documents/user';
 import { Review } from 'src/database/documents/review';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { CourseReviewSemesterMismatch, DuplicateError, NotFoundError } from 'src/utils/errors/errors';
+import { PaginatedResults } from 'src/utils/api/pagination';
 
 import { CourseService } from './course.service';
 import { AddReviewRequestDto, AddReviewRequestSchema } from './dto/AddReviewRequest.dto';
@@ -77,7 +78,6 @@ export class CourseControllerV1 {
         return paginetedResults;
     }
 
-    @Get('/trending')
     @ApiQuery({
         name: 'page-number',
         required: false,
@@ -89,6 +89,7 @@ export class CourseControllerV1 {
         required: false,
         type: Number,
     })
+    @Get('/trending')
     public async getTrendingCourses(
         @Query('page-number', new JoiObjectSchemaPipe(OptionalIntPipeAtLeast1))
         pageNumber: number = 1,
@@ -103,7 +104,10 @@ export class CourseControllerV1 {
 
         this._logger.info('Successfuly retrieved trending courses with count %d', trendingCourses.length);
 
-        return trendingCourses.map(trendingCourse => new GetCourseWithoutReviewResponseDto(trendingCourse));
+        return new PaginatedResults(
+            trendingCourses.map(trendingCourse => new GetCourseWithoutReviewResponseDto(trendingCourse)),
+            null
+        );
     }
 
     @Get('/:id')

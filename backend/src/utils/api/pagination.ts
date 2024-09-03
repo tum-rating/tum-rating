@@ -3,7 +3,9 @@ export type PaginationOptions = {
     pageSize: number;
 };
 
-export type PaginatedResults<T> = {
-    results: T[];
-    nextPageNumber: number | null;
+export class PaginatedResults<T> {
+    constructor(
+        public results: T[],
+        public nextPageNumber: number | null,
+    ) {}
 };
