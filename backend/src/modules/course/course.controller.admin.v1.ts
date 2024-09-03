@@ -22,7 +22,6 @@ import { PinoLogger } from 'nestjs-pino';
 import { USER_ID } from 'src/utils/headers/context.headers';
 import { AdminGuard } from 'src/common/guards/admin.guard';
 import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
-import { UserService } from 'src/modules/user/user.service';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { DuplicateError, NotFoundError } from 'src/utils/errors/errors';
 
@@ -30,6 +29,7 @@ import { CourseService } from './course.service';
 import { CreateCourseRequestDto, CreateCourseRequestSchema, CreateCourseResponseDto } from './dto/CreateCourseRequest.dto';
 import { PatchCourseRequestDto, PatchCourseRequestSchema, PatchCourseResponseDto } from './dto/PatchCourseRequest.dto';
 import { DeleteCourseResponseDto } from './dto/DeleteCourseRequest.dto';
+import { GetCourseWithoutReviewResponseDto } from './dto/GetCourseRequest.dto';
 
 @ApiTags('courses')
 @UseGuards(AdminGuard)
@@ -37,7 +37,6 @@ import { DeleteCourseResponseDto } from './dto/DeleteCourseRequest.dto';
 export class CourseControllerAdminV1 {
     constructor(
         private readonly _courseService: CourseService,
-        private readonly _userService: UserService,
         private readonly _logger: PinoLogger,
     ) {
         this._logger.setContext(CourseControllerAdminV1.name);
@@ -73,6 +72,18 @@ export class CourseControllerAdminV1 {
 
             throw error;
         }
+    }
+
+    @ApiBearerAuth()
+    @Post('/trending')
+    public async resetTrendingCoursesCache() {
+        this._logger.info('Reset trending courses cache requested');
+
+        const trendingCourses = await this._courseService.resetTrendingCoursesCache();
+
+        this._logger.info('Successfuly reset trending courses');
+
+        return trendingCourses.map(trendingCourse => new GetCourseWithoutReviewResponseDto(trendingCourse));
     }
 
     @ApiBearerAuth()

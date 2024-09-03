@@ -57,10 +57,18 @@ export class CourseService {
         if (cachedTrendingCourses) {
             this._logger.debug('Returning trending courses from cache');
 
-            return cachedTrendingCourses;
+            return cachedTrendingCourses.slice(0, limit);
         }
 
-        const trendingCourses = await this._courseRepository.getCoursesWithMostReviews(limit);
+        const trendingCourses = await this._courseRepository.getCoursesWithMostReviews(100);
+
+        this._cacheService.trendingCourses.set(trendingCourses);
+
+        return trendingCourses.slice(0, limit);
+    }
+
+    public async resetTrendingCoursesCache() {
+        const trendingCourses = await this._courseRepository.getCoursesWithMostReviews(100);
 
         this._cacheService.trendingCourses.set(trendingCourses);
 
