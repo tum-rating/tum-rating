@@ -17,7 +17,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --clearCache && jest --config ./test/jest-e2e.json",
+    "test:e2e": "jest --clearCache && npm run test:e2e:concurrent &&  npm run test:e2e:sequential",
+    "test:e2e:concurrent": "jest --config ./test/jest-e2e.json",
+    "test:e2e:sequential": "jest --config ./test/jest-sequential-e2e.json --runInBand",
     "bootstrap:user": "ts-node ./test/bootstrap/bootstrapUsers.ts",
     "bootstrap:frontendE2E": "ts-node ./test/bootstrap/bootstrapFrontendE2E.ts"
   },

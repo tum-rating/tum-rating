@@ -1,12 +1,9 @@
-import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
-import { PatchCourseRequestDto } from '@tum-rating/backend/src/modules/course/dto/PatchCourseRequest.dto';
 import { MONGO_ZERO_ID } from '@tum-rating/backend/src/utils/const';
 
 import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
-import { fakeNumberOfLenght } from '@tum-rating/backend/test/utils/utils/fakeNumberOfLenght';
 import { addReviewMockRequest, courseUrl, getCourseById } from '@tum-rating/backend/test/utils/api-client/course';
 import { createCourseMockRequest } from '@tum-rating/backend/test/utils/api-client/course';
 import { updateCourse } from '@tum-rating/backend/test/utils/db-client/course';
