@@ -90,9 +90,13 @@ function CoursesTable() {
     useEffect(() => {
         if (rowVirtualizerInstanceRef.current) {
             if (scrollIndex && records.length) {
-                rowVirtualizerInstanceRef.current?.scrollToIndex(scrollIndex, {
-                    align: 'start',
-                });
+                // The setTimeout with 1 ms is necessary to ensure the scrollToIndex function works correctly after build.
+                // TODO - Find a proper solution for this.
+                setTimeout(() => {
+                    rowVirtualizerInstanceRef.current?.scrollToIndex(scrollIndex, {
+                        align: 'start',
+                    });
+                },1);
                 setScrollIndex(0);
             }
         }
