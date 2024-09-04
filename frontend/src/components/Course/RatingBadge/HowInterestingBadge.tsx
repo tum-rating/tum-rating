@@ -1,11 +1,15 @@
-import {Badge} from '@mantine/core';
+import {Badge, BadgeProps} from '@mantine/core';
 
 import {useHowInterestingRating} from '@/hooks';
 
-export const HowInterestingBadge = ({score}: {score: number}) => {
+interface HowInterestingBadgeProps extends BadgeProps {
+    score: number;
+}
+
+export const HowInterestingBadge = ({score, ...props}: HowInterestingBadgeProps) => {
     const {message, color} = useHowInterestingRating(score);
     return (
-        <Badge radius="xs" variant="light" color={color}>
+        <Badge radius="xs" variant="light" color={color} {...props}>
             {message}
         </Badge>
     );
