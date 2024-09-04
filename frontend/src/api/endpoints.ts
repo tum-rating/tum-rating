@@ -29,6 +29,7 @@ type CoursesEndpoints = {
     getSpecificCourse: (id: string) => string;
     postSpecificReview: (courseId: string, userId: string) => string;
     getPaginatedCourses: (pageNumber: number | string, pageSize: number | string) => string;
+    getPaginatedTrendingCourses: (pageNumber: number | string, pageSize: number | string) => string;
     searchCourses: (query: string) => string;
     postCourseProposal: string;
     searchCoursesOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => string;
@@ -41,6 +42,7 @@ const Courses: CoursesEndpoints = {
     getSpecificCourse: (id: string) => `${coursesBase}/${id}`,
     postSpecificReview: (courseId: string, userId: string) => `${coursesBase}/${courseId}/user/${userId}`,
     getPaginatedCourses: (pageNumber: number | string, pageSize: number | string) => `${coursesBase}?page-number=${pageNumber}&page-size=${pageSize}`,
+    getPaginatedTrendingCourses: (pageNumber: number | string, pageSize: number | string) => `${coursesBase}/trending?page-number=${pageNumber}&page-size=${pageSize}`,
     searchCourses: (query: string) => `${coursesBase}?search=${query}`,
     searchCoursesOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => `${coursesBase}?page-number=${pageNumber}&page-size=${pageSize}&search=${search}`,
 };
