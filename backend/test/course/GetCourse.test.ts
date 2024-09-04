@@ -26,8 +26,8 @@ describe('Get Course', () => {
             .get('/')
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('courses');
-                expect(response.body.courses.length >= 1).toBe(true);
+                expect(response.body).toHaveProperty('results');
+                expect(response.body.results.length >= 1).toBe(true);
             });
     });
 
@@ -66,9 +66,9 @@ describe('Get Course', () => {
             .get('?search=' + createdCourse.name)
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('courses');
-                expect(response.body.courses.length == 1).toBe(true);
-                expect(response.body.courses.find((course) => course._id === createdCourse.id)).toBeDefined();
+                expect(response.body).toHaveProperty('results');
+                expect(response.body.results.length == 1).toBe(true);
+                expect(response.body.results.find((course) => course.id === createdCourse.id)).toBeDefined();
             });
     });
 
@@ -83,9 +83,9 @@ describe('Get Course', () => {
             .get('?search=' + createdCourse.name)
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('courses');
-                expect(response.body.courses.length == 1).toBe(true);
-                expect(response.body.courses.find((course) => course._id === createdCourse.id)).toBeDefined();
+                expect(response.body).toHaveProperty('results');
+                expect(response.body.results.length == 1).toBe(true);
+                expect(response.body.results.find((course) => course.id === createdCourse.id)).toBeDefined();
             });
     });
 
@@ -100,9 +100,9 @@ describe('Get Course', () => {
             .get('?search=' + createdCourse.professor)
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('courses');
-                expect(response.body.courses.length == 1).toBe(true);
-                expect(response.body.courses.find((course) => course._id === createdCourse.id)).toBeDefined();
+                expect(response.body).toHaveProperty('results');
+                expect(response.body.results.length == 1).toBe(true);
+                expect(response.body.results.find((course) => course.id === createdCourse.id)).toBeDefined();
             });
     });
 
@@ -135,11 +135,11 @@ describe('Get Course', () => {
             .get('?search=' + commonTitlePart)
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('courses');
-                expect(response.body.courses.length >= 3).toBe(true);
-                expect(response.body.courses.find((course) => course._id === createdCourse1.id)).toBeDefined();
-                expect(response.body.courses.find((course) => course._id === createdCourse2.id)).toBeDefined();
-                expect(response.body.courses.find((course) => course._id === createdCourse3.id)).toBeDefined();
+                expect(response.body).toHaveProperty('results');
+                expect(response.body.results.length >= 3).toBe(true);
+                expect(response.body.results.find((course) => course.id === createdCourse1.id)).toBeDefined();
+                expect(response.body.results.find((course) => course.id === createdCourse2.id)).toBeDefined();
+                expect(response.body.results.find((course) => course.id === createdCourse3.id)).toBeDefined();
             });
     });
 
@@ -167,11 +167,11 @@ describe('Get Course', () => {
             .get(`?search=${commonTitlePart}&page-size=5`)
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('courses');
+                expect(response.body).toHaveProperty('results');
                 expect(response.body).toHaveProperty('nextPageNumber');
-                expect(response.body.courses.length).toBe(5);
+                expect(response.body.results.length).toBe(5);
                 for (let i = 0; i < 5; i++) {
-                    expect(response.body.courses.find((course) => course._id === createdCourses[i].id)).toBeDefined();
+                    expect(response.body.results.find((course) => course.id === createdCourses[i].id)).toBeDefined();
                 }
             });
 
@@ -179,11 +179,11 @@ describe('Get Course', () => {
             .get(`?search=${commonTitlePart}&page-size=5&page-number=` + paginationResponse.body.nextPageNumber)
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('courses');
+                expect(response.body).toHaveProperty('results');
                 expect(response.body).toHaveProperty('nextPageNumber');
-                expect(response.body.courses.length).toBe(5);
+                expect(response.body.results.length).toBe(5);
                 for (let i = 5; i < 10; i++) {
-                    expect(response.body.courses.find((course) => course._id === createdCourses[i].id)).toBeDefined();
+                    expect(response.body.results.find((course) => course.id === createdCourses[i].id)).toBeDefined();
                 }
             });
 
@@ -191,11 +191,11 @@ describe('Get Course', () => {
             .get(`?search=${commonTitlePart}&page-size=5&page-number=` + paginationResponse2.body.nextPageNumber)
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('courses');
+                expect(response.body).toHaveProperty('results');
                 expect(response.body).toHaveProperty('nextPageNumber');
-                expect(response.body.courses.length).toBe(5);
+                expect(response.body.results.length).toBe(5);
                 for (let i = 10; i < 15; i++) {
-                    expect(response.body.courses.find((course) => course._id === createdCourses[i].id)).toBeDefined();
+                    expect(response.body.results.find((course) => course.id === createdCourses[i].id)).toBeDefined();
                 }
             });
     });

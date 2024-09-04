@@ -71,11 +71,14 @@ export class CourseControllerV1 {
     ) {
         this._logger.info('Get courses requested with pageNumber %s, pageSize %d and search %s', pageNumber, pageSize, search);
 
-        const paginetedResults = await this._courseService.getCoursesOverviewPaginated(pageNumber, pageSize, search);
+        const results = await this._courseService.getCoursesOverviewPaginated(pageNumber, pageSize, search);
 
-        this._logger.info('Successfuly retrieved courses with count %d', paginetedResults.courses.length);
+        this._logger.info('Successfuly retrieved courses with count %d', results.length);
 
-        return paginetedResults;
+        return new PaginatedResults(
+            results.map(course => new GetCourseWithoutReviewResponseDto(course)),
+            results.length > 0 && results.length === pageSize ? pageNumber + 1 : null,
+        );
     }
 
     @ApiQuery({

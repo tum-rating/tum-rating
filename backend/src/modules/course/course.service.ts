@@ -21,12 +21,7 @@ export class CourseService {
     }
 
     public async getCoursesOverviewPaginated(pageNumber: number, pageSize: number, search?: string) {
-        const results = await this._courseRepository.getCoursesByQuery(pageNumber, pageSize, search);
-
-        return {
-            courses: results,
-            nextPageNumber: results.length > 0 ? pageNumber + 1 : null,
-        };
+        return this._courseRepository.getCoursesByQuery(pageNumber, pageSize, search);
     }
 
     public async getCourseById(id: string) {
