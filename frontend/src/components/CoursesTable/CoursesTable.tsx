@@ -24,7 +24,7 @@ function CoursesTable() {
     const {searchQuery, setSearchQuery} = useSearchContext();
     const [internalLoader, setInternalLoader] = useState(true);
 
-    const {data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage} = usePaginatedCourses();
+    const {data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage} = usePaginatedCourses({trending: true});
     const {data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, isError: isSearchError} = useSearchCourses(searchQuery);
 
     const navigate = useNavigate();
@@ -43,7 +43,7 @@ function CoursesTable() {
                 searchQuery,
             );
         } else if (paginatedData) {
-            return paginatedData.pages.flatMap((page) => page.courses);
+            return paginatedData.pages.flatMap((page) => page.results);
         }
         return [];
     }, [searchData, paginatedData]);
