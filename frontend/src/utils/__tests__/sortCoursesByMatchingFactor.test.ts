@@ -4,7 +4,7 @@ import {sortCoursesByMatchingFactor} from '@/utils/sortCoursesByMatchingFactor.t
 describe('sortCoursesByMatchingFactor', () => {
     const courses: Course[] = [
         {
-            _id: '1',
+            id: '1',
             name: 'Introduction to Programming',
             professor: 'John Doe',
             courseId: 'CSE101',
@@ -17,7 +17,7 @@ describe('sortCoursesByMatchingFactor', () => {
             offeredInSemesters: ['Fall 2023', 'Spring 2024'],
         },
         {
-            _id: '2',
+            id: '2',
             name: 'Advanced Mathematics',
             professor: 'Jane Smith',
             courseId: 'MATH201',
@@ -30,7 +30,7 @@ describe('sortCoursesByMatchingFactor', () => {
             offeredInSemesters: ['Fall 2023', 'Spring 2024'],
         },
         {
-            _id: '3',
+            id: '3',
             name: 'Physics 101',
             professor: 'Albert Einstein',
             courseId: 'PHYS101',
@@ -87,7 +87,7 @@ describe('sortCoursesByMatchingFactor', () => {
     it('should handle courses with empty name and professor fields', () => {
         const coursesWithEmptyFields: Course[] = [
             {
-                _id: '1',
+                id: '1',
                 name: '',
                 professor: '',
                 courseId: '',
@@ -100,7 +100,7 @@ describe('sortCoursesByMatchingFactor', () => {
                 offeredInSemesters: [],
             },
             {
-                _id: '2',
+                id: '2',
                 name: 'Advanced Mathematics',
                 professor: 'Jane Smith',
                 courseId: 'MATH201',
