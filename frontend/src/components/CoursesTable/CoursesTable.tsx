@@ -39,7 +39,7 @@ function CoursesTable() {
     const records = useMemo(() => {
         if (searchQuery && searchData) {
             return sortCoursesByMatchingFactor(
-                searchData.pages.flatMap((page) => page.courses),
+                searchData.pages.flatMap((page) => page.results),
                 searchQuery,
             );
         } else if (paginatedData) {
@@ -100,7 +100,7 @@ function CoursesTable() {
 
     const handleRowClick = useCallback(
         (record: Course) => {
-            const dynamicPath = '/courses/' + record._id;
+            const dynamicPath = '/courses/' + record.id;
             setScrollIndex(rowVirtualizerInstanceRef.current.range.startIndex);
             navigate(dynamicPath);
         },

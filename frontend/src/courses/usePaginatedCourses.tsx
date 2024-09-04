@@ -8,7 +8,7 @@ import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 export type PaginatedCourses = {
-    courses: Course[];
+    results: Course[];
     nextPageNumber: number;
 };
 

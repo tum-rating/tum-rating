@@ -63,8 +63,8 @@ const useSearch = () => {
 
     const options = useMemo(() => {
         const words = splitSearchQueryIntoWords(value);
-        return sortCoursesByMatchingFactor(previousData?.pages.flatMap((page: {courses: Course[]}) => page.courses) || [], value).map((item) => (
-            <Combobox.Option className={classes.option} value={item._id} key={item._id}>
+        return sortCoursesByMatchingFactor(previousData?.pages.flatMap((page: {results: Course[]}) => page.results) || [], value).map((item) => (
+            <Combobox.Option className={classes.option} value={item.id} key={item.id}>
                 <SearchHighlight highlight={words}>{item.name}</SearchHighlight>
                 <SearchHighlight highlight={words} fz="xs" fw={500} c="dimmed">
                     {item.professor}
