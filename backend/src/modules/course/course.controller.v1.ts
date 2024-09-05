@@ -28,7 +28,7 @@ import { User } from 'src/database/documents/user';
 import { Review } from 'src/database/documents/review';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { CourseReviewSemesterMismatch, DuplicateError, NotFoundError } from 'src/utils/errors/errors';
-import { PaginatedResults } from 'src/utils/api/pagination';
+import { getNextPageNumber, PaginatedResults } from 'src/utils/api/pagination';
 
 import { CourseService } from './course.service';
 import { AddReviewRequestDto, AddReviewRequestSchema } from './dto/AddReviewRequest.dto';
@@ -77,7 +77,7 @@ export class CourseControllerV1 {
 
         return new PaginatedResults(
             results.map(course => new GetCourseWithoutReviewResponseDto(course)),
-            results.length > 0 && results.length === pageSize ? pageNumber + 1 : null,
+            getNextPageNumber(results, pageNumber, pageSize),
         );
     }
 
