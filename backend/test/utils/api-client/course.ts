@@ -33,24 +33,3 @@ export const getCourseById = async (id: string) => {
     const review = await axios.get(courseUrl + '/' + id);
     return review.data as CourseWithPopulatedReviews;
 };
-
-export const addReviewMockRequest = async (token: string, reviewId: string, userId: string, userReview?: Partial<AddReviewRequestDto>): Promise<WithId<AddReviewRequestDto>> => {
-    const requestBody: AddReviewRequestDto = {
-        howInterestingRating: faker.number.int({ min: 0, max: 5 }),
-        howEasyRating: faker.number.int({ min: 0, max: 5 }),
-        comment: faker.word.words(faker.number.int({ min: 2, max: 100 })),
-        semester: 'SS 2023',
-        ...userReview,
-    };
-
-    const addUserReviewResponse = await axios.post(`${courseUrl}/${reviewId}/user/${userId}`, requestBody, {
-        headers: {
-            Authorization: 'Bearer ' + token,
-        },
-    });
-
-    return {
-        id: addUserReviewResponse.data.createdReviewUser['_id'],
-        ...requestBody
-    };
-};

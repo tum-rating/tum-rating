@@ -4,7 +4,8 @@ import * as supertest from 'supertest';
 import { MONGO_ZERO_ID } from '@tum-rating/backend/src/utils/const';
 
 import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
-import { addReviewMockRequest, courseUrl, getCourseById } from '@tum-rating/backend/test/utils/api-client/course';
+import { courseUrl, getCourseById } from '@tum-rating/backend/test/utils/api-client/course';
+import { addReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
 import { createCourseMockRequest } from '@tum-rating/backend/test/utils/api-client/course';
 import { updateCourse } from '@tum-rating/backend/test/utils/db-client/course';
 

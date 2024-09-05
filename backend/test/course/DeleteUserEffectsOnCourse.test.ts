@@ -3,7 +3,8 @@ import * as supertest from 'supertest';
 
 import { connectMongo } from '@tum-rating/backend/test/utils';
 import { signInRequestMock, signInAdminRequestMock, userUrl } from '@tum-rating/backend/test/utils';
-import { createCourseMockRequest, addReviewMockRequest, getCourseById } from '@tum-rating/backend/test/utils/api-client/course';
+import { createCourseMockRequest, getCourseById } from '@tum-rating/backend/test/utils/api-client/course';
+import { addReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
 import { deleteUserByAdmin } from '@tum-rating/backend/test/utils';
 import { getReviewById } from '@tum-rating/backend/test/utils';
 
