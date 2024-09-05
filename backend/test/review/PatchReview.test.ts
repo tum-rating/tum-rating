@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
 import { connectMongo, signInRequestMock, signInAdminRequestMock, updateReview } from '@tum-rating/backend/test/utils';
-import { addReviewMockRequest, courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
+import { courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
+import { addReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
 import { createCourseMockRequest } from '@tum-rating/backend/test/utils/api-client/course';
 import { AddReviewRequestDto } from '@tum-rating/backend/src/modules/course/dto/AddReviewRequest.dto';
 

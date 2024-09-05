@@ -5,7 +5,8 @@ import { GetCourseWithoutReviewResponseDto } from '@tum-rating/backend/src/modul
 import { PaginatedResults } from '@tum-rating/backend/src/utils/api/pagination';
 
 import { connectMongo, signInRequestMock, signInAdminRequestMock, SignInRequestMockResponse } from '@tum-rating/backend/test/utils';
-import { addReviewMockRequest, courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
+import { courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
+import { addReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
 import { createCourseMockRequest } from '@tum-rating/backend/test/utils/api-client/course';
 import { dropAllCourses } from '@tum-rating/backend/test/utils/db-client/course';
 import { dropAllReviews } from '@tum-rating/backend/test/utils';
