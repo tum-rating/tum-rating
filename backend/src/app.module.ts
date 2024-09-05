@@ -15,6 +15,7 @@ import { HealthModule } from './modules/health/health.module';
 import { UserModule } from './modules/user/user.module';
 import { CourseModule } from './modules/course/course.module';
 import { CourseProposalModule } from './modules/course-proposal/courseProposal.module';
+import { ReviewModule } from './modules/review/review.module';
 
 @Module({
     imports: [
@@ -30,7 +31,8 @@ import { CourseProposalModule } from './modules/course-proposal/courseProposal.m
         HealthModule,
         UserModule,
         CourseModule,
-        CourseProposalModule
+        CourseProposalModule,
+        ReviewModule
     ],
 })
 export class AppModule implements NestModule {
