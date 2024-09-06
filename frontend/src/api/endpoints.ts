@@ -49,7 +49,7 @@ const courses: CoursesEndpoints = {
 
 type AdminEndpoints = {
     //---REVIEWS
-    getPaginatedReviews: (pageNumber: number | string, pageSize: number | string, userId?: string, courseId?: string) => string;
+    getPaginatedReviews: (pageNumber: number | string, pageSize: number | string, userId?: string, courseId?: string, query?: string) => string;
     //---COURSES
     addCourse: string;
     editCourse: (courseId: string) => string;
@@ -66,13 +66,16 @@ type AdminEndpoints = {
 };
 
 const admin: AdminEndpoints = {
-    getPaginatedReviews: (pageNumber: number | string, pageSize: number | string, userId?: string, courseId?: string) => {
+    getPaginatedReviews: (pageNumber: number | string, pageSize: number | string, userId?: string, courseId?: string, query?: string) => {
         let url = `${baseApiUrl}/reviews?page-number=${pageNumber}&page-size=${pageSize}`;
         if (userId) {
             url += `&user-id=${userId}`;
         }
         if (courseId) {
             url += `&course-id=${courseId}`;
+        }
+        if (query) {
+            url += `&query=${query}`;
         }
         return url;
     },
