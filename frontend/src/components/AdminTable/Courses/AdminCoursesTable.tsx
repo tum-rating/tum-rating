@@ -27,7 +27,7 @@ const AdminCoursesTable = () => {
 
     useEffect(() => {
         if (searchData) {
-            const newRecords = searchData.pages.map((v) => v.courses.map((el) => el)).flat();
+            const newRecords = searchData.pages.map((v) => v.results.map((el) => el)).flat();
             setRecords([...newRecords]);
         }
     }, [searchData]);
@@ -143,7 +143,7 @@ const AdminCoursesTable = () => {
                 margin: 0,
             },
         },
-        renderDetailPanel: ({row}) => <CourseExpansion key={row.original._id} courseId={row.original._id} row={row} />,
+        renderDetailPanel: ({row}) => <CourseExpansion key={row.original.id} courseId={row.original.id} row={row} />,
     });
 
     return (

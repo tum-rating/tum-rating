@@ -24,7 +24,7 @@ function CoursesTable() {
     const {searchQuery, setSearchQuery} = useSearchContext();
     const [internalLoader, setInternalLoader] = useState(true);
 
-    const {data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage} = usePaginatedCourses();
+    const {data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage} = usePaginatedCourses({trending: true});
     const {data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, isError: isSearchError} = useSearchCourses(searchQuery);
 
     const navigate = useNavigate();
@@ -39,11 +39,11 @@ function CoursesTable() {
     const records = useMemo(() => {
         if (searchQuery && searchData) {
             return sortCoursesByMatchingFactor(
-                searchData.pages.flatMap((page) => page.courses),
+                searchData.pages.flatMap((page) => page.results),
                 searchQuery,
             );
         } else if (paginatedData) {
-            return paginatedData.pages.flatMap((page) => page.courses);
+            return paginatedData.pages.flatMap((page) => page.results);
         }
         return [];
     }, [searchData, paginatedData]);
@@ -90,9 +90,13 @@ function CoursesTable() {
     useEffect(() => {
         if (rowVirtualizerInstanceRef.current) {
             if (scrollIndex && records.length) {
-                rowVirtualizerInstanceRef.current?.scrollToIndex(scrollIndex, {
-                    align: 'start',
-                });
+                // The setTimeout with 1 ms is necessary to ensure the scrollToIndex function works correctly after build.
+                // TODO - Find a proper solution for this.
+                setTimeout(() => {
+                    rowVirtualizerInstanceRef.current?.scrollToIndex(scrollIndex, {
+                        align: 'start',
+                    });
+                },1);
                 setScrollIndex(0);
             }
         }
@@ -100,7 +104,7 @@ function CoursesTable() {
 
     const handleRowClick = useCallback(
         (record: Course) => {
-            const dynamicPath = '/courses/' + record._id;
+            const dynamicPath = '/courses/' + record.id;
             setScrollIndex(rowVirtualizerInstanceRef.current.range.startIndex);
             navigate(dynamicPath);
         },

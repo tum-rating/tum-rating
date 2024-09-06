@@ -31,7 +31,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
 
     useEffect(() => {
         if (courseDetails) {
-            ['_id', 'courseId', 'courseNumber', 'name', 'professor', 'otherLecturers', 'offeredInSemesters'].forEach((x) => {
+            ['id', 'courseId', 'courseNumber', 'name', 'professor', 'otherLecturers', 'offeredInSemesters'].forEach((x) => {
                 form.setFieldValue(x, courseDetails[x]);
             });
         }
@@ -45,7 +45,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
             professor: '',
             otherLecturers: [],
             offeredInSemesters: [],
-            _id: '',
+            id: '',
         },
         validate: {
             courseId: (value) => !value && 'Course ID is required',

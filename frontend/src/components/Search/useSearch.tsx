@@ -1,4 +1,4 @@
-import {Combobox, useCombobox} from '@mantine/core';
+import {Box, Combobox, useCombobox} from '@mantine/core';
 import {useDebouncedCallback} from '@mantine/hooks';
 import {useEffect, useMemo, useState} from 'react';
 import {isMobileOnly} from 'react-device-detect';
@@ -12,6 +12,7 @@ import {useSearchCourses} from '@/courses/useSearchCourses';
 import {useScrollLock} from '@/hooks/useScrollLock';
 import {sortCoursesByMatchingFactor} from '@/utils/sortCoursesByMatchingFactor.ts';
 import {splitSearchQueryIntoWords} from '@/utils/splitSearchQueryIntoWords.ts';
+import {SearchItemCourseDetails} from '@/components/Search/SearchItemCourseDetails.tsx';
 
 const useSearch = () => {
     const combobox = useCombobox({
@@ -63,9 +64,12 @@ const useSearch = () => {
 
     const options = useMemo(() => {
         const words = splitSearchQueryIntoWords(value);
-        return sortCoursesByMatchingFactor(previousData?.pages.flatMap((page: {courses: Course[]}) => page.courses) || [], value).map((item) => (
-            <Combobox.Option className={classes.option} value={item._id} key={item._id}>
+        return sortCoursesByMatchingFactor(previousData?.pages.flatMap((page: {results: Course[]}) => page.results) || [], value).map((item) => (
+            <Combobox.Option className={classes.option} value={item.id} key={item.id}>
                 <SearchHighlight highlight={words}>{item.name}</SearchHighlight>
+                <Box my='2'>
+                    <SearchItemCourseDetails course={item} />
+                </Box>
                 <SearchHighlight highlight={words} fz="xs" fw={500} c="dimmed">
                     {item.professor}
                 </SearchHighlight>
