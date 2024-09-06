@@ -33,7 +33,7 @@ import { getNextPageNumber, PaginatedResults } from 'src/utils/api/pagination';
 import { CourseService } from './course.service';
 import { AddReviewRequestDto, AddReviewRequestSchema } from './dto/AddReviewRequest.dto';
 import { PatchReviewRequestDto, PatchReviewRequestSchema } from './dto/PatchReviewRequest.dto';
-import { GetCourseWithoutReviewResponseDto } from './dto/GetCourseRequest.dto';
+import { GetCourseWithReviewsResponseDto, GetCourseWithoutReviewResponseDto } from './dto/GetCourseRequest.dto';
 
 @ApiTags('courses')
 @Controller('/api/v1/courses')
@@ -118,11 +118,11 @@ export class CourseControllerV1 {
         this._logger.info('Get course with id: %s', id);
 
         try {
-            const review = await this._courseService.getCourseByIdWihtPopulatedReviews(id);
+            const courseWithReviews = await this._courseService.getCourseByIdWihtPopulatedReviews(id);
     
-            this._logger.info('Successfuly retrieved course with id: %s', review.id);
+            this._logger.info('Successfuly retrieved course with id: %s', courseWithReviews.id);
     
-            return review;
+            return new GetCourseWithReviewsResponseDto(courseWithReviews);
         } catch (error) {
             if (error instanceof NotFoundError) {
                 this._logger.debug('Course not found with id: %s', id);
