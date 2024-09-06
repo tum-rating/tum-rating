@@ -20,7 +20,6 @@ interface CourseExpansionProps extends HTMLAttributes<HTMLElement> {
 }
 
 const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
-    console.log(courseId,row)
     const {data: courseDetails, isLoading, isError, error, refetch} = useDetailCourse(courseId);
 
     const {mutate: editCourse} = useEditCourse();
@@ -31,8 +30,6 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
     const [statusAlertFlag, setStatusAlertFlag] = useState(false);
 
     useEffect(() => {
-
-        console.log(courseDetails)
         if (courseDetails) {
             ['id', 'courseId', 'courseNumber', 'name', 'professor', 'otherLecturers', 'offeredInSemesters'].forEach((x) => {
                 form.setFieldValue(x, courseDetails[x]);
@@ -215,7 +212,6 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                                 leftSection={<IconEditCircle width={16} />}
                                 onClick={() => {
                                     if (editing) {
-                                        console.log(form)
                                         editCourse(form.values);
                                         setEditing(false);
                                     } else {

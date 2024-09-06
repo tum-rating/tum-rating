@@ -144,7 +144,7 @@ describe('Patch Review', () => {
             .get('/')
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('_id');
+                expect(response.body).toHaveProperty('id');
                 expect(response.body).toHaveProperty('reviews');
                 expect(response.body.reviews.length).toBe(2);
                 expect(response.body.howInterestingRatingAverage).toBe(4);
@@ -169,7 +169,7 @@ describe('Patch Review', () => {
             .get('/')
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('_id');
+                expect(response.body).toHaveProperty('id');
                 expect(response.body).toHaveProperty('reviews');
                 expect(response.body.reviews.length).toBe(2);
                 expect(response.body.howInterestingRatingAverage).toBe(3.5);
@@ -210,7 +210,7 @@ describe('Patch Review', () => {
                 expect(response.body.howEasyRatingAverage).toEqual(requestBody.howEasyRating);
             });
 
-        const createdReviewId = response.body.reviews[0]._id;
+        const createdReviewId = response.body.reviews[0].id;
 
         const result = await updateReview(createdReviewId, { isHidden: true });
 

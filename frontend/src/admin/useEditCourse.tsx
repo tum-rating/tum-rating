@@ -12,7 +12,6 @@ import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function editCourse(token: string, course: Course): Promise<any> {
     const body = {...course};
-    console.log(course)
     delete body.id;
     const endpoint = endpoints.editCourse(course.id);
     const response = await fetchWithServices(endpoint, {

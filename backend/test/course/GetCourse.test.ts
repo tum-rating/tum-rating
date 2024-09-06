@@ -40,7 +40,7 @@ describe('Get Course', () => {
             .get('/' + createdCourse.id)
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body._id).toEqual(createdCourse.id);
+                expect(response.body.id).toEqual(createdCourse.id);
                 expect(response.body.courseId).toEqual(createdCourse.courseId);
                 expect(response.body.name).toEqual(createdCourse.name);
                 expect(response.body.professor).toEqual(createdCourse.professor);
