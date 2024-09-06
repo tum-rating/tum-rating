@@ -11,7 +11,7 @@ export const useReviewsColumns = () => {
         {
             accessorKey: 'comment',
             header: 'Comment',
-size:500,
+            size: 500,
             mantineTableBodyCellProps: () => ({
                 style: {
                     fontWeight: '500',
@@ -23,12 +23,12 @@ size:500,
         },
         {
             accessorKey: 'howEasyRating',
-            size:50,
+            size: 50,
             header: 'er',
         },
         {
             accessorKey: 'howInterestingRating',
-            size:50,
+            size: 50,
             header: 'ir',
         },
         {

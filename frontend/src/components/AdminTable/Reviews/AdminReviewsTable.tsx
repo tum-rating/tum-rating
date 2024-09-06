@@ -10,6 +10,7 @@ import classes from '../Shared/styles/TableStyles.module.css';
 
 import {Review} from "@/admin/types.ts";
 import {useReviews} from "@/admin/useReviews.ts";
+import {ReviewExpansion} from "@/components/AdminTable/Reviews/ReviewExpansion.tsx";
 import {TableToolbox} from '@/components/AdminTable/Shared/TableToolbox';
 import {HEADER_HEIGHT, PAGE_SIZE} from '@/constants';
 
@@ -42,7 +43,6 @@ const AdminReviewsTable = () => {
     }, [location]);
 
     useEffect(() => {
-        console.log(query)
         setDebouncedQuery(query);
     }, [query]);
 
@@ -142,7 +142,7 @@ const AdminReviewsTable = () => {
                 margin: 0,
             },
         },
-        // renderDetailPanel: ({row}) => <ReviewExpansion key={row.original.id} courseId={row.original.id} row={row} />,
+        renderDetailPanel: ({row}) => <ReviewExpansion key={row.original.id} courseId={row.original.id} row={row} />,
     });
 
     return (
