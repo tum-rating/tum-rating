@@ -26,7 +26,7 @@ describe('Ban user effects on course', () => {
             const reviewFromApi = await getCourseById(createdCourse.id)
 
             expect(reviewFromApi.reviews.length).toBe(1);
-            expect(reviewFromApi.reviews[0]['_id']).toBe(review.id);
+            expect(reviewFromApi.reviews[0]['id']).toBe(review.id);
             expect(reviewFromApi.reviews[0].isHidden).toBe(undefined);
 
             await supertest(userUrl + '/' + user.user.id + '/ban')
@@ -47,7 +47,7 @@ describe('Ban user effects on course', () => {
             const reviewFromApiAfterUnban = await getCourseById(createdCourse.id)
 
             expect(reviewFromApiAfterUnban.reviews.length).toBe(1);
-            expect(reviewFromApiAfterUnban.reviews[0]['_id']).toBe(review.id);
+            expect(reviewFromApiAfterUnban.reviews[0]['id']).toBe(review.id);
             expect(reviewFromApiAfterUnban.reviews[0].isHidden).toBe(undefined);
         });
 
@@ -67,13 +67,13 @@ describe('Ban user effects on course', () => {
 
             expect(courseFromApi.reviews.length).toBe(3);
 
-            let foundReview = courseFromApi.reviews.find(review => review['_id'] === user_1_review.id);
+            let foundReview = courseFromApi.reviews.find(review => review['id'] === user_1_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApi.reviews.find(review => review['_id'] === user_2_review.id);
+            foundReview = courseFromApi.reviews.find(review => review['id'] === user_2_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApi.reviews.find(review => review['_id'] === user_3_review.id);
+            foundReview = courseFromApi.reviews.find(review => review['id'] === user_3_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
 
@@ -86,12 +86,12 @@ describe('Ban user effects on course', () => {
 
             expect(courseFromApiAfterBan.reviews.length).toBe(2);
 
-            foundReview = courseFromApiAfterBan.reviews.find(review => review['_id'] === user_1_review.id);
+            foundReview = courseFromApiAfterBan.reviews.find(review => review['id'] === user_1_review.id);
             expect(foundReview).toBe(undefined);
-            foundReview = courseFromApiAfterBan.reviews.find(review => review['_id'] === user_2_review.id);
+            foundReview = courseFromApiAfterBan.reviews.find(review => review['id'] === user_2_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApiAfterBan.reviews.find(review => review['_id'] === user_3_review.id);
+            foundReview = courseFromApiAfterBan.reviews.find(review => review['id'] === user_3_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
 
@@ -103,13 +103,13 @@ describe('Ban user effects on course', () => {
             const courseFromApiAfterUnban = await getCourseById(createdCourse.id)
 
             expect(courseFromApiAfterUnban.reviews.length).toBe(3);
-            foundReview = courseFromApiAfterUnban.reviews.find(review => review['_id'] === user_1_review.id);
+            foundReview = courseFromApiAfterUnban.reviews.find(review => review['id'] === user_1_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApiAfterUnban.reviews.find(review => review['_id'] === user_2_review.id);
+            foundReview = courseFromApiAfterUnban.reviews.find(review => review['id'] === user_2_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApiAfterUnban.reviews.find(review => review['_id'] === user_3_review.id);
+            foundReview = courseFromApiAfterUnban.reviews.find(review => review['id'] === user_3_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
         });
@@ -141,13 +141,13 @@ describe('Ban user effects on course', () => {
 
             expect(courseFromApi.reviews.length).toBe(3);
 
-            let foundReview = courseFromApi.reviews.find(review => review['_id'] === user_1_course_1_review.id);
+            let foundReview = courseFromApi.reviews.find(review => review['id'] === user_1_course_1_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApi.reviews.find(review => review['_id'] === user_2_course_1_review.id);
+            foundReview = courseFromApi.reviews.find(review => review['id'] === user_2_course_1_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApi.reviews.find(review => review['_id'] === user_3_course_1_review.id);
+            foundReview = courseFromApi.reviews.find(review => review['id'] === user_3_course_1_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
 
@@ -155,13 +155,13 @@ describe('Ban user effects on course', () => {
 
             expect(courseFromApi2.reviews.length).toBe(3);
 
-            foundReview = courseFromApi2.reviews.find(review => review['_id'] === user_1_course_2_review.id);
+            foundReview = courseFromApi2.reviews.find(review => review['id'] === user_1_course_2_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApi2.reviews.find(review => review['_id'] === user_2_course_2_review.id);
+            foundReview = courseFromApi2.reviews.find(review => review['id'] === user_2_course_2_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApi2.reviews.find(review => review['_id'] === user_3_course_2_review.id);
+            foundReview = courseFromApi2.reviews.find(review => review['id'] === user_3_course_2_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
 
@@ -169,10 +169,10 @@ describe('Ban user effects on course', () => {
 
             expect(courseFromApi3.reviews.length).toBe(2);
 
-            foundReview = courseFromApi3.reviews.find(review => review['_id'] === user_1_course_3_review.id);
+            foundReview = courseFromApi3.reviews.find(review => review['id'] === user_1_course_3_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApi3.reviews.find(review => review['_id'] === user_2_course_3_review.id);
+            foundReview = courseFromApi3.reviews.find(review => review['id'] === user_2_course_3_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
 
@@ -186,12 +186,12 @@ describe('Ban user effects on course', () => {
 
             expect(courseFromApi1AfterBan.reviews.length).toBe(2);
 
-            foundReview = courseFromApi1AfterBan.reviews.find(review => review['_id'] === user_1_course_1_review.id);
+            foundReview = courseFromApi1AfterBan.reviews.find(review => review['id'] === user_1_course_1_review.id);
             expect(foundReview).toBe(undefined);
-            foundReview = courseFromApi1AfterBan.reviews.find(review => review['_id'] === user_2_course_1_review.id);
+            foundReview = courseFromApi1AfterBan.reviews.find(review => review['id'] === user_2_course_1_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApi1AfterBan.reviews.find(review => review['_id'] === user_2_course_1_review.id);
+            foundReview = courseFromApi1AfterBan.reviews.find(review => review['id'] === user_2_course_1_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
 
@@ -199,12 +199,12 @@ describe('Ban user effects on course', () => {
 
             expect(courseFromApi2AfterBan.reviews.length).toBe(2);
 
-            foundReview = courseFromApi2AfterBan.reviews.find(review => review['_id'] === user_1_course_2_review.id);
+            foundReview = courseFromApi2AfterBan.reviews.find(review => review['id'] === user_1_course_2_review.id);
             expect(foundReview).toBe(undefined);
-            foundReview = courseFromApi2AfterBan.reviews.find(review => review['_id'] === user_2_course_2_review.id);
+            foundReview = courseFromApi2AfterBan.reviews.find(review => review['id'] === user_2_course_2_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApi2AfterBan.reviews.find(review => review['_id'] === user_2_course_2_review.id);
+            foundReview = courseFromApi2AfterBan.reviews.find(review => review['id'] === user_2_course_2_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
 
@@ -212,9 +212,9 @@ describe('Ban user effects on course', () => {
 
             expect(courseFromApi3AfterBan.reviews.length).toBe(1);
 
-            foundReview = courseFromApi3AfterBan.reviews.find(review => review['_id'] === user_1_course_3_review.id);
+            foundReview = courseFromApi3AfterBan.reviews.find(review => review['id'] === user_1_course_3_review.id);
             expect(foundReview).toBe(undefined);
-            foundReview = courseFromApi3AfterBan.reviews.find(review => review['_id'] === user_2_course_3_review.id);
+            foundReview = courseFromApi3AfterBan.reviews.find(review => review['id'] === user_2_course_3_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
 
@@ -227,13 +227,13 @@ describe('Ban user effects on course', () => {
 
             expect(courseFromApiAfterUnban.reviews.length).toBe(3);
 
-            foundReview = courseFromApiAfterUnban.reviews.find(review => review['_id'] === user_1_course_1_review.id);
+            foundReview = courseFromApiAfterUnban.reviews.find(review => review['id'] === user_1_course_1_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApiAfterUnban.reviews.find(review => review['_id'] === user_2_course_1_review.id);
+            foundReview = courseFromApiAfterUnban.reviews.find(review => review['id'] === user_2_course_1_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApiAfterUnban.reviews.find(review => review['_id'] === user_3_course_1_review.id);
+            foundReview = courseFromApiAfterUnban.reviews.find(review => review['id'] === user_3_course_1_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
 
@@ -241,13 +241,13 @@ describe('Ban user effects on course', () => {
 
             expect(courseFromApiAfterUnban2.reviews.length).toBe(3);
 
-            foundReview = courseFromApiAfterUnban2.reviews.find(review => review['_id'] === user_1_course_2_review.id);
+            foundReview = courseFromApiAfterUnban2.reviews.find(review => review['id'] === user_1_course_2_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApiAfterUnban2.reviews.find(review => review['_id'] === user_2_course_2_review.id);
+            foundReview = courseFromApiAfterUnban2.reviews.find(review => review['id'] === user_2_course_2_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApiAfterUnban2.reviews.find(review => review['_id'] === user_3_course_2_review.id);
+            foundReview = courseFromApiAfterUnban2.reviews.find(review => review['id'] === user_3_course_2_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
 
@@ -255,10 +255,10 @@ describe('Ban user effects on course', () => {
 
             expect(courseFromApiAfterUnban3.reviews.length).toBe(2);
 
-            foundReview = courseFromApiAfterUnban3.reviews.find(review => review['_id'] === user_1_course_3_review.id);
+            foundReview = courseFromApiAfterUnban3.reviews.find(review => review['id'] === user_1_course_3_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
-            foundReview = courseFromApiAfterUnban3.reviews.find(review => review['_id'] === user_2_course_3_review.id);
+            foundReview = courseFromApiAfterUnban3.reviews.find(review => review['id'] === user_2_course_3_review.id);
             expect(foundReview).toBeDefined();
             expect(foundReview.isHidden).toBe(undefined);
         }, 10000);
