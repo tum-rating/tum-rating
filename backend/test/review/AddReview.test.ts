@@ -108,7 +108,7 @@ describe('Add Review', () => {
             .get('/')
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('_id');
+                expect(response.body).toHaveProperty('id');
                 expect(response.body).toHaveProperty('reviews');
                 expect(response.body.reviews.length).toBe(2);
                 expect(response.body.howInterestingRatingAverage).toBe(2.5);
@@ -145,7 +145,7 @@ describe('Add Review', () => {
             .get('/')
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('_id');
+                expect(response.body).toHaveProperty('id');
                 expect(response.body).toHaveProperty('reviews');
                 expect(response.body.reviews.length).toBe(3);
                 expect(response.body.howInterestingRatingAverage).toBe(3.33);

@@ -27,7 +27,7 @@ describe('Delete user effects on course', () => {
         const reviewFromApi = await getCourseById(createdCourse.id)
 
         expect(reviewFromApi.reviews.length).toBe(1);
-        expect(reviewFromApi.reviews[0]['_id']).toBe(review.id);
+        expect(reviewFromApi.reviews[0]['id']).toBe(review.id);
 
         await deleteUserByAdmin(admin.token, user.user.id);
 
@@ -55,13 +55,13 @@ describe('Delete user effects on course', () => {
 
         expect(courseFromApi.reviews.length).toBe(3);
 
-        let foundReview = courseFromApi.reviews.find(review => review['_id'] === user_1_review.id);
+        let foundReview = courseFromApi.reviews.find(review => review['id'] === user_1_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
-        foundReview = courseFromApi.reviews.find(review => review['_id'] === user_2_review.id);
+        foundReview = courseFromApi.reviews.find(review => review['id'] === user_2_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
-        foundReview = courseFromApi.reviews.find(review => review['_id'] === user_3_review.id);
+        foundReview = courseFromApi.reviews.find(review => review['id'] === user_3_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
 
@@ -71,12 +71,12 @@ describe('Delete user effects on course', () => {
 
         expect(courseFromApiAfterDeletion.reviews.length).toBe(2);
 
-        foundReview = courseFromApiAfterDeletion.reviews.find(review => review['_id'] === user_1_review.id);
+        foundReview = courseFromApiAfterDeletion.reviews.find(review => review['id'] === user_1_review.id);
         expect(foundReview).toBe(undefined);
-        foundReview = courseFromApiAfterDeletion.reviews.find(review => review['_id'] === user_2_review.id);
+        foundReview = courseFromApiAfterDeletion.reviews.find(review => review['id'] === user_2_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
-        foundReview = courseFromApiAfterDeletion.reviews.find(review => review['_id'] === user_3_review.id);
+        foundReview = courseFromApiAfterDeletion.reviews.find(review => review['id'] === user_3_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
     });
@@ -108,13 +108,13 @@ describe('Delete user effects on course', () => {
 
         expect(courseFromApi.reviews.length).toBe(3);
 
-        let foundReview = courseFromApi.reviews.find(review => review['_id'] === user_1_course_1_review.id);
+        let foundReview = courseFromApi.reviews.find(review => review['id'] === user_1_course_1_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
-        foundReview = courseFromApi.reviews.find(review => review['_id'] === user_2_course_1_review.id);
+        foundReview = courseFromApi.reviews.find(review => review['id'] === user_2_course_1_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
-        foundReview = courseFromApi.reviews.find(review => review['_id'] === user_3_course_1_review.id);
+        foundReview = courseFromApi.reviews.find(review => review['id'] === user_3_course_1_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
 
@@ -122,13 +122,13 @@ describe('Delete user effects on course', () => {
 
         expect(courseFromApi2.reviews.length).toBe(3);
 
-        foundReview = courseFromApi2.reviews.find(review => review['_id'] === user_1_course_2_review.id);
+        foundReview = courseFromApi2.reviews.find(review => review['id'] === user_1_course_2_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
-        foundReview = courseFromApi2.reviews.find(review => review['_id'] === user_2_course_2_review.id);
+        foundReview = courseFromApi2.reviews.find(review => review['id'] === user_2_course_2_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
-        foundReview = courseFromApi2.reviews.find(review => review['_id'] === user_3_course_2_review.id);
+        foundReview = courseFromApi2.reviews.find(review => review['id'] === user_3_course_2_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
 
@@ -136,10 +136,10 @@ describe('Delete user effects on course', () => {
 
         expect(courseFromApi3.reviews.length).toBe(2);
 
-        foundReview = courseFromApi3.reviews.find(review => review['_id'] === user_1_course_3_review.id);
+        foundReview = courseFromApi3.reviews.find(review => review['id'] === user_1_course_3_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
-        foundReview = courseFromApi3.reviews.find(review => review['_id'] === user_2_course_3_review.id);
+        foundReview = courseFromApi3.reviews.find(review => review['id'] === user_2_course_3_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
 
@@ -149,12 +149,12 @@ describe('Delete user effects on course', () => {
 
         expect(courseFromApi1AfterUserDeletion.reviews.length).toBe(2);
 
-        foundReview = courseFromApi1AfterUserDeletion.reviews.find(review => review['_id'] === user_1_course_1_review.id);
+        foundReview = courseFromApi1AfterUserDeletion.reviews.find(review => review['id'] === user_1_course_1_review.id);
         expect(foundReview).toBe(undefined);
-        foundReview = courseFromApi1AfterUserDeletion.reviews.find(review => review['_id'] === user_2_course_1_review.id);
+        foundReview = courseFromApi1AfterUserDeletion.reviews.find(review => review['id'] === user_2_course_1_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
-        foundReview = courseFromApi1AfterUserDeletion.reviews.find(review => review['_id'] === user_2_course_1_review.id);
+        foundReview = courseFromApi1AfterUserDeletion.reviews.find(review => review['id'] === user_2_course_1_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
 
@@ -162,12 +162,12 @@ describe('Delete user effects on course', () => {
 
         expect(courseFromApi2AfterUserDeletion.reviews.length).toBe(2);
 
-        foundReview = courseFromApi2AfterUserDeletion.reviews.find(review => review['_id'] === user_1_course_2_review.id);
+        foundReview = courseFromApi2AfterUserDeletion.reviews.find(review => review['id'] === user_1_course_2_review.id);
         expect(foundReview).toBe(undefined);
-        foundReview = courseFromApi2AfterUserDeletion.reviews.find(review => review['_id'] === user_2_course_2_review.id);
+        foundReview = courseFromApi2AfterUserDeletion.reviews.find(review => review['id'] === user_2_course_2_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
-        foundReview = courseFromApi2AfterUserDeletion.reviews.find(review => review['_id'] === user_2_course_2_review.id);
+        foundReview = courseFromApi2AfterUserDeletion.reviews.find(review => review['id'] === user_2_course_2_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
 
@@ -175,9 +175,9 @@ describe('Delete user effects on course', () => {
 
         expect(courseFromApi3AfterDeletion.reviews.length).toBe(1);
 
-        foundReview = courseFromApi3AfterDeletion.reviews.find(review => review['_id'] === user_1_course_3_review.id);
+        foundReview = courseFromApi3AfterDeletion.reviews.find(review => review['id'] === user_1_course_3_review.id);
         expect(foundReview).toBe(undefined);
-        foundReview = courseFromApi3AfterDeletion.reviews.find(review => review['_id'] === user_2_course_3_review.id);
+        foundReview = courseFromApi3AfterDeletion.reviews.find(review => review['id'] === user_2_course_3_review.id);
         expect(foundReview).toBeDefined();
         expect(foundReview.isHidden).toBe(undefined);
     }, 10000);
