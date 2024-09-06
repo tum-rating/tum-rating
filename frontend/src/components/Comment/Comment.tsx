@@ -14,7 +14,7 @@ interface CommentProps {
     howEasyRating: number;
     howInterestingRating: number;
     userId: string;
-    _id: string;
+    id: string;
     userName: string;
     userReview: {
         userId: string;

@@ -33,7 +33,7 @@ const generateJwtToken = () => {
 };
 
 const generateCourse = withOverrides(() => ({
-    _id: faker.string.uuid(),
+    id: faker.string.uuid(),
     professor: faker.person.fullName(),
     otherLecturers: [faker.person.fullName(), faker.person.fullName()],
     name: faker.lorem.sentence(),
@@ -58,12 +58,12 @@ const generateCourseDetails = withOverrides(() => ({
     reviews: Array.from({length: faker.number.int({min: 1, max: 10})}, () => generateCourseReview()),
     updatedAt: faker.date.recent().toISOString(),
     votesNumber: faker.number.int({min: 0, max: 100}),
-    _id: faker.string.uuid(),
+    id: faker.string.uuid(),
     __v: faker.number.int(),
 }));
 
 const generateCourseReview = withOverrides(() => ({
-    _id: faker.string.uuid(),
+    id: faker.string.uuid(),
     courseId: faker.string.uuid(),
     userId: faker.string.uuid(),
     userName: faker.internet.userName(),

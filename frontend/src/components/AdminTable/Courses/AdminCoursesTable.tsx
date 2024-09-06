@@ -24,7 +24,7 @@ const AdminCoursesTable = () => {
     const {data: searchData, isError: isSearchDataError, isLoading: isSearchDataLoading, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, refetch: refetchSearchQuery} = useSearchCourses(debouncedQuery);
     const location = useLocation();
     const {columns} = useCoursesColumns();
-
+    console.log(searchData)
     useEffect(() => {
         if (searchData) {
             const newRecords = searchData.pages.map((v) => v.results.map((el) => el)).flat();

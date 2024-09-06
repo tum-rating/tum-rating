@@ -23,7 +23,7 @@ async function removeUser(token: string, userId: string): Promise<any> {
     if (!response.ok) {
         throw new ResponseError(data.message, response, userId);
     }
-    data._id = userId;
+    data.id = userId;
     return data;
 }
 
@@ -47,7 +47,7 @@ export function useRemoveUser(): any {
                 queryKey: [QUERY_KEY.all_users],
             });
             notifications.update({
-                id: variables._id,
+                id: variables.id,
                 title: 'Success',
                 message: <Text size="xs">User removed</Text>,
                 autoClose: true,
