@@ -23,7 +23,7 @@ async function removeProposal(token: string, proposalId: string): Promise<any> {
     if (!response.ok) {
         throw new ResponseError(data.message, response, proposalId);
     }
-    data._id = proposalId;
+    data.id = proposalId;
     return data;
 }
 
@@ -47,7 +47,7 @@ export function useRemoveProposal(): any {
                 queryKey: [QUERY_KEY.proposals],
             });
             notifications.update({
-                id: variables._id,
+                id: variables.id,
                 title: 'Success',
                 message: <Text size="xs">Proposal removed</Text>,
                 autoClose: true,

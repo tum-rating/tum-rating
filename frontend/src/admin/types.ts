@@ -23,7 +23,7 @@ type Course = {
     userId: string;
     name: string;
     offeredInSemesters: string[];
-    _id: string;
+    id: string;
 };
 
 type User = {

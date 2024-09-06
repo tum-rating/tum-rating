@@ -12,8 +12,8 @@ import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function editCourse(token: string, course: Course): Promise<any> {
     const body = {...course};
-    delete body._id;
-    const endpoint = endpoints.editCourse(course._id);
+    delete body.id;
+    const endpoint = endpoints.editCourse(course.id);
     const response = await fetchWithServices(endpoint, {
         method: 'PATCH',
         headers: {
@@ -24,7 +24,7 @@ async function editCourse(token: string, course: Course): Promise<any> {
     });
     const data = await response.json();
     if (!response.ok) {
-        if (!response.ok) throw new ResponseError(data.message, response, course._id);
+        if (!response.ok) throw new ResponseError(data.message, response, course.id);
     }
     return {course};
 }
@@ -36,7 +36,7 @@ export function useEditCourse(): any {
         mutationFn: async (course: Course) => editCourse(token, course),
         onMutate: (course) => {
             notifications.show({
-                id: course._id,
+                id: course.id,
                 loading: true,
                 title: 'Editing course',
                 message: <Text size="xs">Your course is being edited</Text>,
@@ -47,13 +47,13 @@ export function useEditCourse(): any {
         },
         onSuccess: (course) => {
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY.admin_detail_course, course.course._id],
+                queryKey: [QUERY_KEY.admin_detail_course, course.course.id],
             });
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.search_query],
             });
             notifications.update({
-                id: course.course._id,
+                id: course.course.id,
                 title: 'Success',
                 message: <Text size="xs">Course saved</Text>,
                 autoClose: true,

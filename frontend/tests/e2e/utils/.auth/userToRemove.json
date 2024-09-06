@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:5174",
+      "localStorage": [
+        {
+          "name": "TUM-REVIEW-USER",
+          "value": "eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjAsInVzZXJSb2xlIjowLCJzdWIiOiI2NmEzOWFkNjNhYjg0NjgyNTQ5YTU5NjUiLCJleHAiOjE3MjIwODQ0NDR9.9ik-QdBav6URoAaQ0RPM1saaqZHYQT2MHPg1NqTl4-E"
+        }
+      ]
+    }
+  ]
+}

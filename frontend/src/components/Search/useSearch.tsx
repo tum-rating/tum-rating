@@ -6,13 +6,13 @@ import {useLocation, useNavigate} from 'react-router-dom';
 
 import {SearchHighlight} from '@/components/Highlight';
 import classes from '@/components/Search/SearchInput.module.css';
+import {SearchItemCourseDetails} from '@/components/Search/SearchItemCourseDetails.tsx';
 import {useSearchContext} from '@/context';
 import {Course} from '@/courses/types.ts';
 import {useSearchCourses} from '@/courses/useSearchCourses';
 import {useScrollLock} from '@/hooks/useScrollLock';
 import {sortCoursesByMatchingFactor} from '@/utils/sortCoursesByMatchingFactor.ts';
 import {splitSearchQueryIntoWords} from '@/utils/splitSearchQueryIntoWords.ts';
-import {SearchItemCourseDetails} from '@/components/Search/SearchItemCourseDetails.tsx';
 
 const useSearch = () => {
     const combobox = useCombobox({

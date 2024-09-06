@@ -1,6 +1,7 @@
-import {Course} from '@/courses/types.ts';
 import {Flex, Text} from '@mantine/core';
+
 import {HowEasyBadge, HowInterestingBadge} from '@/components/Course';
+import {Course} from '@/courses/types.ts';
 
 interface SearchItemCourseDetailsProps {
     course: Course;
