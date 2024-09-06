@@ -10,6 +10,7 @@ export const QUERY_KEY = {
     admin_user_details: 'admin_user_details',
     admin_detail_course: 'admin_detail_course',
     admin_course_proposal_details: 'admin_course_proposal_details',
+    admin_reviews: 'admin_reviews',
     admin_courses: 'admin_courses',
     scrape_course: 'scrape_course',
 };
