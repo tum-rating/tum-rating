@@ -13,6 +13,7 @@ import {Skeleton} from '@/components/Skeleton';
 import {Course} from '@/courses/types.ts';
 import {useDetailCourse} from '@/courses/useCourse.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
+import {CollectionDetailsReviewsSection} from '@/components/AdminTable/Shared/CollectionDetailsReviewsSection';
 
 interface CourseExpansionProps extends HTMLAttributes<HTMLElement> {
     courseId: string;
@@ -61,7 +62,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
     }, [isError || removeCourseIsSuccess]);
 
     return (
-        <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md" w="100vw" {...rest}>
+        <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md" {...rest}>
             {statusAlertFlag ? (
                 <Flex justify="center" w="100%" direction="column" gap="lg">
                     <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error" />
@@ -200,6 +201,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                             </form>
                         </Flex>
                     </Flex>
+                    <CollectionDetailsReviewsSection courseId={courseId} />
                     <Flex direction="column" gap="xs" className={classes.expansionActions}>
                         <Flex align="center" gap="xs">
                             <Text fz="sm" fw={500}>

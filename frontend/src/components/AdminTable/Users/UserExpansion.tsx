@@ -14,6 +14,7 @@ import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/Colle
 import {UserAvatar} from '@/components/Avatar';
 import {Skeleton} from '@/components/Skeleton';
 import {getPath, Paths} from '@/routes/paths.ts';
+import {CollectionDetailsReviewsSection} from "@/components/AdminTable/Shared/CollectionDetailsReviewsSection";
 
 interface UserExpansionProps extends HTMLAttributes<HTMLElement> {
     userId: string;
@@ -142,6 +143,7 @@ const UserExpansion = ({userId, row, ...rest}: UserExpansionProps) => {
                     </Flex>
                 </>
             )}
+            <CollectionDetailsReviewsSection userId={userId} />
             <Flex direction="column" gap="xs" className={classes.expansionActions}>
                 <Flex align="center" gap="xs">
                     <Text fz="sm" fw={500}>

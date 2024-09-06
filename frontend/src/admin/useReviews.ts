@@ -12,7 +12,7 @@ type Reviews = {
     nextPageNumber: number;
 };
 
-type PaginatedReviewsConfig = {
+export type PaginatedReviewsConfig = {
     pageParam?: number | any;
     userId?: string;
     courseId?: string;
