@@ -11,22 +11,30 @@ export const useReviewsColumns = () => {
         {
             accessorKey: 'comment',
             header: 'Comment',
+size:500,
+            mantineTableBodyCellProps: () => ({
+                style: {
+                    fontWeight: '500',
+                },
+            }),
+            Cell: ({row}) => {
+                return <span style={{wordBreak: 'break-word'}}>{row.original.comment}</span>;
+            },
         },
         {
             accessorKey: 'howEasyRating',
-            header: 'How easy rating',
+            size:50,
+            header: 'er',
         },
         {
             accessorKey: 'howInterestingRating',
-            header: 'How interesting rating',
+            size:50,
+            header: 'ir',
         },
         {
+            size: 50,
             accessorKey: 'semester',
             header: 'Semester',
-        },
-        {
-            accessorKey: 'userId',
-            header: 'User Id',
         },
         {
             header: 'Created at',
