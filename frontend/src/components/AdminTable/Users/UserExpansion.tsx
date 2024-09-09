@@ -10,11 +10,11 @@ import {useBanUser} from '@/admin/useBanUser.tsx';
 import {useRemoveUser} from '@/admin/useRemoveUser.tsx';
 import {useUser} from '@/admin/useUser.ts';
 import {useUser as useLoggedUser} from '@/auth/useUser.tsx';
+import {CollectionDetailsReviewsSection} from "@/components/AdminTable/Shared/CollectionDetailsReviewsSection";
 import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 import {UserAvatar} from '@/components/Avatar';
 import {Skeleton} from '@/components/Skeleton';
 import {getPath, Paths} from '@/routes/paths.ts';
-import {CollectionDetailsReviewsSection} from "@/components/AdminTable/Shared/CollectionDetailsReviewsSection";
 
 interface UserExpansionProps extends HTMLAttributes<HTMLElement> {
     userId: string;

@@ -4,14 +4,14 @@ import {useNavigate} from 'react-router-dom';
 
 import classes from './Comment.module.css';
 
-import {Review} from "@/admin/types.ts";
+import {Review} from '@/admin/types.ts';
 import {useUser} from '@/auth/useUser.tsx';
 import {UserInfoAction} from '@/components/AdminTable/Shared/UserInfoAction';
 import {UserAvatar} from '@/components/Avatar';
 import {NumberRatingBadge} from '@/components/Course';
 import {getPath, Paths} from '@/routes/paths.ts';
 
-interface CommentProps extends Review{
+interface CommentProps extends Review {
     comment: string;
     createdAt: string;
     howEasyRating: number;
@@ -24,7 +24,7 @@ interface CommentProps extends Review{
     };
 }
 
-export const Comment = (props: CommentProps) => {
+const Comment = (props: CommentProps) => {
     const {userId, howInterestingRating, howEasyRating, comment, createdAt, userReview, userName} = props;
     const {data: user, isLoading} = useUser();
     const isAdmin = isLoading ? false : user?.isAdmin;
@@ -105,3 +105,5 @@ export const Comment = (props: CommentProps) => {
         </Flex>
     );
 };
+
+export {Comment};

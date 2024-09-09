@@ -8,12 +8,12 @@ import classes from '../Shared/styles/ExpansionStyles.module.css';
 
 import {useEditCourse} from '@/admin/useEditCourse.tsx';
 import {useRemoveCourse} from '@/admin/useRemoveCourse.tsx';
+import {CollectionDetailsReviewsSection} from '@/components/AdminTable/Shared/CollectionDetailsReviewsSection';
 import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 import {Skeleton} from '@/components/Skeleton';
 import {Course} from '@/courses/types.ts';
 import {useDetailCourse} from '@/courses/useCourse.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
-import {CollectionDetailsReviewsSection} from '@/components/AdminTable/Shared/CollectionDetailsReviewsSection';
 
 interface CourseExpansionProps extends HTMLAttributes<HTMLElement> {
     courseId: string;
