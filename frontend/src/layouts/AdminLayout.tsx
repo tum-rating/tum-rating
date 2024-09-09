@@ -16,6 +16,7 @@ const adminTabs = [
     {label: 'Proposals', link: getPath(Paths.adminCoursesProposals)},
     {label: 'Courses', link: getPath(Paths.adminAllCourses)},
     {label: 'Users', link: getPath(Paths.adminUsers)},
+    {label: 'Reviews', link: getPath(Paths.adminReviews)},
 ];
 
 export function AdminLayout({children}: PropsWithChildren) {

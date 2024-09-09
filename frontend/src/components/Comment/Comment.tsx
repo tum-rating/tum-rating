@@ -1,14 +1,17 @@
-import {ActionIcon, Badge, Flex, Menu, Rating, Text} from '@mantine/core';
+import {ActionIcon, Badge, Button, Flex, Menu, Rating, Text} from '@mantine/core';
 import {IconDotsVertical} from '@tabler/icons-react';
 import {useNavigate} from 'react-router-dom';
 
 import classes from './Comment.module.css';
 
+import {Review} from '@/admin/types.ts';
+import {useUser} from '@/auth/useUser.tsx';
+import {UserInfoAction} from '@/components/AdminTable/Shared/UserInfoAction';
 import {UserAvatar} from '@/components/Avatar';
 import {NumberRatingBadge} from '@/components/Course';
 import {getPath, Paths} from '@/routes/paths.ts';
 
-interface CommentProps {
+interface CommentProps extends Review {
     comment: string;
     createdAt: string;
     howEasyRating: number;
@@ -21,9 +24,10 @@ interface CommentProps {
     };
 }
 
-export const Comment = (props: CommentProps) => {
+const Comment = (props: CommentProps) => {
     const {userId, howInterestingRating, howEasyRating, comment, createdAt, userReview, userName} = props;
-
+    const {data: user, isLoading} = useUser();
+    const isAdmin = isLoading ? false : user?.isAdmin;
     const navigate = useNavigate();
 
     if (!userId) return '';
@@ -37,9 +41,21 @@ export const Comment = (props: CommentProps) => {
                         <UserAvatar size="md" radius="xl" alt="user avatar" />
                         <Flex direction="column">
                             <Flex w="100%" align="center">
-                                <Text maw={userCommentFlag ? '50vw' : '75vw'} truncate size="sm" fw="500">
-                                    {userName}{' '}
-                                </Text>
+                                {isAdmin ? (
+                                    <>
+                                        <UserInfoAction userId={userId}>
+                                            {(user) => (
+                                                <Button px={4} m={0} h={20} variant="subtle" fz="xs" fw="600" c={user?.isBanned ? 'gray' : 'blue'} style={user?.isBanned ? {textDecorationLine: 'line-through'} : {}}>
+                                                    {user?.username}
+                                                </Button>
+                                            )}
+                                        </UserInfoAction>
+                                    </>
+                                ) : (
+                                    <Text maw={userCommentFlag ? '50vw' : '75vw'} truncate size="sm" fw="500">
+                                        {userName}{' '}
+                                    </Text>
+                                )}
                                 {userCommentFlag && (
                                     <Badge ml={4} size="xs" variant="light" color="green" data-testid="user-comment-badge">
                                         You
@@ -89,3 +105,5 @@ export const Comment = (props: CommentProps) => {
         </Flex>
     );
 };
+
+export {Comment};

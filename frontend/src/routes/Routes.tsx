@@ -34,6 +34,11 @@ const AdminUsersTable = lazy(async () => {
     return {default: AdminUsersTable};
 });
 
+const AdminReviewsTable = lazy(async () => {
+    let {AdminReviewsTable} = await import('@/components/AdminTable');
+    return {default: AdminReviewsTable};
+});
+
 //--- ADMIN DETAILS
 
 const AdminUserDetails = lazy(async () => {
@@ -143,6 +148,10 @@ const routes = [
                     {
                         path: getPath(Paths.adminUsers),
                         element: <AdminUsersTable />,
+                    },
+                    {
+                        path: getPath(Paths.adminReviews),
+                        element: <AdminReviewsTable />
                     },
                     {
                         path: getPath(Paths.adminUserDetails),

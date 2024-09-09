@@ -3,7 +3,7 @@ import {Course} from './types.ts';
 import {endpoints} from '@/api';
 import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {useInfiniteQueryWithAuth} from '@/api/useInfiniteQueryWithAuth.tsx';
-import {PAGE_SIZE} from '@/constants';
+import {SEARCH_PAGE_SIZE as PAGE_SIZE} from '@/constants';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 

@@ -5,6 +5,19 @@ type CourseProposal = {
     userId: string;
 };
 
+type Review = {
+    id: string;
+    userId: string;
+    userName: string;
+    courseId: string;
+    howInterestingRating: number;
+    howEasyRating: number;
+    comment: string;
+    semester: string;
+    createdAt: string;
+    updatedAt: string;
+};
+
 type ReadyCourseProposal = {
     courseId: string;
     courseNumber: string;
@@ -35,4 +48,4 @@ type User = {
     role: number;
 };
 
-export type {CourseProposal, User, Course, ReadyCourseProposal};
+export type {CourseProposal, User, Course, ReadyCourseProposal, Review};
