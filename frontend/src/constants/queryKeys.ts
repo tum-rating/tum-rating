@@ -2,6 +2,7 @@ export const QUERY_KEY = {
     user: 'user',
     user_details: 'user_details',
     courses: 'courses',
+    trending_courses: 'trending_courses',
     proposals: 'proposals',
     all_users: 'all_users',
     detail_course: 'detail_course',
