@@ -25,7 +25,7 @@ interface CommentProps extends Review{
 }
 
 export const Comment = (props: CommentProps) => {
-    const {userId, howInterestingRating, howEasyRating, comment, createdAt, userReview, userName, courseId} = props;
+    const {userId, howInterestingRating, howEasyRating, comment, createdAt, userReview, userName} = props;
     const {data: user, isLoading} = useUser();
     const isAdmin = isLoading ? false : user?.isAdmin;
     const navigate = useNavigate();
