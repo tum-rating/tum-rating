@@ -37,6 +37,8 @@ export const AdminCollectionDetailsWrapper = ({children}: PropsWithChildren) => 
             style={{
                 height: `calc(100vh - ${HEADER_HEIGHT}px)`,
                 overflowY: 'auto',
+                maxWidth: '1500px',
+                width: '100%'
             }}
         >
             <Breadcrumbs my="sm">
