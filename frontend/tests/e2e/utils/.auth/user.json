@@ -2,11 +2,15 @@
   "cookies": [],
   "origins": [
     {
-      "origin": "http://localhost:5174",
+      "origin": "http://localhost:3000",
       "localStorage": [
         {
+          "name": "x-trace-id",
+          "value": "6dbf0c58-a817-44db-a81d-4c5132d80011"
+        },
+        {
           "name": "TUM-REVIEW-USER",
-          "value": "eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjAsInVzZXJSb2xlIjowLCJzdWIiOiI2Njg5N2Q4YzJiNGEzN2I1ZDJmYWYxZmYiLCJleHAiOjE3MjAzNzMwMDV9.TIygZG4vG-Ij2FTXYtA2X7SWdCbDMBrUUjsNNvMqokw"
+          "value": "eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjAsInVzZXJSb2xlIjowLCJzdWIiOiI2NmUwMzI2ZmJlNTM5NWZiMTVmM2JiZTciLCJleHAiOjE3MjYwNTU0MTJ9.WLTLuAfDm3rpGw716IgM5GHqvtuLn3AjvPsdXswtFuo"
         }
       ]
     }

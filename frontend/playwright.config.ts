@@ -6,9 +6,10 @@ export default defineConfig({
     forbidOnly: !!process.env.CI,
     retries: 3,
     workers: process.env.CI ? 1 : 4,
+    globalTimeout: 60000,
     reporter: 'line',
     use: {
-        baseURL: 'http://localhost:5174',
+        baseURL: 'http://localhost:3000',
         trace: 'on-first-retry',
     },
     projects: [
@@ -43,7 +44,7 @@ export default defineConfig({
     ],
     webServer: {
         command: 'npm run dev',
-        url: 'http://localhost:5174',
+        url: 'http://localhost:3000',
         reuseExistingServer: !process.env.CI,
     },
 });

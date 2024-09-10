@@ -1,5 +1,6 @@
 import {faker} from '@faker-js/faker';
 import {expect, Page} from '@playwright/test';
+
 import {openMobileDrawer} from 'tests/e2e/utils/layout.ts';
 
 interface TestUserCredentials {
@@ -24,9 +25,10 @@ const generateTestUser = () => {
 
 const fullAuthProcess = async (page: Page, authFile: string) => {
     const user = generateTestUser();
-    await page.goto('/');
-    await page.getByTestId('sign-up-btn-desktop').click();
-    await page.getByText('Sign up', {exact: true}).click();
+    await page.goto('/', {waitUntil: 'domcontentloaded'});
+    await page.waitForSelector('[data-testid="sign-up-btn-desktop"]', {timeout: 60000});
+    await page.getByTestId('sign-up-btn-desktop').click({timeout: 60000});
+    await page.getByText('Sign up', {exact: true}).click({timeout: 60000});
     await signUp({page, user});
     await activateAccount({page, user});
     await page.goto('/');
@@ -36,6 +38,7 @@ const fullAuthProcess = async (page: Page, authFile: string) => {
     await page.goto('/');
     await signOut({page, mobile: false});
 };
+
 
 const getActivationTokenFromMail = async (email: string) => {
     const response = await fetch(`http://localhost:1080/email`);
