@@ -25,10 +25,9 @@ const generateTestUser = () => {
 
 const fullAuthProcess = async (page: Page, authFile: string) => {
     const user = generateTestUser();
-    await page.goto('/', {waitUntil: 'domcontentloaded'});
-    await page.waitForSelector('[data-testid="sign-up-btn-desktop"]', {timeout: 60000});
-    await page.getByTestId('sign-up-btn-desktop').click({timeout: 60000});
-    await page.getByText('Sign up', {exact: true}).click({timeout: 60000});
+    await page.goto('/');
+    await page.getByTestId('sign-up-btn-desktop').click();
+    await page.getByText('Sign up', {exact: true}).click();
     await signUp({page, user});
     await activateAccount({page, user});
     await page.goto('/');
