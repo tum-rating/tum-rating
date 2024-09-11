@@ -16,7 +16,7 @@ import {
     BadRequestException,
 } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
-import { ApiBearerAuth, ApiTags, ApiQuery, ApiParam, ApiResponse, ApiOkResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
 import { USER_ID } from 'src/utils/headers/context.headers';
@@ -28,10 +28,12 @@ import { User } from 'src/database/documents/user';
 import { Review } from 'src/database/documents/review';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { CourseReviewSemesterMismatch, DuplicateError, NotFoundError } from 'src/utils/errors/errors';
+import { getNextPageNumber, PaginatedResults } from 'src/utils/api/pagination';
 
 import { CourseService } from './course.service';
 import { AddReviewRequestDto, AddReviewRequestSchema } from './dto/AddReviewRequest.dto';
 import { PatchReviewRequestDto, PatchReviewRequestSchema } from './dto/PatchReviewRequest.dto';
+import { GetCourseWithReviewsResponseDto, GetCourseWithoutReviewResponseDto } from './dto/GetCourseRequest.dto';
 
 @ApiTags('courses')
 @Controller('/api/v1/courses')
@@ -69,11 +71,46 @@ export class CourseControllerV1 {
     ) {
         this._logger.info('Get courses requested with pageNumber %s, pageSize %d and search %s', pageNumber, pageSize, search);
 
-        const paginetedResults = await this._courseService.getCoursesOverviewPaginated(pageNumber, pageSize, search);
+        const results = await this._courseService.getCoursesOverviewPaginated(pageNumber, pageSize, search);
 
-        this._logger.info('Successfuly retrieved courses with count %d', paginetedResults.courses.length);
+        this._logger.info('Successfuly retrieved courses with count %d', results.length);
 
-        return paginetedResults;
+        return new PaginatedResults(
+            results.map(course => new GetCourseWithoutReviewResponseDto(course)),
+            getNextPageNumber(results, pageNumber, pageSize),
+        );
+    }
+
+    @ApiQuery({
+        name: 'page-number',
+        required: false,
+        type: Number,
+        description: 'Does not work for now, just to be pagination compliant.'
+    })
+    @ApiQuery({
+        name: 'page-size',
+        required: false,
+        type: Number,
+    })
+    @Get('/trending')
+    public async getTrendingCourses(
+        @Query('page-number', new JoiObjectSchemaPipe(OptionalIntPipeAtLeast1))
+        pageNumber: number = 1,
+        @Query('page-size', new JoiObjectSchemaPipe(OptionalIntPipeAtLeast1))
+        pageSize: number = 20,
+    ) {
+        this._logger.info('Get trending courses requested');
+
+        const validatedPageSize = pageSize < 100 ? pageSize : 100;
+
+        const trendingCourses = await this._courseService.getTrendingCourses(validatedPageSize);
+
+        this._logger.info('Successfuly retrieved trending courses with count %d', trendingCourses.length);
+
+        return new PaginatedResults(
+            trendingCourses.map(trendingCourse => new GetCourseWithoutReviewResponseDto(trendingCourse)),
+            null
+        );
     }
 
     @Get('/:id')
@@ -81,11 +118,11 @@ export class CourseControllerV1 {
         this._logger.info('Get course with id: %s', id);
 
         try {
-            const review = await this._courseService.getCourseByIdWihtPopulatedReviews(id);
+            const courseWithReviews = await this._courseService.getCourseByIdWihtPopulatedReviews(id);
     
-            this._logger.info('Successfuly retrieved course with id: %s', review.id);
+            this._logger.info('Successfuly retrieved course with id: %s', courseWithReviews.id);
     
-            return review;
+            return new GetCourseWithReviewsResponseDto(courseWithReviews);
         } catch (error) {
             if (error instanceof NotFoundError) {
                 this._logger.debug('Course not found with id: %s', id);

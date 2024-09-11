@@ -36,7 +36,17 @@ export const signUpRequestMock = async (request?: Partial<SignUpRequestDto>) => 
     return mockRequest;
 };
 
-export const signInRequestMock = async (request?: Partial<SignUpRequestDto>, skipUserCreation = false) => {
+export interface SignInRequestMockResponse {
+    user: {
+        id: string;
+        email: string;
+        username: string;
+        password: string;
+    };
+    token: string;
+}
+
+export const signInRequestMock = async (request?: Partial<SignUpRequestDto>, skipUserCreation = false): Promise<SignInRequestMockResponse> => {
     let signInRequest: SignInRequestDto;
     let signUpResponse: SignUpRequestDto;
 
@@ -74,7 +84,7 @@ export const signInRequestMock = async (request?: Partial<SignUpRequestDto>, ski
     };
 };
 
-export const signInAdminRequestMock = async (request?: Partial<SignUpRequestDto>, skipUserCreation = false) => {
+export const signInAdminRequestMock = async (request?: Partial<SignUpRequestDto>, skipUserCreation = false): Promise<SignInRequestMockResponse> => {
     let signInRequest: SignInRequestDto;
     let signUpResponse: SignUpRequestDto;
 

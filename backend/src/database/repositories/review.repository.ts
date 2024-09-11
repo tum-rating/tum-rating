@@ -1,19 +1,20 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema as MongooseSchema, ClientSession } from 'mongoose';
+import { Model, ClientSession } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { ObjectId } from 'mongoose';
 
 import { Review, ReviewDocument } from 'src/database/documents/review';
 import { PaginationOptions } from 'src/utils/api/pagination';
 
 import { BaseRepository } from './base.repository';
-import { th } from '@faker-js/faker';
 
 export type CreateReviewType = Pick<Review, 'userId' | 'userName' | 'courseId' | 'howEasyRating' | 'howInterestingRating' | 'comment' | 'semester'>;
 
 export type PatchReviewType = Partial<Pick<Review, 'howEasyRating' | 'howInterestingRating' | 'comment' | 'semester'>>;
 
-export type QueryOptions = {
+export type ReviewQueryOptions = {
     userId?: string;
+    courseId?: string;
 };
 
 export class ReviewRepository extends BaseRepository<Review> {
@@ -32,15 +33,26 @@ export class ReviewRepository extends BaseRepository<Review> {
         return this._reviewModel.findOne({ courseId, userId });
     }
 
-    public async getPaginatedReviews(paginationOptions: PaginationOptions, queryOptions?: QueryOptions) {
+    public async getPaginatedReviews(paginationOptions: PaginationOptions, queryOptions?: ReviewQueryOptions): Promise<WithId<Review>[]> {
         const alignedPageNumber = paginationOptions.pageNumber - 1;
 
         if (alignedPageNumber < 0) throw new Error('Page number must be greater than 0');
 
+        const query = {};
+
+        if (queryOptions?.userId) {
+            query['userId'] = queryOptions.userId;
+        }
+
+        if (queryOptions?.courseId) {
+            query['courseId'] = queryOptions.courseId;
+        }
+
         return this._reviewModel
-            .find(queryOptions)
+            .find(query)
             .skip(alignedPageNumber * paginationOptions.pageSize)
-            .limit(paginationOptions.pageSize);
+            .limit(paginationOptions.pageSize)
+            .select('-__v');
     }
 
     public async updateOneByUserIdAndCourseId(userId: string, courseId: string, review: PatchReviewType) {

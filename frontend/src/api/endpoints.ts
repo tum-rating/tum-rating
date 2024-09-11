@@ -29,23 +29,27 @@ type CoursesEndpoints = {
     getSpecificCourse: (id: string) => string;
     postSpecificReview: (courseId: string, userId: string) => string;
     getPaginatedCourses: (pageNumber: number | string, pageSize: number | string) => string;
+    getPaginatedTrendingCourses: (pageNumber: number | string, pageSize: number | string) => string;
     searchCourses: (query: string) => string;
     postCourseProposal: string;
     searchCoursesOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => string;
 };
 
-const Courses: CoursesEndpoints = {
+const courses: CoursesEndpoints = {
     base: coursesBase,
     getAllCourses: coursesBase,
     postCourseProposal: baseApiUrl + '/course-proposals',
     getSpecificCourse: (id: string) => `${coursesBase}/${id}`,
     postSpecificReview: (courseId: string, userId: string) => `${coursesBase}/${courseId}/user/${userId}`,
     getPaginatedCourses: (pageNumber: number | string, pageSize: number | string) => `${coursesBase}?page-number=${pageNumber}&page-size=${pageSize}`,
+    getPaginatedTrendingCourses: (pageNumber: number | string, pageSize: number | string) => `${coursesBase}/trending?page-number=${pageNumber}&page-size=${pageSize}`,
     searchCourses: (query: string) => `${coursesBase}?search=${query}`,
     searchCoursesOnCurrentPage: (pageNumber: number, pageSize: number, search: string) => `${coursesBase}?page-number=${pageNumber}&page-size=${pageSize}&search=${search}`,
 };
 
 type AdminEndpoints = {
+    //---REVIEWS
+    getPaginatedReviews: (pageNumber: number | string, pageSize: number | string, userId?: string, courseId?: string, query?: string) => string;
     //---COURSES
     addCourse: string;
     editCourse: (courseId: string) => string;
@@ -62,6 +66,19 @@ type AdminEndpoints = {
 };
 
 const admin: AdminEndpoints = {
+    getPaginatedReviews: (pageNumber: number | string, pageSize: number | string, userId?: string, courseId?: string, query?: string) => {
+        let url = `${baseApiUrl}/reviews?page-number=${pageNumber}&page-size=${pageSize}`;
+        if (userId) {
+            url += `&user-id=${userId}`;
+        }
+        if (courseId) {
+            url += `&course-id=${courseId}`;
+        }
+        if (query) {
+            url += `&query=${query}`;
+        }
+        return url;
+    },
     getUser: (userId: string) => baseApiUrl + `/users/${userId}`,
     getAllUsers: baseApiUrl + '/users',
     getAllProposals: baseApiUrl + '/course-proposals',
@@ -76,6 +93,6 @@ const admin: AdminEndpoints = {
 
 export const endpoints = {
     ...auth,
-    ...Courses,
+    ...courses,
     ...admin,
 };

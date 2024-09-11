@@ -23,6 +23,7 @@ export enum Paths {
     adminUsers = 'users',
     adminAllCourses = 'all-courses',
     adminCoursesProposals = 'courses-proposals',
+    adminReviews = 'reviews',
     //--- admin collections details
     adminUserDetails = ':userId',
     adminCoursesProposalsDetails = ':courseProposalId',
@@ -104,6 +105,9 @@ const PATH_ELEMENTS: PathElement = {
         parent: Paths.admin,
     },
     [Paths.adminCoursesProposals]: {
+        parent: Paths.admin,
+    },
+    [Paths.adminReviews]: {
         parent: Paths.admin,
     },
     [Paths.adminUserDetails]: {

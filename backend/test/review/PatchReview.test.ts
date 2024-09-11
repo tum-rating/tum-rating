@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
 import { connectMongo, signInRequestMock, signInAdminRequestMock, updateReview } from '@tum-rating/backend/test/utils';
-import { addReviewMockRequest, courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
+import { courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
+import { addReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
 import { createCourseMockRequest } from '@tum-rating/backend/test/utils/api-client/course';
 import { AddReviewRequestDto } from '@tum-rating/backend/src/modules/course/dto/AddReviewRequest.dto';
 
@@ -143,7 +144,7 @@ describe('Patch Review', () => {
             .get('/')
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('_id');
+                expect(response.body).toHaveProperty('id');
                 expect(response.body).toHaveProperty('reviews');
                 expect(response.body.reviews.length).toBe(2);
                 expect(response.body.howInterestingRatingAverage).toBe(4);
@@ -168,7 +169,7 @@ describe('Patch Review', () => {
             .get('/')
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('_id');
+                expect(response.body).toHaveProperty('id');
                 expect(response.body).toHaveProperty('reviews');
                 expect(response.body.reviews.length).toBe(2);
                 expect(response.body.howInterestingRatingAverage).toBe(3.5);
@@ -209,7 +210,7 @@ describe('Patch Review', () => {
                 expect(response.body.howEasyRatingAverage).toEqual(requestBody.howEasyRating);
             });
 
-        const createdReviewId = response.body.reviews[0]._id;
+        const createdReviewId = response.body.reviews[0].id;
 
         const result = await updateReview(createdReviewId, { isHidden: true });
 
@@ -237,5 +238,28 @@ describe('Patch Review', () => {
                 expect(response.body).toHaveProperty('reviews');
                 expect(response.body.reviews.length == 0).toBe(true);
             });
+    });
+
+    it('should fail to patch single user review if comment under 5 chars', async () => {
+        const signInResponse = await signInRequestMock();
+
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const createdCourse = await createCourseMockRequest(signInAdminResponse.token);
+
+        await addReviewMockRequest(signInResponse.token, createdCourse.id, signInResponse.user.id, {
+            howInterestingRating: 2,
+            howEasyRating: 3,
+        });
+
+
+        const requestBody: Partial<AddReviewRequestDto> = {
+            comment: faker.string.sample(2001),
+        };
+        return supertest(`${courseUrl}/${createdCourse.id}/user/${signInResponse.user.id}`)
+            .patch('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send(requestBody)
+            .expect(400);
     });
 });

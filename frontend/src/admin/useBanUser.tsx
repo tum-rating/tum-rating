@@ -22,7 +22,7 @@ async function banUser(token: string, userId: string, flag: boolean): Promise<an
     });
     if (response.status === 204) {
         return {
-            _id: userId,
+            id: userId,
             isBanned: flag,
         };
     }
@@ -30,7 +30,7 @@ async function banUser(token: string, userId: string, flag: boolean): Promise<an
     if (!response.ok) {
         throw new ResponseError(data.message, response, userId);
     }
-    data._id = userId;
+    data.id = userId;
     return data;
 }
 
@@ -57,7 +57,7 @@ export function useBanUser(): any {
                 queryKey: [QUERY_KEY.admin_user_details],
             });
             notifications.update({
-                id: variables._id,
+                id: variables.id,
                 title: 'Success',
                 message: <Text size="xs"> {variables.isBanned ? 'User banned' : 'User unbanned'}</Text>,
                 autoClose: true,

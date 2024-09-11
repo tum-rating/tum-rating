@@ -1,3 +1,5 @@
+import {UseInfiniteQueryOptions} from '@tanstack/react-query';
+
 import {Course} from './types.ts';
 
 import {endpoints} from '@/api';
@@ -8,7 +10,7 @@ import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 export type PaginatedCourses = {
-    courses: Course[];
+    results: Course[];
     nextPageNumber: number;
 };
 
@@ -19,7 +21,9 @@ async function getPaginatedCourses({pageParam = 1}): Promise<PaginatedCourses> {
     return data;
 }
 
-export function usePaginatedCourses() {
+interface PaginatedCoursesProps extends Partial<UseInfiniteQueryOptions> {}
+
+export function usePaginatedCourses(props: PaginatedCoursesProps) {
     return useInfiniteQueryWithAuth({
         queryKey: [QUERY_KEY.courses],
         // @ts-ignore
@@ -29,5 +33,6 @@ export function usePaginatedCourses() {
         initialPageParam: 1,
         retry: 3,
         staleTime: 1000 * 60 * 5,
+        ...props,
     });
 }

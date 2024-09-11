@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
 import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
-import { addReviewMockRequest, courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
+import { courseUrl } from '@tum-rating/backend/test/utils/api-client/course';
+import { addReviewMockRequest } from '@tum-rating/backend/test/utils/api-client/review';
 import { createCourseMockRequest } from '@tum-rating/backend/test/utils/api-client/course';
 import { AddReviewRequestDto } from '@tum-rating/backend/src/modules/course/dto/AddReviewRequest.dto';
 
@@ -107,7 +108,7 @@ describe('Add Review', () => {
             .get('/')
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('_id');
+                expect(response.body).toHaveProperty('id');
                 expect(response.body).toHaveProperty('reviews');
                 expect(response.body.reviews.length).toBe(2);
                 expect(response.body.howInterestingRatingAverage).toBe(2.5);
@@ -144,12 +145,33 @@ describe('Add Review', () => {
             .get('/')
             .expect(200)
             .expect((response: supertest.Response) => {
-                expect(response.body).toHaveProperty('_id');
+                expect(response.body).toHaveProperty('id');
                 expect(response.body).toHaveProperty('reviews');
                 expect(response.body.reviews.length).toBe(3);
                 expect(response.body.howInterestingRatingAverage).toBe(3.33);
                 expect(response.body.howEasyRatingAverage).toBe(3.33);
                 expect(response.body.votesNumber).toBe(3);
             });
+    }, 10000);
+
+    it('should fail if review comment is longer than 2000 chars', async () => {
+        const signInResponse = await signInRequestMock();
+
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const createdReview = await createCourseMockRequest(signInAdminResponse.token);
+
+        const requestBody: AddReviewRequestDto = {
+            howInterestingRating: 3,
+            howEasyRating: 4,
+            comment: faker.string.sample(2001),
+            semester: createdReview.offeredInSemesters[0],
+        };
+
+        return supertest(`${courseUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
+            .post('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send(requestBody)
+            .expect(400);
     }, 10000);
 });

@@ -1,5 +1,5 @@
 export interface Course {
-    _id: string;
+    id: string;
     professor: string;
     name: string;
     courseId: string;
@@ -13,7 +13,7 @@ export interface Course {
 }
 
 export interface DetailCourse {
-    _id: string;
+    id: string;
     professor: string;
     name: string;
     courseId: string;
