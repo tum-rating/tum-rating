@@ -2,6 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 
 import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
 
+import { CacheModule } from 'src/utils/cache/cache.module';
 import { ConfigModule } from 'src/config/config.module';
 import { MailerModule } from 'src/modules/mailer/mailer.module';
 import { MongoModule } from 'src/database/mongo.module';
@@ -14,9 +15,11 @@ import { HealthModule } from './modules/health/health.module';
 import { UserModule } from './modules/user/user.module';
 import { CourseModule } from './modules/course/course.module';
 import { CourseProposalModule } from './modules/course-proposal/courseProposal.module';
+import { ReviewModule } from './modules/review/review.module';
 
 @Module({
     imports: [
+        CacheModule,
         ConfigModule,
         MailerModule,
         MongoModule,
@@ -28,7 +31,8 @@ import { CourseProposalModule } from './modules/course-proposal/courseProposal.m
         HealthModule,
         UserModule,
         CourseModule,
-        CourseProposalModule
+        CourseProposalModule,
+        ReviewModule
     ],
 })
 export class AppModule implements NestModule {

@@ -1,5 +1,5 @@
 import {Box, Flex} from '@mantine/core';
-import {IconLibrary, IconLibraryPlus, IconUser} from '@tabler/icons-react';
+import {IconLibrary, IconLibraryPlus, IconMessageStar, IconUser} from '@tabler/icons-react';
 
 import {CourseProposal} from '@/admin/types.ts';
 import {useAllUsers} from '@/admin/useAllUsers.ts';
@@ -55,6 +55,17 @@ const AdminSummary = () => {
                     icon={<IconUser />}
                     description="Total number of users"
                 />
+                <AdminStatsBox
+                options={{
+                    value: null,
+                    diffInPercent: null,
+                    diffValue: null,
+                }}
+                title="Reviews"
+                link={getPath(Paths.adminReviews)}
+                icon={<IconMessageStar />}
+                description="Total number of users"
+            />
             </Flex>
         </Box>
     );

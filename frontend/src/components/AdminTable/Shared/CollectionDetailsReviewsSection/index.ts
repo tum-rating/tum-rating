@@ -1,0 +1,1 @@
+export {CollectionDetailsReviewsSection} from './CollectionDetailsReviewsSection';

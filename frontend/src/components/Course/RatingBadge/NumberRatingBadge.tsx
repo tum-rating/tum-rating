@@ -15,7 +15,7 @@ export const NumberRatingBadge = (props: NumberRatingBadgeProps) => {
         color = 'green';
     }
     return (
-        <Badge size="lg" variant="light" color={color} {...badgeProps}>
+        <Badge variant="light" color={color} {...badgeProps}>
             {score}
         </Badge>
     );

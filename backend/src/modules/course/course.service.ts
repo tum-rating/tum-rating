@@ -1,16 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { ObjectId } from 'mongoose';
+import { PinoLogger } from 'nestjs-pino';
 
 import { CourseRepository } from 'src/database/repositories/course.repository';
 import { Course } from 'src/database/documents/course';
 import { NotFoundError, CourseReviewSemesterMismatch } from 'src/utils/errors/errors';
 import { CreateReviewType, PatchReviewType, ReviewRepository } from 'src/database/repositories/review.repository';
+import { CacheService } from 'src/utils/cache/cache.service';
 
 @Injectable()
 export class CourseService {
     constructor(
         private readonly _courseRepository: CourseRepository,
         private readonly _reviewRepository: ReviewRepository,
+        private readonly _cacheService: CacheService,
+        private readonly _logger: PinoLogger,
     ) {}
 
     public async createCourse(course: Partial<Course>) {
@@ -18,12 +21,7 @@ export class CourseService {
     }
 
     public async getCoursesOverviewPaginated(pageNumber: number, pageSize: number, search?: string) {
-        const results = await this._courseRepository.getCoursesByQuery(pageNumber, pageSize, search);
-
-        return {
-            courses: results,
-            nextPageNumber: results.length > 0 ? pageNumber + 1 : null,
-        };
+        return this._courseRepository.getCoursesByQuery(pageNumber, pageSize, search);
     }
 
     public async getCourseById(id: string) {
@@ -46,6 +44,30 @@ export class CourseService {
         if (review === null) throw new NotFoundError(`review ${courseId} user ${userId} not found`);
 
         return review;
+    }
+
+    public async getTrendingCourses(limit: number) {
+        const cachedTrendingCourses = await this._cacheService.trendingCourses.get();
+
+        if (cachedTrendingCourses) {
+            this._logger.debug('Returning trending courses from cache');
+
+            return cachedTrendingCourses.slice(0, limit);
+        }
+
+        const trendingCourses = await this._courseRepository.getCoursesWithMostReviews(100);
+
+        this._cacheService.trendingCourses.set(trendingCourses);
+
+        return trendingCourses.slice(0, limit);
+    }
+
+    public async resetTrendingCoursesCache() {
+        const trendingCourses = await this._courseRepository.getCoursesWithMostReviews(100);
+
+        this._cacheService.trendingCourses.set(trendingCourses);
+
+        return trendingCourses;
     }
 
     public async addReview(review: CreateReviewType) {

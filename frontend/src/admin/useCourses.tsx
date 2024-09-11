@@ -8,7 +8,7 @@ import {Course} from '@/courses/types.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 type Courses = {
-    courses: Course[];
+    results: Course[];
     nextPageNumber: number;
 };
 

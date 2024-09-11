@@ -11,3 +11,7 @@ export const updateReview = async (reviewId: string, review: Partial<Review>) =>
 export const getReviewById = async (reviewId: string) => {
     return await ReviewModel.findById(reviewId).exec();
 }
+
+export const dropAllReviews = async () => {
+    await ReviewModel.deleteMany({});
+}

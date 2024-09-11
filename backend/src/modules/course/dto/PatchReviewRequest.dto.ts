@@ -18,6 +18,6 @@ export class PatchReviewRequestDto {
 export const PatchReviewRequestSchema = Joi.object<PatchReviewRequestDto>({
     howInterestingRating: Joi.number().min(0).max(5).precision(2),
     howEasyRating: Joi.number().min(0).max(5).precision(2),
-    comment: Joi.string(),
+    comment: Joi.string().max(2000),
     semester: Joi.string(),
 });

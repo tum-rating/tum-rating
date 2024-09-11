@@ -16,7 +16,7 @@ describe('AddUserReviewModal', () => {
         queryClient = new QueryClient();
     });
 
-    describe('when user is logged in', async () => {
+    describe('when user is logged in', () => {
         beforeEach(() => {
             userLocalStorage.saveUser(generateJwtToken());
             server.use(
@@ -72,8 +72,10 @@ describe('AddUserReviewModal', () => {
             fireEvent.submit(form, {
                 button: submitButton,
             });
-            expect(screen.getAllByText('This field is required')).toHaveLength(3);
-            expect(screen.getAllByText('Comment should be at least 5 characters long')).toHaveLength(1);
+            await waitFor(() => {
+                expect(screen.getAllByText('This field is required')).toHaveLength(3);
+                expect(screen.getByText('Minimum 5 characters')).toBeInTheDocument();
+            });
         });
     });
 

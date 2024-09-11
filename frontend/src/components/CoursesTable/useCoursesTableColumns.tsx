@@ -1,4 +1,4 @@
-import {Flex} from '@mantine/core';
+import {Badge, Flex} from '@mantine/core';
 import {MRT_ColumnDef} from 'mantine-react-table';
 import {useMemo} from 'react';
 import {isMobileOnly} from 'react-device-detect';
@@ -26,13 +26,13 @@ const useCoursesTableColumns = () => {
                 Cell: ({row, renderedCellValue}) => {
                     return (
                         <>
-                            <span>
+                            <span style={{wordBreak: 'break-word'}}>
                                 <SearchHighlight fw="500" fz="sm" highlight={searchedWords}>
                                     {renderedCellValue}
                                 </SearchHighlight>
                                 {isMobileOnly ? (
                                     <>
-                                        <span>
+                                        <span style={{wordBreak: 'break-word'}}>
                                             <SearchHighlight highlight={searchedWords} fz="sm">
                                                 {row.original.professor}
                                             </SearchHighlight>
@@ -88,6 +88,22 @@ const useCoursesTableColumns = () => {
                         </>
                     );
                 },
+            },
+            {
+                header: 'Votes',
+                size: 50,
+                Cell: ({row}) => {
+                    return (
+                        <>
+                            <Flex align="center" gap="xs">
+                                <Badge variant="light" color={row.original.votesNumber ? 'blue' : 'gray'}>
+                                    {row.original.votesNumber}
+                                </Badge>
+                            </Flex>
+                        </>
+                    );
+                },
+                accessorKey: 'votesNumber',
             },
         ].filter((x) => {
             if (isMobileOnly) {
