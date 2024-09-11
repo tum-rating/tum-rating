@@ -18,6 +18,6 @@ export class AddReviewRequestDto {
 export const AddReviewRequestSchema = Joi.object<AddReviewRequestDto>({
     howInterestingRating: Joi.number().required().min(0).max(5).precision(2),
     howEasyRating: Joi.number().required().min(0).max(5).precision(2),
-    comment: Joi.string(),
+    comment: Joi.string().max(2000),
     semester: Joi.string().required(),
 });
