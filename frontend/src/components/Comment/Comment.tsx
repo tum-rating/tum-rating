@@ -1,4 +1,4 @@
-import {ActionIcon, Badge, Button, Flex, Menu, Rating, Text} from '@mantine/core';
+import {ActionIcon, Badge, Button, Flex, Menu, Rating, Spoiler, Text} from '@mantine/core';
 import {IconDotsVertical} from '@tabler/icons-react';
 import {useNavigate} from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import {UserInfoAction} from '@/components/AdminTable/Shared/UserInfoAction';
 import {UserAvatar} from '@/components/Avatar';
 import {NumberRatingBadge} from '@/components/Course';
 import {getPath, Paths} from '@/routes/paths.ts';
+import {preprocessComment} from '@/utils/preprocessComment.ts';
 
 interface CommentProps extends Review {
     comment: string;
@@ -99,9 +100,11 @@ const Comment = (props: CommentProps) => {
                     </Flex>
                 </Flex>
             </Flex>
-            <Text style={{wordBreak: 'break-word'}} mt="xs" size="sm" c="">
-                {comment}
-            </Text>
+            <Spoiler maxHeight={380} showLabel="Show more" hideLabel="Hide" className={classes.spoiler}>
+                <Text style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap'}} mt="xs" size="sm" c="">
+                    {preprocessComment(comment)}
+                </Text>
+            </Spoiler>
         </Flex>
     );
 };

@@ -1,5 +1,6 @@
 import {faker} from '@faker-js/faker';
 import {expect, Page} from '@playwright/test';
+
 import {openMobileDrawer} from 'tests/e2e/utils/layout.ts';
 
 interface TestUserCredentials {
@@ -36,6 +37,7 @@ const fullAuthProcess = async (page: Page, authFile: string) => {
     await page.goto('/');
     await signOut({page, mobile: false});
 };
+
 
 const getActivationTokenFromMail = async (email: string) => {
     const response = await fetch(`http://localhost:1080/email`);
