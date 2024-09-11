@@ -100,7 +100,7 @@ const Comment = (props: CommentProps) => {
                     </Flex>
                 </Flex>
             </Flex>
-            <Spoiler maxHeight={380} showLabel="Show more" hideLabel="Hide" className={classes.spoiler}>
+            <Spoiler maxHeight={378} showLabel="Show more" hideLabel="Hide" className={classes.spoiler}>
                 <Text style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap'}} mt="xs" size="sm" c="">
                     {preprocessComment(comment)}
                 </Text>
