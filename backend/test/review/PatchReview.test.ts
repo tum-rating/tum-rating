@@ -239,4 +239,27 @@ describe('Patch Review', () => {
                 expect(response.body.reviews.length == 0).toBe(true);
             });
     });
+
+    it('should fail to patch single user review if comment under 5 chars', async () => {
+        const signInResponse = await signInRequestMock();
+
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const createdCourse = await createCourseMockRequest(signInAdminResponse.token);
+
+        await addReviewMockRequest(signInResponse.token, createdCourse.id, signInResponse.user.id, {
+            howInterestingRating: 2,
+            howEasyRating: 3,
+        });
+
+
+        const requestBody: Partial<AddReviewRequestDto> = {
+            comment: faker.string.sample(2001),
+        };
+        return supertest(`${courseUrl}/${createdCourse.id}/user/${signInResponse.user.id}`)
+            .patch('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send(requestBody)
+            .expect(400);
+    });
 });

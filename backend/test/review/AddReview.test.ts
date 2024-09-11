@@ -153,4 +153,25 @@ describe('Add Review', () => {
                 expect(response.body.votesNumber).toBe(3);
             });
     }, 10000);
+
+    it('should fail if review comment is longer than 2000 chars', async () => {
+        const signInResponse = await signInRequestMock();
+
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const createdReview = await createCourseMockRequest(signInAdminResponse.token);
+
+        const requestBody: AddReviewRequestDto = {
+            howInterestingRating: 3,
+            howEasyRating: 4,
+            comment: faker.string.sample(2001),
+            semester: createdReview.offeredInSemesters[0],
+        };
+
+        return supertest(`${courseUrl}/${createdReview.id}/user/${signInResponse.user.id}`)
+            .post('/')
+            .set('Authorization', 'Bearer ' + signInResponse.token)
+            .send(requestBody)
+            .expect(400);
+    }, 10000);
 });
