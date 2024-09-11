@@ -3,7 +3,13 @@ export type PaginationOptions = {
     pageSize: number;
 };
 
-export type PaginatedResults<T> = {
-    results: T[];
-    nextPageNumber: number | null;
+export class PaginatedResults<T> {
+    constructor(
+        public results: T[],
+        public nextPageNumber: number | null,
+    ) {}
 };
+
+export const getNextPageNumber = (results, pageNumber, pageSize) => {
+    return results.length > 0 && results.length === pageSize ? pageNumber + 1 : null
+}

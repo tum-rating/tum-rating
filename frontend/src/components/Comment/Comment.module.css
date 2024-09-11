@@ -3,8 +3,17 @@
     background: var(--primary-light-gradient);
     border-radius: 16px;
 
-    &[data-comment="user-comment"]{
+    &[data-comment="user-comment"] {
         background: var(--green-light-gradient);
+    }
+}
+
+
+.spoiler {
+    & :global(button) {
+        font-size: var(--mantine-font-size-xs);
+        margin-top: var(--mantine-spacing-xs);
+        font-weight: 500;
     }
 }
 

@@ -48,6 +48,7 @@ export class Course {
 }
 
 export type CourseWithPopulatedReviews = Omit<Course, 'reviews'> & { reviews: Review[] };
+export type CourseWithoutReviews = Omit<Course, 'reviews'>;
 
 export type CourseDocument = Course & Document;
 
@@ -56,3 +57,4 @@ export const CourseSchema = SchemaFactory.createForClass(Course);
 CourseSchema.index({ name: 'text', professor: 'text' });
 CourseSchema.index({ name: 1 });
 CourseSchema.index({ name: 1, professor: 1 }, { unique: true });
+CourseSchema.index({ votesNumber: -1 });

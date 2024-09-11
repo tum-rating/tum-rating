@@ -13,6 +13,7 @@ import {CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH} from '@/constants';
 import {useSearchContext, useTableScrollContext} from '@/context';
 import {Course} from '@/courses/types.ts';
 import {usePaginatedCourses} from '@/courses/usePaginatedCourses.tsx';
+import {usePaginatedTrendingCourses} from '@/courses/usePaginatedTrendingCourses.tsx';
 import {useSearchCourses} from '@/courses/useSearchCourses.tsx';
 import {sortCoursesByMatchingFactor} from '@/utils/sortCoursesByMatchingFactor.ts';
 
@@ -24,7 +25,11 @@ function CoursesTable() {
     const {searchQuery, setSearchQuery} = useSearchContext();
     const [internalLoader, setInternalLoader] = useState(true);
 
-    const {data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage} = usePaginatedCourses();
+    const [areAllTrendingFetched, setAreAllTrendingFetched] = useState(false);
+
+    const {data: trendingData, fetchNextPage: fetchTrendingNextPage, hasNextPage: hasTrendingNextPage} = usePaginatedTrendingCourses({enabled: true});
+    const {data: paginatedData, fetchNextPage: fetchPaginatedNextPage, isFetching: isPaginatedFetching, isLoading: isPaginatedLoading, isError: isPaginatedError, hasNextPage: hasPaginatedNextPage, isFetchedAfterMount: isPaginatedFetchedAfterMount} = usePaginatedCourses({enabled: areAllTrendingFetched});
+
     const {data: searchData, fetchNextPage: fetchSearchNextPage, hasNextPage: hasSearchNextPage, isFetching: isSearchFetching, isFetched: isSearchFetched, isError: isSearchError} = useSearchCourses(searchQuery);
 
     const navigate = useNavigate();
@@ -39,14 +44,17 @@ function CoursesTable() {
     const records = useMemo(() => {
         if (searchQuery && searchData) {
             return sortCoursesByMatchingFactor(
-                searchData.pages.flatMap((page) => page.courses),
+                searchData.pages.flatMap((page) => page.results),
                 searchQuery,
             );
-        } else if (paginatedData) {
-            return paginatedData.pages.flatMap((page) => page.courses);
+        } else if (trendingData || paginatedData) {
+            const trending = trendingData?.pages.flatMap((page) => page.results) || [];
+            const trendingIds = new Set(trending.map((course) => course.id));
+            const paginated = paginatedData?.pages.flatMap((page) => page.results.filter((course) => !trendingIds.has(course.id))) || [];
+            return trending.concat(paginated);
         }
         return [];
-    }, [searchData, paginatedData]);
+    }, [searchData, paginatedData, trendingData]);
 
     useEffect(() => {
         setInternalLoader(false);
@@ -73,7 +81,10 @@ function CoursesTable() {
                             fetchSearchNextPage();
                         }
                     } else {
-                        if (hasPaginatedNextPage) {
+                        if (hasTrendingNextPage) {
+                            fetchTrendingNextPage();
+                        } else if (hasPaginatedNextPage || (!hasPaginatedNextPage && !isPaginatedFetchedAfterMount)) {
+                            setAreAllTrendingFetched(true);
                             fetchPaginatedNextPage();
                         }
                     }
@@ -90,9 +101,11 @@ function CoursesTable() {
     useEffect(() => {
         if (rowVirtualizerInstanceRef.current) {
             if (scrollIndex && records.length) {
-                rowVirtualizerInstanceRef.current?.scrollToIndex(scrollIndex, {
-                    align: 'start',
-                });
+                setTimeout(() => {
+                    rowVirtualizerInstanceRef.current?.scrollToIndex(scrollIndex, {
+                        align: 'start',
+                    });
+                }, 1);
                 setScrollIndex(0);
             }
         }
@@ -100,7 +113,7 @@ function CoursesTable() {
 
     const handleRowClick = useCallback(
         (record: Course) => {
-            const dynamicPath = '/courses/' + record._id;
+            const dynamicPath = '/courses/' + record.id;
             setScrollIndex(rowVirtualizerInstanceRef.current.range.startIndex);
             navigate(dynamicPath);
         },

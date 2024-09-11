@@ -64,7 +64,11 @@ const AddUserReviewModal = ({
         validate: {
             howInterestingRating: (value) => value === 0 && 'This field is required',
             howEasyRating: (value) => value === 0 && 'This field is required',
-            comment: (value) => value.length < 5 && 'Comment should be at least 5 characters long',
+            comment: (value) => {
+                if (value.length < 5) return 'Minimum 5 characters';
+                if (value.length > 2000) return 'Maximum 2000 characters';
+                return false;
+            },
             semester: (value) => !value && 'This field is required',
         },
     });

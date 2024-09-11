@@ -11,3 +11,7 @@ export const deleteCoursesWithName = async (title: string) => {
 export const updateCourse = async (courseId: string, course: Partial<Course>) => {
     return await CourseModel.findByIdAndUpdate(courseId, course, { new: true });
 };
+
+export const dropAllCourses = async () => {
+    await CourseModel.deleteMany({});
+}

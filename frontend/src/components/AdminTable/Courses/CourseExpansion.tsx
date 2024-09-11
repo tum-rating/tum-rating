@@ -8,6 +8,7 @@ import classes from '../Shared/styles/ExpansionStyles.module.css';
 
 import {useEditCourse} from '@/admin/useEditCourse.tsx';
 import {useRemoveCourse} from '@/admin/useRemoveCourse.tsx';
+import {CollectionDetailsReviewsSection} from '@/components/AdminTable/Shared/CollectionDetailsReviewsSection';
 import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 import {Skeleton} from '@/components/Skeleton';
 import {Course} from '@/courses/types.ts';
@@ -31,7 +32,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
 
     useEffect(() => {
         if (courseDetails) {
-            ['_id', 'courseId', 'courseNumber', 'name', 'professor', 'otherLecturers', 'offeredInSemesters'].forEach((x) => {
+            ['id', 'courseId', 'courseNumber', 'name', 'professor', 'otherLecturers', 'offeredInSemesters'].forEach((x) => {
                 form.setFieldValue(x, courseDetails[x]);
             });
         }
@@ -45,7 +46,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
             professor: '',
             otherLecturers: [],
             offeredInSemesters: [],
-            _id: '',
+            id: '',
         },
         validate: {
             courseId: (value) => !value && 'Course ID is required',
@@ -61,7 +62,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
     }, [isError || removeCourseIsSuccess]);
 
     return (
-        <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md" w="100vw" {...rest}>
+        <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md" {...rest}>
             {statusAlertFlag ? (
                 <Flex justify="center" w="100%" direction="column" gap="lg">
                     <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error" />
@@ -200,6 +201,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                             </form>
                         </Flex>
                     </Flex>
+                    <CollectionDetailsReviewsSection courseId={courseId} />
                     <Flex direction="column" gap="xs" className={classes.expansionActions}>
                         <Flex align="center" gap="xs">
                             <Text fz="sm" fw={500}>
