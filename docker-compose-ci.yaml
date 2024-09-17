@@ -39,6 +39,9 @@ services:
       WEBAPP_HOST: localhost
       WEBAPP_PORT: 5174
 
+      #CACHE
+      CACHE_TTL_MINUTES: 5
+
     depends_on:
       mongodb:
         condition: service_healthy 

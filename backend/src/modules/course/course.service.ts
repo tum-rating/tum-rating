@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PinoLogger } from 'nestjs-pino';
 
 import { CourseRepository } from 'src/database/repositories/course.repository';
@@ -13,6 +14,7 @@ export class CourseService {
         private readonly _courseRepository: CourseRepository,
         private readonly _reviewRepository: ReviewRepository,
         private readonly _cacheService: CacheService,
+        private readonly _configService: ConfigService,
         private readonly _logger: PinoLogger,
     ) {}
 
@@ -57,7 +59,7 @@ export class CourseService {
 
         const trendingCourses = await this._courseRepository.getCoursesWithMostReviews(100);
 
-        this._cacheService.trendingCourses.set(trendingCourses);
+        await this._cacheService.trendingCourses.set(trendingCourses);
 
         return trendingCourses.slice(0, limit);
     }
