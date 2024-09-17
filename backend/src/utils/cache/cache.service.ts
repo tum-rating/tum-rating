@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
+import { ConfigService } from '@nestjs/config';
 
 import { CourseWithoutReviews } from 'src/database/documents/course';
 
@@ -15,7 +16,11 @@ export class CacheService {
 
     constructor(
         @Inject(CACHE_MANAGER) private _cacheManager: Cache,
+        private readonly _configService: ConfigService,
+
     ) {
-        this.trendingCourses = new CacheBaseService<WithId<CourseWithoutReviews>[]>(this._cacheManager, CacheKeys.trending, { ttl: 60 * 20 });
+        const cacheTTLMinutes = this._configService.getOrThrow<number>('cache.ttlMinutes');
+        const minutesToMiliseconds = 60 * 1000;
+        this.trendingCourses = new CacheBaseService<WithId<CourseWithoutReviews>[]>(this._cacheManager, CacheKeys.trending, { ttl: cacheTTLMinutes * minutesToMiliseconds });
     }
 }
