@@ -78,7 +78,7 @@ const generateCourseReview = withOverrides(() => ({
 const user = {
     username: faker.internet.userName(),
     email: faker.internet.email({
-        provider: 'tum.de',
+        provider: 'mytum.de',
     }),
     id: faker.number.int(),
 };

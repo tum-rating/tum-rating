@@ -1,5 +1,5 @@
 import {faker} from '@faker-js/faker';
-import {Page} from '@playwright/test';
+import {Page, expect} from '@playwright/test';
 
 interface CourseAction {
     page: Page;
@@ -37,6 +37,7 @@ const openCoursePageByClickingCourseRowInTable = async ({page, browser}) => {
     } else if (browserType === 'firefox') {
         randomRowIndex = faker.number.int({min: 8, max: 12});
     }
+    await expect(page.locator(`.mantine-Table-tr:nth-of-type(${randomRowIndex})`)).toBeVisible();
     const rowElement = page.locator(`.mantine-Table-tr:nth-of-type(${randomRowIndex})`);
     const rowElementDetails = await rowElement.locator('.mantine-Table-td').allInnerTexts();
     await rowElement.click();

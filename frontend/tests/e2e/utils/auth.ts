@@ -17,7 +17,7 @@ interface AuthAction {
 
 const generateTestUser = () => {
     return {
-        email: faker.internet.email({provider: 'tum.de'}),
+        email: faker.internet.email({provider: 'mytum.de'}),
         username: faker.internet.userName(),
         password: faker.internet.password(),
     };
@@ -77,7 +77,9 @@ const signUp = async (props: AuthAction) => {
     await form.locator('[data-testid="password"]').fill(user.password);
 
     await form.locator('[data-testid="submit"]').click();
-
+    // //this is not good practise but we have to do like this. We have to wait for the email to be sent
+    // await page.waitForTimeout(5000);
+    //
     await page.waitForSelector('text=Check Your Email');
 };
 
