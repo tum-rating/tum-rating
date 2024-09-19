@@ -57,7 +57,7 @@ describe('RecoveryModal', () => {
                 email = screen.getByTestId('email');
             });
             act(() => {
-                fireEvent.change(email, {target: {value: 'tum.de'}});
+                fireEvent.change(email, {target: {value: 'mytum.de'}});
             });
             fireEvent.click(screen.getByTestId('submit'));
 
