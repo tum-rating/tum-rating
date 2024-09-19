@@ -1,5 +1,5 @@
 import {faker} from '@faker-js/faker';
-import {Page} from '@playwright/test';
+import {expect, Locator, Page} from '@playwright/test';
 
 interface CourseAction {
     page: Page;
@@ -9,6 +9,7 @@ interface CourseAction {
         comment: string;
         semester?: string;
     };
+    mobile?: boolean;
 }
 
 const generateCourseReview = () => {
@@ -37,15 +38,26 @@ const openCoursePageByClickingCourseRowInTable = async ({page, browser}) => {
     } else if (browserType === 'firefox') {
         randomRowIndex = faker.number.int({min: 8, max: 12});
     }
+    await expect(page.locator(`.mantine-Table-tr:nth-of-type(${randomRowIndex})`)).toBeVisible();
     const rowElement = page.locator(`.mantine-Table-tr:nth-of-type(${randomRowIndex})`);
     const rowElementDetails = await rowElement.locator('.mantine-Table-td').allInnerTexts();
     await rowElement.click();
     await checkCourseRender({page, name: rowElementDetails[0]});
 };
 
-const addReviewToCourse = async ({page, courseReview}: CourseAction) => {
-    await page.waitForTimeout(1000);
-    await page.getByRole('button', {name: 'Add review'}).click();
+const addReviewToCourse = async ({page, courseReview, mobile = false}: CourseAction) => {
+    //-- too many timeouts, should be refactored (but it works)
+    let addReviewButton: Locator;
+    if (mobile) {
+        addReviewButton = page.getByTestId('course-content').getByTestId('add-review');
+    } else {
+        addReviewButton = page.getByRole('button', {name: 'Add review'});
+    }
+    await addReviewButton.scrollIntoViewIfNeeded();
+    await expect(addReviewButton).toBeVisible({timeout: 10000});
+    await expect(addReviewButton).toBeEnabled({timeout: 10000});
+    await addReviewButton.click();
+
     await page.getByTestId('textarea').fill(courseReview.comment);
     await page.getByTestId('select').click();
     await page.getByRole('option').first().click();
@@ -62,4 +74,10 @@ const checkCourseRender = async ({page, name}) => {
     await page.getByTestId('course-name').filter({hasText: name}).isVisible();
 };
 
-export {openCoursePageByClickingCourseRowInTable, addReviewToCourse, checkCourseRender, generateCourseReview, addCourseProposal};
+export {
+    openCoursePageByClickingCourseRowInTable,
+    addReviewToCourse,
+    checkCourseRender,
+    generateCourseReview,
+    addCourseProposal
+};

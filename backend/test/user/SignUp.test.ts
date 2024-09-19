@@ -19,7 +19,7 @@ afterAll(async () => {
 describe('User SignUp', () => {
     it('should signup with allowed emails domains', () => {
         const mockRequest: SignUpRequestDto = {
-            email: faker.internet.email({ provider: 'tum.de' }),
+            email: faker.internet.email({ provider: 'mytum.de' }),
             username: faker.internet.userName(),
             password: faker.internet.password(),
         };
@@ -45,7 +45,7 @@ describe('User SignUp', () => {
 
     it('should succeed signup if email already exists and NOT activated with dedicated email sent', async () => {
         let mockRequest: SignUpRequestDto = {
-            email: faker.internet.email({ provider: 'tum.de' }),
+            email: faker.internet.email({ provider: 'mytum.de' }),
             username: faker.internet.userName(),
             password: faker.internet.password(),
         };
@@ -69,7 +69,7 @@ describe('User SignUp', () => {
 
     it('should succeed signup if email already exists and activated with dedicated email sent', async () => {
         let mockRequest: SignUpRequestDto = {
-            email: faker.internet.email({ provider: 'tum.de' }),
+            email: faker.internet.email({ provider: 'mytum.de' }),
             username: faker.internet.userName(),
             password: faker.internet.password(),
         };
@@ -97,7 +97,7 @@ describe('User SignUp', () => {
         const username = faker.internet.userName();
 
         let mockRequest: SignUpRequestDto = {
-            email: faker.internet.email({ provider: 'tum.de' }),
+            email: faker.internet.email({ provider: 'mytum.de' }),
             username,
             password: faker.internet.password(),
         };
@@ -108,7 +108,7 @@ describe('User SignUp', () => {
             .expect(201);
 
         mockRequest = {
-            email: faker.internet.email({ provider: 'tum.de' }),
+            email: faker.internet.email({ provider: 'mytum.de' }),
             username,
             password: faker.internet.password(),
         };
