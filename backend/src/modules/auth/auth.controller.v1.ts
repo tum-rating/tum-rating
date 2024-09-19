@@ -90,7 +90,6 @@ export class AuthControllerV1 {
 
             this._logger.info('Signup local request completed user created with email %s, id %s', body.email, createdUser.id);
         } catch (error) {
-            this._logger.error('Signup local error: %o', error);
             if (error instanceof DuplicateError) {
                 let errorMessage;
                 if (error.isConflictingKey('email')) {
@@ -122,6 +121,7 @@ export class AuthControllerV1 {
                 throw new ConflictException(errorMessage);
             }
 
+            this._logger.error('Signup local error: %o', error);
             throw error;
         }
     }
