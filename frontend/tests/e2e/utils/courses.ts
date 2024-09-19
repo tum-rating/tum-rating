@@ -1,5 +1,5 @@
 import {faker} from '@faker-js/faker';
-import {expect, Locator, Page} from '@playwright/test';
+import {expect, Page} from '@playwright/test';
 
 interface CourseAction {
     page: Page;
@@ -9,7 +9,6 @@ interface CourseAction {
         comment: string;
         semester?: string;
     };
-    mobile?: boolean;
 }
 
 const generateCourseReview = () => {
@@ -45,18 +44,12 @@ const openCoursePageByClickingCourseRowInTable = async ({page, browser}) => {
     await checkCourseRender({page, name: rowElementDetails[0]});
 };
 
-const addReviewToCourse = async ({page, courseReview, mobile = false}: CourseAction) => {
-    //-- too many timeouts, should be refactored (but it works)
-    let addReviewButton: Locator;
-    if (mobile) {
-        addReviewButton = page.getByTestId('course-content').getByTestId('add-review');
-    } else {
-        addReviewButton = page.getByRole('button', {name: 'Add review'});
-    }
-    await addReviewButton.scrollIntoViewIfNeeded();
-    await expect(addReviewButton).toBeVisible({timeout: 10000});
-    await expect(addReviewButton).toBeEnabled({timeout: 10000});
-    await addReviewButton.click();
+const addReviewToCourse = async ({page, courseReview}: CourseAction) => {
+    await page
+        .locator('button')
+        .filter({hasText: 'Add review'})
+        .first()
+        .click();
 
     await page.getByTestId('textarea').fill(courseReview.comment);
     await page.getByTestId('select').click();
