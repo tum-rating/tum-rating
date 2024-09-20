@@ -156,7 +156,7 @@ export class AuthControllerV1 {
         }
 
         if (databaseUser.isBanned) {
-            this._logger.warn('Sign in request fail, user email is not banned for %s', body.email);
+            this._logger.warn('Sign in request fail, user email is banned for %s', body.email);
 
             throw new UnauthorizedException();
         }

@@ -127,6 +127,10 @@ const SignInModal = ({context, id}: ContextModalProps) => {
                         <Button data-testid="submit" mt="xs" type="submit" variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}}>
                             Sign In
                         </Button>
+                        {/* TODO refactor to utils routes to point to backend to */}
+                        <Button data-testid="submit" mt="xs" variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}} onClick={() => window.location.replace('http://localhost:3000/api/v1/auth/oauth')}>
+                            Sign In With TUM ID
+                        </Button>
                     </Stack>
                 </form>
             </Container>

@@ -6,6 +6,11 @@ export enum UserRole {
     admin,
 }
 
+export enum AuthType {
+    local = 0,
+    tumId,
+}
+
 @Schema({
     autoCreate: true, 
     autoIndex: true
@@ -21,10 +26,10 @@ export class User {
     @Prop({ required: false})
     emailDotSuffix?: string;
 
-    @Prop({ required: true })
+    @Prop()
     passwordHash: string;
 
-    @Prop({ required: true })
+    @Prop()
     passwordSalt: string;
 
     @Prop({ required: true, default: false })
@@ -35,6 +40,12 @@ export class User {
 
     @Prop({ required: true, enum: UserRole, default: UserRole.user })
     role: UserRole;
+
+    @Prop({ required: true, enum: AuthType, default: AuthType.local })
+    authType: AuthType;
+
+    @Prop()
+    tumId?: string;
 }
 
 export type UserDocument = User & Document;

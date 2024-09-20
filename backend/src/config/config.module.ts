@@ -3,10 +3,10 @@ import { ConfigModule as NestConfigModule } from '@nestjs/config';
 
 import AppConfig from './app.config';
 import CacheConfig from './cache.config';
-import GoogleAuthConfig from './google-auth.config';
 import JWTConfig from './jwt.config';
 import MailerConfig from './mailer.config';
 import MongoConfig from './mongo.config';
+import OAuthConfig from './oauth.config';
 import SignUpConfig from './signup.config';
 import WebappConfig from './webapp.config';
 
@@ -17,10 +17,10 @@ import WebappConfig from './webapp.config';
             load: [
                 AppConfig,
                 CacheConfig,
-                GoogleAuthConfig,
                 JWTConfig,
                 MailerConfig,
                 MongoConfig,
+                OAuthConfig,
                 SignUpConfig,
                 WebappConfig
             ],

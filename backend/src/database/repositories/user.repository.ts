@@ -1,6 +1,6 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema as MongooseSchema } from 'mongoose';
-import { User, UserDocument } from 'src/database/documents/user';
+import { AuthType, User, UserDocument } from 'src/database/documents/user';
 import { BaseRepository } from './base.repository';
 
 export class UserRepository extends BaseRepository<User> {
@@ -11,12 +11,20 @@ export class UserRepository extends BaseRepository<User> {
         super(_userModel);
     }
 
+    public async createUserWithTumId(email: string, tumId?: string): Promise<WithId<User>> {
+        return this._userModel.create({
+            email,
+            isEmailActivated: true,
+            authType: AuthType.tumId,
+        }) as unknown as WithId<User>;
+    }
+
     public getAllAndOmit(): Promise<Omit<WithId<User>, 'passwordHash' | 'passwordSalt' | 'emailDotSuffix'>[]> {
         return this._userModel.find().select(['-__v', '-passwordHash', '-passwordSalt', '-emailDotSuffix']);
     }
 
-    public getByEmail(email: string) {
-        return this._userModel.findOne({ email }).exec();
+    public getByEmail(email: string): Promise<WithId<User> | null> {
+        return this._userModel.findOne({ email }).select('-__v');
     }
     
     public getByEmailUsernameDotSuffix(emailDotSuffix: string) {
