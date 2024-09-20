@@ -59,7 +59,7 @@ export class UserControllerV1 {
             user.id,
             user.email,
             user.username,
-            user.role === UserRole.admin ?? undefined
+            user.role
         );
     }
 
@@ -93,7 +93,7 @@ export class UserControllerV1 {
                 deletedUser.id,
                 deletedUser.email,
                 deletedUser.username,
-                deletedUser.role === UserRole.admin ?? undefined
+                deletedUser.role
             );
         } catch (error) {
             if (error instanceof NotFoundError) {

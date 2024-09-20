@@ -7,10 +7,9 @@ import { UserBanRepository } from 'src/database/repositories/userBan.repository'
 import { ReviewRepository } from 'src/database/repositories/review.repository';
 import { CourseRepository } from 'src/database/repositories/course.repository';
 import { NotFoundError } from 'src/utils/errors/errors';
-import { UserBan } from 'src/database/documents/userBan';
-import { DuplicateError } from 'src/utils/errors/errors';
 
 import { CreateUserDto } from './dto/CreateUser.dto';
+import { UpsertUserDto } from './dto/UpsertUser.dto';
 
 @Injectable()
 export class UserService {
@@ -34,6 +33,24 @@ export class UserService {
         }
 
         return this._userRepository.create(userToCreate);
+    }
+
+    public async getUserByEmail(email: string) {
+        return this._userRepository.getByEmail(email);
+    }
+
+    public async upsertUser(userToUpsert: UpsertUserDto): Promise<{user: WithId<User>, newlyCreated: boolean}> {
+        // TODO change username that is empty for tumId users
+
+        const user = await this.getUserByEmail(userToUpsert.email);
+
+        if (!user) {
+            const user = await this._userRepository.createUserWithTumId(userToUpsert.email, userToUpsert.sub); 
+            return { user, newlyCreated: true };
+
+        }
+
+        return { user, newlyCreated: false };
     }
 
     public async getUsers() {
@@ -69,10 +86,6 @@ export class UserService {
         const restults = await this._userRepository.getByEmailUsernameDotSuffix(dotSuffix);
 
         return this._userRepository.getByEmailUsernameDotSuffix(dotSuffix);
-    }
-
-    public async getUserByEmail(email: string) {
-        return this._userRepository.getByEmail(email);
     }
 
     public async updateUser(id: string, user: Partial<User>) {

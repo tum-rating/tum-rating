@@ -11,7 +11,7 @@ import {AddUserReviewModal} from '@/components/Modals/AddUserReview/AddUserRevie
 import {EditUserReviewModal} from '@/components/Modals/EditUserReview';
 import {UserSettingsModal} from '@/components/Modals/UserSettingsModal';
 import {AdminLayout, MainLayout} from '@/layouts';
-import {About, Activation, Course, ErrorBoundary, Feedback, Home, PrivacyPolicy, Recovery, TermsOfService} from '@/pages';
+import {About, Activation, Course, ErrorBoundary, Feedback, Home, OAuthRedirect, PrivacyPolicy, Recovery, TermsOfService} from '@/pages';
 
 const Admin = lazy(async () => {
     let {Admin} = await import('@/pages');
@@ -99,6 +99,10 @@ const routes = [
                     {
                         path: getPath(Paths.recovery),
                         element: <Recovery />,
+                    },
+                    {
+                        path: getPath(Paths.oAuthRedirect),
+                        element: <OAuthRedirect />, 
                     },
                     {
                         path: getPath(Paths.courseDetail),
