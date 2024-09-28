@@ -1,4 +1,5 @@
 import { InjectModel } from '@nestjs/mongoose';
+import { randomUUID } from 'crypto';
 import { Model, Schema as MongooseSchema } from 'mongoose';
 import { AuthType, User, UserDocument } from 'src/database/documents/user';
 import { BaseRepository } from './base.repository';
@@ -13,6 +14,7 @@ export class UserRepository extends BaseRepository<User> {
 
     public async createUserWithTumId(email: string, tumId?: string): Promise<WithId<User>> {
         return this._userModel.create({
+            username: `unset-${email}-${randomUUID()}`,
             email,
             isEmailActivated: true,
             authType: AuthType.tumId,

@@ -40,14 +40,13 @@ export class UserService {
     }
 
     public async upsertUser(userToUpsert: UpsertUserDto): Promise<{user: WithId<User>, newlyCreated: boolean}> {
-        // TODO change username that is empty for tumId users
+        // TODO handle account merge
 
         const user = await this.getUserByEmail(userToUpsert.email);
 
         if (!user) {
             const user = await this._userRepository.createUserWithTumId(userToUpsert.email, userToUpsert.sub); 
             return { user, newlyCreated: true };
-
         }
 
         return { user, newlyCreated: false };
@@ -90,6 +89,12 @@ export class UserService {
 
     public async updateUser(id: string, user: Partial<User>) {
         return this._userRepository.updateOneById(id, user);
+    }
+
+    public async updateUsername(id: string, username: string) {
+        return this._userRepository.updateOneById(id, {
+            username
+        });
     }
 
     public async deleteUser(id: string) {

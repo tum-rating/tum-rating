@@ -60,7 +60,7 @@ export class OAuthService implements OnModuleInit {
         await this._checkIfIsEnabled();
 
         return this._client.authorizationUrl({
-            scope: 'openid email profile',
+            scope: 'openid profile email',
             code_challenge: generators.codeChallenge(this._codeVerifier),
             code_challenge_method: 'S256',
         });
@@ -72,27 +72,24 @@ export class OAuthService implements OnModuleInit {
         const params = this._client.callbackParams(redirectURL);
 
         const tokenSet = await this._client.callback(this._redirectURL, params, { code_verifier: this._codeVerifier });
-        console.log('retrieved token: ', tokenSet);
 
         if (!tokenSet.access_token) {
             throw new Error('No access token in auth response');
         }
 
-        const userData = await this._client.userinfo(tokenSet);
+        const claims = tokenSet.claims();
 
-        if (!userData) {
+        if (!claims) {
             throw new Error('No user data in auth response');
         }
 
-        if (!userData.email) {
+        if (!claims.email) {
             throw new Error('No email in user data');
         }
 
-        console.log('user data: ', userData);
-
         return {
-            sub: userData.sub,
-            email: userData.email,
+            sub: claims.sub,
+            email: claims.email,
         };
     }
 }

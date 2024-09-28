@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Headers, HttpCode, Patch, Post, NotFoundException, NotImplementedException, UnauthorizedException, UseGuards, Param } from '@nestjs/common';
+import { Body, Controller, ConflictException, Delete, Get, Headers, HttpCode, Patch, Post, NotFoundException, NotImplementedException, UnauthorizedException, UseGuards, Param, HttpStatus } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags, ApiParam, ApiHeader } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
@@ -14,7 +14,7 @@ import { UserService } from './user.service';
 import { GetUserPublicResponseDto } from './dto/GetUserPublicResponse.dto';
 import { GetUserAdminResponseDto } from './dto/GetUserAdminResponse.dto';
 import { GetUsersAdminResponseDto } from './dto/GetUsersAdminResponse.dto';
-import { de } from '@faker-js/faker';
+import { PatchMeRequestDto, PatchMeRequestSchema } from './dto/PatchMeRequest.dto';
 
 @ApiTags('users')
 @Controller('api/v1/users')
@@ -63,9 +63,35 @@ export class UserControllerV1 {
         );
     }
 
+    @UseGuards(AuthGuard)
+    @HttpCode(HttpStatus.NO_CONTENT)
     @Patch('/me')
-    public async patchMe() {
-        throw new NotImplementedException();
+    public async patchMe(
+        @Headers(USER_ID) userId: string,
+        @Body(new JoiObjectSchemaPipe(PatchMeRequestSchema)) body: PatchMeRequestDto,
+    ) {
+        this._logger.info('Patch me request received from user %s', userId);
+
+        try {
+            await this._userService.updateUsername(userId, body.username);
+
+            this._logger.info('Patch me request completed from user %s', userId);
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                throw new NotFoundException(error.message);
+            }
+
+            if (error instanceof DuplicateError) {
+                if (error.isConflictingKey('username')) {
+                    throw new ConflictException('Username already exists');
+                }
+
+                throw new ConflictException(error.message);
+            }
+
+            this._logger.error('Patch me request failed for user %s', userId);
+            throw error;
+        }
     }
 
     @ApiBearerAuth('admin')
