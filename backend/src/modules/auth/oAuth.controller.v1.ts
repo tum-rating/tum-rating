@@ -65,15 +65,10 @@ export class OAuthControllerV1 {
         }
 
         const userData = await this._oAuthService.validateAuthorizationCode(body.redirectURL);
-        // TODO send email if user is newly registered
 
         const userUpsertResults = await this._userService.upsertUser(userData);
 
-        console.log('userUpsertResults', userUpsertResults);
-
         const user = userUpsertResults.user;
-
-        console.log('user', user);
 
         if (!userUpsertResults.newlyCreated && user.isBanned) {
             this._logger.warn('Sign in request fail for tum id, user email is banned for %s', user.email);
@@ -83,14 +78,18 @@ export class OAuthControllerV1 {
 
         const token = await this._jwtService.signJWTAccess(user.id, user.role);
 
-       return new SignInResponseDto(
-            new GetUserPublicResponseDto(
-                user.id,
-                user.email,
-                user.username,
-                user.role,
-            ),
-            token,
-       ); 
+        this._mailerService.sendOAuthSignUpEmail({email: user.email})
+            .then(() => this._logger.info('Sent email to %s', user.email))
+            .catch((error) => this._logger.error('Failed to send email to %s, error: %o', user.email, error));
+
+        return new SignInResponseDto(
+                new GetUserPublicResponseDto(
+                    user.id,
+                    user.email,
+                    user.username,
+                    user.role,
+                ),
+                token,
+        ); 
     }
 }

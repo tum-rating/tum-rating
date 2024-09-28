@@ -7,8 +7,9 @@ export enum UserRole {
 }
 
 export enum AuthType {
-    local = 0,
-    tumId,
+    local = 'local',
+    tumId = 'tumId',
+    both = 'both',
 }
 
 @Schema({
@@ -19,7 +20,7 @@ export class User {
     @Prop({ required: true, unique: true, message: 'username must be unique' })
     username: string;
 
-    @Prop({ required: true, unique: true, message: 'Email must be unique' })
+    @Prop({ required: true, unique: true, message: 'email must be unique' })
     email: string;
 
     // for multiaccounts check
