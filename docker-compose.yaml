@@ -29,3 +29,10 @@ services:
     ports:
       - "1025:1025"
       - "1080:1080"
+
+  oidc:
+    build:
+      context: .
+      dockerfile: development/oidc/Dockerfile
+    ports:
+      - "1939:3000"
