@@ -78,9 +78,11 @@ export class OAuthControllerV1 {
 
         const token = await this._jwtService.signJWTAccess(user.id, user.role);
 
-        this._mailerService.sendOAuthSignUpEmail({email: user.email})
-            .then(() => this._logger.info('Sent email to %s', user.email))
-            .catch((error) => this._logger.error('Failed to send email to %s, error: %o', user.email, error));
+        if (userUpsertResults.newlyCreated) {
+            this._mailerService.sendOAuthSignUpEmail({email: user.email})
+                .then(() => this._logger.info('Sent email to %s', user.email))
+                .catch((error) => this._logger.error('Failed to send email to %s, error: %o', user.email, error));
+        }
 
         return new SignInResponseDto(
                 new GetUserPublicResponseDto(
