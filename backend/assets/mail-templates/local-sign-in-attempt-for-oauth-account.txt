@@ -1,0 +1,9 @@
+TUM RATING <br><br>
+
+Hello [Username] <br>
+Email [Email] is already registered in TUM-RATING, but account was created with TUM ID. <br>
+If you want to use password authentication please follow sign up procedure: <br>
+[SignUpLink] <br><br>
+
+🐛 regards, <br>
+TUM-RATING <br>
