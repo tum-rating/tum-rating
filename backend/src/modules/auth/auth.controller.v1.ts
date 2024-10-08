@@ -248,6 +248,17 @@ export class AuthControllerV1 {
 
             if (!user) {
                 this._logger.warn('Email reqested for recovery is not in codebase %s', body.email);
+
+                // hide this info by correct return
+                return;
+            }
+
+            if (user.authType === AuthType.oAuth) {
+                this._logger.warn('Password recovery request for oauth account for %s', body.email);
+
+                await this._mailerService.sendLocalSignInAttemptForOAuthAccountEmail({ email: user.email, name: user.username });
+
+                // hide this info by correct return
                 return;
             }
 

@@ -95,7 +95,7 @@ export class OAuthControllerV1 {
         if (!userUpsertResults.newlyCreated && user.isBanned) {
             this._logger.warn('Sign in request fail for tum id, user email is banned for %s', user.email);
 
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('User is banned');
         }
 
         const token = await this._jwtService.signJWTAccess(user.id, user.role);
