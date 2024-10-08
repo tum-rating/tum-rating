@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import * as supertest from 'supertest';
 
-import { PasswordRecoveryRequestDto } from 'src/modules/auth/dto/PasswordRecovery.dto';
+import { PasswordRecoveryRequestDto } from '@tum-rating/backend/src/modules/auth/dto/PasswordRecovery.dto';
 import { SignInRequestDto } from '@tum-rating/backend/src/modules/auth/dto/SignInRequest.dto';
 import { authUrl } from '@tum-rating/backend/test/utils';
 import { connectMongo } from '@tum-rating/backend/test/utils';
@@ -25,7 +25,7 @@ describe('User Password Recovery', () => {
             email: signUpResponse.email,
         };
 
-        supertest(authUrl + '/recovery')
+        await supertest(authUrl + '/recovery')
             .post('/')
             .send(emailRecoveryRequest)
             .expect(204);
@@ -37,7 +37,7 @@ describe('User Password Recovery', () => {
             token: recoveryToken,
         };
 
-        supertest(authUrl + '/recovery')
+        await supertest(authUrl + '/recovery')
             .post('/')
             .send(recoveryRequest)
             .expect(204);
@@ -47,7 +47,7 @@ describe('User Password Recovery', () => {
             password: signUpResponse.password,
         };
 
-        supertest(authUrl + 'signin')
+        await supertest(authUrl + 'signin')
             .post('/')
             .send(signInRequestWithOldPassword)
             .expect(401);
@@ -57,7 +57,7 @@ describe('User Password Recovery', () => {
             password: recoveryRequest.password,
         };
 
-        supertest(authUrl + 'signin')
+        await supertest(authUrl + 'signin')
             .post('/')
             .send(signInRequestWithNewPassowrd)
             .expect(200);
@@ -70,7 +70,7 @@ describe('User Password Recovery', () => {
             email: signUpResponse.email,
         };
 
-        supertest(authUrl + '/recovery')
+        await supertest(authUrl + '/recovery')
             .post('/')
             .send(emailRecoveryRequest)
             .expect(204);
@@ -82,7 +82,7 @@ describe('User Password Recovery', () => {
             token: recoveryToken,
         };
 
-        supertest(authUrl + '/recovery')
+        await supertest(authUrl + '/recovery')
             .post('/')
             .send(
                 'eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjIsInN1YiI6IjY0ZTI4MDE3NGUwMGZkZjgzZGNlODk1ZiIsImV4cCI6MTY5MjY1MTkyN30.SIRt6KtlK-sFig1RUESLyApBH_F56OG3-9BEjD8QLPW',
@@ -95,7 +95,7 @@ describe('User Password Recovery', () => {
             email: faker.internet.email(),
         };
 
-        supertest(authUrl + '/recovery')
+        await supertest(authUrl + '/recovery')
             .post('/')
             .send(emailRecoveryRequest)
             .expect(204);
