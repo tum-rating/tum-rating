@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PinoLogger } from 'nestjs-pino';
 
 import { UserRepository } from 'src/database/repositories/user.repository';
-import { User } from 'src/database/documents/user';
+import { AuthType, User } from 'src/database/documents/user';
 import { UserBanRepository } from 'src/database/repositories/userBan.repository';
 import { ReviewRepository } from 'src/database/repositories/review.repository';
 import { CourseRepository } from 'src/database/repositories/course.repository';
@@ -45,8 +45,15 @@ export class UserService {
         const user = await this.getUserByEmail(userToUpsert.email);
 
         if (!user) {
-            const user = await this._userRepository.createUserWithTumId(userToUpsert.email, userToUpsert.sub); 
+            const user = await this._userRepository.createUserWithOAuth(userToUpsert.email, userToUpsert.sub); 
             return { user, newlyCreated: true };
+        }
+
+        if (user.authType == AuthType.local) {
+            await this._userRepository.updateOneById(user.id, {
+                authType: AuthType.both,
+                oAuthId: userToUpsert.sub
+            });
         }
 
         return { user, newlyCreated: false };
