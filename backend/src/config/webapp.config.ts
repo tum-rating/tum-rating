@@ -7,4 +7,8 @@ export default registerAs('webapp', () => ({
     get url() {
         return `${this.protocol}://${this.host}${this.port}`;
     },
+    signUpPath: process.env.WEBAPP_SIGNUP_PATH,
+    get signUpUrl() {
+        return `${this.url}${this.signUpPath}`;
+    }
 }));
