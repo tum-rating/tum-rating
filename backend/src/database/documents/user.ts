@@ -8,7 +8,7 @@ export enum UserRole {
 
 export enum AuthType {
     local = 'local',
-    tumId = 'tumId',
+    oAuth = 'oAuth',
     both = 'both',
 }
 
@@ -46,7 +46,7 @@ export class User {
     authType: AuthType;
 
     @Prop()
-    tumId?: string;
+    oAuthId?: string;
 }
 
 export type UserDocument = User & Document;

@@ -12,12 +12,13 @@ export class UserRepository extends BaseRepository<User> {
         super(_userModel);
     }
 
-    public async createUserWithTumId(email: string, tumId?: string): Promise<WithId<User>> {
+    public async createUserWithOAuth(email: string, oAuthId?: string): Promise<WithId<User>> {
         return this._userModel.create({
             username: `unset-${email}-${randomUUID()}`,
             email,
-            isEmailActivated: true,
-            authType: AuthType.tumId,
+            isEmailActivated: false,
+            authType: AuthType.oAuth,
+            oAuthId
         }) as unknown as WithId<User>;
     }
 
