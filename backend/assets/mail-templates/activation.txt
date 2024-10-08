@@ -1,9 +1,9 @@
-TUM-RATING
+TUM-RATING <br> <br>
 
-Hello [Username],
-Thank you for registering. To activate youraccount, please click the link below:
+Hello [Username], <br>
+Thank you for registering. To activate youraccount, please click the link below: <br>
 
-[ActivationLink]
+[ActivationLink] <br><br>
 
-🐛 regards,
+🐛 regards,<br>
 TUM-RATING
