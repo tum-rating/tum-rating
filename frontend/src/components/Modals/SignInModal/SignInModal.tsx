@@ -1,4 +1,15 @@
-import {Alert, Anchor, Button, Container, Group, LoadingOverlay, PasswordInput, Stack, Text, TextInput} from '@mantine/core';
+import {
+    Alert,
+    Anchor,
+    Button,
+    Container,
+    Group,
+    LoadingOverlay,
+    PasswordInput,
+    Stack,
+    Text,
+    TextInput
+} from '@mantine/core';
 import {useForm} from '@mantine/form';
 import {ContextModalProps, modals} from '@mantine/modals';
 import {notifications} from '@mantine/notifications';
@@ -14,8 +25,10 @@ import {ModalHeader} from '@/components/Modals/shared/ModalHeader';
 import {ModalResponsiveContainer} from '@/components/Modals/shared/ModalResponsiveContainer';
 import {getPath, Paths} from '@/routes/paths.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
+import {endpoints} from "@/api";
 
-interface SignInModalProps extends ContextModalProps {}
+interface SignInModalProps extends ContextModalProps {
+}
 
 const openSignInModal = ({...props}: SignInModalProps) => {
     modals.openContextModal({
@@ -92,11 +105,16 @@ const SignInModal = ({context, id}: ContextModalProps) => {
                 }}
             />
             <Container p="sm">
-                <LoadingOverlay visible={signInLoading} overlayProps={{radius: 'sm', blur: 2}} />
-                <form className="modal-form" data-testid="sign-in-form" onSubmit={form.onSubmit((e) => handleSubmit(e))}>
+                <LoadingOverlay visible={signInLoading} overlayProps={{radius: 'sm', blur: 2}}/>
+                <form className="modal-form" data-testid="sign-in-form"
+                      onSubmit={form.onSubmit((e) => handleSubmit(e))}>
                     <Stack>
-                        <TextInput autoFocus data-autofocus type="email" leftSection={<IconAt size="1.1rem" />} data-testid="email" required label="Email" placeholder="Email" {...form.getInputProps('email')} />
-                        <PasswordInput leftSection={<IconLock size="1.1rem" />} data-testid="password" autoComplete="on" required label="Password" placeholder="Password" {...form.getInputProps('password')} />
+                        <TextInput autoFocus data-autofocus type="email" leftSection={<IconAt size="1.1rem"/>}
+                                   data-testid="email" required label="Email"
+                                   placeholder="Email" {...form.getInputProps('email')} />
+                        <PasswordInput leftSection={<IconLock size="1.1rem"/>} data-testid="password" autoComplete="on"
+                                       required label="Password"
+                                       placeholder="Password" {...form.getInputProps('password')} />
                         <Group justify="space-between">
                             <Anchor
                                 component="button"
@@ -120,15 +138,21 @@ const SignInModal = ({context, id}: ContextModalProps) => {
                             </Anchor>
                         </Group>
                         {apiError && error && (
-                            <Alert data-testid="error-message" variant="light" color="red" title="Error" icon={<IconFaceIdError />} withCloseButton onClose={() => setApiError(false)}>
-                                <Text size="xs">{error instanceof ResponseError ? error?.message : 'An error occurred'}</Text>
+                            <Alert data-testid="error-message" variant="light" color="red" title="Error"
+                                   icon={<IconFaceIdError/>} withCloseButton onClose={() => setApiError(false)}>
+                                <Text
+                                    size="xs">{error instanceof ResponseError ? error?.message : 'An error occurred'}</Text>
                             </Alert>
                         )}
-                        <Button data-testid="submit" mt="xs" type="submit" variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}}>
+                        <Button data-testid="submit" mt="xs" type="submit" variant="gradient"
+                                gradient={{from: 'indigo', to: 'blue', deg: 90}}>
                             Sign In
                         </Button>
-                        {/* TODO refactor to utils routes to point to backend to */}
-                        <Button data-testid="submit" mt="xs" variant="gradient" gradient={{from: 'indigo', to: 'blue', deg: 90}} onClick={() => window.location.replace('http://localhost:3000/api/v1/auth/oauth')}>
+                        <Button data-testid="submit" mt="xs" variant="gradient"
+                                component={'a'}
+                                href={endpoints.sso}
+                                gradient={{from: 'indigo', to: 'blue', deg: 90}}
+                        >
                             Sign In With TUM ID
                         </Button>
                     </Stack>

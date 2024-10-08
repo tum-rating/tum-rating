@@ -1,16 +1,15 @@
-import {ActionIcon, Anchor, AppShell, Box, Button, Flex, Group, Image, Menu, rem, useMantineColorScheme} from '@mantine/core';
+import {ActionIcon, AppShell, Box, Button, Flex, Group, Menu, rem} from '@mantine/core';
 import {useHotkeys, useMediaQuery} from '@mantine/hooks';
 import {IconDotsVertical} from '@tabler/icons-react';
 import {PropsWithChildren, useState} from 'react';
 import {isMobileOnly} from 'react-device-detect';
 import {useNavigate} from 'react-router-dom';
 
-import logoDark from '@/assets/img/logo-dark.png';
-import logo from '@/assets/img/logo.png';
 import {useUser} from '@/auth/useUser';
 import {Burger} from '@/components/Burger';
 import {Drawer} from '@/components/Drawer';
 import {FloatingMenu} from '@/components/FloatingMenu';
+import {Logo} from '@/components/Logo/Logo';
 import {SearchInput} from '@/components/Search';
 import {ThemeToggleActionIcon} from '@/components/ThemeToggle';
 import {UserButton} from '@/components/UserButton';
@@ -29,12 +28,11 @@ export const MainLayout = ({children}: PropsWithChildren) => {
         if (flag === undefined) setDrawerOpened(!drawerOpened);
         else setDrawerOpened(flag);
     };
-    const {colorScheme} = useMantineColorScheme();
     const smallerMode = useMediaQuery('(max-width: 48em)');
     useHotkeys([['/', () => navigate(getPath(Paths.spotlight))]]);
     return (
         <AppShell header={{height: HEADER_HEIGHT}} padding="md">
-            <FloatingMenu />
+            <FloatingMenu/>
             <Box
                 style={{
                     inset: 0,
@@ -45,16 +43,17 @@ export const MainLayout = ({children}: PropsWithChildren) => {
             />
             <AppShell.Header maw="100vw" zIndex={HEADER_Z_INDEX}>
                 <Flex visibleFrom="sm" h="100%" px="md" justify="space-between" align="center" gap={20}>
-                    <Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>
+                    <Logo alt="tum rating logo" width={129} height={28} href="/"/>
                     {!isMobileOnly && !smallerMode && (
                         <Flex maw={580} style={{flexGrow: 1}}>
-                            <SearchInput />
+                            <SearchInput/>
                         </Flex>
                     )}
                     <Flex gap={20}>
                         {!user ? (
                             <>
-                                <Button data-testid="sign-in-btn-desktop" loading={!user && isLoading} size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
+                                <Button data-testid="sign-in-btn-desktop" loading={!user && isLoading} size="xs"
+                                        variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
                                     Sign In
                                 </Button>
                                 <Button
@@ -71,7 +70,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                                 <Menu shadow="xl" position="bottom-end">
                                     <Menu.Target>
                                         <ActionIcon variant="outline">
-                                            <IconDotsVertical size="1.2rem" />
+                                            <IconDotsVertical size="1.2rem"/>
                                         </ActionIcon>
                                     </Menu.Target>
                                     <Menu.Dropdown>
@@ -81,7 +80,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                                             return (
                                                 <Menu.Item
                                                     key={page.path + page.title}
-                                                    leftSection={<Icon style={{width: rem(14), height: rem(14)}} />}
+                                                    leftSection={<Icon style={{width: rem(14), height: rem(14)}}/>}
                                                     onClick={() => {
                                                         navigate(page.path);
                                                     }}
@@ -94,8 +93,8 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                                 </Menu>
                             </>
                         ) : null}
-                        <UserButton />
-                        <ThemeToggleActionIcon />
+                        <UserButton/>
+                        <ThemeToggleActionIcon/>
                         {isAdmin && (
                             <Button
                                 size="xs"
@@ -112,16 +111,15 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                 </Flex>
                 <Group hiddenFrom="sm" h="100%" px="md" justify="space-between" pos="relative">
                     <Burger open={drawerOpened} toggle={toggleDrawer}></Burger>
-                    <Anchor href="/">{colorScheme === 'light' ? <Image data-test="app-logo" fit="contain" height={28} width={129} src={logo} alt="tum rating logo" /> : <Image data-test="app-logo" fit="contain" height={28} width={129} src={logoDark} alt="tum rating logo" />}</Anchor>
-
+                    <Logo alt="tum rating logo" width={129} height={28} href="/"/>
                     <Flex h={54} mah={54} align="center">
-                        <SearchInput />
+                        <SearchInput/>
                     </Flex>
                 </Group>
             </AppShell.Header>
             <AppShell.Main p={0} m={0}>
                 <Box hiddenFrom={'sm'}>
-                    <Drawer open={drawerOpened} toggle={toggleDrawer} />
+                    <Drawer open={drawerOpened} toggle={toggleDrawer}/>
                 </Box>
                 <Flex justify="center" pt={HEADER_HEIGHT} mx="auto" h={`calc(100vh)`} maw={MAX_SITE_WIDTH}>
                     {children}
