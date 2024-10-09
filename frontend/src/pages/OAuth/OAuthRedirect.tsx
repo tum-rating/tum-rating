@@ -62,7 +62,7 @@ export const OAuthRedirect = () => {
     useEffect(() => {
         if (status === 'success') {
             const pattern = /^unset-.*@.*$/;
-            if (pattern.test(data.user.email)) {
+            if (pattern.test(data.user.username)) {
                 setUnsetUsernameFlag(true);
                 setUserData(data);
             }else{
