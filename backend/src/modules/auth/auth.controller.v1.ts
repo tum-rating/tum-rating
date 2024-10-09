@@ -163,11 +163,10 @@ export class AuthControllerV1 {
         }
 
         if (databaseUser.authType === AuthType.oAuth) {
-            this._mailerService.sendLocalSignInAttemptForOAuthAccountEmail({ email: databaseUser.email, name: databaseUser.username })
-                .then(() => this._logger.info('Sent local sign in attempt email to %s', databaseUser.email))
-                .catch((error) => this._logger.error('Failed to send local sign in attempt  email to %s, error: %o', databaseUser.email, error));
-
             this._logger.warn('Local sign in request fail for oauth account for %s', body.email);
+
+            await this._mailerService.sendLocalSignInAttemptForOAuthAccountEmail({ email: databaseUser.email, name: databaseUser.username });
+
             throw new UnauthorizedException();
         }
 

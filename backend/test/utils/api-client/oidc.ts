@@ -17,10 +17,10 @@ export const getOAuthRedirectURL = async (): Promise<string | null> => {
         validateStatus: function (status) {
           return status >= 300 && status < 400; // Only accept redirect responses
         }
-      });
+    });
   
-      const redirectUrl = response.headers.location;
-      return redirectUrl;
+    const redirectUrl = response.headers.location;
+    return redirectUrl;
 }
 
 export const OAuthCallback = async (redirectURL: string) => {
@@ -106,4 +106,16 @@ export const OIDCCreateMockUser = async () => {
     const oidcUser = await OIDCCreateUser(email);
 
     return oidcUser;
+}
+
+export const createOAuthUser = async (email?: string) => {
+    const parsedEmail = email || faker.internet.email({ provider: 'tum.de' });
+
+    const redirectURL = await getOAuthRedirectURL();
+
+    const oidcMockUser = await OIDCCreateUser(parsedEmail);
+
+    const callbackURL = await performOAuthFlow(redirectURL, oidcMockUser.email);
+
+    return OAuthCallback(callbackURL); 
 }
