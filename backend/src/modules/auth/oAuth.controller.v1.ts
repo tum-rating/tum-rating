@@ -1,7 +1,10 @@
 import {
+    BadGatewayException,
     Body,
     Controller,
     Get,
+    HttpCode,
+    HttpStatus,
     NotImplementedException,
     Post,
     Res,
@@ -17,8 +20,9 @@ import { UserService } from 'src/modules/user/user.service';
 import { JWTService } from 'src/utils/jwt/jwt.service';
 import { MailerService } from 'src/modules/mailer/mailer.service';
 import { GetUserPublicResponseDto } from 'src/modules/user/dto/GetUserPublicResponse.dto';
+import { BadOAuthGatewayException, InvalidGrantError } from 'src/utils/errors/oAuthErrors';
 
-import { OAuthService } from './oAuth.service';
+import { OAuthService, ValidateAuthorizationCodeResponse } from './oAuth.service';
 import { OAuthCallbackRequestDto, OAuthCallbackRequestSchema } from './dto/OAuthCallbackRequest.dto';
 import { SignInResponseDto } from './dto/SignInResponse.dto';
 
@@ -50,6 +54,7 @@ export class OAuthControllerV1 {
     }
 
     @Post()
+    @HttpCode(HttpStatus.OK)
     public async callback(
         @Body(new JoiObjectSchemaPipe(OAuthCallbackRequestSchema))
         body: OAuthCallbackRequestDto,
@@ -64,7 +69,24 @@ export class OAuthControllerV1 {
             throw new NotImplementedException();
         }
 
-        const userData = await this._oAuthService.validateAuthorizationCode(body.redirectURL);
+        let userData: ValidateAuthorizationCodeResponse;
+        try {
+            userData = await this._oAuthService.validateAuthorizationCode(body.redirectURL);
+        } catch (error) {
+            if (error instanceof InvalidGrantError) {
+                this._logger.warn('Invalid grant error for redirect URL %s', body.redirectURL);
+
+                throw new BadGatewayException('Invalid grant');
+            }
+
+            if (error instanceof BadOAuthGatewayException) {
+                this._logger.warn('Bad OAuth gateway error for redirect URL %s', body.redirectURL);
+
+                throw new BadGatewayException('Bad OAuth params');
+            }
+
+            throw error;
+        }
 
         const userUpsertResults = await this._userService.upsertUser(userData);
 
@@ -73,7 +95,7 @@ export class OAuthControllerV1 {
         if (!userUpsertResults.newlyCreated && user.isBanned) {
             this._logger.warn('Sign in request fail for tum id, user email is banned for %s', user.email);
 
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('User is banned');
         }
 
         const token = await this._jwtService.signJWTAccess(user.id, user.role);
@@ -85,13 +107,13 @@ export class OAuthControllerV1 {
         }
 
         return new SignInResponseDto(
-                new GetUserPublicResponseDto(
-                    user.id,
-                    user.email,
-                    user.username,
-                    user.role,
-                ),
-                token,
+            new GetUserPublicResponseDto(
+                user.id,
+                user.email,
+                user.username,
+                user.role,
+            ),
+            token,
         ); 
     }
 }

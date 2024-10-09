@@ -17,10 +17,10 @@ export const getOAuthRedirectURL = async (): Promise<string | null> => {
         validateStatus: function (status) {
           return status >= 300 && status < 400; // Only accept redirect responses
         }
-      });
+    });
   
-      const redirectUrl = response.headers.location;
-      return redirectUrl;
+    const redirectUrl = response.headers.location;
+    return redirectUrl;
 }
 
 export const OAuthCallback = async (redirectURL: string) => {
@@ -50,7 +50,7 @@ export const performOAuthFlow = async (redirectURL: string, email: string): Prom
         password: 'your_password' // This can be any value
     });
 
-    const url2 = resp.request.res.responseUrl; // Get the redirect URL from the response
+    const url2 = resp.request.res.responseUrl;
     const loginRequestConfig: AxiosRequestConfig = {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -71,35 +71,18 @@ export const performOAuthFlow = async (redirectURL: string, email: string): Prom
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8'
         },
-        maxRedirects: 0 // We want to handle redirects manually
-    };
-
-    let redirectCount = 0;
-    const redirectHandler = (error: any) => {
-        if (error.response && error.response.status >= 300 && error.response.status < 400) {
-            redirectCount++;
-            if (redirectCount === 1) {
-                // Follow the first redirect (internal redirect)
-                const redirectUrl = error.response.headers.location;
-                return client.post(redirectUrl, consentData, consentRequestConfig);
-            }
-            // Stop at the second redirect (to the provided redirect URL)
-            return error.response;
-        }
-        throw error;
     };
 
     // Perform the consent request and handle redirects
-    const consentResp = await client.post(url3, consentData, consentRequestConfig).catch(redirectHandler);
+    const consentResp = await client.post(url3, consentData);
 
     // Handle the 2nd redirect, extracting code and state from the URL
-    const finalRedirectUrl = consentResp.headers.location;
-    if (!finalRedirectUrl) {
+    const callbackURL = consentResp.request.res.responseUrl
+    if (!callbackURL) {
         throw new Error('No redirect URL found in the response');
     }
 
-
-    return finalRedirectUrl;
+    return callbackURL;
 };
 
 class OIDCMockUser {
@@ -107,7 +90,7 @@ class OIDCMockUser {
 }
 
 export const OIDCCreateUser = async (email: string) => {
-    const url = 'http://localhost:1410/users';
+    const url = 'http://localhost:1939/users';
     const requestBody = {
       email: email,
     };
@@ -118,9 +101,21 @@ export const OIDCCreateUser = async (email: string) => {
 
 
 export const OIDCCreateMockUser = async () => {
-    const email = faker.internet.email();
+    const email = faker.internet.email({ provider: 'tum.de' });
 
     const oidcUser = await OIDCCreateUser(email);
 
     return oidcUser;
+}
+
+export const createOAuthUser = async (email?: string) => {
+    const parsedEmail = email || faker.internet.email({ provider: 'tum.de' });
+
+    const redirectURL = await getOAuthRedirectURL();
+
+    const oidcMockUser = await OIDCCreateUser(parsedEmail);
+
+    const callbackURL = await performOAuthFlow(redirectURL, oidcMockUser.email);
+
+    return OAuthCallback(callbackURL); 
 }

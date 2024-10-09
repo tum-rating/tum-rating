@@ -1,8 +1,8 @@
-TUM-RATING
+TUM-RATING<br><br>
 
-Hello [Email],
-ou have successfuly registered with TUM ID.
-If it wasn't you, contact support immediately.
+Hello [Email],<br>
+ou have successfuly registered with TUM ID.<br>
+If it wasn't you, contact support immediately.<br><br>
 
-🐛 regards,
+🐛 regards,<br>
 TUM-RATING
