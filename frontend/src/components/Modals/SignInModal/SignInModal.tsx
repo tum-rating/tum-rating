@@ -2,20 +2,22 @@ import {
     Alert,
     Anchor,
     Button,
-    Container,
-    Group,
+    Container, Divider,
+    Group, Image,
     LoadingOverlay,
     PasswordInput,
     Stack,
     Text,
-    TextInput
+    TextInput, ThemeIcon
 } from '@mantine/core';
 import {useForm} from '@mantine/form';
 import {ContextModalProps, modals} from '@mantine/modals';
 import {notifications} from '@mantine/notifications';
-import {IconAt, IconFaceIdError, IconLock} from '@tabler/icons-react';
+import {IconAt, IconFaceIdError, IconKey, IconLock} from '@tabler/icons-react';
 import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
+
+import classes from "./SSOButton.module.css";
 
 import {endpoints} from "@/api";
 import {LoginInput, useSignIn} from '@/auth/useSignIn.tsx';
@@ -26,6 +28,7 @@ import {ModalHeader} from '@/components/Modals/shared/ModalHeader';
 import {ModalResponsiveContainer} from '@/components/Modals/shared/ModalResponsiveContainer';
 import {getPath, Paths} from '@/routes/paths.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
+
 
 interface SignInModalProps extends ContextModalProps {
 }
@@ -148,12 +151,24 @@ const SignInModal = ({context, id}: ContextModalProps) => {
                                 gradient={{from: 'indigo', to: 'blue', deg: 90}}>
                             Sign In
                         </Button>
-                        <Button data-testid="submit" mt="xs" variant="gradient"
+                        <Divider label="or" orientation="horizontal" />
+                        <Button data-testid="submit"
                                 component={'a'}
+                                variant='outline'
+                                className={classes.SSOButton}
                                 href={endpoints.sso}
-                                gradient={{from: 'indigo', to: 'blue', deg: 90}}
+                                leftSection={<IconKey size="1.1rem"/>}
                         >
-                            Sign In With TUM ID
+                            Sign In With
+                            <ThemeIcon variant='light' w={55}     mx={"xs"}>
+                                <Image src={"https://portal.mytum.de/logo.png"}
+                                       alt="TUM Logo"
+                                       w={40}
+
+                                       />
+                            </ThemeIcon>
+
+                            ID
                         </Button>
                     </Stack>
                 </form>
