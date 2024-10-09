@@ -1,92 +1,35 @@
-import {Alert, Anchor, Box, Button, Card, Flex, Loader, Text, TextInput} from "@mantine/core";
-import {useForm} from "@mantine/form";
-import {notifications} from "@mantine/notifications";
-import {IconFaceId, IconFaceIdError} from "@tabler/icons-react";
-import {useEffect, useState} from "react";
-import {useNavigate} from 'react-router-dom';
+import { Alert, Anchor, Box, Button, Card, Flex, Loader, Text, TextInput } from "@mantine/core";
+import { IconFaceId, IconFaceIdError } from "@tabler/icons-react";
+import {useNavigate} from "react-router-dom";
 
 import classes from "./OAuthConfirmationCard.module.css";
+import { useOAuthForm } from "./useOAuthForm";
 
-import {useSetUser} from "@/auth/useSetUser.tsx"; // Import the useSetUser hook
-import {signInClient} from "@/auth/useSignIn.tsx";
-import {Logo} from "@/components/Logo";
-import {useOAuth} from "@/oauth/useOAuth.tsx";
-import {getPath, Paths} from "@/routes/paths.ts";
-
-interface UserDataProps {
-    user: {
-        id: string;
-        email: string;
-        username: string;
-    };
-    token: string;
-}
+import { Logo } from "@/components/Logo";
+import { useOAuth } from "@/oauth/useOAuth.tsx";
+import { getPath, Paths } from "@/routes/paths.ts";
 
 export const OAuthConfirmationCard = () => {
-    const {data, status, isError, error} = useOAuth();
-    const [userData, setUserData] = useState<UserDataProps | null>(null);
-    const [unsetUsernameFlag, setUnsetUsernameFlag] = useState(false);
+    const { data, status, isError, error } = useOAuth();
     const navigate = useNavigate();
-    const setUserMutation = useSetUser();
-
-    useEffect(() => {
-        if (status === 'success') {
-            const pattern = /^unset-.*@.*$/;
-            if (pattern.test(data.user.username)) {
-                setUnsetUsernameFlag(true);
-                setUserData(data);
-            } else {
-                signInClient(data, data.token);
-                navigate("/");
-            }
-        }
-    }, [data, status]);
-
-    const form = useForm({
-        initialValues: {
-            username: '',
-        },
-        validate: {
-            username: (value) => value.length > 0 ? null : 'Username is required',
-        }
-    });
-
-    const handleSubmit = (values: { username: string }) => {
-        setUserMutation.mutate({
-            username: values.username,
-            token: userData?.token,
-        })
-    };
-
-    useEffect(() => {
-        if (setUserMutation.isSuccess && unsetUsernameFlag) {
-            navigate("/");
-            notifications.show({
-                title: 'Success',
-                id: 'signin-success',
-                message: <Text size="xs">Sign in successful!</Text>,
-                color: 'green',
-                autoClose: 3000,
-            })
-        }
-    }, [setUserMutation.isSuccess]);
+    const { form, handleSubmit, userData, unsetUsernameFlag, setUserMutation } = useOAuthForm(data, status);
 
     return (
         <Box className={classes.OAuthRedirectContainer}>
-            <Logo/>
+            <Logo />
             <Card shadow="sm" radius="md" mt="lg" withBorder className={classes.userStatusGuardCard}>
                 {status === 'pending' && (
-                    <Alert icon={<Loader size={"xs"}/>} title="Single Sign-On Login" color="blue">
+                    <Alert icon={<Loader size={"xs"} />} title="Single Sign-On Login" color="blue">
                         <Text fw={500} fz='sm'>We are verifying your identity...</Text>
                     </Alert>
                 )}
                 {status === 'success' && (
-                    <Alert icon={<IconFaceId height={25}/>} title="Single Sign-On Login" color="blue">
+                    <Alert icon={<IconFaceId height={25} />} title="Single Sign-On Login" color="blue">
                         <Text fw={500} fz='sm'>Your identity has been verified</Text>
                     </Alert>
                 )}
                 {isError && (
-                    <Alert icon={<IconFaceIdError height={25}/>} title="Single Sign-On Login" color="red">
+                    <Alert icon={<IconFaceIdError height={25} />} title="Single Sign-On Login" color="red">
                         <Text fw={500} fz='sm'>An error occurred while verifying your identity</Text>
                         <Text mt='sm' fz='sm' fw={600} c='red'>{error?.message}</Text>
                         <Button mt='xs' onClick={() => navigate("/" + getPath(Paths.signIn))}>Try again</Button>
@@ -118,18 +61,18 @@ export const OAuthConfirmationCard = () => {
                             />
                             <Text fz="xs" fw="bold" mt="sm">
                                 By submitting, you agree to our{' '}
-                                <Anchor target="_blank" style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold"
-                                        href={getPath(Paths.privacyPolicy)}>
+                                <Anchor target="_blank" style={{ whiteSpace: 'nowrap' }} fz="xs" fw="bold"
+                                    href={getPath(Paths.privacyPolicy)}>
                                     Privacy Policy
                                 </Anchor>{' '}
                                 and{' '}
-                                <Anchor target="_blank" style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold"
-                                        href={getPath(Paths.termsOfService)}>
+                                <Anchor target="_blank" style={{ whiteSpace: 'nowrap' }} fz="xs" fw="bold"
+                                    href={getPath(Paths.termsOfService)}>
                                     Terms of Service.
                                 </Anchor>
                             </Text>
                             <Button loading={setUserMutation.isPending} fullWidth data-testid="submit" type="submit"
-                                    mt="xs" variant="primary-gradient">
+                                mt="xs" variant="primary-gradient">
                                 Submit
                             </Button>
                         </form>

@@ -17,6 +17,7 @@ import {IconAt, IconFaceIdError, IconLock} from '@tabler/icons-react';
 import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 
+import {endpoints} from "@/api";
 import {LoginInput, useSignIn} from '@/auth/useSignIn.tsx';
 import {useUser} from '@/auth/useUser.tsx';
 import {contextModalConfig} from '@/components/Modals/contextModalConfig.ts';
@@ -25,7 +26,6 @@ import {ModalHeader} from '@/components/Modals/shared/ModalHeader';
 import {ModalResponsiveContainer} from '@/components/Modals/shared/ModalResponsiveContainer';
 import {getPath, Paths} from '@/routes/paths.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
-import {endpoints} from "@/api";
 
 interface SignInModalProps extends ContextModalProps {
 }
