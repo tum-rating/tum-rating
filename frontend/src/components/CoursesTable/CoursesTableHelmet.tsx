@@ -28,7 +28,6 @@ const CoursesTableHelmet = ({courses}: {courses: Course[]}) => {
     return (
         <div>
             <Helmet>
-                <title>TUM Rating - Find and Rate Courses at Technical University of Munich</title>
                 <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
             </Helmet>
         </div>

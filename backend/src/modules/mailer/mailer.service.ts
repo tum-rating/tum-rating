@@ -15,6 +15,8 @@ interface EmailTemplates {
     activation: string;
     passwordRecovery: string;
     emailAlreadyExists: string;
+    oauthSignUp: string;
+    localSignInAttemptForOAuthAccount: string;
 }
 
 interface MailerConfig {
@@ -32,10 +34,14 @@ const emailCssStyles = "email-template.css";
 const emailActivationTemplateFile = 'activation.html';
 const emailRecoveryTemplateFile = 'recovery.html';
 const emailEmailAlreadyExistsTemplateFile = 'email-already-exists.html';
+const emailOAuthSignUpTemplateFile = 'oauth-sign-up.html';
+const emailLocalSignInAttemptForOAuthAccountTemplateFile = 'local-sign-in-attempt-for-oauth-account.html';
 
 const emailActivationTextFile = 'activation.txt';
 const emailRecoveryTextFile = 'recovery.txt';
 const emailEmailAlreadyExistsTextFile = 'email-already-exists.txt';
+const emailOAuthSignUpTextFile ='oauth-sign-up.txt';
+const emailLocalSignInAttemptForOAuthAccountTextFile = 'local-sign-in-attempt-for-oauth-account.txt';
 
 const telegramLink = 'https://t.me/+hYAM4t27bJgzNjdk';
 
@@ -179,6 +185,27 @@ export class MailerService {
         return this.send(to, 'Email is already registered', processedEmailTemplate);
     }
 
+    public async sendOAuthSignUpEmail(to: MailRecipient) {
+        const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.oauthSignUp, {
+            ...this._getCommonVariables(),
+            Email: to.email,
+        });
+
+        return this.send(to, 'Sign up with OAuth', processedEmailTemplate);
+    }
+
+    public async sendLocalSignInAttemptForOAuthAccountEmail(to: MailRecipient) {
+        const signUpLink = this._configService.getOrThrow('webapp.signUpUrl');
+
+        const processedEmailTemplate = this._injectVariablesToTemplate(this._templates.localSignInAttemptForOAuthAccount, {
+            ...this._getCommonVariables(),
+            Email: to.email,
+            SignUpLink: signUpLink,
+        });
+    
+        return this.send(to, 'Local sign in attempt for OAuth account', processedEmailTemplate);
+    }
+
     private _formatRecipient(recipient: MailRecipient) {
         return `${recipient.name ? recipient.name.concat(' ') : ''}<${recipient.email}>`;
     }
@@ -193,10 +220,18 @@ export class MailerService {
         const emailAlreadyExistsTemplateFilePath = join(__dirname, emailTemplatesDir, emailEmailAlreadyExistsTemplateFile);
         const emailAlreadyExistsEmailTemplate = fs.readFileSync(emailAlreadyExistsTemplateFilePath, 'utf8');
 
+        const oauthSignUpTemplateFilePath = join(__dirname, emailTemplatesDir, emailOAuthSignUpTemplateFile);
+        const oauthSignUpEmailTemplate = fs.readFileSync(oauthSignUpTemplateFilePath, 'utf8');
+
+        const localSignInAttemptForOAuthAccountTemplateFilePath = join(__dirname, emailTemplatesDir, emailLocalSignInAttemptForOAuthAccountTemplateFile);
+        const localSignInAttemptForOAuthAccountEmailTemplate = fs.readFileSync(localSignInAttemptForOAuthAccountTemplateFilePath, 'utf8');
+
         return {
             activation: activationEmailTemplate,
             passwordRecovery: passwordRecoveryEmailTemplate,
             emailAlreadyExists: emailAlreadyExistsEmailTemplate,
+            oauthSignUp: oauthSignUpEmailTemplate,
+            localSignInAttemptForOAuthAccount: localSignInAttemptForOAuthAccountEmailTemplate,
         };
     }
 
@@ -210,10 +245,18 @@ export class MailerService {
         const emailAlreadyExistsTextFilePath = join(__dirname, emailTemplatesDir, emailEmailAlreadyExistsTextFile);
         const emailAlreadyExistsEmailText = fs.readFileSync(emailAlreadyExistsTextFilePath, 'utf8');
 
+        const oauthSignUpTextFilePath = join(__dirname, emailTemplatesDir, emailOAuthSignUpTextFile);
+        const oauthSignUpEmailText = fs.readFileSync(oauthSignUpTextFilePath, 'utf8');
+
+        const localSignInAttemptForOAuthAccountTextFilePath = join(__dirname, emailTemplatesDir, emailLocalSignInAttemptForOAuthAccountTextFile);
+        const localSignInAttemptForOAuthAccountEmailText = fs.readFileSync(localSignInAttemptForOAuthAccountTextFilePath, 'utf8');
+
         return {
             activation: activationEmailText,
             passwordRecovery: passwordRecoveryEmailText,
             emailAlreadyExists: emailAlreadyExistsEmailText,
+            oauthSignUp: oauthSignUpEmailText,
+            localSignInAttemptForOAuthAccount: localSignInAttemptForOAuthAccountEmailText,
         };
     }
 

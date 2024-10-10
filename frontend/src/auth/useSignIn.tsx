@@ -28,6 +28,22 @@ export async function signIn({email, password}: LoginInput): Promise<LoggedUser>
     return data;
 }
 
+export const signInClient = (data, token) => {
+    queryClient.setQueryData([QUERY_KEY.user], token);
+    queryClient.setQueryData([QUERY_KEY.user_details], {
+        ...data.user,
+        isAdmin: data.user?.role === 'admin',
+    });
+    localStorage.setItem(USER_LOCAL_STORAGE_KEY, token);
+    notifications.show({
+        title: 'Success',
+        id: 'signin-success',
+        message: <Text size="xs">Sign in successful!</Text>,
+        color: 'green',
+        autoClose: 3000,
+    });
+}
+
 export type LoginInput = {
     email: string;
     password: string;
@@ -37,19 +53,8 @@ export function useSignIn() {
     return useMutationWithAuth({
         mutationFn: async ({email, password}: LoginInput) => await signIn({email, password}),
         onSuccess: (data) => {
-            queryClient.setQueryData([QUERY_KEY.user], data.token);
-            queryClient.setQueryData([QUERY_KEY.user_details], {
-                ...data.user,
-                isAdmin: data.user?.role === 'admin',
-            });
-            localStorage.setItem(USER_LOCAL_STORAGE_KEY, data.token);
-            notifications.show({
-                title: 'Success',
-                id: 'signin-success',
-                message: <Text size="xs">Sign in successful!</Text>,
-                color: 'green',
-                autoClose: 3000,
-            });
+            signInClient(data, data.token);
+            return true;
         },
     });
 }

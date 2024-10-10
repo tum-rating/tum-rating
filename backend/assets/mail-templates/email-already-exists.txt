@@ -1,9 +1,9 @@
-TUM-RATING
+TUM-RATING<br><br>
 
-Hello [Username],
-Email [Email] is already registered in TUM-RATING. If you have forgotten your password, please use the recovery flow.
+Hello [Username],<br>
+Email [Email] is already registered in TUM-RATING. If you have forgotten your password, please use the recovery flow.<br><br>
 
-[RecoveryLink]
+[RecoveryLink]<br><br>
 
-🐛 regards,
+🐛 regards,<br>
 TUM-RATING

@@ -1,6 +1,7 @@
 export enum Paths {
     home = '/',
     auth = 'auth',
+    oAuthRedirect='oauth/redirect',
     activate = 'activate',
     recovery = 'recovery',
     courses = 'courses',
@@ -59,6 +60,9 @@ const PATH_ELEMENTS: PathElement = {
         parent: null,
     },
     [Paths.spotlight]: {
+        parent: null,
+    },
+    [Paths.oAuthRedirect]: {
         parent: null,
     },
     //--contact
