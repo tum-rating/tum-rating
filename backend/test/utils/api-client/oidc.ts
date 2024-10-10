@@ -20,6 +20,12 @@ export const getOAuthRedirectURL = async (): Promise<string | null> => {
     });
   
     const redirectUrl = response.headers.location;
+
+    // handle redirect to point to local host if run within docker
+    if (redirectUrl && redirectUrl.startsWith('http://oidc')) {
+        return redirectUrl.replace('http://oidc', 'http://localhost');
+    }
+
     return redirectUrl;
 }
 
