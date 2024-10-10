@@ -47,7 +47,7 @@ services:
       OAUTH_ISSUER_URL: http://oidc:1939/oidc
       OAUTH_CLIENT_ID: client-id
       OAUTH_CLIENT_SECRET: client-secret
-      OAUTH_REDIRECT_URL: http://localhost:5174/oauth/redirect
+      OAUTH_REDIRECT_URL: http://localhost:3000/oauth/redirect
 
     depends_on:
       mongodb:
