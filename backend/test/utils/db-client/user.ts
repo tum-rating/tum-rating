@@ -18,4 +18,8 @@ export const changeUserRoleByEmail = async (email: string, role: UserRole) => {
 
 export const setUserBan = async (email: string, isBanned: boolean) => {
     await UserModel.updateOne({ email }, { $set: { isBanned } }).exec();
-}
+};
+
+export const getUserById = async (id: string) => {
+    return UserModel.findById(id).exec();
+};

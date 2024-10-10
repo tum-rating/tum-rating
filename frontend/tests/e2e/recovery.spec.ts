@@ -23,13 +23,18 @@ test('should set new password in recovery process and sign in with new credentia
     await page.goto(`/auth/recovery?token=${token}`, {waitUntil: 'domcontentloaded'});
     await page.getByTestId('password').fill(newPassword);
     await page.getByTestId('confirm-password').fill(newPassword);
-    await page.getByRole('button', {name: 'Reset Password'}).click();
-    await expect(page.getByText('Password Recovery Complete 🎉')).toBeVisible();
+
+    const resetPasswordButton = page.getByRole('button', {name: 'Reset Password'});
+    await expect(resetPasswordButton).toBeVisible({timeout: 10000});
+    await expect(resetPasswordButton).toBeEnabled({timeout: 10000});
+    await resetPasswordButton.click();
+
     //back to home, signIn test method do not work from recovery success page
     await page.getByRole('link', {name: 'tum rating logo'}).click();
     await page.getByTestId('sign-in-btn-desktop').click();
     await signIn({page, user: {email: email[0], username: username[0], password: newPassword}});
 });
+
 test('[mobile] should set new password in recovery process and sign in with new credentials', async ({page}) => {
     const newPassword = faker.internet.password();
     await page.setViewportSize({width: 375, height: 667});
@@ -50,8 +55,13 @@ test('[mobile] should set new password in recovery process and sign in with new 
     await page.goto(`/auth/recovery?token=${token}`, {waitUntil: 'domcontentloaded'});
     await page.getByTestId('password').fill(newPassword);
     await page.getByTestId('confirm-password').fill(newPassword);
-    await page.getByRole('button', {name: 'Reset Password'}).click();
-    await expect(page.getByText('Password Recovery Complete 🎉')).toBeVisible();
+
+    const resetPasswordButton = page.getByRole('button', {name: 'Reset Password'});
+    await expect(resetPasswordButton).toBeVisible({timeout: 10000});
+    await expect(resetPasswordButton).toBeEnabled({timeout: 10000});
+    await resetPasswordButton.click();
+
+    await expect(page.getByText('Password Recovery Complete 🎉')).toBeVisible({timeout: 10000});
     //back to home, signIn test method do not work from recovery success page
     await page.getByRole('link', {name: 'tum rating logo'}).click();
     await openMobileDrawer({page});

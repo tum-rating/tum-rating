@@ -5,6 +5,14 @@ const baseApiUrl = baseDomain + api + apiVersion;
 const authBase = baseApiUrl + '/auth';
 const coursesBase = baseApiUrl + '/courses';
 
+type OAuthEndpoints = {
+    sso: string;
+}
+
+const oauth: OAuthEndpoints = {
+    sso: baseApiUrl + '/auth/oauth',
+}
+
 type AuthEndpoints = {
     base: string;
     signup: string;
@@ -13,6 +21,7 @@ type AuthEndpoints = {
     recovery: string;
     user: string;
 };
+
 
 const auth: AuthEndpoints = {
     base: authBase,
@@ -95,4 +104,5 @@ export const endpoints = {
     ...auth,
     ...courses,
     ...admin,
+    ...oauth
 };
