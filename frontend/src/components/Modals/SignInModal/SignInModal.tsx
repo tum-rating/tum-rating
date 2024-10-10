@@ -2,13 +2,14 @@ import {
     Alert,
     Anchor,
     Button,
-    Container, Divider,
-    Group, Image,
+    Container,
+    Divider,
+    Group,
     LoadingOverlay,
     PasswordInput,
     Stack,
     Text,
-    TextInput, ThemeIcon
+    TextInput
 } from '@mantine/core';
 import {useForm} from '@mantine/form';
 import {ContextModalProps, modals} from '@mantine/modals';
@@ -87,7 +88,6 @@ const SignInModal = ({context, id}: ContextModalProps) => {
     if ((userLoading || user) && !isSignInSuccess) {
         return null;
     }
-
     return (
         <ModalResponsiveContainer>
             <ModalHeader
@@ -151,25 +151,22 @@ const SignInModal = ({context, id}: ContextModalProps) => {
                                 gradient={{from: 'indigo', to: 'blue', deg: 90}}>
                             Sign In
                         </Button>
-                        <Divider label="or" orientation="horizontal" />
-                        <Button data-testid="submit"
-                                component={'a'}
-                                variant='outline'
-                                className={classes.SSOButton}
-                                href={endpoints.sso}
-                                leftSection={<IconKey size="1.1rem"/>}
-                        >
-                            Sign In With
-                            <ThemeIcon variant='light' w={55}     mx={"xs"}>
-                                <Image src={"https://portal.mytum.de/logo.png"}
-                                       alt="TUM Logo"
-                                       w={40}
 
-                                       />
-                            </ThemeIcon>
-
-                            ID
-                        </Button>
+                        {
+                            import.meta.env.VITE_OAUTH_IS_ENABLED === "true" && (
+                                <>
+                                    <Divider label="or" orientation="horizontal"/>
+                                    <Button component={'a'}
+                                            variant='outline'
+                                            className={classes.SSOButton}
+                                            href={endpoints.sso}
+                                            leftSection={<IconKey size="1.1rem"/>}
+                                    >
+                                        Sign In With ID
+                                    </Button>
+                                </>
+                            )
+                        }
                     </Stack>
                 </form>
             </Container>
