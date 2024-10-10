@@ -248,8 +248,7 @@ export class AuthControllerV1 {
             if (!user) {
                 this._logger.warn('Email reqested for recovery is not in codebase %s', body.email);
 
-                // hide this info by correct return
-                return;
+                return new UnauthorizedException();
             }
 
             if (user.authType === AuthType.oAuth) {
@@ -257,11 +256,16 @@ export class AuthControllerV1 {
 
                 await this._mailerService.sendLocalSignInAttemptForOAuthAccountEmail({ email: user.email, name: user.username });
 
-                // hide this info by correct return
-                return;
+                return new UnauthorizedException();
             }
 
-            const recoveryToken = await this._jwtService.signJWTRecovery(user.id);
+            let recoveryToken: string;
+            try {
+                recoveryToken = await this._jwtService.signJWTRecovery(user.id);
+            } catch (error) {
+                this._logger.warn('Failed to sign recovery token for user %s', user.email);
+                throw new InternalServerErrorException();
+            }
 
             await this._mailerService.sendPasswordRecoveryEmail({ email: user.email, name: user.username }, recoveryToken);
             this._logger.info('Succesfully send recovery email to %s', user.email);

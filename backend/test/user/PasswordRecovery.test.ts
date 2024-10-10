@@ -47,7 +47,7 @@ describe('User Password Recovery', () => {
             password: signUpResponse.password,
         };
 
-        await supertest(authUrl + 'signin')
+        await supertest(authUrl + '/signin')
             .post('/')
             .send(signInRequestWithOldPassword)
             .expect(401);
@@ -57,7 +57,7 @@ describe('User Password Recovery', () => {
             password: recoveryRequest.password,
         };
 
-        await supertest(authUrl + 'signin')
+        await supertest(authUrl + '/signin')
             .post('/')
             .send(signInRequestWithNewPassowrd)
             .expect(200);
@@ -84,10 +84,11 @@ describe('User Password Recovery', () => {
 
         await supertest(authUrl + '/recovery')
             .post('/')
-            .send(
-                'eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjIsInN1YiI6IjY0ZTI4MDE3NGUwMGZkZjgzZGNlODk1ZiIsImV4cCI6MTY5MjY1MTkyN30.SIRt6KtlK-sFig1RUESLyApBH_F56OG3-9BEjD8QLPW',
-            )
-            .expect(204);
+            .send({
+                token: 'eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjIsInN1YiI6IjY0ZTI4MDE3NGUwMGZkZjgzZGNlODk1ZiIsImV4cCI6MTY5MjY1MTkyN30.SIRt6KtlK-sFig1RUESLyApBH_F56OG3-9BEjD8QLPW',
+                password: faker.internet.password(),
+            })
+            .expect(401);
     });
 
     it('should silently fail if email is not registered', async () => {
