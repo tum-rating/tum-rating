@@ -31,6 +31,6 @@ app.get('/users/:email', getUserByEmail);
 app.post('/users', createUser);
 
 app.use('/oidc', oidc.callback());
-app.listen(3000, () => {
+app.listen(1939, () => {
     console.log('Server started');
 });

@@ -9,7 +9,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-    #APP
+      #APP
       APP_PORT: 3000
       NODE_ENV: production
 
@@ -42,8 +42,17 @@ services:
       #CACHE
       CACHE_TTL_MINUTES: 5
 
+      #OAUTH
+      OAUTH_IS_ENABLED: true
+      OAUTH_ISSUER_URL: http://oidc:1939/oidc
+      OAUTH_CLIENT_ID: client-id
+      OAUTH_CLIENT_SECRET: client-secret
+      OAUTH_REDIRECT_URL: http://localhost:5174/oauth/redirect
+
     depends_on:
       mongodb:
         condition: service_healthy 
       mailer:
+        condition: service_started
+      oidc:
         condition: service_started

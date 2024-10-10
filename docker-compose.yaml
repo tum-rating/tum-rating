@@ -35,4 +35,4 @@ services:
       context: .
       dockerfile: development/oidc/Dockerfile
     ports:
-      - "1939:3000"
+      - "1939:1939"
