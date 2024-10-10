@@ -1,8 +1,10 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Client, Issuer, generators } from 'openid-client';
+import { Client, Issuer, generators, TokenSet } from 'openid-client';
 
-interface ValidateAuthorizationCodeResponse {
+import { BadOAuthGatewayException, ERROR_CODE_INVALID_GRANT, InvalidGrantError } from 'src/utils/errors/oAuthErrors';
+
+export interface ValidateAuthorizationCodeResponse {
     sub?: string;
     email: string;
 }
@@ -71,7 +73,17 @@ export class OAuthService implements OnModuleInit {
 
         const params = this._client.callbackParams(redirectURL);
 
-        const tokenSet = await this._client.callback(this._redirectURL, params, { code_verifier: this._codeVerifier });
+        let tokenSet: TokenSet;
+        try {
+            tokenSet = await this._client.callback(this._redirectURL, params, { code_verifier: this._codeVerifier });
+        } catch (error) {
+
+            if (error.error === ERROR_CODE_INVALID_GRANT) {
+                throw new InvalidGrantError(error);
+            }
+
+            throw new BadOAuthGatewayException(error);
+        }
 
         if (!tokenSet.access_token) {
             throw new Error('No access token in auth response');

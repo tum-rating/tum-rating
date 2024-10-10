@@ -17,7 +17,7 @@ import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
 import { UserService } from 'src/modules/user/user.service';
 import { JWTService } from 'src/utils/jwt/jwt.service';
 import { MailerService } from 'src/modules/mailer/mailer.service';
-import { UserRole } from 'src/database/documents/user';
+import { AuthType, UserRole } from 'src/database/documents/user';
 import { DuplicateError } from 'src/utils/errors/errors';
 
 import { AuthService } from './auth.service';
@@ -102,6 +102,23 @@ export class AuthControllerV1 {
                         throw new InternalServerErrorException();
                     }
 
+                    if (user.authType === AuthType.oAuth) {
+                        this._logger.info('Email already exist, but is oauth, sending oauth email for %s', user.email);
+
+                        const activationToken = await this._jwtService.signJWTActivate(user.id);
+
+                        await this._userService.updateUser(user.id, {
+                            username: body.username,
+                            passwordHash,
+                            passwordSalt,
+                            authType: AuthType.both,
+                        });
+
+                        await this._mailerService.sendEmailActivationEmail({ email: user.email, name: user.username }, activationToken);
+
+                        return;
+                    }
+
                     if (!user.isEmailActivated) {
                         this._logger.info('Email already exist, but is not activated, sending activation for %s', user.email);
 
@@ -142,6 +159,14 @@ export class AuthControllerV1 {
 
         if (!databaseUser) {
             this._logger.warn('Sign in request fail, user email does not exsit for %s', body.email);
+            throw new UnauthorizedException();
+        }
+
+        if (databaseUser.authType === AuthType.oAuth) {
+            this._logger.warn('Local sign in request fail for oauth account for %s', body.email);
+
+            await this._mailerService.sendLocalSignInAttemptForOAuthAccountEmail({ email: databaseUser.email, name: databaseUser.username });
+
             throw new UnauthorizedException();
         }
 
@@ -222,10 +247,25 @@ export class AuthControllerV1 {
 
             if (!user) {
                 this._logger.warn('Email reqested for recovery is not in codebase %s', body.email);
-                return;
+
+                return new UnauthorizedException();
             }
 
-            const recoveryToken = await this._jwtService.signJWTRecovery(user.id);
+            if (user.authType === AuthType.oAuth) {
+                this._logger.warn('Password recovery request for oauth account for %s', body.email);
+
+                await this._mailerService.sendLocalSignInAttemptForOAuthAccountEmail({ email: user.email, name: user.username });
+
+                return new UnauthorizedException();
+            }
+
+            let recoveryToken: string;
+            try {
+                recoveryToken = await this._jwtService.signJWTRecovery(user.id);
+            } catch (error) {
+                this._logger.warn('Failed to sign recovery token for user %s', user.email);
+                throw new InternalServerErrorException();
+            }
 
             await this._mailerService.sendPasswordRecoveryEmail({ email: user.email, name: user.username }, recoveryToken);
             this._logger.info('Succesfully send recovery email to %s', user.email);
