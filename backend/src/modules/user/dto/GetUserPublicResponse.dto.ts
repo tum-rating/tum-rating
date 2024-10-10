@@ -1,12 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+import { UserRole } from 'src/database/documents/user';
+
 export class GetUserPublicResponseDto {
-    constructor(id: string, email: string, username: string, isAdmin?: boolean) {
+    constructor(id: string, email: string, username: string, role: UserRole) {
         this.id = id;
         this.email = email;
         this.username = username;
         
-        if(isAdmin)
+        if(role === UserRole.admin)
             this.isAdmin = true;
     }
 

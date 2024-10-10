@@ -21,7 +21,8 @@
     "test:e2e:concurrent": "jest --config ./test/jest-e2e.json",
     "test:e2e:sequential": "jest --config ./test/jest-sequential-e2e.json --runInBand",
     "bootstrap:user": "ts-node ./test/bootstrap/bootstrapUsers.ts",
-    "bootstrap:frontendE2E": "ts-node ./test/bootstrap/bootstrapFrontendE2E.ts"
+    "bootstrap:frontendE2E": "ts-node ./test/bootstrap/bootstrapFrontendE2E.ts",
+    "bootstrap:oAuthUser": "ts-node ./test/bootstrap/bootstrapOAuthUser.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.2",
@@ -34,11 +35,13 @@
     "@nestjs/serve-static": "^4.0.0",
     "@nestjs/swagger": "^7.1.8",
     "@nestjs/terminus": "^10.1.1",
+    "cache-manager": "^5.7.6",
     "joi": "^17.9.2",
     "jose": "^5.6.3",
     "mongoose": "^7.4.2",
     "nestjs-pino": "^3.3.0",
     "nodemailer": "^6.9.4",
+    "openid-client": "^5.7.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
@@ -54,6 +57,7 @@
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "axios": "^1.4.0",
+    "axios-cookiejar-support": "^5.0.2",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

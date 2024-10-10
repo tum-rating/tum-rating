@@ -6,6 +6,12 @@ export enum UserRole {
     admin,
 }
 
+export enum AuthType {
+    local = 'local',
+    oAuth = 'oAuth',
+    both = 'both',
+}
+
 @Schema({
     autoCreate: true, 
     autoIndex: true
@@ -14,17 +20,17 @@ export class User {
     @Prop({ required: true, unique: true, message: 'username must be unique' })
     username: string;
 
-    @Prop({ required: true, unique: true, message: 'Email must be unique' })
+    @Prop({ required: true, unique: true, message: 'email must be unique' })
     email: string;
 
     // for multiaccounts check
     @Prop({ required: false})
     emailDotSuffix?: string;
 
-    @Prop({ required: true })
+    @Prop()
     passwordHash: string;
 
-    @Prop({ required: true })
+    @Prop()
     passwordSalt: string;
 
     @Prop({ required: true, default: false })
@@ -35,6 +41,12 @@ export class User {
 
     @Prop({ required: true, enum: UserRole, default: UserRole.user })
     role: UserRole;
+
+    @Prop({ required: true, enum: AuthType, default: AuthType.local })
+    authType: AuthType;
+
+    @Prop()
+    oAuthId?: string;
 }
 
 export type UserDocument = User & Document;

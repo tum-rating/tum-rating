@@ -69,3 +69,11 @@ export const getDupicatesListFromMail = async (suffix: string) => {
 
     return filterd;
 };
+
+export const getLocalSignInForOAuthUser = async (email: string) => {
+    const mail = await getMail(email, 'Local sign in attempt for OAuth account');
+
+    if (mail.length === 0) return null;
+
+    return true;
+}

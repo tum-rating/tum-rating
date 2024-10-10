@@ -17,7 +17,7 @@ interface AuthAction {
 
 const generateTestUser = () => {
     return {
-        email: faker.internet.email({provider: 'tum.de'}),
+        email: faker.internet.email({provider: 'mytum.de'}),
         username: faker.internet.userName(),
         password: faker.internet.password(),
     };
@@ -25,16 +25,16 @@ const generateTestUser = () => {
 
 const fullAuthProcess = async (page: Page, authFile: string) => {
     const user = generateTestUser();
-    await page.goto('/');
+    await page.goto('/',{waitUntil: 'domcontentloaded'});
     await page.getByTestId('sign-up-btn-desktop').click();
     await page.getByText('Sign up', {exact: true}).click();
     await signUp({page, user});
     await activateAccount({page, user});
-    await page.goto('/');
+    await page.goto('/',{waitUntil: 'domcontentloaded'});
     await page.getByTestId('sign-in-btn-desktop').click();
     await signIn({page, user});
     await page.context().storageState({path: authFile});
-    await page.goto('/');
+    await page.goto('/',{waitUntil: 'domcontentloaded'});
     await signOut({page, mobile: false});
 };
 
@@ -77,7 +77,9 @@ const signUp = async (props: AuthAction) => {
     await form.locator('[data-testid="password"]').fill(user.password);
 
     await form.locator('[data-testid="submit"]').click();
-
+    // //this is not good practise but we have to do like this. We have to wait for the email to be sent
+    // await page.waitForTimeout(5000);
+    //
     await page.waitForSelector('text=Check Your Email');
 };
 
@@ -87,7 +89,7 @@ const activateAccount = async (props: AuthAction) => {
     if (token === null) {
         throw new Error('Token not found');
     }
-    await page.goto(`/auth/activate?token=${token}`);
+    await page.goto(`/auth/activate?token=${token}`,{waitUntil: 'domcontentloaded'});
     await expect(page.getByText(`Your Account is Activated!`, {exact: true})).toBeVisible();
 };
 
