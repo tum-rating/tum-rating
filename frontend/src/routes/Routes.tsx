@@ -23,6 +23,7 @@ import {
     Recovery,
     TermsOfService
 } from '@/pages';
+import {AdminToggles} from "@/pages/Admin/AdminToggles.tsx";
 
 const Admin = lazy(async () => {
     let {Admin} = await import('@/pages');
@@ -181,6 +182,10 @@ const routes = [
                         path: getPath(Paths.adminCoursesDetails),
                         element: <AdminCoursesDetails/>,
                     },
+                    {
+                        path: getPath(Paths.adminToggles),
+                        element: <AdminToggles/>
+                    }
                 ],
             },
         ],
