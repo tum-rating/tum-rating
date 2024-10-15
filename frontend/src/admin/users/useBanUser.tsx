@@ -1,7 +1,7 @@
 import {Text} from '@mantine/core';
 import {notifications} from '@mantine/notifications';
 
-import * as userLocalStorage from '../auth/user.localstore.ts';
+import * as userLocalStorage from '../../auth/user.localstore.ts';
 
 import {endpoints, useMutationWithAuth} from '@/api';
 import {fetchWithServices} from '@/api/fetchWithServices.ts';

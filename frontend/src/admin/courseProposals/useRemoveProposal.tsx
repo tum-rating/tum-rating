@@ -1,61 +1,55 @@
 import {Text} from '@mantine/core';
 import {notifications} from '@mantine/notifications';
 
-import * as userLocalStorage from '../auth/user.localstore.ts';
+import * as userLocalStorage from '../../auth/user.localstore.ts';
 
-import {Course} from '@/admin/types.ts';
 import {endpoints, useMutationWithAuth} from '@/api';
 import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {queryClient} from '@/react-query/client.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
-async function editCourse(token: string, course: Course): Promise<any> {
-    const body = {...course};
-    delete body.id;
-    const endpoint = endpoints.editCourse(course.id);
+async function removeProposal(token: string, proposalId: string): Promise<any> {
+    if (!token) return null;
+    const endpoint = endpoints.removeProposal(proposalId);
     const response = await fetchWithServices(endpoint, {
-        method: 'PATCH',
+        method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(body),
     });
     const data = await response.json();
     if (!response.ok) {
-        if (!response.ok) throw new ResponseError(data.message, response, course.id);
+        throw new ResponseError(data.message, response, proposalId);
     }
-    return {course};
+    data.id = proposalId;
+    return data;
 }
 
-// useEditCourse.tsx
-export function useEditCourse(): any {
+export function useRemoveProposal(): any {
     const token = userLocalStorage.getUser();
     return useMutationWithAuth({
-        mutationFn: async (course: Course) => editCourse(token, course),
-        onMutate: (course) => {
+        mutationFn: async (proposalId: string) => removeProposal(token, proposalId),
+        onMutate: (variables) => {
             notifications.show({
-                id: course.id,
+                id: variables,
                 loading: true,
-                title: 'Editing course',
-                message: <Text size="xs">Your course is being edited</Text>,
+                title: 'Removing proposal',
+                message: <Text size="xs">Your proposal is being removed</Text>,
                 autoClose: false,
                 withCloseButton: false,
             });
-            return course;
+            return variables;
         },
-        onSuccess: (course) => {
+        onSuccess: (variables) => {
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY.admin_detail_course, course.course.id],
-            });
-            queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY.search_query],
+                queryKey: [QUERY_KEY.proposals],
             });
             notifications.update({
-                id: course.course.id,
+                id: variables.id,
                 title: 'Success',
-                message: <Text size="xs">Course saved</Text>,
+                message: <Text size="xs">Proposal removed</Text>,
                 autoClose: true,
                 withCloseButton: true,
                 color: 'green',

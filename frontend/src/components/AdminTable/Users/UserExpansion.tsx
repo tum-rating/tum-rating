@@ -6,9 +6,9 @@ import {HTMLAttributes, useEffect, useState} from 'react';
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
 import {User} from '@/admin/types.ts';
-import {useBanUser} from '@/admin/useBanUser.tsx';
-import {useRemoveUser} from '@/admin/useRemoveUser.tsx';
-import {useUser} from '@/admin/useUser.ts';
+import {useBanUser} from '@/admin/users/useBanUser.tsx';
+import {useRemoveUser} from '@/admin/users/useRemoveUser.tsx';
+import {useUser} from '@/admin/users/useUser.ts';
 import {useUser as useLoggedUser} from '@/auth/useUser.tsx';
 import {CollectionDetailsReviewsSection} from "@/components/AdminTable/Shared/CollectionDetailsReviewsSection";
 import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';

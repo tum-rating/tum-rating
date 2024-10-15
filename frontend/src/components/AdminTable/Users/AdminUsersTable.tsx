@@ -6,8 +6,8 @@ import {useUsersColumns} from './useUsersColumns.tsx';
 import rowClasses from '../Shared/styles/RowStyles.module.css';
 
 import {User} from '@/admin/types.ts';
-import {useAllUsers} from '@/admin/useAllUsers.ts';
-import {useBanUser} from '@/admin/useBanUser.tsx';
+import {useAllUsers} from '@/admin/users/useAllUsers.ts';
+import {useBanUser} from '@/admin/users/useBanUser.tsx';
 import classes from '@/components/AdminTable/Shared/styles/TableStyles.module.css';
 import {TableToolbox} from '@/components/AdminTable/Shared/TableToolbox';
 import {UserExpansion} from '@/components/AdminTable/Users/UserExpansion.tsx';

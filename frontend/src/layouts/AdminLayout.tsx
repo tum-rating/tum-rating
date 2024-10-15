@@ -5,7 +5,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 
 import classes from './AdminLayout.module.css';
 
-import {useCoursesProposals} from '@/admin/useCoursesProposals.ts';
+import {useCoursesProposals} from '@/admin/courseProposals/useCoursesProposals.ts';
 import {useUser} from '@/auth/useUser.tsx';
 import {HEADER_HEIGHT} from '@/constants';
 import {AdminErrorBoundary} from '@/pages/PageNotFound';

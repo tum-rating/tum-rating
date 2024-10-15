@@ -48,4 +48,10 @@ type User = {
     role: number;
 };
 
-export type {CourseProposal, User, Course, ReadyCourseProposal, Review};
+type Toggle = {
+    enabled: boolean;
+    key: string;
+    description: string;
+}
+
+export type {CourseProposal, User, Course, ReadyCourseProposal, Review, Toggle};

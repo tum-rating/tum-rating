@@ -2,8 +2,8 @@ import {Box, Flex} from '@mantine/core';
 import {IconLibrary, IconLibraryPlus, IconMessageStar, IconUser} from '@tabler/icons-react';
 
 import {CourseProposal} from '@/admin/types.ts';
-import {useAllUsers} from '@/admin/useAllUsers.ts';
-import {useCoursesProposals} from '@/admin/useCoursesProposals.ts';
+import {useAllUsers} from '@/admin/users/useAllUsers.ts';
+import {useCoursesProposals} from '@/admin/courseProposals/useCoursesProposals.ts';
 import {AdminStatsBox} from '@/components/AdminSummary/AdminStatsBox.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
 
