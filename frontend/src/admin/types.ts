@@ -50,7 +50,7 @@ type User = {
 
 type Toggle = {
     enabled: boolean;
-    key: string;
+    name: string;
     description: string;
 }
 
