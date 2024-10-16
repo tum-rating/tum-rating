@@ -22,7 +22,6 @@ export function useToggles() {
     return useQueryWithAuth({
         queryKey: [QUERY_KEY.admin_toggles],
         queryFn: async () => getToggles(token),
-        initialData: [],
         refetchIntervalInBackground: true,
         refetchInterval: 1000 * 60 * 5, // 5 minutes
         retry: 0,

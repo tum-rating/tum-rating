@@ -1,17 +1,15 @@
 .switchLabelWrapper {
     margin-right: auto;
-
 }
 
 .switchRoot {
-    &:hover {
-        background: var(--mantine-color-default-hover)
-    }
+    flex-grow: 1;
 }
 
 .switchBody {
     padding: var(--mantine-spacing-md);
     align-items: center;
+    cursor: pointer;
 }
 
 .switchTrack {
@@ -27,4 +25,6 @@
     max-width: 600px;
     width: 100%;
 }
+
+
 
