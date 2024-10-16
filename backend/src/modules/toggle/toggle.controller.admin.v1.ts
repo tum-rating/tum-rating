@@ -1,4 +1,4 @@
-import { Controller, Body, Headers, UseGuards, Get, Patch, Post, Delete, ConflictException } from '@nestjs/common';
+import {Controller, Body, Headers, UseGuards, Get, Patch, Post, Delete, ConflictException, Param} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
@@ -62,10 +62,12 @@ export class ToggleAdminControllerV1 {
     @Patch('/:id')
     public async updateToggle(
         @Headers(USER_ID) userId: string,
-        @Headers('id') id: string,
+        @Param('id') id: string,
         @Body(new JoiObjectSchemaPipe(UpdateToggleRequestSchema))
         body: UpdateToggleRequestDto,
     ): Promise<GetToggleResponseDto> {
+        console.log(1)
+        console.log(id)
         this._logger.info(
             'Update toggle requested for id: %s from user: %s',
             id,
@@ -83,7 +85,7 @@ export class ToggleAdminControllerV1 {
     @Get('/:id')
     public async getToggle(
         @Headers(USER_ID) userId: string,
-        @Headers('id') id: string,
+        @Param('id') id: string,
     ): Promise<GetToggleResponseDto> {
         this._logger.info(
             'Get toggle requested for id: %s from user: %s',
@@ -102,7 +104,7 @@ export class ToggleAdminControllerV1 {
     @Delete('/:id')
     public async deleteToggle(
         @Headers(USER_ID) userId: string,
-        @Headers('id') id: string,
+        @Param('id') id: string,
     ): Promise<void> {
         this._logger.info(
             'Delete toggle requested for id: %s from user: %s',
