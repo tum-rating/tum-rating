@@ -10,8 +10,8 @@ import {queryClient} from '@/react-query/client.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function setToggle(token: string, toggle: Toggle): Promise<any> {
-    const endpoint = endpoints.setToggle(toggle.name);
-    delete toggle.id;
+    const endpoint = endpoints.setToggle(toggle.id);
+    delete toggle.id
     const response = await fetchWithServices(endpoint, {
         method: 'PATCH',
         headers: {
@@ -22,7 +22,7 @@ async function setToggle(token: string, toggle: Toggle): Promise<any> {
     });
     const data = await response.json();
     if (!response.ok) {
-        throw new ResponseError(data.message, response, toggle.name);
+        throw new ResponseError(data.message, response, toggle.id);
     }
     return data;
 }
@@ -42,9 +42,9 @@ export function useSetToggle() {
             });
             return toggle;
         },
-        onSuccess: (data, toggle) => {
+        onSuccess: (_, toggle) => {
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEY['admin_toggles_details'], toggle.name],
+                queryKey: [QUERY_KEY['admin_toggles_details'], toggle.id],
             });
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.admin_toggles],
@@ -52,7 +52,7 @@ export function useSetToggle() {
             notifications.update({
                 id: toggle.name,
                 title: 'Success',
-                message: <Text size="xs">Toggle updated</Text>,
+                message: <Text size="xs">Toggle <Text component='span' size="xs" fw='bold' c='black'>{toggle.name}</Text> updated</Text>,
                 autoClose: true,
                 withCloseButton: true,
                 color: 'green',
