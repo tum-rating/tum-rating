@@ -52,6 +52,7 @@ type Toggle = {
     enabled: boolean;
     name: string;
     description: string;
+    id?: string;
 }
 
 export type {CourseProposal, User, Course, ReadyCourseProposal, Review, Toggle};
