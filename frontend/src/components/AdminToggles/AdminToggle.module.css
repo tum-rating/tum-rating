@@ -1,0 +1,30 @@
+.switchLabelWrapper {
+    margin-right: auto;
+
+}
+
+.switchRoot {
+    &:hover {
+        background: var(--mantine-color-default-hover)
+    }
+}
+
+.switchBody {
+    padding: var(--mantine-spacing-md);
+    align-items: center;
+}
+
+.switchTrack {
+    margin-left: var(--mantine-spacing-xl)
+}
+
+.titleContainer {
+    @media (max-width: $mantine-breakpoint-sm) {
+        padding: 0 var(--mantine-spacing-lg)
+    }
+}
+.mainContainer{
+    max-width: 600px;
+    width: 100%;
+}
+
