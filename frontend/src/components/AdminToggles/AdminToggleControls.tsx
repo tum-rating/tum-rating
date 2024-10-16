@@ -15,9 +15,7 @@ const AdminToggleControls = ({isLoading}: AdminToggleControlsProps) => {
             <Button loading={isLoading} size='xs' onClick={open}>
                 Add New
             </Button>
-            {
-                !isLoading && <AddAdminToggleModal opened={opened} close={close}/>
-            }
+            <AddAdminToggleModal opened={opened} close={close}/>
         </Flex>
     )
 }
