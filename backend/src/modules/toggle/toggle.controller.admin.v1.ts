@@ -1,4 +1,4 @@
-import { Controller, Body, Headers, UseGuards, Get, Patch, Post, Delete } from '@nestjs/common';
+import { Controller, Body, Headers, UseGuards, Get, Patch, Post, Delete, ConflictException } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
@@ -10,6 +10,7 @@ import { CreateToggleRequestDto, CreateToggleRequestSchema } from './dto/CreateT
 import { UpdateToggleRequestDto, UpdateToggleRequestSchema } from './dto/UpdateToggleRequest.dto';
 import { GetToggleResponseDto } from './dto/GetToggleResponse.dto';
 import { ToggleService } from './toggle.services';
+import { DuplicateError } from 'src/utils/errors/errors';
 
 @ApiTags('toggles')
 @UseGuards(AdminGuard)
@@ -35,11 +36,26 @@ export class ToggleAdminControllerV1 {
             userId,
         );
 
-        const toggle = await this._toggleService.createToggle(body);
+        try {
+            const toggle = await this._toggleService.createToggle(body);
 
-        this._logger.info('Successfully created toggle with name: %s', toggle.name);
+            this._logger.info('Successfully created toggle with name: %s', toggle.name);
 
-        return new GetToggleResponseDto(toggle);
+            return new GetToggleResponseDto(toggle);
+        } catch (error) {
+            if (error instanceof DuplicateError) {
+                if (error.isConflictingKey('name')) {
+                    this._logger.info('Failed to create toggle with name: %s due to duplicate', body.name);
+                    throw new ConflictException('Toggle with name already exists');
+                }
+
+                this._logger.warn('Failed to create toggle with body: %s, error: %s', body, error);
+                throw new ConflictException('Toggle with name already exists');
+            }
+
+            this._logger.error('Failed to create toggle with body: %s, error: %s', body, error);
+            throw error;
+        }
     }
 
     @ApiBearerAuth()

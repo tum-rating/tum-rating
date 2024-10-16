@@ -6,7 +6,7 @@ export class GetToggleResponseDto {
     constructor(toggle: WithId<Toggle>) {
         this.id = toggle.id;
         this.name = toggle.name;
-        this.description = toggle.description;
+        this.description = toggle.description || null;
         this.enabled = toggle.enabled;
     }
 
