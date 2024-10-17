@@ -60,6 +60,7 @@ const AdminToggles = () => {
                                                 {...form.getInputProps(toggle.name)}
                                                 labelPosition={'left'}
                                                 width={'100%'}
+                                                size='md'
                                                 description={toggle.description}
                                                 checked={toggle.enabled}
                                                 label={toggle.name}
@@ -72,7 +73,9 @@ const AdminToggles = () => {
                                                     labelWrapper: classes.switchLabelWrapper,
                                                     body: classes.switchBody,
                                                     root: classes.switchRoot,
-                                                    track: classes.switchTrack
+                                                    track: classes.switchTrack,
+                                                    label: classes.switchLabel,
+                                                    description: classes.switchDescription
                                                 }}
                                             />
                                             <Menu>
