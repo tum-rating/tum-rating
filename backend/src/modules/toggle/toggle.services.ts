@@ -21,10 +21,7 @@ export class ToggleService {
     public async getToggleById(id: string) {
         const toggle = await this._toggleRepository.findOneById(id);
 
-        console.log('get toggle', toggle);
-
         if (!toggle) {
-            console.log('toggle not found');
             throw new NotFoundError(`Toggle with id ${id} not found`);
         }
 
@@ -36,10 +33,22 @@ export class ToggleService {
     }
 
     public async updateToggleById(id: string, toggle: UpdateToggleRequestDto) {
-        return this._toggleRepository.updateOneById(id, toggle);
+        const updatedToggle = await this._toggleRepository.updateOneById(id, toggle);
+
+        if (!updatedToggle) {
+            throw new NotFoundError(`Toggle with id ${id} not found`);
+        }
+
+        return updatedToggle;
     }
 
     public async deleteToggleById(id: string) {
-        return this._toggleRepository.deleteOneById(id);
+        const toggle = await this._toggleRepository.deleteOneById(id);
+
+        if (!toggle) {
+            throw new NotFoundError(`Toggle with id ${id} not found`);
+        }
+
+        return toggle;
     }
 }

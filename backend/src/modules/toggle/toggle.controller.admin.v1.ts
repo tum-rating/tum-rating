@@ -1,4 +1,4 @@
-import { Controller, Body, Headers, UseGuards, Get, Patch, Post, Delete, ConflictException, NotFoundException, Param } from '@nestjs/common';
+import { Controller, Body, Headers, UseGuards, Get, Patch, Post, Delete, ConflictException, NotFoundException, Param, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PinoLogger } from 'nestjs-pino';
 
@@ -73,11 +73,21 @@ export class ToggleAdminControllerV1 {
             userId,
         );
 
-        const toggle = await this._toggleService.updateToggleById(id, body);
+        try {
+            const toggle = await this._toggleService.updateToggleById(id, body);
+    
+            this._logger.info('Successfully updated toggle with id: %s', toggle.id);
+    
+            return new GetToggleResponseDto(toggle);
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                this._logger.info('Failed to update toggle with id: %s due to not found', id);
+                throw new NotFoundException('Toggle not found');
+            }
 
-        this._logger.info('Successfully updated toggle with id: %s', toggle.id);
-
-        return new GetToggleResponseDto(toggle);
+            this._logger.error('Failed to update toggle with id: %s, error: %s', id, error);
+            throw error;
+        }
     }
 
     @ApiBearerAuth()
@@ -111,6 +121,7 @@ export class ToggleAdminControllerV1 {
 
     @ApiBearerAuth()
     @Delete('/:id')
+    @HttpCode(HttpStatus.NO_CONTENT)
     public async deleteToggle(
         @Headers(USER_ID) userId: string,
         @Param('id', new JoiObjectSchemaPipe(MongoIdPipe)) id: string,
@@ -121,8 +132,18 @@ export class ToggleAdminControllerV1 {
             userId,
         );
 
-        await this._toggleService.deleteToggleById(id);
+        try {
+            await this._toggleService.deleteToggleById(id);
+    
+            this._logger.info('Successfully deleted toggle with id: %s', id);
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                this._logger.info('Failed to delete toggle with id: %s due to not found', id);
+                throw new NotFoundException('Toggle not found');
+            }
 
-        this._logger.info('Successfully deleted toggle with id: %s', id);
+            this._logger.error('Failed to delete toggle with id: %s, error: %s', id, error);
+            throw error;
+        }
     }
 }
