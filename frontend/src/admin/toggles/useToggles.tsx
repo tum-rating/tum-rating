@@ -14,7 +14,7 @@ async function getToggles(token: string): Promise<Toggle[] | null> {
     });
     const data = await response.json();
     if (!response.ok) throw new ResponseError(data.message, response, token);
-    return data ;
+    return data.toggles;
 }
 
 export function useToggles() {

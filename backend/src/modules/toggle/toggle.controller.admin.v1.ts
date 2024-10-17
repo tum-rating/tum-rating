@@ -67,8 +67,6 @@ export class ToggleAdminControllerV1 {
         @Body(new JoiObjectSchemaPipe(UpdateToggleRequestSchema))
         body: UpdateToggleRequestDto,
     ): Promise<GetToggleResponseDto> {
-        console.log(1)
-        console.log(id)
         this._logger.info(
             'Update toggle requested for id: %s from user: %s',
             id,
