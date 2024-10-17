@@ -1,17 +1,17 @@
 import {ActionIcon, Box, Card, Divider, Flex, Menu, rem, ScrollArea, Switch, Text, Title} from "@mantine/core"
 import {useForm} from "@mantine/form";
+import {useDisclosure} from "@mantine/hooks";
+import {IconDotsVertical, IconEdit, IconX} from "@tabler/icons-react";
 import {useEffect, useState} from "react";
 
 import classes from "./AdminToggle.module.css"
 
+import {useRemoveToggle} from "@/admin/toggles/useRemoveToggle.tsx";
 import {useSetToggle} from "@/admin/toggles/useSetToggle.tsx";
 import {useToggles} from "@/admin/toggles/useToggles.tsx";
-import {AdminToggleControls} from "@/components/AdminToggles/AdminToggleControls.tsx";
-import {IconDotsVertical, IconEdit, IconX} from "@tabler/icons-react";
-import {EditAdminToggleModal} from "@/components/AdminToggles/EditAdminToggleModal.tsx";
-import {useDisclosure} from "@mantine/hooks";
 import {Toggle} from "@/admin/types.ts";
-import {useRemoveToggle} from "@/admin/toggles/useRemoveToggle.tsx";
+import {AdminToggleControls} from "@/components/AdminToggles/AdminToggleControls.tsx";
+import {EditAdminToggleModal} from "@/components/AdminToggles/EditAdminToggleModal.tsx";
 
 const AdminToggles = () => {
     const {data: toggles, isLoading: togglesLoading} = useToggles();

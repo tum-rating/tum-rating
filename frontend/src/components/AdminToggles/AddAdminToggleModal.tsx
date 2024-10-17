@@ -1,4 +1,5 @@
 import {Modal} from "@mantine/core";
+
 import {useAddToggle} from "@/admin/toggles/useAddToggle.tsx";
 import {AdminToggleForm} from "@/components/AdminToggles/AdminToggleForm.tsx";
 

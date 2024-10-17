@@ -13,7 +13,7 @@
 }
 
 .switchTrack {
-    margin-left: var(--mantine-spacing-xl)
+    font-size: 9px;
 }
 
 .titleContainer {
