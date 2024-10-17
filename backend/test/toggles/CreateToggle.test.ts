@@ -5,8 +5,6 @@ import * as supertest from 'supertest';
 import { CreateToggleRequestDto } from '@tum-rating/backend/src/modules/toggle/dto/CreateToggleRequest.dto';
 import { connectMongo, signInRequestMock, signInAdminRequestMock } from '@tum-rating/backend/test/utils';
 import { toggleUrl } from '@tum-rating/backend/test/utils/api-client/toggle';
-import e from 'express';
-import { log } from 'console';
 
 beforeAll(async () => {
     await connectMongo();
