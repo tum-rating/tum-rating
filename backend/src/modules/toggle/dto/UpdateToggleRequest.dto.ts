@@ -3,17 +3,17 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateToggleRequestDto {
     @ApiProperty()
-    name: string
+    name?: string
 
     @ApiProperty()
     description?: string;
 
     @ApiProperty()
-    enabled: boolean;
+    enabled?: boolean;
 }
 
 export const UpdateToggleRequestSchema = Joi.object<UpdateToggleRequestDto>({
-    name: Joi.string().required(),
+    name: Joi.string(),
     description: Joi.string(),
-    enabled: Joi.boolean().required(),
-});
+    enabled: Joi.boolean(),
+}).or('name', 'description', 'enabled');

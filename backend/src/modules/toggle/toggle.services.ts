@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PinoLogger } from 'nestjs-pino';
 
 import { ToggleRepository } from 'src/database/repositories/toggle.repository';
+import { NotFoundError } from 'src/utils/errors/errors';
 
 import { CreateToggleRequestDto } from './dto/CreateToggleRequest.dto';
 import { UpdateToggleRequestDto } from './dto/UpdateToggleRequest.dto';
@@ -18,7 +19,13 @@ export class ToggleService {
     }
 
     public async getToggleById(id: string) {
-        return this._toggleRepository.findOneById(id);
+        const toggle = await this._toggleRepository.findOneById(id);
+
+        if (!toggle) {
+            throw new NotFoundError(`Toggle with id ${id} not found`);
+        }
+
+        return toggle;
     }
 
     public async createToggle(toggle: CreateToggleRequestDto) {
@@ -26,10 +33,22 @@ export class ToggleService {
     }
 
     public async updateToggleById(id: string, toggle: UpdateToggleRequestDto) {
-        return this._toggleRepository.updateOneById(id, toggle);
+        const updatedToggle = await this._toggleRepository.updateOneById(id, toggle);
+
+        if (!updatedToggle) {
+            throw new NotFoundError(`Toggle with id ${id} not found`);
+        }
+
+        return updatedToggle;
     }
 
     public async deleteToggleById(id: string) {
-        return this._toggleRepository.deleteOneById(id);
+        const toggle = await this._toggleRepository.deleteOneById(id);
+
+        if (!toggle) {
+            throw new NotFoundError(`Toggle with id ${id} not found`);
+        }
+
+        return toggle;
     }
 }
