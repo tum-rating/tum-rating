@@ -80,6 +80,16 @@ export class ToggleAdminControllerV1 {
     
             return new GetToggleResponseDto(toggle);
         } catch (error) {
+            if (error instanceof DuplicateError) {
+                if (error.isConflictingKey('name')) {
+                    this._logger.info('Failed to create toggle with name: %s due to duplicate', body.name);
+                    throw new ConflictException('Toggle with name already exists');
+                }
+
+                this._logger.warn('Failed to create toggle with body: %s, error: %s', body, error);
+                throw new ConflictException('Toggle with name already exists');
+            }
+
             if (error instanceof NotFoundError) {
                 this._logger.info('Failed to update toggle with id: %s due to not found', id);
                 throw new NotFoundException('Toggle not found');

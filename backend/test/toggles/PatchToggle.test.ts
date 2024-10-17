@@ -216,4 +216,26 @@ describe('Patch Toggle', () => {
             .set('Authorization', 'Bearer ' + signInAdminResponse.token)
             .expect(400);
     });
+
+    it('should fail with 409 for duplicated name', async () => {
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const toggle = await createToggleMockRequest(signInAdminResponse.token);
+        const toggle2 = await createToggleMockRequest(signInAdminResponse.token);
+
+        const updateToggleBody: UpdateToggleRequestDto = {
+            name: toggle2.name,
+            description: faker.lorem.words(),
+            enabled: !toggle.enabled,
+        };
+
+        return supertest(`${toggleUrl}/${toggle.id}`)
+            .patch('/')
+            .set('Authorization', 'Bearer ' + signInAdminResponse.token)
+            .send(updateToggleBody)
+            .expect(409)
+            .expect((response) => {
+                expect(response.body).toHaveProperty('message', 'Toggle with name already exists');
+            });
+    });
 });
