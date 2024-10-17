@@ -1,13 +1,13 @@
-import {Toggle} from "@/admin/types.ts";
-import {endpoints, useMutationWithAuth} from "@/api";
-
-import * as userLocalStorage from '@/auth/user.localstore.ts';
-import {ResponseError} from "@/utils/Errors/ResponseError.ts";
-import {queryClient} from "@/react-query/client.ts";
-import {QUERY_KEY} from "@/constants/queryKeys.ts";
-
 import {Text} from '@mantine/core';
 import {notifications} from '@mantine/notifications';
+
+import {Toggle} from "@/admin/types.ts";
+import {endpoints, useMutationWithAuth} from "@/api";
+import * as userLocalStorage from '@/auth/user.localstore.ts';
+import {QUERY_KEY} from "@/constants/queryKeys.ts";
+import {queryClient} from "@/react-query/client.ts";
+import {ResponseError} from "@/utils/Errors/ResponseError.ts";
+
 
 async function addToggle(token: string, toggle: Toggle) {
     const endpoint = endpoints.toggles;
@@ -47,7 +47,7 @@ export function useAddToggle() {
             });
             return toggle;
         },
-        onSuccess: (data, toggle) => {
+        onSuccess: (_, toggle) => {
             queryClient.invalidateQueries({queryKey: [QUERY_KEY.admin_toggles]});
             notifications.update({
                 id: toggle.name,
@@ -64,7 +64,7 @@ export function useAddToggle() {
             notifications.update({
                 id: toggle.name,
                 title: 'Error',
-                message: <Text size="xs">Failed to add toggle: {error.message}</Text>,
+                message: <Text size="xs">Failed to add toggle: {(error as ResponseError).message}</Text>,
                 autoClose: true,
                 withCloseButton: true,
                 color: 'red',

@@ -52,7 +52,8 @@ export function useSetToggle() {
             notifications.update({
                 id: toggle.name,
                 title: 'Success',
-                message: <Text size="xs">Toggle <Text component='span' size="xs" fw='bold' c='black'>{toggle.name}</Text> updated</Text>,
+                message: <Text size="xs">Toggle <Text component='span' size="xs" fw='bold'
+                                                      c='black'>{toggle.name}</Text> updated</Text>,
                 autoClose: true,
                 withCloseButton: true,
                 color: 'green',
@@ -63,7 +64,7 @@ export function useSetToggle() {
             notifications.update({
                 id: toggle.name,
                 title: 'Error',
-                message: <Text size="xs">Failed to update toggle: {error.message}</Text>,
+                message: <Text size="xs">Failed to update toggle: {(error as ResponseError).message}</Text>,
                 autoClose: true,
                 withCloseButton: true,
                 color: 'red',
