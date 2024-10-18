@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom';
 
 import classes from '../Shared/styles/TableStyles.module.css';
 
-import {useCoursesProposals} from '@/admin/useCoursesProposals.ts';
+import {useCoursesProposals} from '@/admin/courseProposals/useCoursesProposals.ts';
 import {ProposalExpansion} from '@/components/AdminTable/CoursesProposals/ProposalExpansion.tsx';
 import {useProposalsColumns} from '@/components/AdminTable/CoursesProposals/useProposalsColumns.tsx';
 import {TableToolbox} from '@/components/AdminTable/Shared/TableToolbox';

@@ -1,0 +1,38 @@
+.switchLabelWrapper {
+    margin-right: auto;
+}
+
+.switchRoot {
+    flex-grow: 1;
+}
+
+.switchBody {
+    padding: var(--mantine-spacing-md);
+    align-items: center;
+    cursor: pointer;
+}
+
+.switchTrack {
+    font-size: 9px;
+}
+
+.titleContainer {
+    @media (max-width: $mantine-breakpoint-sm) {
+        padding: 0 var(--mantine-spacing-lg)
+    }
+}
+.mainContainer{
+    max-width: 600px;
+    width: 100%;
+}
+.switchDescription{
+    font-size: calc(var(--mantine-font-size-sm) - calc(0.125rem * var(--mantine-scale)));
+
+}
+.switchLabel{
+    font-size:  var(--mantine-font-size-sm);
+    line-height: var(--label-lh);
+}
+
+
+

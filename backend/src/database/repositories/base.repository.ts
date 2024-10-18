@@ -35,7 +35,16 @@ export abstract class BaseRepository<T> {
     }
 
     public async updateOneById(id: string, data: Partial<T>, session?: ClientSession): Promise<WithId<T>> {
-        return this.model.findByIdAndUpdate(id, data, { new: true, session });
+        try {
+            const updatedModel = await this.model.findByIdAndUpdate(id, data, { new: true, session });
+            return updatedModel as unknown as WithId<T>;
+        } catch (error) {
+            if (error.code == ERROR_MONGO_DUPLICATE_CODE) {
+                throw new DuplicateError(error.message, Object.keys(error.keyPattern));
+            }
+
+            throw error;
+        }
     }
 
     public async deleteOneById(id: string, session?: ClientSession): Promise<WithId<T>> {

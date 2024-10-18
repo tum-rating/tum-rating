@@ -8,10 +8,10 @@ import {useNavigate} from 'react-router-dom';
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
 import {Course, CourseProposal} from '@/admin/types.ts';
-import {useAddCourseProposal} from '@/admin/useAddCourseProposal.tsx';
-import {useCourseProposal} from '@/admin/useCourseProposal.tsx';
-import {useGetScrapedCourseProposal} from '@/admin/useCourseScraper.tsx';
-import {useRemoveProposal} from '@/admin/useRemoveProposal.tsx';
+import {useAddCourseProposal} from '@/admin/courseProposals/useAddCourseProposal.tsx';
+import {useCourseProposal} from '@/admin/courseProposals/useCourseProposal.tsx';
+import {useGetScrapedCourseProposal} from '@/admin/courseProposals/useCourseScraper.tsx';
+import {useRemoveProposal} from '@/admin/courseProposals/useRemoveProposal.tsx';
 import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 import {UserInfoAction} from '@/components/AdminTable/Shared/UserInfoAction';
 import {Skeleton} from '@/components/Skeleton';

@@ -1,7 +1,7 @@
 import {Button, Divider, Flex, Text} from '@mantine/core';
 
 import {Review} from '@/admin/types.ts';
-import {PaginatedReviewsConfig, useReviews} from '@/admin/useReviews.ts';
+import {PaginatedReviewsConfig, useReviews} from '@/admin/reviews/useReviews.ts';
 import classes from '@/components/AdminTable/Shared/styles/ExpansionStyles.module.css';
 // circular dependency problem. Export "Comment" of module "src/components/Comment/Comment.tsx" was reexported through module "src/components/Comment/index.ts" while both modules are dependencies of each other bla bla bla... Direct export ensure that these module end ip in the same chunk.
 import {Comment} from '@/components/Comment/Comment.tsx';

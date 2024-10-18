@@ -16,6 +16,7 @@ import { UserModule } from './modules/user/user.module';
 import { CourseModule } from './modules/course/course.module';
 import { CourseProposalModule } from './modules/course-proposal/courseProposal.module';
 import { ReviewModule } from './modules/review/review.module';
+import { ToggleModule } from './modules/toggle/toggle.module';
 
 @Module({
     imports: [
@@ -32,7 +33,8 @@ import { ReviewModule } from './modules/review/review.module';
         UserModule,
         CourseModule,
         CourseProposalModule,
-        ReviewModule
+        ReviewModule,
+        ToggleModule
     ],
 })
 export class AppModule implements NestModule {
