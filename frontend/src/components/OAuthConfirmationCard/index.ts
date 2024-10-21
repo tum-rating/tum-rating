@@ -1,1 +1,1 @@
-    export {OAuthConfirmationCard} from "./OAuthConfirmationCard";
+export {OAuthConfirmationCard} from './OAuthConfirmationCard';

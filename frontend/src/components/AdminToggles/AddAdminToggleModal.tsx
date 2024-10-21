@@ -1,7 +1,7 @@
-import {Modal} from "@mantine/core";
+import {Modal} from '@mantine/core';
 
-import {useAddToggle} from "@/admin/toggles/useAddToggle.tsx";
-import {AdminToggleForm} from "@/components/AdminToggles/AdminToggleForm.tsx";
+import {useAddToggle} from '@/admin/toggles/useAddToggle.tsx';
+import {AdminToggleForm} from '@/components/AdminToggles/AdminToggleForm.tsx';
 
 interface AddAdminToggleModalProps {
     opened: boolean;
@@ -14,15 +14,9 @@ const AddAdminToggleModal = (props: AddAdminToggleModalProps) => {
 
     return (
         <Modal opened={opened} onClose={close} title="Add new toggle">
-            <AdminToggleForm
-                initialValues={{name: '', description: '', enabled: false}}
-                onSubmit={mutate}
-                isPending={isPending}
-                isSuccess={isSuccess}
-                error={error}
-            />
+            <AdminToggleForm initialValues={{name: '', description: '', enabled: false}} onSubmit={mutate} isPending={isPending} isSuccess={isSuccess} error={error} />
         </Modal>
-    )
-}
+    );
+};
 
-export {AddAdminToggleModal}
+export {AddAdminToggleModal};

@@ -1,11 +1,11 @@
 import {Text} from '@mantine/core';
 import {notifications} from '@mantine/notifications';
 
-import {endpoints, useMutationWithAuth} from "@/api";
+import {endpoints, useMutationWithAuth} from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import {QUERY_KEY} from "@/constants/queryKeys.ts";
-import {queryClient} from "@/react-query/client.ts";
-import {ResponseError} from "@/utils/Errors/ResponseError.ts";
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {queryClient} from '@/react-query/client.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function removeToggle(token: string, toggleId: string): Promise<void> {
     const endpoint = endpoints.setToggle(toggleId);
@@ -42,9 +42,15 @@ export function useRemoveToggle() {
             notifications.update({
                 id: toggleId,
                 title: 'Success',
-                message: <Text size="xs">Toggle with ID
-                    <Text size="xs" fw='bold' c='black'>{toggleId}</Text>
-                    removed successfully</Text>,
+                message: (
+                    <Text size="xs">
+                        Toggle with ID
+                        <Text size="xs" fw="bold" c="black">
+                            {toggleId}
+                        </Text>
+                        removed successfully
+                    </Text>
+                ),
                 autoClose: true,
                 withCloseButton: true,
                 color: 'green',

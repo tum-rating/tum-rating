@@ -1,10 +1,6 @@
 import {test} from '@playwright/test';
 
-import {
-    addReviewToCourse,
-    generateCourseReview,
-    openCoursePageByClickingCourseRowInTable
-} from 'tests/e2e/utils/courses.ts';
+import {addReviewToCourse, generateCourseReview, openCoursePageByClickingCourseRowInTable} from 'tests/e2e/utils/courses.ts';
 
 test('should add review to a course', async ({page, browser}) => {
     await page.goto('/', {waitUntil: 'domcontentloaded'});

@@ -1,7 +1,7 @@
 export enum Paths {
     home = '/',
     auth = 'auth',
-    oAuthRedirect='oauth/redirect',
+    oAuthRedirect = 'oauth/redirect',
     activate = 'activate',
     recovery = 'recovery',
     courses = 'courses',

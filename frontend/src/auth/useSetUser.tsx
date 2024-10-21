@@ -23,22 +23,19 @@ async function setUser(username: string, token?: string | null) {
         const data = await response.json();
         throw new ResponseError(data.message, response, 'user-details');
     }
-    return { token: token};
+    return {token: token};
 }
 
 export function useSetUser() {
     const userTokenFromLocalStorage = userLocalStorage.getUser();
     return useMutation({
-        mutationFn: async ({username, token}: {
-            username: string,
-            token?: string | null
-        }) => await setUser(username, token || userTokenFromLocalStorage),
+        mutationFn: async ({username, token}: {username: string; token?: string | null}) => await setUser(username, token || userTokenFromLocalStorage),
         onSuccess: ({token}) => {
-            if(!userTokenFromLocalStorage){
+            if (!userTokenFromLocalStorage) {
                 queryClient.setQueryData([QUERY_KEY.user], token);
                 localStorage.setItem(USER_LOCAL_STORAGE_KEY, token);
             }
-            return true
+            return true;
         },
     });
 }

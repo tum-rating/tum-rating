@@ -1,4 +1,3 @@
-const OAUTH_TOGGLE_KEY = "enableOAuth"
+const OAUTH_TOGGLE_KEY = 'enableOAuth';
 
-
-export {OAUTH_TOGGLE_KEY}
+export {OAUTH_TOGGLE_KEY};
