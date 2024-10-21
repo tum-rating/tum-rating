@@ -30,6 +30,7 @@ import {ModalResponsiveContainer} from '@/components/Modals/shared/ModalResponsi
 import {getPath, Paths} from '@/routes/paths.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 import {useTogglesClient} from "@/auth/useTogglesClient.tsx";
+import {OAUTH_TOGGLE_KEY} from "@/constants";
 
 interface SignInModalProps extends ContextModalProps {
 }
@@ -46,7 +47,7 @@ const SignInModal = ({context, id}: ContextModalProps) => {
     const [apiError, setApiError] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const {data: oAuthEnabled} = useTogglesClient();
+    const {data: clientOAuthToggle, isLoading: clientTogglesLoading} = useTogglesClient(OAUTH_TOGGLE_KEY);
     const {data: user, isLoading: userLoading} = useUser();
 
     useEffect(() => {
@@ -56,6 +57,7 @@ const SignInModal = ({context, id}: ContextModalProps) => {
     useEffect(() => {
         notifications.clean();
     }, []);
+
 
     const form = useForm({
         initialValues: {
@@ -108,7 +110,7 @@ const SignInModal = ({context, id}: ContextModalProps) => {
                 }}
             />
             <Container p="sm">
-                <LoadingOverlay visible={signInLoading} overlayProps={{radius: 'sm', blur: 2}}/>
+                <LoadingOverlay visible={signInLoading || clientTogglesLoading} overlayProps={{radius: 'sm', blur: 2}}/>
                 <form className="modal-form" data-testid="sign-in-form"
                       onSubmit={form.onSubmit((e) => handleSubmit(e))}>
                     <Stack>
@@ -153,7 +155,7 @@ const SignInModal = ({context, id}: ContextModalProps) => {
                         </Button>
 
                         {
-                            import.meta.env.VITE_OAUTH_IS_ENABLED === "true" && (
+                            clientOAuthToggle?.enabled && (
                                 <>
                                     <Divider label="or" orientation="horizontal"/>
                                     <Button component={'a'}

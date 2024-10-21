@@ -1,8 +1,12 @@
-import {endpoints} from '@/api';
-import {fetchWithServices} from '@/api/fetchWithServices.ts';
-import {useQueryWithAuth} from '@/api/useQueryWithAuth.tsx';
+import {UseQueryResult} from "@tanstack/react-query";
+
+import { Toggle } from "@/admin/types.ts";
+import { endpoints } from '@/api';
+import { fetchWithServices } from '@/api/fetchWithServices.ts';
+import { useQueryWithAuth } from '@/api/useQueryWithAuth.tsx';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import {ResponseError} from '@/utils/Errors/ResponseError.ts';
+import { ResponseError } from '@/utils/Errors/ResponseError.ts';
+
 
 const getTogglesClient = async (_: string) => {
     const endpoint = endpoints.toggles;
@@ -14,7 +18,7 @@ const getTogglesClient = async (_: string) => {
     return data;
 };
 
-const useTogglesClient = () => {
+const useTogglesClient = (toggleName?: string) => {
     const token = userLocalStorage.getUser();
     return useQueryWithAuth({
         queryKey: ['toggles_client'],
@@ -22,7 +26,17 @@ const useTogglesClient = () => {
         refetchIntervalInBackground: false,
         refetchOnMount: false,
         refetchOnWindowFocus: false,
+        select: (data) => {
+            return toggleName ? data.toggles.find((toggle: Toggle) => toggle.name === toggleName) : data
+        },
     });
 };
 
-export {useTogglesClient};
+const getSpecificToggleIsEnabled = async (togglesQuery: UseQueryResult<Toggle[], any>  
+                                          , key: string) => {
+    const data = togglesQuery.data;
+    const toggle = data.find((toggle: Toggle) => toggle.name === key);
+    return toggle.enabled;
+}
+
+export { useTogglesClient, getSpecificToggleIsEnabled };
