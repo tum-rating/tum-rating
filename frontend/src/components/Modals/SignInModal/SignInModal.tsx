@@ -29,7 +29,7 @@ import {ModalHeader} from '@/components/Modals/shared/ModalHeader';
 import {ModalResponsiveContainer} from '@/components/Modals/shared/ModalResponsiveContainer';
 import {getPath, Paths} from '@/routes/paths.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
-
+import {useTogglesClient} from "@/auth/useTogglesClient.tsx";
 
 interface SignInModalProps extends ContextModalProps {
 }
@@ -46,7 +46,7 @@ const SignInModal = ({context, id}: ContextModalProps) => {
     const [apiError, setApiError] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
-
+    const {data: oAuthEnabled} = useTogglesClient();
     const {data: user, isLoading: userLoading} = useUser();
 
     useEffect(() => {
