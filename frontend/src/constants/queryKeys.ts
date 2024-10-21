@@ -16,5 +16,4 @@ export const QUERY_KEY = {
     admin_reviews: 'admin_reviews',
     admin_courses: 'admin_courses',
     scrape_course: 'scrape_course',
-
 };

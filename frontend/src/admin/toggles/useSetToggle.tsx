@@ -11,7 +11,7 @@ import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function setToggle(token: string, toggle: Toggle): Promise<any> {
     const endpoint = endpoints.setToggle(toggle.id);
-    delete toggle.id
+    delete toggle.id;
     const response = await fetchWithServices(endpoint, {
         method: 'PATCH',
         headers: {
@@ -52,8 +52,15 @@ export function useSetToggle() {
             notifications.update({
                 id: toggle.name,
                 title: 'Success',
-                message: <Text size="xs">Toggle <Text component='span' size="xs" fw='bold'
-                                                      c='black'>{toggle.name}</Text> updated</Text>,
+                message: (
+                    <Text size="xs">
+                        Toggle{' '}
+                        <Text component="span" size="xs" fw="bold" c="black">
+                            {toggle.name}
+                        </Text>{' '}
+                        updated
+                    </Text>
+                ),
                 autoClose: true,
                 withCloseButton: true,
                 color: 'green',

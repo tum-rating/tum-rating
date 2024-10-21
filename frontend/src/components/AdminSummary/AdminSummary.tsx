@@ -2,7 +2,7 @@ import {Box, Flex} from '@mantine/core';
 import {IconLibrary, IconLibraryPlus, IconToggleLeft, IconUser} from '@tabler/icons-react';
 
 import {useCoursesProposals} from '@/admin/courseProposals/useCoursesProposals.ts';
-import {useToggles} from "@/admin/toggles/useToggles.tsx";
+import {useToggles} from '@/admin/toggles/useToggles.tsx';
 import {CourseProposal} from '@/admin/types.ts';
 import {useAllUsers} from '@/admin/users/useAllUsers.ts';
 import {AdminStatsBox} from '@/components/AdminSummary/AdminStatsBox.tsx';
@@ -34,9 +34,7 @@ const AdminSummary = () => {
     return (
         <Box>
             <Flex gap="md" wrap="wrap">
-                <AdminStatsBox options={calculatePercentageIncrease(proposals, 12)} title="Proposals"
-                               icon={<IconLibraryPlus/>} link={getPath(Paths.adminCoursesProposals)}
-                               description="Total number of course proposals"/>
+                <AdminStatsBox options={calculatePercentageIncrease(proposals, 12)} title="Proposals" icon={<IconLibraryPlus />} link={getPath(Paths.adminCoursesProposals)} description="Total number of course proposals" />
                 <AdminStatsBox
                     options={{
                         value: null,
@@ -45,7 +43,7 @@ const AdminSummary = () => {
                     }}
                     title="Courses"
                     link={getPath(Paths.adminAllCourses)}
-                    icon={<IconLibrary/>}
+                    icon={<IconLibrary />}
                     description="Total number of courses"
                 />
                 <AdminStatsBox
@@ -56,7 +54,7 @@ const AdminSummary = () => {
                     }}
                     title="Users"
                     link={getPath(Paths.adminUsers)}
-                    icon={<IconUser/>}
+                    icon={<IconUser />}
                     description="Total number of users"
                 />
                 <AdminStatsBox
@@ -67,7 +65,7 @@ const AdminSummary = () => {
                     }}
                     title="Toggles"
                     link={getPath(Paths.adminToggles)}
-                    icon={<IconToggleLeft/>}
+                    icon={<IconToggleLeft />}
                     description="Total number of toggles"
                 />
             </Flex>

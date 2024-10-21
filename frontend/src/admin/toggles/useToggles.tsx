@@ -1,10 +1,10 @@
-import {Toggle} from "@/admin/types.ts";
-import {endpoints} from "@/api";
-import {fetchWithServices} from "@/api/fetchWithServices.ts";
+import {Toggle} from '@/admin/types.ts';
+import {endpoints} from '@/api';
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {useQueryWithAuth} from '@/api/useQueryWithAuth.tsx';
-import * as userLocalStorage from "@/auth/user.localstore.ts";
-import {QUERY_KEY} from "@/constants/queryKeys.ts";
-import {ResponseError} from "@/utils/Errors/ResponseError.ts";
+import * as userLocalStorage from '@/auth/user.localstore.ts';
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function getToggles(token: string): Promise<Toggle[] | null> {
     const response = await fetchWithServices(endpoints.toggles, {

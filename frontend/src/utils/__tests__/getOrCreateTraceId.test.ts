@@ -1,4 +1,4 @@
-import { getOrCreateTraceId } from '@/utils/getOrCreateTraceId';
+import {getOrCreateTraceId} from '@/utils/getOrCreateTraceId';
 
 describe('getOrCreateTraceId', () => {
     beforeEach(() => {

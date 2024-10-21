@@ -1,13 +1,12 @@
 import {Text} from '@mantine/core';
 import {notifications} from '@mantine/notifications';
 
-import {Toggle} from "@/admin/types.ts";
-import {endpoints, useMutationWithAuth} from "@/api";
+import {Toggle} from '@/admin/types.ts';
+import {endpoints, useMutationWithAuth} from '@/api';
 import * as userLocalStorage from '@/auth/user.localstore.ts';
-import {QUERY_KEY} from "@/constants/queryKeys.ts";
-import {queryClient} from "@/react-query/client.ts";
-import {ResponseError} from "@/utils/Errors/ResponseError.ts";
-
+import {QUERY_KEY} from '@/constants/queryKeys.ts';
+import {queryClient} from '@/react-query/client.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 async function addToggle(token: string, toggle: Toggle) {
     const endpoint = endpoints.toggles;
@@ -16,9 +15,9 @@ async function addToggle(token: string, toggle: Toggle) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(toggle)
+        body: JSON.stringify(toggle),
     });
 
     const data = await response.json();
@@ -29,8 +28,7 @@ async function addToggle(token: string, toggle: Toggle) {
     return data;
 }
 
-interface AddToggleInput extends Toggle {
-}
+interface AddToggleInput extends Toggle {}
 
 export function useAddToggle() {
     const token = userLocalStorage.getUser();
@@ -52,8 +50,15 @@ export function useAddToggle() {
             notifications.update({
                 id: toggle.name,
                 title: 'Success',
-                message: <Text size="xs">Toggle <Text component='span' size="xs" fw='bold'
-                                                      c='black'>{toggle.name}</Text> added successfully</Text>,
+                message: (
+                    <Text size="xs">
+                        Toggle{' '}
+                        <Text component="span" size="xs" fw="bold" c="black">
+                            {toggle.name}
+                        </Text>{' '}
+                        added successfully
+                    </Text>
+                ),
                 autoClose: true,
                 withCloseButton: true,
                 color: 'green',

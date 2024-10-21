@@ -67,7 +67,7 @@ const useSearch = () => {
         return sortCoursesByMatchingFactor(previousData?.pages.flatMap((page: {results: Course[]}) => page.results) || [], value).map((item) => (
             <Combobox.Option className={classes.option} value={item.id} key={item.id}>
                 <SearchHighlight highlight={words}>{item.name}</SearchHighlight>
-                <Box my='2'>
+                <Box my="2">
                     <SearchItemCourseDetails course={item} />
                 </Box>
                 <SearchHighlight highlight={words} fz="xs" fw={500} c="dimmed">

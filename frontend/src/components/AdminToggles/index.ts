@@ -1,1 +1,1 @@
-export {AdminToggles} from "./AdminToggles.tsx"
+export {AdminToggles} from './AdminToggles.tsx';

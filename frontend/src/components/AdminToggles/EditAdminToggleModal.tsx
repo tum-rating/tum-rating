@@ -1,8 +1,8 @@
-import {Modal} from "@mantine/core";
+import {Modal} from '@mantine/core';
 
-import {useSetToggle} from "@/admin/toggles/useSetToggle.tsx";
-import {Toggle} from "@/admin/types.ts";
-import {AdminToggleForm} from "@/components/AdminToggles/AdminToggleForm.tsx";
+import {useSetToggle} from '@/admin/toggles/useSetToggle.tsx';
+import {Toggle} from '@/admin/types.ts';
+import {AdminToggleForm} from '@/components/AdminToggles/AdminToggleForm.tsx';
 
 interface EditAdminToggleModalProps {
     opened: boolean;
@@ -16,15 +16,9 @@ const EditAdminToggleModal = (props: EditAdminToggleModalProps) => {
 
     return (
         <Modal opened={opened} onClose={close} title="Edit toggle">
-            <AdminToggleForm
-                initialValues={toggle}
-                onSubmit={mutate}
-                isPending={isPending}
-                isSuccess={isSuccess}
-                error={isError}
-            />
+            <AdminToggleForm initialValues={toggle} onSubmit={mutate} isPending={isPending} isSuccess={isSuccess} error={isError} />
         </Modal>
-    )
-}
+    );
+};
 
-export {EditAdminToggleModal}
+export {EditAdminToggleModal};

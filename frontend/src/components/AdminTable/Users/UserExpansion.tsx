@@ -10,7 +10,7 @@ import {useBanUser} from '@/admin/users/useBanUser.tsx';
 import {useRemoveUser} from '@/admin/users/useRemoveUser.tsx';
 import {useUser} from '@/admin/users/useUser.ts';
 import {useUser as useLoggedUser} from '@/auth/useUser.tsx';
-import {CollectionDetailsReviewsSection} from "@/components/AdminTable/Shared/CollectionDetailsReviewsSection";
+import {CollectionDetailsReviewsSection} from '@/components/AdminTable/Shared/CollectionDetailsReviewsSection';
 import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 import {UserAvatar} from '@/components/Avatar';
 import {Skeleton} from '@/components/Skeleton';

@@ -1,9 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import { useLocation } from "react-router-dom";
+import {useQuery} from '@tanstack/react-query';
+import {useLocation} from 'react-router-dom';
 
-import { endpoints } from "@/api";
-import { fetchWithServices } from "@/api/fetchWithServices.ts";
-import { ResponseError } from "@/utils/Errors/ResponseError.ts";
+import {endpoints} from '@/api';
+import {fetchWithServices} from '@/api/fetchWithServices.ts';
+import {ResponseError} from '@/utils/Errors/ResponseError.ts';
 
 export const useOAuth = () => {
     const location = useLocation();
@@ -27,6 +27,6 @@ export const useOAuth = () => {
                 throw new ResponseError(data.message, response, 'oauth-error');
             }
             return data;
-        }
+        },
     });
 };

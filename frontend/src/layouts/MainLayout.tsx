@@ -32,7 +32,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
     useHotkeys([['/', () => navigate(getPath(Paths.spotlight))]]);
     return (
         <AppShell header={{height: HEADER_HEIGHT}} padding="md">
-            <FloatingMenu/>
+            <FloatingMenu />
             <Box
                 style={{
                     inset: 0,
@@ -43,17 +43,16 @@ export const MainLayout = ({children}: PropsWithChildren) => {
             />
             <AppShell.Header maw="100vw" zIndex={HEADER_Z_INDEX}>
                 <Flex visibleFrom="sm" h="100%" px="md" justify="space-between" align="center" gap={20}>
-                    <Logo alt="tum rating logo" width={129} height={28} href="/"/>
+                    <Logo alt="tum rating logo" width={129} height={28} href="/" />
                     {!isMobileOnly && !smallerMode && (
                         <Flex maw={580} style={{flexGrow: 1}}>
-                            <SearchInput/>
+                            <SearchInput />
                         </Flex>
                     )}
                     <Flex gap={20}>
                         {!user ? (
                             <>
-                                <Button data-testid="sign-in-btn-desktop" loading={!user && isLoading} size="xs"
-                                        variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
+                                <Button data-testid="sign-in-btn-desktop" loading={!user && isLoading} size="xs" variant="outline" onClick={() => navigate(getPath(Paths.signIn))}>
                                     Sign In
                                 </Button>
                                 <Button
@@ -70,7 +69,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                                 <Menu shadow="xl" position="bottom-end">
                                     <Menu.Target>
                                         <ActionIcon variant="outline">
-                                            <IconDotsVertical size="1.2rem"/>
+                                            <IconDotsVertical size="1.2rem" />
                                         </ActionIcon>
                                     </Menu.Target>
                                     <Menu.Dropdown>
@@ -80,7 +79,7 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                                             return (
                                                 <Menu.Item
                                                     key={page.path + page.title}
-                                                    leftSection={<Icon style={{width: rem(14), height: rem(14)}}/>}
+                                                    leftSection={<Icon style={{width: rem(14), height: rem(14)}} />}
                                                     onClick={() => {
                                                         navigate(page.path);
                                                     }}
@@ -93,8 +92,8 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                                 </Menu>
                             </>
                         ) : null}
-                        <UserButton/>
-                        <ThemeToggleActionIcon/>
+                        <UserButton />
+                        <ThemeToggleActionIcon />
                         {isAdmin && (
                             <Button
                                 size="xs"
@@ -111,15 +110,15 @@ export const MainLayout = ({children}: PropsWithChildren) => {
                 </Flex>
                 <Group hiddenFrom="sm" h="100%" px="md" justify="space-between" pos="relative">
                     <Burger open={drawerOpened} toggle={toggleDrawer}></Burger>
-                    <Logo alt="tum rating logo" width={129} height={28} href="/"/>
+                    <Logo alt="tum rating logo" width={129} height={28} href="/" />
                     <Flex h={54} mah={54} align="center">
-                        <SearchInput/>
+                        <SearchInput />
                     </Flex>
                 </Group>
             </AppShell.Header>
             <AppShell.Main p={0} m={0}>
                 <Box hiddenFrom={'sm'}>
-                    <Drawer open={drawerOpened} toggle={toggleDrawer}/>
+                    <Drawer open={drawerOpened} toggle={toggleDrawer} />
                 </Box>
                 <Flex justify="center" pt={HEADER_HEIGHT} mx="auto" h={`calc(100vh)`} maw={MAX_SITE_WIDTH}>
                     {children}
