@@ -22,7 +22,8 @@
     "test:e2e:sequential": "jest --config ./test/jest-sequential-e2e.json --runInBand",
     "bootstrap:user": "ts-node ./test/bootstrap/bootstrapUsers.ts",
     "bootstrap:frontendE2E": "ts-node ./test/bootstrap/bootstrapFrontendE2E.ts",
-    "bootstrap:oAuthUser": "ts-node ./test/bootstrap/bootstrapOAuthUser.ts"
+    "bootstrap:oAuthUser": "ts-node ./test/bootstrap/bootstrapOAuthUser.ts",
+    "bootstrap:toggles": "ts-node ./test/bootstrap/bootstrapToggles.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.2",
