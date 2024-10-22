@@ -22,9 +22,10 @@ const useTogglesClient = (toggleName?: string) => {
     return useQueryWithAuth({
         queryKey: ['toggles_client'],
         queryFn: async () => getTogglesClient(token),
-        refetchIntervalInBackground: false,
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
+        refetchInterval: 300000,
+        refetchIntervalInBackground: true,
+        refetchOnMount: true,
+        refetchOnWindowFocus: true,
         select: (data) => {
             return toggleName ? data.toggles.find((toggle: Toggle) => toggle.name === toggleName) : data;
         },
