@@ -1,0 +1,8 @@
+.controlsContainer {
+    align-items: center;
+    @media (max-width: $mantine-breakpoint-sm) {
+        padding: 0 var(--mantine-spacing-lg);
+        flex-direction: column;
+        gap: 0;
+    }
+}

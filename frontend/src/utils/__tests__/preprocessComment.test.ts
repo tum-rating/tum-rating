@@ -1,4 +1,4 @@
-import { preprocessComment } from '../preprocessComment';
+import {preprocessComment} from '../preprocessComment';
 
 describe('preprocessComment', () => {
     it('should replace three or more consecutive newlines with two newlines', () => {

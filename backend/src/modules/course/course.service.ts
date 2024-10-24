@@ -16,7 +16,9 @@ export class CourseService {
         private readonly _cacheService: CacheService,
         private readonly _configService: ConfigService,
         private readonly _logger: PinoLogger,
-    ) {}
+    ) {
+        this._logger.setContext(CourseService.name);
+    }
 
     public async createCourse(course: Partial<Course>) {
         return  this._courseRepository.create(course as Course);
