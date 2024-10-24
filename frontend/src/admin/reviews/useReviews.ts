@@ -2,7 +2,7 @@ import {Review} from '@/admin/types.ts';
 import {endpoints} from '@/api';
 import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {useInfiniteQueryWithAuth} from '@/api/useInfiniteQueryWithAuth.tsx';
-import * as userLocalStorage from "@/auth/user.localstore.ts";
+import * as userLocalStorage from '@/auth/user.localstore.ts';
 import {PAGE_SIZE} from '@/constants';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {ResponseError} from '@/utils/Errors/ResponseError.ts';
@@ -21,7 +21,7 @@ export type PaginatedReviewsConfig = {
 
 async function getPaginatedReviews({pageParam = 1, userId, courseId, query}: PaginatedReviewsConfig): Promise<Reviews> | null {
     const token = userLocalStorage.getUser();
-    const response = await fetchWithServices(endpoints.getPaginatedReviews(pageParam, PAGE_SIZE, userId, courseId, query),{
+    const response = await fetchWithServices(endpoints.getPaginatedReviews(pageParam, PAGE_SIZE, userId, courseId, query), {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

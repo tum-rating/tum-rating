@@ -7,11 +7,11 @@ const coursesBase = baseApiUrl + '/courses';
 
 type OAuthEndpoints = {
     sso: string;
-}
+};
 
 const oauth: OAuthEndpoints = {
     sso: baseApiUrl + '/auth/oauth',
-}
+};
 
 type AuthEndpoints = {
     base: string;
@@ -21,7 +21,6 @@ type AuthEndpoints = {
     recovery: string;
     user: string;
 };
-
 
 const auth: AuthEndpoints = {
     base: authBase,
@@ -72,6 +71,10 @@ type AdminEndpoints = {
     getAllUsers: string;
     removeUser: (userId: string) => string;
     banUser: (userId: string) => string;
+    //---TOGGLES
+    toggles: string;
+    setToggle: (toggleId: string) => string;
+    getSingleToggle: (toggleId: string) => string;
 };
 
 const admin: AdminEndpoints = {
@@ -98,11 +101,14 @@ const admin: AdminEndpoints = {
     banUser: (userId: string) => `${baseApiUrl}/users/${userId}/ban`,
     addCourse: `${baseApiUrl}/courses`,
     editCourse: (courseId: string) => `${baseApiUrl}/courses/${courseId}`,
+    toggles: `${baseApiUrl}/toggles`,
+    getSingleToggle: (toggleId: string) => `${baseApiUrl}/toggles/${toggleId}`,
+    setToggle: (toggleId: string) => `${baseApiUrl}/toggles/${toggleId}`,
 };
 
 export const endpoints = {
     ...auth,
     ...courses,
     ...admin,
-    ...oauth
+    ...oauth,
 };

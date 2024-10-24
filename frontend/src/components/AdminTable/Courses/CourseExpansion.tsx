@@ -6,8 +6,8 @@ import {HTMLAttributes, useEffect, useState} from 'react';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
-import {useEditCourse} from '@/admin/useEditCourse.tsx';
-import {useRemoveCourse} from '@/admin/useRemoveCourse.tsx';
+import {useEditCourse} from '@/admin/courses/useEditCourse.tsx';
+import {useRemoveCourse} from '@/admin/courses/useRemoveCourse.tsx';
 import {CollectionDetailsReviewsSection} from '@/components/AdminTable/Shared/CollectionDetailsReviewsSection';
 import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 import {Skeleton} from '@/components/Skeleton';

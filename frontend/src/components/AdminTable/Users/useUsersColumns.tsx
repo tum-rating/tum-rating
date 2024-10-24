@@ -31,10 +31,19 @@ export const useUsersColumns = () => {
             Cell: ({row}) => {
                 return (
                     <>
-                        <Badge color={row.original.isEmailActivated ? 'green' : 'red'}>{row.original.isEmailActivated ? 'Activated' : 'Not activated'}</Badge>
+                        <Badge
+                            color={row.original.isEmailActivated ? 'green' : 'red'}>{row.original.isEmailActivated ? 'Activated' : 'Not activated'}</Badge>
                     </>
                 );
             },
+        },
+        {
+            accessorKey: 'authType',
+            header: 'Auth Type',
+            Cell: ({row}) => {
+                return <Badge
+                    color={row.original.authType === 'oAuth' ? 'blue' : 'gray'}>{row.original.authType}</Badge>;
+            }
         },
     ];
 

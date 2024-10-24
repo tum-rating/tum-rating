@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Client, Issuer, generators, TokenSet } from 'openid-client';
+import { Client, Issuer, generators, TokenSet, UserinfoResponse } from 'openid-client';
 
 import { BadOAuthGatewayException, ERROR_CODE_INVALID_GRANT, InvalidGrantError } from 'src/utils/errors/oAuthErrors';
 
@@ -82,26 +82,35 @@ export class OAuthService implements OnModuleInit {
                 throw new InvalidGrantError(error);
             }
 
-            throw new BadOAuthGatewayException(error);
+            throw new BadOAuthGatewayException('Token exchange failed: ' + error);
         }
 
         if (!tokenSet.access_token) {
             throw new Error('No access token in auth response');
         }
 
-        const claims = tokenSet.claims();
-
-        if (!claims) {
-            throw new Error('No user data in auth response');
+        let userInfo: UserinfoResponse;
+        try {
+            userInfo = await this._client.userinfo(tokenSet);
+        } catch (error) {
+            throw new BadOAuthGatewayException('User info fetch failed: ' + error);
         }
 
-        if (!claims.email) {
-            throw new Error('No email in user data');
+        if (!userInfo) {
+            throw new BadOAuthGatewayException('User info is empty');
+        }
+
+        if (!userInfo.email) {
+            throw new BadOAuthGatewayException('No email in user info');
+        }
+
+        if (!userInfo.sub) {
+            throw new BadOAuthGatewayException('No sub in user info');
         }
 
         return {
-            sub: claims.sub,
-            email: claims.email,
+            sub: userInfo.sub,
+            email: userInfo.email,
         };
     }
 }

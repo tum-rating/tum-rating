@@ -80,7 +80,7 @@ export class OAuthControllerV1 {
             }
 
             if (error instanceof BadOAuthGatewayException) {
-                this._logger.warn('Bad OAuth gateway error for redirect URL %s', body.redirectURL);
+                this._logger.warn('Bad OAuth gateway error for redirect URL %s with error %s', body.redirectURL, error);
 
                 throw new BadGatewayException('Bad OAuth params');
             }

@@ -1,6 +1,6 @@
 import {useQuery} from '@tanstack/react-query';
 
-import {Course} from './types';
+import {Course} from '../types.ts';
 
 import {endpoints} from '@/api';
 import {fetchWithServices} from '@/api/fetchWithServices.ts';
