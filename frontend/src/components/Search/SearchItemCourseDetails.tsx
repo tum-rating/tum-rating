@@ -9,7 +9,7 @@ interface SearchItemCourseDetailsProps {
 
 const SearchItemCourseDetails = ({course}: SearchItemCourseDetailsProps) => {
     return (
-        <Flex gap="2" align='center'>
+        <Flex gap="2" align="center">
             <Flex gap={course.votesNumber ? '3' : '2'}>
                 <Text c={course.votesNumber === 0 ? 'dimmed' : 'blue'} size="xs" fw="bold">
                     {course.votesNumber || 'No'}
@@ -25,16 +25,14 @@ const SearchItemCourseDetails = ({course}: SearchItemCourseDetailsProps) => {
                     {course.votesNumber === 1 ? 'review' : 'reviews'}
                 </Text>
             </Flex>
-            {
-                course.votesNumber !== 0 && (
-                    <>
-                        •
-                        <HowInterestingBadge score={course.howInterestingRatingAverage} variant="transparent" px={0} />
-                        •
-                        <HowEasyBadge score={course.howEasyRatingAverage} variant="transparent" px={0} />
-                    </>
-                )
-            }
+            {course.votesNumber !== 0 && (
+                <>
+                    •
+                    <HowInterestingBadge score={course.howInterestingRatingAverage} variant="transparent" px={0} />
+                    •
+                    <HowEasyBadge score={course.howEasyRatingAverage} variant="transparent" px={0} />
+                </>
+            )}
         </Flex>
     );
 };

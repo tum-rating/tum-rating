@@ -1,7 +1,7 @@
 export enum Paths {
     home = '/',
     auth = 'auth',
-    oAuthRedirect='oauth/redirect',
+    oAuthRedirect = 'oauth/redirect',
     activate = 'activate',
     recovery = 'recovery',
     courses = 'courses',
@@ -29,6 +29,7 @@ export enum Paths {
     adminUserDetails = ':userId',
     adminCoursesProposalsDetails = ':courseProposalId',
     adminCoursesDetails = ':adminCourseId',
+    adminToggles = 'toggles',
 }
 
 type PathElement = {
@@ -122,6 +123,9 @@ const PATH_ELEMENTS: PathElement = {
     },
     [Paths.adminCoursesDetails]: {
         parent: Paths.adminAllCourses,
+    },
+    [Paths.adminToggles]: {
+        parent: Paths.admin,
     },
 };
 

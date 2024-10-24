@@ -4,7 +4,7 @@ const UserAvatar = (props: AvatarProps) => {
     return (
         <Avatar radius="lg" {...props}>
             <svg viewBox="0 0 80 80" fill="none" role="img" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
-                <mask id=":rpo:" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="80" height="80">
+                <mask id=":rpo:" maskUnits="userSpaceOnUse" x="0" y="0" width="80" height="80">
                     <rect width="80" height="80" rx="160" fill="#FFFFFF"></rect>
                 </mask>
                 <g mask="url(#:rpo:)">

@@ -2,8 +2,8 @@ import {Badge, Button, Flex, HoverCard, Stack, Text, Tooltip} from '@mantine/cor
 import {ReactNode} from 'react';
 
 import {User} from '@/admin/types.ts';
-import {useBanUser} from '@/admin/useBanUser.tsx';
-import {useUser} from '@/admin/useUser.ts';
+import {useBanUser} from '@/admin/users/useBanUser.tsx';
+import {useUser} from '@/admin/users/useUser.ts';
 import {useUser as useLoggedUser} from '@/auth/useUser.tsx';
 import {UserAvatar} from '@/components/Avatar';
 import {Skeleton} from '@/components/Skeleton';

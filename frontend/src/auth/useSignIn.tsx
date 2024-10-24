@@ -42,7 +42,7 @@ export const signInClient = (data, token) => {
         color: 'green',
         autoClose: 3000,
     });
-}
+};
 
 export type LoginInput = {
     email: string;

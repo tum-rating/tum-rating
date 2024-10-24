@@ -4,7 +4,6 @@ import {HTMLAttributes} from 'react';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
-
 import {Review} from '@/admin/types.ts';
 
 interface ReviewExpansionProps extends HTMLAttributes<HTMLElement> {
@@ -13,10 +12,9 @@ interface ReviewExpansionProps extends HTMLAttributes<HTMLElement> {
 }
 
 const ReviewExpansion = ({courseId, row, ...rest}: ReviewExpansionProps) => {
-
     return (
         <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md" w="100vw" {...rest}>
-           not implemented
+            not implemented
         </Flex>
     );
 };

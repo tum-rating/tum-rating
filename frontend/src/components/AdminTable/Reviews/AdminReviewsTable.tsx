@@ -8,9 +8,9 @@ import {useLocation} from 'react-router-dom';
 import {useReviewsColumns} from './useReviewsColumns.tsx';
 import classes from '../Shared/styles/TableStyles.module.css';
 
-import {Review} from "@/admin/types.ts";
-import {useReviews} from "@/admin/useReviews.ts";
-import {ReviewExpansion} from "@/components/AdminTable/Reviews/ReviewExpansion.tsx";
+import {useReviews} from '@/admin/reviews/useReviews.ts';
+import {Review} from '@/admin/types.ts';
+import {ReviewExpansion} from '@/components/AdminTable/Reviews/ReviewExpansion.tsx';
 import {TableToolbox} from '@/components/AdminTable/Shared/TableToolbox';
 import {HEADER_HEIGHT, PAGE_SIZE} from '@/constants';
 

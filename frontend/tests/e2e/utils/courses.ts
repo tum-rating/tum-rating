@@ -45,11 +45,7 @@ const openCoursePageByClickingCourseRowInTable = async ({page, browser}) => {
 };
 
 const addReviewToCourse = async ({page, courseReview}: CourseAction) => {
-    await page
-        .locator('button')
-        .filter({hasText: 'Add review'})
-        .first()
-        .click();
+    await page.locator('button').filter({hasText: 'Add review'}).first().click();
 
     await page.getByTestId('textarea').fill(courseReview.comment);
     await page.getByTestId('select').click();
@@ -67,10 +63,4 @@ const checkCourseRender = async ({page, name}) => {
     await page.getByTestId('course-name').filter({hasText: name}).isVisible();
 };
 
-export {
-    openCoursePageByClickingCourseRowInTable,
-    addReviewToCourse,
-    checkCourseRender,
-    generateCourseReview,
-    addCourseProposal
-};
+export {openCoursePageByClickingCourseRowInTable, addReviewToCourse, checkCourseRender, generateCourseReview, addCourseProposal};

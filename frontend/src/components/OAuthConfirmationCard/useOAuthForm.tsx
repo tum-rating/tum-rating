@@ -1,11 +1,11 @@
-import { Text } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { notifications } from "@mantine/notifications";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import {Text} from '@mantine/core';
+import {useForm} from '@mantine/form';
+import {notifications} from '@mantine/notifications';
+import {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 
-import { useSetUser } from "@/auth/useSetUser.tsx";
-import { signInClient } from "@/auth/useSignIn.tsx";
+import {useSetUser} from '@/auth/useSetUser.tsx';
+import {signInClient} from '@/auth/useSignIn.tsx';
 
 interface UserDataProps {
     user: {
@@ -30,7 +30,7 @@ export const useOAuthForm = (data: UserDataProps | null, status: string) => {
                 setUserData(data);
             } else {
                 signInClient(data, data.token);
-                navigate("/");
+                navigate('/');
             }
         }
     }, [data, status]);
@@ -40,11 +40,11 @@ export const useOAuthForm = (data: UserDataProps | null, status: string) => {
             username: '',
         },
         validate: {
-            username: (value) => value.length > 0 ? null : 'Username is required',
-        }
+            username: (value) => (value.length > 0 ? null : 'Username is required'),
+        },
     });
 
-    const handleSubmit = (values: { username: string }) => {
+    const handleSubmit = (values: {username: string}) => {
         setUserMutation.mutate({
             username: values.username,
             token: userData?.token,
@@ -53,7 +53,7 @@ export const useOAuthForm = (data: UserDataProps | null, status: string) => {
 
     useEffect(() => {
         if (setUserMutation.isSuccess && unsetUsernameFlag) {
-            navigate("/");
+            navigate('/');
             notifications.show({
                 title: 'Success',
                 id: 'signin-success',
@@ -64,5 +64,5 @@ export const useOAuthForm = (data: UserDataProps | null, status: string) => {
         }
     }, [setUserMutation.isSuccess]);
 
-    return { form, handleSubmit, userData, unsetUsernameFlag, setUserMutation };
+    return {form, handleSubmit, userData, unsetUsernameFlag, setUserMutation};
 };

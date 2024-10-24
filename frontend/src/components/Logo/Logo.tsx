@@ -10,15 +10,22 @@ interface LogoProps {
     href?: string;
 }
 
-export const Logo = ({alt = "tum-rating logo", width = 129, height = 28, href = "/"}: LogoProps) => {
+export const Logo = ({alt = 'tum-rating logo', width = 129, height = 28, href = '/'}: LogoProps) => {
     const {colorScheme} = useMantineColorScheme();
     const logoSrc = colorScheme === 'light' ? logo : logoDark;
 
     return (
         <Anchor href={href}>
-            <Image fit="contain" height={height} width={width} src={logoSrc} alt={alt} style={{
-                width: `${width}px`,
-            }}/>
+            <Image
+                fit="contain"
+                height={height}
+                width={width}
+                src={logoSrc}
+                alt={alt}
+                style={{
+                    width: `${width}px`,
+                }}
+            />
         </Anchor>
     );
 };

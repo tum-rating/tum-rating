@@ -93,6 +93,16 @@ export function handleAuthErrors({error, callback = () => null, signOut, navigat
                 });
                 callback && callback();
                 break;
+            case 409:
+                notifications.show({
+                    ...initialErrorConfig,
+                    color: 'red',
+                    withCloseButton: true,
+                    className: 'conflict-notification',
+                    id: 'conflict-notification',
+                });
+                callback && callback();
+                break;
             case 500:
                 notifications.show({
                     ...initialErrorConfig,
@@ -104,7 +114,7 @@ export function handleAuthErrors({error, callback = () => null, signOut, navigat
                     title: 'Server error 500',
                     message: (
                         <Text size="xs">
-                            We apologise and are working on fixing the issue. <br /> Please try again later.
+                            We apologise and are working on fixing the issue. <br/> Please try again later.
                         </Text>
                     ),
                 });
