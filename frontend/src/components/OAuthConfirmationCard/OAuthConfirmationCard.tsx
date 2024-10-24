@@ -8,32 +8,32 @@ import {useOAuthForm} from './useOAuthForm';
 import {Logo} from '@/components/Logo';
 import {useOAuth} from '@/oauth/useOAuth.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
+import {ResponseError} from "@/utils/Errors/ResponseError.ts";
 
 export const OAuthConfirmationCard = () => {
     const {data, status, isError, error} = useOAuth();
     const navigate = useNavigate();
     const {form, handleSubmit, userData, unsetUsernameFlag, setUserMutation} = useOAuthForm(data, status);
-
     return (
         <Box className={classes.OAuthRedirectContainer}>
-            <Logo />
+            <Logo/>
             <Card shadow="sm" radius="md" mt="lg" withBorder className={classes.userStatusGuardCard}>
                 {status === 'pending' && (
-                    <Alert icon={<Loader size={'xs'} />} title="Single Sign-On Login" color="blue">
+                    <Alert icon={<Loader size={'xs'}/>} title="Single Sign-On Login" color="blue">
                         <Text fw={500} fz="sm">
                             We are verifying your identity...
                         </Text>
                     </Alert>
                 )}
                 {status === 'success' && (
-                    <Alert icon={<IconFaceId height={25} />} title="Single Sign-On Login" color="blue">
+                    <Alert icon={<IconFaceId height={25}/>} title="Single Sign-On Login" color="blue">
                         <Text fw={500} fz="sm">
                             Your identity has been verified
                         </Text>
                     </Alert>
                 )}
                 {isError && (
-                    <Alert icon={<IconFaceIdError height={25} />} title="Single Sign-On Login" color="red">
+                    <Alert icon={<IconFaceIdError height={25}/>} title="Single Sign-On Login" color="red">
                         <Text fw={500} fz="sm">
                             An error occurred while verifying your identity
                         </Text>
@@ -53,20 +53,27 @@ export const OAuthConfirmationCard = () => {
                                 {userData?.user?.email}
                             </Text>
                         </Card>
-                        <Text fz="sm">has been successfully verified. To complete the sign-up process, please enter your username.</Text>
+                        <Text fz="sm">has been successfully verified. To complete the sign-up process, please enter your
+                            username.</Text>
                         <form onSubmit={form.onSubmit(handleSubmit)}>
-                            <TextInput autoFocus label="Username" placeholder="Enter your username" value={form.values.username} onChange={(event) => form.setFieldValue('username', event.currentTarget.value)} required />
+                            <TextInput error={(setUserMutation.error as ResponseError)?.message || ""} autoFocus
+                                       label="Username" placeholder="Enter your username" value={form.values.username}
+                                       onChange={(event) => form.setFieldValue('username', event.currentTarget.value)}
+                                       required/>
                             <Text fz="xs" fw="bold" mt="sm">
                                 By submitting, you agree to our{' '}
-                                <Anchor target="_blank" style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold" href={getPath(Paths.privacyPolicy)}>
+                                <Anchor target="_blank" style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold"
+                                        href={getPath(Paths.privacyPolicy)}>
                                     Privacy Policy
                                 </Anchor>{' '}
                                 and{' '}
-                                <Anchor target="_blank" style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold" href={getPath(Paths.termsOfService)}>
+                                <Anchor target="_blank" style={{whiteSpace: 'nowrap'}} fz="xs" fw="bold"
+                                        href={getPath(Paths.termsOfService)}>
                                     Terms of Service.
                                 </Anchor>
                             </Text>
-                            <Button loading={setUserMutation.isPending} fullWidth data-testid="submit" type="submit" mt="xs" variant="primary-gradient">
+                            <Button loading={setUserMutation.isPending} fullWidth data-testid="submit" type="submit"
+                                    mt="xs" variant="primary-gradient">
                                 Submit
                             </Button>
                         </form>

@@ -1,9 +1,8 @@
-import {useMutation} from '@tanstack/react-query';
 
 import * as userLocalStorage from './user.localstore.ts';
 import {USER_LOCAL_STORAGE_KEY} from './user.localstore.ts';
 
-import {endpoints} from '@/api';
+import {endpoints, useMutationWithAuth} from '@/api';
 import {fetchWithServices} from '@/api/fetchWithServices.ts';
 import {QUERY_KEY} from '@/constants/queryKeys.ts';
 import {queryClient} from '@/react-query/client.ts';
@@ -28,7 +27,7 @@ async function setUser(username: string, token?: string | null) {
 
 export function useSetUser() {
     const userTokenFromLocalStorage = userLocalStorage.getUser();
-    return useMutation({
+    return useMutationWithAuth({
         mutationFn: async ({username, token}: {username: string; token?: string | null}) => await setUser(username, token || userTokenFromLocalStorage),
         onSuccess: ({token}) => {
             if (!userTokenFromLocalStorage) {
