@@ -136,7 +136,7 @@ const SignInModal = ({context, id}: ContextModalProps) => {
                             <>
                                 <Divider label="or" orientation="horizontal" />
                                 <Button component={'a'} variant="outline" className={classes.SSOButton} href={endpoints.sso} leftSection={<IconKey size="1.1rem" />}>
-                                    Sign In With ID
+                                    Sign In With TUM-ID
                                 </Button>
                             </>
                         )}
