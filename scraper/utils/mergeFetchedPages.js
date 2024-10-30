@@ -1,6 +1,10 @@
 import fs from "fs";
 import cliProgress from "cli-progress";
 
+const sanitizeString = (str) => {
+  return str.replace(/\s+/g, "").replace(/\W/g, "").toLowerCase();
+};
+
 const mergeFetchedPages = async (filesToMerge) => {
   const progressBar = new cliProgress.SingleBar(
     {
@@ -22,15 +26,14 @@ const mergeFetchedPages = async (filesToMerge) => {
 
   allData.forEach((course, index) => {
     progressBar.update(index);
-    const courseTitle = course.courseTitle.replace(/\t/g, "");
-    const mainLecturer =
-      course.mainLecturers.length > 0 ? course.mainLecturers[0].name : "";
+    const courseTitle = sanitizeString(course.courseTitle);
+    const mainLecturer = course.mainLecturers.length > 0 ? sanitizeString(course.mainLecturers[0].name) : "";
     const key = `${courseTitle}-${mainLecturer}`;
     if (mergedCourses[key]) {
       if (!mergedCourses[key].semester.includes(course.semester[0]))
         mergedCourses[key].semester.push(course.semester[0]);
     } else {
-      mergedCourses[key] = { ...course, courseTitle };
+      mergedCourses[key] = { ...course, courseTitle: course.courseTitle.replace(/\t/g, "") };
     }
   });
 
@@ -41,4 +44,4 @@ const mergeFetchedPages = async (filesToMerge) => {
   return mergedData;
 };
 
-export { mergeFetchedPages };
+export { mergeFetchedPages, sanitizeString };
