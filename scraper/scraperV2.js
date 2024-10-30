@@ -8,9 +8,11 @@ import getSemestersFiles from "./utils/files/getSemestersFiles.js";
 import fs from 'fs';
 import path from "path";
 import {displayHeader} from "./utils/display.js";
-import {mergeExistingFiles} from "./utils/mergeExistingFiles.js";
+import {mergeExistingFilesByKeySimilarity} from "./utils/mergeExistingFilesByKeySimilarity.js";
 
-const main = async () => {
+const main = async (callback) => {
+    console.clear();
+
     const spinner = ora('Fetching semesters...').start();
     try {
         await fetchAndSaveSemestersList();
@@ -23,18 +25,19 @@ const main = async () => {
 
     await displayHeader()
 
+    callback?.();
     const {fetchedSemesters} = await getSemestersFiles();
     if (fetchedSemesters) {
         const {fetchedDBCourses, fetchedDBCoursesLength, fetchedDBCoursesNotEmpty} = getDbCoursesFiles();
         const choices = [
             {
-                title: `Fetch courses from production database. (${fetchedDBCoursesLength} files in ./fetchedFromProd)`,
+                title: `Fetch courses from production database. (${fetchedDBCoursesLength} ${fetchedDBCoursesLength === 1 ? 'file' : 'files'} in ./fetchedFromProd)`,
                 value: "fetch-from-prod-db"
             },
             {
-                title: `Merge existing files`,
-                value: "merge-existing",
-            }
+                title: `Merge existing files with ${chalk.green("key similarity method")}.`,
+                value: "merge-existing-by-key-similarity"
+            },
         ];
 
         const response = await prompt({
@@ -57,22 +60,18 @@ const main = async () => {
                     });
 
                     if (!confirmOverwrite.value) {
-                        return main().then(() => {
-                            console.log(`Please rename the existing ${path.basename(coursesFilePath)} file in ./fetchedFromProd and try again.`);
+                        return main(() => {
+                            console.log(`ℹ️ Please rename or remove the existing ${path.basename(coursesFilePath)} file in ./fetchedFromProd and try again.`);
                         })
                     }
                 }
-
                 await fetchAndSaveProductionCourses();
-                console.log(1)
-                // await main().then(() =>
-                //     console.log("✅Courses successfully fetched from production database.")
-                // );
+                await main(() => {
+                    console.log("✅ Courses successfully fetched from production database.")
+                })
                 break;
-            case "merge-existing":
-                console.log("Merging existing files...");
-                await mergeExistingFiles();
-                break;
+            case "merge-existing-by-key-similarity":
+                await mergeExistingFilesByKeySimilarity();
             default:
                 console.log("default");
         }

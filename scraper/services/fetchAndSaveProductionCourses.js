@@ -7,7 +7,7 @@ import path from "path";
 const fetchAndSaveProductionCourses = async () => {
   const progressBar = new cliProgress.SingleBar(
     {
-      format: `{bar} || {percentage}% || {value}/{total} || ETA: {eta}s || Fetching ...`,
+      format: `{bar} || {percentage}% || {value}/? || ETA: {eta}s || Fetching ...`,
     },
     cliProgress.Presets.shades_classic,
   );
@@ -24,20 +24,20 @@ const fetchAndSaveProductionCourses = async () => {
     const data = response.data;
     allCourses.push(...data.results)
     totalCourses += data.results.length;
-    progressBar.setTotal(totalCourses);
     progressBar.update(totalCourses);
     pageNumber = data.nextPageNumber;
   }
 
   progressBar.stop();
 
-  const dirPath = path.dirname(config.PROD_DB_COURSES_DIR);
+  const dirPath = config.PROD_DB_COURSES_DIR;
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
 
-  fs.writeFileSync(config.PROD_DB_COURSES_DIR, JSON.stringify(allCourses, null, 2), 'utf8');
-  console.log(`Fetched and saved ${totalCourses} courses to ${config.PROD_DB_COURSES_DIR}`);
+  const filePath = path.join(dirPath, 'courses.json');
+  fs.writeFileSync(filePath, JSON.stringify(allCourses, null, 2), 'utf8');
+  console.log(`Fetched and saved ${totalCourses} courses to ${filePath}`);
 };
 
 export { fetchAndSaveProductionCourses };
