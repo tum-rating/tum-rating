@@ -3,7 +3,9 @@ import path from 'path';
 import prompt from 'prompts';
 import ora from 'ora';
 import config from "../config.js";
-import keySimilarity from "./merging/keySimilarity.js";
+// import keySimilarity from "./merging/keySimilarity.js";
+
+import keySimilarity from "./merging/keySimilarityv2.js";
 
 /**
  * Merges JSON files by key similarity after checking for key consistency.

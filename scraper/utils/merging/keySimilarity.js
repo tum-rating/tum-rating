@@ -1,12 +1,11 @@
 import cliProgress from 'cli-progress';
 
 export default async function keySimilarity(arr, key, identificationKey) {
-    const threshold = 0.75; // Adjust similarity threshold as needed
+    const threshold = 0.8;
     const mergedArray = [];
-    const mergedRecords = new Set(); // Track indices of merged items
-    arr = arr.slice(0, 1500); // Process only a subset of data
+    const mergedRecords = new Set();
+    arr = arr.slice(0, 1500);
 
-    // Initialize progress bar
     const progressBar = new cliProgress.SingleBar(
         {
             format: `{bar} || {percentage}% || {value}/{total} || ETA: {eta}s || Processing...`,
@@ -14,21 +13,26 @@ export default async function keySimilarity(arr, key, identificationKey) {
         cliProgress.Presets.shades_classic,
     );
 
-    // Start progress bar
     progressBar.start(arr.length, 0);
 
-    // Function to calculate similarity using Jaccard and Levenshtein
+    function extractCodes(title) {
+        const codePattern = /\b([A-Z]{2,}[0-9]+(?:_[0-9]+)?(?:\s+[A-Z]+)?(?:\s+[A-Z]{2})?)\b/g;
+        const codes = new Set();
+        let match;
+        while ((match = codePattern.exec(title)) !== null) {
+            codes.add(match[0]);
+        }
+        return codes;
+    }
+
     function calculateSimilarity(str1, str2) {
         const words1 = str1.toLowerCase().split(/\s+/);
         const words2 = str2.toLowerCase().split(/\s+/);
 
-        const exactMatches = words1.filter(word => words2.includes(word)).length;
-        const exactMatchPercentage = exactMatches / Math.max(words1.length, words2.length);
+        const commonWords = words1.filter(word => words2.includes(word)).length;
+        const exactMatchPercentage = commonWords / Math.max(words1.length, words2.length);
+        if (exactMatchPercentage > 0.75) return 1;
 
-        // If exact word match percentage is higher than 70%, return a high similarity score
-        if (exactMatchPercentage > 0.7) {
-            return 1;
-        }
         const set1 = new Set(words1);
         const set2 = new Set(words2);
 
@@ -40,15 +44,12 @@ export default async function keySimilarity(arr, key, identificationKey) {
         const maxLen = Math.max(str1.length, str2.length);
         const levenshteinSimilarity = 1 - (levenshteinDistance / maxLen);
 
-        // Calculate exact word match percentage
-
-
-        // Adjusted similarity calculation to give more weight to exact word matches
-        return (2 * jaccardSimilarity + levenshteinSimilarity) / 3;
+        const adjustedSimilarity = (2 * exactMatchPercentage + jaccardSimilarity + levenshteinSimilarity) / 4;
+        return adjustedSimilarity;
     }
 
     function levenshtein(a, b) {
-        const matrix = Array.from({ length: a.length + 1 }, () => []);
+        const matrix = Array.from({length: a.length + 1}, () => []);
         for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
         for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
 
@@ -65,41 +66,101 @@ export default async function keySimilarity(arr, key, identificationKey) {
         return matrix[a.length][b.length];
     }
 
+    function findCommonSubstring(strings) {
+        if (!strings.length) return '';
+        let commonSubstring = strings[0];
+        for (let i = 1; i < strings.length; i++) {
+            let tempSubstring = '';
+            for (let j = 0; j < commonSubstring.length; j++) {
+                for (let k = j + 1; k <= commonSubstring.length; k++) {
+                    const substring = commonSubstring.slice(j, k);
+                    if (strings[i].includes(substring) && substring.length > tempSubstring.length) {
+                        tempSubstring = substring;
+                    }
+                }
+            }
+            commonSubstring = tempSubstring;
+        }
+        return commonSubstring;
+    }
+
+    function cleanCommonPart(commonPart) {
+        const redundantWords = ['Exercise', 'Lecture', 'Basic', 'Module', 'In-Depth', 'Limited places', 'English', 'German'];
+        let cleanedPart = commonPart;
+        redundantWords.forEach(word => {
+            const regex = new RegExp(`\\b${word}\\b`, 'gi');
+            cleanedPart = cleanedPart.replace(regex, '').trim();
+        });
+
+        // Remove any empty parentheses or other punctuation left after removing redundant words
+        cleanedPart = cleanedPart.replace(/\(\s*\)/g, '').replace(/\[\s*\]/g, '').replace(/\{\s*\}/g, '').replace(/,\s*,/g, ',').replace(/,\s*$/, '').trim();
+
+        return cleanedPart;
+    }
+
     arr.forEach((item, index) => {
         if (mergedRecords.has(index)) {
-            mergedArray.push(item); // Add item as-is if it's already part of a merged group
+            mergedArray.push(item);
             return;
         }
 
         const currentTitle = item[key];
         const currentProfessor = item.professor;
+        const currentCodes = extractCodes(currentTitle);
         const mergedIds = [];
+        const mergedTitles = [currentTitle];
 
         for (let i = index + 1; i < arr.length; i++) {
             if (mergedRecords.has(i)) continue;
 
             const comparisonTitle = arr[i][key];
             const comparisonProfessor = arr[i].professor;
+            const comparisonCodes = extractCodes(comparisonTitle);
             const similarity = calculateSimilarity(currentTitle, comparisonTitle);
 
-            if (similarity >= threshold && currentProfessor === comparisonProfessor) {
+            if (similarity >= threshold && (!currentProfessor || currentProfessor === comparisonProfessor)) {
+                if (similarity === 1) {
+                    mergedIds.push(arr[i][identificationKey]);
+                    mergedRecords.add(i);
+                    continue;
+                }
+
                 mergedIds.push(arr[i][identificationKey]);
                 mergedRecords.add(i);
+                mergedTitles.push(comparisonTitle);
+
+                comparisonCodes.forEach(code => {
+                    currentCodes.add(code);
+                });
             }
         }
 
-        // Add mergedIds only if similar items were found
-        const mergedObject = mergedIds.length > 0
-            ? { ...item, mergedIds }
-            : { ...item };
+        let mergedCourseNameProposal;
+        if (mergedIds.length > 0) {
+            const commonPart = findCommonSubstring(mergedTitles);
+            const cleanedCommonPart = cleanCommonPart(commonPart);
+            const mergedCodesArray = Array.from(currentCodes).filter(code => !cleanedCommonPart.includes(code));
+            if (mergedCodesArray.length > 0) {
+                mergedCourseNameProposal = `(${[...new Set(mergedCodesArray)].join(', ')}) ${cleanedCommonPart.trim()}`;
+            } else {
+                mergedCourseNameProposal = cleanedCommonPart.trim();
+            }
+        }
+
+        const mergedObject = {
+            ...item,
+            codes: Array.from(currentCodes),
+            mergedIds: mergedIds.length > 0 ? mergedIds : undefined
+        };
+
+        if (mergedIds.length > 0) {
+            mergedObject.mergedCourseNameProposal = mergedCourseNameProposal;
+        }
 
         mergedArray.push(mergedObject);
-
-        // Update progress bar
         progressBar.update(index + 1);
     });
 
-    // Stop progress bar
     progressBar.stop();
 
     return mergedArray;

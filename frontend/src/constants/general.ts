@@ -5,3 +5,10 @@ export const COUNTRY = 'Bayern, Germany';
 export const WEBSITE_URL = 'https://www.tum-rating.de';
 export const CONTACT_PAGE_URL = 'https://tum-rating.de/feedback';
 export const LAST_TERMS_UPDATED_DATE = 'July 06, 2024';
+
+
+const a = {
+    "nazwa_nasz_kurs" : ["nazwa_tum_kurs1,nazwa_tum_kurs2"],
+    "nazwa_nasz_kurs1": ["nazwa_tum_kurs3"],
+    "nazwa_nasz_kurs2": ["nazwa_tum_kurs4", "nazwa_tum_kurs5"]
+}
