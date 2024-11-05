@@ -3,9 +3,8 @@ import path from 'path';
 import prompt from 'prompts';
 import ora from 'ora';
 import config from "../config.js";
-// import keySimilarity from "./merging/keySimilarity.js";
 
-import keySimilarity from "./merging/keySimilarityv2.js";
+import keySimilarityWithProgress from "./merging/keySimilarityWithCliProgress.js";
 
 /**
  * Merges JSON files by key similarity after checking for key consistency.
@@ -104,22 +103,38 @@ const mergeExistingFilesByKeySimilarity = async () => {
         console.log(`Merged data saved to ${mergedFilePath}`);
 
         // Save the references to a __temp file
-        const tempFilePath = path.join(dirPath, '__temp.json');
-        fs.writeFileSync(tempFilePath, JSON.stringify(references, null, 2), 'utf8');
-        console.log(`References saved to ${tempFilePath}`);
+        const referencesMergedFilePath = path.join(dirPath, '__temp.json');
+        fs.writeFileSync(referencesMergedFilePath, JSON.stringify(references, null, 2), 'utf8');
+        console.log(`References saved to ${referencesMergedFilePath}`);
 
 
-        const similarityResults = await keySimilarity(mergedData, checkKey, idKey);
+        const similarityResults = await keySimilarityWithProgress(mergedData, checkKey, idKey);
 
         // Ensure FINAL_DATA_DIR exists
         if (!fs.existsSync(finalDataDir)) {
             fs.mkdirSync(finalDataDir, { recursive: true });
         }
 
+        console.log(1)
         // Save the similarity results to FINAL_DATA_DIR
         const finalFilePath = path.join(finalDataDir, 'final_merged_data.json');
         fs.writeFileSync(finalFilePath, JSON.stringify(similarityResults, null, 2), 'utf8');
         console.log(`Final merged data saved to ${finalFilePath}`);
+
+
+        // Prompt the user to run the checking application or continue without checking
+        const { runCheckingApp } = await prompt({
+            type: 'confirm',
+            name: 'runCheckingApp',
+            message: 'Do you want to run courses checking app ?',
+            initial: false,
+        });
+        // If the user chooses to run the checking application, return
+
+        if(runCheckingApp){
+
+        }
+        return runCheckingApp;
 
     } catch (error) {
         console.error(error);

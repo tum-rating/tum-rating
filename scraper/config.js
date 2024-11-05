@@ -10,6 +10,8 @@ const config = {
     PROD_DB_COURSES_DIR: path.join(__dirname, './fetchedFromProd'),
     MERGED_FILES_DIR: path.join(__dirname, './merged'),
     FINAL_DATA_DIR: path.join(__dirname, './finalData'),
+    CHECKING_APP_DIR: path.join(__dirname, './app'),
+
     // URLS
     TUM_ONLINE_SEMESTERS_URL: "https://campus.tum.de/tumonline/ee/rest/slc.lib.tm/semesters/student?$language=",
     // FETCH SETTINGS

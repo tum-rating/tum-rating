@@ -9,9 +9,10 @@ import fs from 'fs';
 import path from "path";
 import {displayHeader} from "./utils/display.js";
 import {mergeExistingFilesByKeySimilarity} from "./utils/mergeExistingFilesByKeySimilarity.js";
+import {runCheckingApp} from "./utils/runCheckingApp.js";
 
 const main = async (callback) => {
-    console.clear();
+    // console.clear();
 
     const spinner = ora('Fetching semesters...').start();
     try {
@@ -38,6 +39,10 @@ const main = async (callback) => {
                 title: `Merge existing files with ${chalk.green("key similarity method")}.`,
                 value: "merge-existing-by-key-similarity"
             },
+            {
+                title: `Run courses checking app.`,
+                value: "run-checking-app"
+            }
         ];
 
         const response = await prompt({
@@ -71,9 +76,20 @@ const main = async (callback) => {
                 })
                 break;
             case "merge-existing-by-key-similarity":
-                await mergeExistingFilesByKeySimilarity();
+                // result is user decision about if they want run checking app after merging
+                const result = await mergeExistingFilesByKeySimilarity();
+                if(!result){
+                    return main(() => {
+                        console.log("✅ Merging completed successfully.")
+                    })
+                }else{
+                    await runCheckingApp();
+                }
+                break;
+            case "run-checking-app":
+                await runCheckingApp();
+                break;
             default:
-                console.log("default");
         }
     }
 };
