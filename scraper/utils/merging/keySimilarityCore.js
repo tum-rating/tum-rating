@@ -1,5 +1,5 @@
 import {distance as levenshteinDistance} from "fastest-levenshtein";
-
+import { v4 as uuidv4 } from 'uuid';
 export default async function keySimilarityCore(arr, key, identificationKey, progressCallback) {
     const mergedArray = [];
     const mergedRecords = new Map();
@@ -68,7 +68,7 @@ export default async function keySimilarityCore(arr, key, identificationKey, pro
                 professor: item.professor,
                 courseId: "",
                 courseNumber: "",
-                id: ""
+                id: uuidv4()
             });
         } else {
             mergedArray.push({
