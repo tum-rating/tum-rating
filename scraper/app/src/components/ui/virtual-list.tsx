@@ -9,7 +9,6 @@ interface VirtualListProps {
 
 const VirtualList = ({data, renderer}: VirtualListProps) => {
     const parentRef = useRef<HTMLDivElement>(null)
-    console.log(data)
 
     const count = data.length
 

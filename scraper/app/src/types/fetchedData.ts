@@ -7,6 +7,9 @@ type FetchedComputedCourse = {
     courseId: string;
     courseNumber: string;
     id: string;
+    acceptedCount?: number;
+    rejectedCount?: number;
+    notResolvedCount?: number;
 }
 
 type FetchedCourse = {
@@ -22,6 +25,7 @@ type FetchedCourse = {
     votesNumber: number;
     distance: number;
     codes?: string[];
+    accepted?: boolean;
 }
 
 type FetchedData = {
