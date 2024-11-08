@@ -55,6 +55,7 @@ const Sidebar = () => {
                         <>
                             <ComputedCoursesListItem
                                 data={row}
+                                key={row.id}
                                 selected={row.id === selectedItemId}
                                 onClick={setSelectedItemId}
                             />
