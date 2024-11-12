@@ -1,9 +1,9 @@
-import {createContext, PropsWithChildren, useEffect, useState, useTransition} from 'react';
-import {fetchData} from '../lib/fetch-data.ts';
-import {FetchedComputedCourse, FetchedData} from '@/types/fetchedData.ts';
+import { createContext, PropsWithChildren, useEffect, useState, useTransition } from 'react';
+import { fetchData } from '../lib/fetch-data.ts';
+import {FetchedComputedCourse, FetchedCourse, FetchedData} from '@/types/fetchedData.ts';
 
 interface AppDataContextType {
-    appData: FetchedData | undefined;
+    appData: FetchedData
     isPending: boolean;
     selectedItemId: string | null;
     setSelectedItemId: (id: string | null) => void;
@@ -13,31 +13,30 @@ interface AppDataContextType {
 }
 
 const AppDataContext = createContext<AppDataContextType>({
-    appData: undefined,
+    appData: {
+        computedCourses: [],
+        allCoursesMap: {},
+        allCourses: []
+    },
     isPending: false,
     selectedItemId: null,
-    setSelectedItemId: () => {
-    },
+    setSelectedItemId: () => {},
     computedDataToCheck: undefined,
-    getSelectedItemById: (id: string | null) => undefined,
-    saveSelectedCourse: () => {
-    }
+    getSelectedItemById: () => undefined,
+    saveSelectedCourse: () => {}
 });
 
 type AppDataContextProps = PropsWithChildren;
 
-const AppDataProvider = ({children}: AppDataContextProps) => {
-    const [appData, setAppData] = useState<FetchedData | undefined>(undefined);
-    const [computedDataToCheck, setComputedDataToCheck] = useState<FetchedComputedCourse[] | undefined>(undefined);
-    const [computedCoursesMap, setComputedCoursesMap] = useState<Map<string, FetchedComputedCourse>>(new Map());
+const AppDataProvider = ({ children }: AppDataContextProps) => {
+    const [appData, setAppData] = useState<FetchedData>({ computedCourses: [], allCoursesMap: {}, allCourses: [] });
+    const [computedDataToCheck, setComputedDataToCheck] = useState<FetchedComputedCourse[]>([]);
+    const [computedCoursesMap, setComputedCoursesMap] = useState(new Map());
     const [isPending, startTransition] = useTransition();
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
-
     const saveSelectedCourse = (updatedCourse: FetchedComputedCourse) => {
-        //update computedDataToCheck
-        if (!updatedCourse) return;
-        if (!computedDataToCheck) return;
+        if (!updatedCourse || !computedDataToCheck) return;
 
         setComputedDataToCheck((prev) => {
             if (!prev) return prev;
@@ -45,18 +44,18 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
         });
     };
 
-
     useEffect(() => {
         startTransition(() => {
             (async () => {
                 const data = await fetchData();
                 const formattedData: FetchedData = {
                     ...data,
-                    allCoursesMap: Object.fromEntries(data.allCoursesMap.map((item: any) => [item.key, item.value])),
-                    computedCourses: data.computedCourses.map(course => {
+                    allCourses: [],
+                    allCoursesMap: data.allCoursesMap,
+                    computedCourses: data.computedCourses.map((course: FetchedComputedCourse) => {
                         return {
                             ...course,
-                            merged: course.merged?.map(item => ({
+                            merged: course.merged?.map((item: FetchedCourse) => ({
                                 ...item,
                                 accepted: undefined
                             })),
@@ -69,7 +68,6 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
                 const temp: FetchedComputedCourse[] = formattedData.computedCourses.filter(item => item.merged && item.merged.length > 1);
                 setComputedDataToCheck(temp);
 
-                // Create an indexed map of computed courses
                 const coursesMap = new Map<string, FetchedComputedCourse>();
                 temp.forEach(course => coursesMap.set(course.id, course));
                 setComputedCoursesMap(coursesMap);
@@ -79,8 +77,8 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
         });
     }, []);
 
-    const getSelectedItemById = (id: string | null): FetchedComputedCourse | undefined => {
-        return id ? computedCoursesMap.get(id) : undefined;
+    const getSelectedItemById = (selectedId: string | null): FetchedComputedCourse | undefined => {
+        return selectedId ? computedCoursesMap.get(selectedId) : undefined;
     };
 
     return (

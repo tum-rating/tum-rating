@@ -1,20 +1,20 @@
-import { FetchedComputedCourse } from "@/types/fetchedData.ts";
-import { Textarea } from "@/components/ui/textarea.tsx";
-import { useEffect, useState } from "react";
-import { Label } from "@radix-ui/react-label";
-import { Input } from "./ui/input";
-import { InputTags } from "./ui/input-tags";
-import { Button } from "@/components/ui/button.tsx";
-import { ArrowLeft, ArrowRight, CheckCircleIcon, CheckIcon } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area.tsx";
+import {FetchedComputedCourse, FetchedCourse} from "@/types/fetchedData.ts";
+import {Textarea} from "@/components/ui/textarea.tsx";
+import {useEffect, useState} from "react";
+import {Label} from "@radix-ui/react-label";
+import {Input} from "./ui/input";
+import {InputTags} from "./ui/input-tags";
+import {Button} from "@/components/ui/button.tsx";
+import {ArrowLeft, ArrowRight, CheckIcon} from "lucide-react";
+import {ScrollArea} from "@/components/ui/scroll-area.tsx";
 import MergedSubCourseCard from "@/components/merged-sub-course-card.tsx";
 import Masonry from "@/components/masonry.tsx";
 import useAppData from "@/hooks/useAppData";
-import { Badge } from "./ui/badge";
+import {Badge} from "./ui/badge";
 
-const MergedCourseCard = ({ course }: { course: FetchedComputedCourse | undefined }) => {
+const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined }) => {
     const [internalCourse, setInternalCourse] = useState<FetchedComputedCourse | undefined>(undefined);
-    const { saveSelectedCourse } = useAppData();
+    const {saveSelectedCourse} = useAppData();
 
     useEffect(() => {
         if (course) {
@@ -22,15 +22,15 @@ const MergedCourseCard = ({ course }: { course: FetchedComputedCourse | undefine
         }
     }, [course]);
 
-    const updateInternalCourse = (key: string, value: any) => {
+    const updateInternalCourse = (key: string, value: unknown) => {
         if (!internalCourse) return;
 
-        const updatedCourse = { ...internalCourse, [key]: value };
+        const updatedCourse = {...internalCourse, [key]: value};
 
-        if (key === "merged") {
-            const acceptedCount = value.filter((item: any) => item.accepted === true).length;
-            const rejectedCount = value.filter((item: any) => item.accepted === false).length;
-            const notResolvedCount = value.length - acceptedCount - rejectedCount;
+        if (key === "merged" && Array.isArray(value)) {
+            const acceptedCount = value?.filter((item: FetchedCourse) => item.accepted === true).length ?? 0;
+            const rejectedCount = value?.filter((item: FetchedCourse) => item.accepted === false).length ?? 0;
+            const notResolvedCount = (value?.length ?? 0) - acceptedCount - rejectedCount;
 
             updatedCourse.acceptedCount = acceptedCount;
             updatedCourse.rejectedCount = rejectedCount;
@@ -41,7 +41,7 @@ const MergedCourseCard = ({ course }: { course: FetchedComputedCourse | undefine
     };
 
     if (!internalCourse) return <div>No course selected</div>;
-    console.log(internalCourse,"<---internal")
+
     return (
         <div className="relative z-10 w-full h-full flex justify-center items-center gap-4">
             <ScrollArea className='w-full h-screen'>
@@ -74,7 +74,8 @@ const MergedCourseCard = ({ course }: { course: FetchedComputedCourse | undefine
                                 />
                             </div>
                             <div className="w-full max-w-sm gap-1.5 mt-3">
-                                <Label className='text-sm font-bold' htmlFor="course-semesters">Offered in semesters</Label>
+                                <Label className='text-sm font-bold' htmlFor="course-semesters">Offered in
+                                    semesters</Label>
                                 <InputTags
                                     id="course-semesters"
                                     className="bg-transparent"
@@ -88,16 +89,16 @@ const MergedCourseCard = ({ course }: { course: FetchedComputedCourse | undefine
                             <Label className='text-sm font-bold' htmlFor="course-semesters">Merged with</Label>
                             <div className={`masonry`}>
                                 <Masonry>
-                                    {internalCourse.merged ? internalCourse.merged.map((x) => {
-                                        return (
-                                            <MergedSubCourseCard subCourse={x} key={x.id} setSubCourse={(updatedSubCourse) => {
-                                                console.log(updatedSubCourse)
-                                                const updatedMerged = internalCourse.merged.map((sub) => sub.id === updatedSubCourse.id ? updatedSubCourse : sub);
-                                                console.log(updatedMerged)
-                                                updateInternalCourse("merged", updatedMerged);
-                                            }} />
-                                        )
-                                    }) : null}
+                                    {internalCourse.merged ? internalCourse.merged.map((x) => (
+                                        <MergedSubCourseCard subCourse={x} key={x.id}
+                                                             setSubCourse={(updatedSubCourse) => {
+                                                                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                                                 // @ts-expect-error
+                                                                 const updatedMerged = internalCourse.merged.map((sub) => sub.id === updatedSubCourse.id ? updatedSubCourse : sub);
+                                                                 updateInternalCourse("merged", updatedMerged);
+                                                             }}/>
+                                    )) : null}
+
                                 </Masonry>
                             </div>
                         </div>
@@ -107,27 +108,28 @@ const MergedCourseCard = ({ course }: { course: FetchedComputedCourse | undefine
                     <div className="flex flex-col mt-3 items-end justify-end px-2 mr-2">
                         <div>
                             <Badge
-                                variant={internalCourse.acceptedCount + internalCourse.rejectedCount === internalCourse.merged.length ? 'success' : 'subtle'}
+                                variant={(internalCourse.acceptedCount ?? 0) + (internalCourse.rejectedCount ?? 0) === (internalCourse.merged?.length ?? 0) ? 'success' : 'subtle'}
                                 className='mb-2'>
-                                Resolved {internalCourse.acceptedCount + internalCourse.rejectedCount} / {internalCourse.merged.length}
+                                Resolved {(internalCourse.acceptedCount ?? 0) + (internalCourse.rejectedCount ?? 0)} / {internalCourse.merged?.length ?? 0}
                                 {
-                                    internalCourse.acceptedCount + internalCourse.rejectedCount === internalCourse.merged.length && (
-                                        <CheckIcon className='inline-block w-5 h-4 ml-[3px]' />
+                                    (internalCourse.acceptedCount ?? 0) + (internalCourse.rejectedCount ?? 0) === (internalCourse.merged?.length ?? 0) && (
+                                        <CheckIcon className='inline-block w-5 h-4 ml-[3px]'/>
                                     )
                                 }
                             </Badge>
                         </div>
                         <div className="flex gap-2">
                             <Button variant='outline' tooltip='Previous'>
-                                <ArrowLeft />
+                                <ArrowLeft/>
                             </Button>
                             <Button variant='outline' tooltip='Next'>
-                                <ArrowRight />
+                                <ArrowRight/>
                             </Button>
-                            <Button onClick={() => {
-                                console.log(internalCourse)
-                                saveSelectedCourse(internalCourse)
-                            }}>
+                            <Button
+                                disabled={(internalCourse.acceptedCount ?? 0) + (internalCourse.rejectedCount ?? 0) !== (internalCourse.merged?.length ?? 0)}
+                                onClick={() => {
+                                    saveSelectedCourse(internalCourse)
+                                }}>
                                 Save
                             </Button>
                         </div>

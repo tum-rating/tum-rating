@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useRef, useState, ReactNode } from "react";
 
 type MasonryProps = PropsWithChildren<{
-    children: ReactNode[];
+    children: ReactNode[] | null;
 }>;
 
 const Masonry = ({ children }: MasonryProps) => {

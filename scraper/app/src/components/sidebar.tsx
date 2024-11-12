@@ -11,7 +11,7 @@ interface SidebarProps {
 }
 
 const Sidebar = ({isOpen}: SidebarProps) => {
-    const {appData, isPending, computedDataToCheck, selectedItemId, setSelectedItemId} = useAppData();
+    const { isPending, computedDataToCheck, selectedItemId, setSelectedItemId} = useAppData();
     const [computedCourses, setComputedCourses] = useState<FetchedComputedCourse[]>([]);
     const [showSkeleton, setShowSkeleton] = useState(true);
 
