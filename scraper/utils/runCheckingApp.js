@@ -14,7 +14,7 @@ export const runCheckingApp = async () => {
             fs.mkdirSync(appFilePath, { recursive: true });
         }
         await fs.copyFileSync(finalFilePath, path.join(appFilePath, 'computed_courses.json'));
-        await fs.copyFileSync(mergedFilePath, path.join(appFilePath, 'all_courses_.json'));
+        await fs.copyFileSync(mergedFilePath, path.join(appFilePath, 'all_courses.json'));
         await fs.copyFileSync(referencesMergedFilePath, path.join(appFilePath, 'all_courses_map.json'));
     }
 

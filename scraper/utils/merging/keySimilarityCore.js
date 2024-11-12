@@ -4,7 +4,7 @@ export default async function keySimilarityCore(arr, key, identificationKey, pro
     const mergedArray = [];
     const mergedRecords = new Map();
     const codePattern = /\b([A-Z]{2,}[0-9]+(?:_[0-9]+)?(?:\s+[A-Z]+)?(?:\s+[A-Z]{2})?)\b/g;
-    arr = arr.slice(0, 1500);
+    // arr = arr.slice(0, 1500);
 
     function extractCodes(title) {
         const codes = new Set();

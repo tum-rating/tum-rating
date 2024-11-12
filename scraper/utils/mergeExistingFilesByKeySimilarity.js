@@ -6,24 +6,6 @@ import config from "../config.js";
 
 import keySimilarityWithProgress from "./merging/keySimilarityWithCliProgress.js";
 
-/**
- * Merges JSON files by key similarity after checking for key consistency.
- *
- * This function performs the following steps:
- * 1. Reads JSON files from the specified directory.
- * 2. Prompts the user to select files to merge.
- * 3. Checks if the JSON objects in the selected files have the same keys.
- * 4. If there is a key mismatch, it prints which key is lacking in which file and exits.
- * 5. If all keys match, it prompts the user to select which keys to compare for similarity.
- * 6. Prompts the user to select an identification key.
- * 7. Merges the selected files and saves the merged data to a new file.
- * 8. Stores references to the merged data objects in a `__temp` file for user-checking actions.
- * 9. Prompts the user to either run the checking application or continue without checking.
- * 10. If the user continues without checking, overwrites the `merged_courses.json` file with the merged JSON data.
- *
- * @async
- * @function mergeExistingFilesByKeySimilarity
- */
 const mergeExistingFilesByKeySimilarity = async () => {
     try {
         // Read JSON files from the specified directory
@@ -107,7 +89,6 @@ const mergeExistingFilesByKeySimilarity = async () => {
         fs.writeFileSync(referencesMergedFilePath, JSON.stringify(references, null, 2), 'utf8');
         console.log(`References saved to ${referencesMergedFilePath}`);
 
-
         const similarityResults = await keySimilarityWithProgress(mergedData, checkKey, idKey);
 
         // Ensure FINAL_DATA_DIR exists
@@ -115,12 +96,10 @@ const mergeExistingFilesByKeySimilarity = async () => {
             fs.mkdirSync(finalDataDir, { recursive: true });
         }
 
-        console.log(1)
         // Save the similarity results to FINAL_DATA_DIR
         const finalFilePath = path.join(finalDataDir, 'final_merged_data.json');
         fs.writeFileSync(finalFilePath, JSON.stringify(similarityResults, null, 2), 'utf8');
         console.log(`Final merged data saved to ${finalFilePath}`);
-
 
         // Prompt the user to run the checking application or continue without checking
         const { runCheckingApp } = await prompt({
