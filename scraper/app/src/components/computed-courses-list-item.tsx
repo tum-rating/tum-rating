@@ -2,7 +2,7 @@ import {FetchedComputedCourse} from "@/types/fetchedData.ts";
 import {Badge} from "@/components/ui/badge.tsx";
 import {cn} from "@/lib/utils";
 import {CheckCircleIcon} from "lucide-react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 interface ComputedCoursesListItemProps {
     data: FetchedComputedCourse;
@@ -17,14 +17,14 @@ const ComputedCoursesListItem = ({data, selected, onClick}: ComputedCoursesListI
         notResolved: data.notResolvedCount || 0
     });
 
-    const handleResolve = (type: 'accepted' | 'rejected') => {
-        const updatedStatus = {
-            ...status,
-            [type]: status[type] + 1,
-            notResolved: status.notResolved - 1
-        };
-        setStatus(updatedStatus);
-    };
+
+    useEffect(() => {
+        setStatus({
+            accepted: data.acceptedCount || 0,
+            rejected: data.rejectedCount || 0,
+            notResolved: data.notResolvedCount || 0
+        });
+    }, [data]);
 
     return (
         <div
@@ -48,9 +48,9 @@ const ComputedCoursesListItem = ({data, selected, onClick}: ComputedCoursesListI
             <div className="flex justify-between">
                 <div className="flex gap-1 mt-1">
                     <Badge tooltip="accepted" variant="success"
-                           onClick={() => handleResolve('accepted')}>{status.accepted}</Badge>
+                    >{status.accepted}</Badge>
                     <Badge tooltip="rejected" variant="destructive"
-                           onClick={() => handleResolve('rejected')}>{status.rejected}</Badge>
+                    >{status.rejected}</Badge>
                     <Badge tooltip="unresolved">{status.notResolved}</Badge>
                 </div>
             </div>

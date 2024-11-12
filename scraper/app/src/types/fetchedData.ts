@@ -25,7 +25,7 @@ type FetchedCourse = {
     votesNumber: number;
     distance: number;
     codes?: string[];
-    accepted?: boolean;
+    accepted?: boolean | null;
 }
 
 type FetchedData = {

@@ -1,6 +1,6 @@
-import { createContext, PropsWithChildren, useEffect, useState, useTransition } from 'react';
-import { fetchData } from '../lib/fetch-data.ts';
-import { FetchedComputedCourse, FetchedData } from '@/types/fetchedData.ts';
+import {createContext, PropsWithChildren, useEffect, useState, useTransition} from 'react';
+import {fetchData} from '../lib/fetch-data.ts';
+import {FetchedComputedCourse, FetchedData} from '@/types/fetchedData.ts';
 
 interface AppDataContextType {
     appData: FetchedData | undefined;
@@ -9,25 +9,42 @@ interface AppDataContextType {
     setSelectedItemId: (id: string | null) => void;
     computedDataToCheck: FetchedComputedCourse[] | undefined;
     getSelectedItemById: (id: string | null) => FetchedComputedCourse | undefined;
+    saveSelectedCourse: (course: FetchedComputedCourse) => void;
 }
 
 const AppDataContext = createContext<AppDataContextType>({
     appData: undefined,
     isPending: false,
     selectedItemId: null,
-    setSelectedItemId: () => {},
+    setSelectedItemId: () => {
+    },
     computedDataToCheck: undefined,
-    getSelectedItemById: (id: string | null) => undefined
+    getSelectedItemById: (id: string | null) => undefined,
+    saveSelectedCourse: () => {
+    }
 });
 
 type AppDataContextProps = PropsWithChildren;
 
-const AppDataProvider = ({ children }: AppDataContextProps) => {
+const AppDataProvider = ({children}: AppDataContextProps) => {
     const [appData, setAppData] = useState<FetchedData | undefined>(undefined);
     const [computedDataToCheck, setComputedDataToCheck] = useState<FetchedComputedCourse[] | undefined>(undefined);
     const [computedCoursesMap, setComputedCoursesMap] = useState<Map<string, FetchedComputedCourse>>(new Map());
     const [isPending, startTransition] = useTransition();
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
+
+    const saveSelectedCourse = (updatedCourse: FetchedComputedCourse) => {
+        //update computedDataToCheck
+        if (!updatedCourse) return;
+        if (!computedDataToCheck) return;
+
+        setComputedDataToCheck((prev) => {
+            if (!prev) return prev;
+            return prev.map(course => course.id === updatedCourse.id ? updatedCourse : course);
+        });
+    };
+
 
     useEffect(() => {
         startTransition(() => {
@@ -67,7 +84,15 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
     };
 
     return (
-        <AppDataContext.Provider value={{ appData, isPending, selectedItemId, setSelectedItemId, computedDataToCheck, getSelectedItemById }}>
+        <AppDataContext.Provider value={{
+            appData,
+            isPending,
+            selectedItemId,
+            setSelectedItemId,
+            computedDataToCheck,
+            getSelectedItemById,
+            saveSelectedCourse
+        }}>
             {children}
         </AppDataContext.Provider>
     );
