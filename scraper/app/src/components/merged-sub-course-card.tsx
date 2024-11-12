@@ -5,6 +5,7 @@ import {Badge} from "@/components/ui/badge.tsx";
 import getTumCampusCourseLink from "@/lib/get-tum-campus-course-link.ts";
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group.tsx";
 import {Check, X} from "lucide-react";
+import DistanceLabel from "@/components/disntace-label.tsx";
 
 
 interface MergedSubCourseCardProps {
@@ -15,7 +16,9 @@ interface MergedSubCourseCardProps {
 const MergedSubCourseCard = ({subCourse, setSubCourse}: MergedSubCourseCardProps) => {
     console.log(subCourse)
     return (
-        <Card className='flex items-center gap-2 p-2 max-w-[250px]'>
+        <Card
+            className={`relative flex flex-col gap-2 p-2 max-w-[250px] ${subCourse.accepted ? 'bg-green-50' : subCourse.accepted === false ? 'bg-red-50' : 'bg-gray-50'}`}>
+            <DistanceLabel distance={subCourse.distance}/>
             <div className={`flex flex-col gap-1`}>
                 <Tooltip>
                     <TooltipTrigger asChild>
@@ -27,17 +30,22 @@ const MergedSubCourseCard = ({subCourse, setSubCourse}: MergedSubCourseCardProps
                         {subCourse.name}
                     </TooltipContent>
                 </Tooltip>
+
                 <span className={`text-xs`}>
-                    {subCourse.professor}</span>
+                {subCourse.offeredInSemesters.join(', ')}
+                </span>
+                <span className={`text-xs mb-1`}>
+                    {subCourse.professor}
+                </span>
                 <div className='flex gap-1 flex-wrap'>
                     {
-                        subCourse?.codes.map((code) => {
+                        subCourse.codes && subCourse.codes.map((code) => {
                             return (
                                 <Badge key={code} variant='outline' className={`text-xs`}>{code}</Badge>
                             )
                         })}
                 </div>
-                <ToggleGroup type="single" className='w-full mt-4'
+                <ToggleGroup type="single" className={`w-full mt-1 `}
                              value={subCourse.accepted ? 'accept' : subCourse.accepted === false ? 'decline' : 'none'}
                              onValueChange={(value) => {
                                  if (value === 'accept') {
