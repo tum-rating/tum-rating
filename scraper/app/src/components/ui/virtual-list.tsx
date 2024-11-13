@@ -4,10 +4,11 @@ import {FetchedComputedCourse} from "@/types/fetchedData.ts";
 
 interface VirtualListProps {
     data: FetchedComputedCourse[],
-    renderer: (row: FetchedComputedCourse) => JSX.Element
+    renderer: (row: FetchedComputedCourse) => JSX.Element,
+    height: string | number
 }
 
-const VirtualList = ({data, renderer}: VirtualListProps) => {
+const VirtualList = ({data, renderer,height}: VirtualListProps) => {
     const parentRef = useRef<HTMLDivElement>(null)
 
     const count = data.length
@@ -26,8 +27,8 @@ const VirtualList = ({data, renderer}: VirtualListProps) => {
                 ref={parentRef}
                 className="List"
                 style={{
-                    height: '100vh',
                     width: 400,
+                    height: height,
                     overflowY: 'auto',
                     contain: 'strict',
                 }}

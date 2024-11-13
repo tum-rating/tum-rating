@@ -5,13 +5,14 @@ import {FetchedComputedCourse} from "@/types/fetchedData.ts";
 import ComputedCoursesListItem from "@/components/computed-courses-list-item.tsx";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
+import SidebarSearch from "@/components/sidebar-search.tsx";
 
 interface SidebarProps {
     isOpen: boolean;
 }
 
 const Sidebar = ({isOpen}: SidebarProps) => {
-    const { isPending, computedDataToCheck, selectedItemId, setSelectedItemId} = useAppData();
+    const {isPending, computedDataToCheck, selectedItemId, setSelectedItemId} = useAppData();
     const [computedCourses, setComputedCourses] = useState<FetchedComputedCourse[]>([]);
     const [showSkeleton, setShowSkeleton] = useState(true);
 
@@ -28,12 +29,12 @@ const Sidebar = ({isOpen}: SidebarProps) => {
     return (
         <div className={`Sidebar 
             ${isOpen ? 'w-[400px]' : 'w-[0px]'} 
-       
             transition-width 
             duration-300 
             ease-in-out 
        
         `}>
+
             {isPending || showSkeleton ? (
                 <div
                     style={{
@@ -44,6 +45,7 @@ const Sidebar = ({isOpen}: SidebarProps) => {
                         contain: 'strict',
                     }}
                 >
+
                     {Array.from({length: 10}).map((_, index) => (
                         <>
                             <div key={index} className="bg-gray-100 px-4 py-4 w-[388px] h-[107.5px]">
@@ -60,21 +62,24 @@ const Sidebar = ({isOpen}: SidebarProps) => {
                         </>
                     ))}
                 </div>
-            ) : (
-                <VirtualList
-                    data={computedCourses}
-                    renderer={(row) => (
-                        <>
-                            <ComputedCoursesListItem
-                                data={row}
-                                key={row.id}
-                                selected={row.id === selectedItemId}
-                                onClick={setSelectedItemId}
-                            />
-                            <Separator/>
-                        </>
-                    )}
-                />
+            ) : (<>
+                    <SidebarSearch/>
+                    <VirtualList
+                        height={'calc(100vh - 36px)'}
+                        data={computedCourses}d
+                        renderer={(row) => (
+                            <>
+                                <ComputedCoursesListItem
+                                    data={row}
+                                    key={row.id}
+                                    selected={row.id === selectedItemId}
+                                    onClick={setSelectedItemId}
+                                />
+                                <Separator/>
+                            </>
+                        )}
+                    />
+                </>
             )}
         </div>
     );
