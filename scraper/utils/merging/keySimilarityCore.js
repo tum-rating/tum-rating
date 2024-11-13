@@ -24,6 +24,13 @@ export default async function keySimilarityCore(arr, key, identificationKey, pro
         return {cleanedTitle, codes};
     }
 
+    function checkIfCoursesHaveAtLeastOneCommonWord(course1, course2) {
+        const words1 = course1.split(" ").filter(word => word.length > 1);
+        const words2 = course2.split(" ").filter(word => word.length > 1);
+        const commonWords = words1.filter(word => words2.includes(word));
+        return commonWords.length > 0;
+    }
+
     for (let index = 0; index < arr.length; index++) {
         const item = arr[index];
         const similarRecords = [];
@@ -39,12 +46,12 @@ export default async function keySimilarityCore(arr, key, identificationKey, pro
 
             const record = arr[i];
             const {cleanedTitle: recordTitle, codes: recordCodes} = redundantWordsExtractor(record[key]);
-            const distance = levenshteinDistance(itemTitle, recordTitle);
+            const similarity = levenshteinDistance(itemTitle, recordTitle);
 
-            if (distance < 25 && record.professor === item.professor) {
+            if (similarity < 25 && record.professor === item.professor && checkIfCoursesHaveAtLeastOneCommonWord(itemTitle, recordTitle)) {
                 similarRecords.push({
                     ...record,
-                    distance,
+                    similarity: similarity,
                     codes: Array.from(recordCodes),
                     offeredInSemesters: record.offeredInSemesters,
                 });
@@ -59,13 +66,14 @@ export default async function keySimilarityCore(arr, key, identificationKey, pro
                 name: item[key],
                 merged: [{
                     ...item,
-                    distance: 0,
+                    similarity: 0,
                     codes: Array.from(currentCodes),
                     offeredInSemesters: Array.from(offeredInSemesters),
                 }, ...similarRecords],
                 codes: Array.from(currentCodes),
                 offeredInSemesters: Array.from(offeredInSemesters),
                 professor: item.professor,
+
                 courseId: "",
                 courseNumber: "",
                 id: uuidv4()
