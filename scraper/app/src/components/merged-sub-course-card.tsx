@@ -5,7 +5,7 @@ import {Badge} from "@/components/ui/badge.tsx";
 import getTumCampusCourseLink from "@/lib/get-tum-campus-course-link.ts";
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group.tsx";
 import {Check, X} from "lucide-react";
-import DistanceLabel from "@/components/disntace-label.tsx";
+import SimilarityLabel from "@/components/similarity-label.tsx";
 
 
 interface MergedSubCourseCardProps {
@@ -18,7 +18,7 @@ const MergedSubCourseCard = ({subCourse, setSubCourse}: MergedSubCourseCardProps
     return (
         <Card
             className={`relative flex flex-col gap-2 p-2 max-w-[250px] ${subCourse.accepted ? 'bg-green-50' : subCourse.accepted === false ? 'bg-red-50' : 'bg-gray-50'}`}>
-            <DistanceLabel distance={subCourse.distance}/>
+            <SimilarityLabel similarity={subCourse.similarity}/>
             <div className={`flex flex-col gap-1`}>
                 <Tooltip>
                     <TooltipTrigger asChild>

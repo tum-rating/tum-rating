@@ -65,7 +65,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
                         };
                     })
                 };
-                const temp: FetchedComputedCourse[] = formattedData.computedCourses.filter(item => item.merged && item.merged.length > 1);
+                const temp: FetchedComputedCourse[] = formattedData.computedCourses
                 setComputedDataToCheck(temp);
 
                 const coursesMap = new Map<string, FetchedComputedCourse>();

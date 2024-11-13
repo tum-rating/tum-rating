@@ -12,6 +12,7 @@ type FetchedComputedCourse = {
     notResolvedCount?: number;
 }
 
+
 type FetchedCourse = {
     id: string;
     courseId: string;
@@ -23,7 +24,7 @@ type FetchedCourse = {
     howInterestingRatingAverage: number;
     howEasyRatingAverage: number;
     votesNumber: number;
-    distance: number;
+    similarity: number;
     codes?: string[];
     accepted?: boolean | null;
 }
