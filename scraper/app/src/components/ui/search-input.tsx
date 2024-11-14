@@ -1,6 +1,8 @@
 import {InputProps} from "@/components/ui/input.tsx";
 import React from "react";
 import {cn} from "@/lib/utils.ts";
+import {Button} from "@/components/ui/button.tsx";
+import {X} from "lucide-react";
 
 
 export type SearchInputProps = InputProps

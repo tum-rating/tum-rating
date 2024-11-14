@@ -21,7 +21,7 @@ const buttonVariants = cva(
                 default: "h-9 px-4 py-2",
                 sm: "h-8 rounded-md px-3 text-xs",
                 lg: "h-10 rounded-md px-8",
-                icon: "h-6 w-6",
+                icon: "h-6 w-6 transition-transform transform hover:scale-105 active:scale-95",
             },
         },
         defaultVariants: {
@@ -36,7 +36,7 @@ export interface ButtonProps
         VariantProps<typeof buttonVariants> {
     asChild?: boolean;
     tooltip?: React.ReactNode;
-    loading?: boolean; // Add loading prop
+    loading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

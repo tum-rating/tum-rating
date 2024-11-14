@@ -21,6 +21,7 @@ type FetchedCourse = {
     otherLecturers: string[];
     name: string;
     offeredInSemesters: string[];
+    reviews: any[];
     howInterestingRatingAverage: number;
     howEasyRatingAverage: number;
     votesNumber: number;

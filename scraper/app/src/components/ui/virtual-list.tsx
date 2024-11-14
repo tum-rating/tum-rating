@@ -1,25 +1,26 @@
-import {useVirtualizer} from "@tanstack/react-virtual";
-import {useRef} from "react";
-import {FetchedComputedCourse} from "@/types/fetchedData.ts";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { useRef } from "react";
+import { FetchedComputedCourse } from "@/types/fetchedData";
 
 interface VirtualListProps {
-    data: FetchedComputedCourse[],
-    renderer: (row: FetchedComputedCourse) => JSX.Element,
-    height: string | number
+    data: FetchedComputedCourse[];
+    renderer: (row: FetchedComputedCourse, searchTerm: string) => JSX.Element;
+    height: string | number;
+    searchTerm: string;
 }
 
-const VirtualList = ({data, renderer,height}: VirtualListProps) => {
-    const parentRef = useRef<HTMLDivElement>(null)
+const VirtualList = ({ data, renderer, height, searchTerm }: VirtualListProps) => {
+    const parentRef = useRef<HTMLDivElement>(null);
 
-    const count = data.length
+    const count = data.length;
 
     const virtualizer = useVirtualizer({
         count,
         getScrollElement: () => parentRef.current,
         estimateSize: () => 45,
-    })
+    });
 
-    const items = virtualizer.getVirtualItems()
+    const items = virtualizer.getVirtualItems();
 
     return (
         <div>
@@ -49,26 +50,21 @@ const VirtualList = ({data, renderer,height}: VirtualListProps) => {
                             transform: `translateY(${items[0]?.start ?? 0}px)`,
                         }}
                     >
-                        {
-                            items.map((virtualRow) => {
-                                    return (<div
-                                            key={virtualRow.key}
-                                            data-index={virtualRow.index}
-                                            ref={virtualizer.measureElement}
-                                            className={
-                                                virtualRow.index % 2 ? 'ListItemOdd' : 'ListItemEven'
-                                            }
-                                        >
-                                            {renderer(data[virtualRow.index])}
-                                        </div>
-                                    )
-                                }
-                            )}
+                        {items.map((virtualRow) => (
+                            <div
+                                key={virtualRow.key}
+                                data-index={virtualRow.index}
+                                ref={virtualizer.measureElement}
+                                className={virtualRow.index % 2 ? 'ListItemOdd' : 'ListItemEven'}
+                            >
+                                {renderer(data[virtualRow.index], searchTerm)}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default VirtualList;

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
-    DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuLabel,
     DropdownMenuSeparator,
@@ -50,13 +49,16 @@ const SidebarSearchSortingDropdown = ({ onSortChange }: SidebarSearchSortingDrop
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger >
                 <Button
                     variant='outline'
                     size='icon'
-                    className={`shadow-md transition-transform transform hover:shadow-lg`}
+                    className={`relative shadow-md transition-transform transform `}
                 >
-                    <ListFilter size={4} className={`w-12 h-12`} />
+                    <ListFilter className={`w-12 h-12`} />
+                    {
+                        Object.values(sortOptions).some(option => option.enabled) && <div className="rounded-full w-2 h-2 bg-blue-500 absolute top-[-3px] right-[-3px]"></div>
+                    }
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 px-2">

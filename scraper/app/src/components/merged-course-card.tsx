@@ -108,7 +108,7 @@ const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined 
                     <div className="flex flex-col mt-3 items-end justify-end px-2 mr-2">
                         <div>
                             <Badge
-                                variant={(internalCourse.acceptedCount ?? 0) + (internalCourse.rejectedCount ?? 0) === (internalCourse.merged?.length ?? 0) ? 'success' : 'subtle'}
+                                variant={(internalCourse.acceptedCount ?? 0) + (internalCourse.rejectedCount ?? 0) === (internalCourse.merged?.length ?? 0) ? 'blue' : 'subtle'}
                                 className='mb-2'>
                                 Resolved {(internalCourse.acceptedCount ?? 0) + (internalCourse.rejectedCount ?? 0)} / {internalCourse.merged?.length ?? 0}
                                 {
