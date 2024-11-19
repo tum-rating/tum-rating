@@ -1,7 +1,6 @@
 import SearchInput from "@/components/ui/search-input.tsx";
 import SidebarSearchSortingDropdown from "@/components/sidebar-search-sorting-dropdown.tsx";
 import {DatasetOptions} from "@/types/dataset-options.ts";
-import {Button} from "@/components/ui/button.tsx";
 
 interface SidebarSearchProps {
     onSortChange: (options: DatasetOptions) => void;

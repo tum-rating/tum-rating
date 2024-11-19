@@ -12,7 +12,7 @@ interface SidebarProps {
     isOpen: boolean;
 }
 
-const Sidebar = ({ isOpen }: SidebarProps) => {
+const RightSidebar = ({ isOpen }: SidebarProps) => {
     const { isPending, computedDataToCheck, selectedItemId, setSelectedItemId } = useAppData();
     const [computedCourses, setComputedCourses] = useState<FetchedComputedCourse[]>([]);
     const [filteredCourses, setFilteredCourses] = useState<FetchedComputedCourse[]>([]);
@@ -122,4 +122,4 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
     );
 };
 
-export default Sidebar;
+export default RightSidebar;
