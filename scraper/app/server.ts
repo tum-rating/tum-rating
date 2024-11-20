@@ -35,8 +35,8 @@ if (!fs.existsSync(DIRECTORY)) {
         users.set(userId, { id: userId, avatar: `https://i.ibb.co/3m2w75y/smile-KDc-W-1.jpg`, selectedFile: null, nickname: 'Anonymous' });
 
         console.log("Client connected", userId);
+        ws.send(JSON.stringify({ action: "setUserId", userId })); // Send userId to client
         broadcastUsers();
-
 
         ws.on("message", (message) => {
             try {

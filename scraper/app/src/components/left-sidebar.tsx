@@ -1,19 +1,19 @@
-import { useContext, useState, useEffect } from "react";
-import { AppDataContext } from "@/context/app-data-context.tsx";
-import { TreeView } from "@/components/tree-view.tsx";
-import { File } from "lucide-react";
+import {useContext, useEffect, useState} from "react";
+import {AppDataContext} from "@/context/app-data-context.tsx";
+import {TreeView} from "@/components/tree-view.tsx";
 import SidebarSearch from "@/components/sidebar-search.tsx";
-import { DatasetOptions } from "@/types/dataset-options.ts";
+import {DatasetOptions} from "@/types/dataset-options.ts";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
 
 interface LeftSidebarProps {
     isOpen: boolean;
 }
 
-const LeftSidebar = ({ isOpen }: LeftSidebarProps) => {
-    const { files, setSelectedFile, deleteFile } = useContext(AppDataContext);
+const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
+    const {files, setSelectedFile, deleteFile, currentUserId, users} = useContext(AppDataContext);
     const [filteredFiles, setFilteredFiles] = useState(files);
     const [sortOptions, setSortOptions] = useState<DatasetOptions>({
-        name: { enabled: false, ascending: true, label: 'Name', type: "string" },
+        name: {enabled: false, ascending: true, label: 'Name', type: "string"},
     });
     const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -22,7 +22,6 @@ const LeftSidebar = ({ isOpen }: LeftSidebarProps) => {
     }, [files]);
 
     const handleFileClick = (file) => {
-        console.log(file)
         setSelectedFile(file);
     };
 
@@ -62,18 +61,39 @@ const LeftSidebar = ({ isOpen }: LeftSidebarProps) => {
         return sortedData;
     };
 
+    console.log()
     const data = sortData(filteredFiles).map(file => ({
         id: file.name,
         name: file.name,
-        icon: () => <File size={16} strokeWidth={1} className="mr-2" />,
         onClick: () => handleFileClick(file),
-    }));
-    console.log(files)
-    console.log(data)
+        icon: () => {
+            const icons = users.map((user) => {
+                if (user.selectedFile === file.name) {
+                    return (
+                        <Avatar
+                            className={`h-6 w-6 ${user.id === currentUserId ? 'border-2 border-blue-500' : 'border-2 border-gray-900'}`}>
+                            <AvatarImage src={user.avatar}/>
+                            <AvatarFallback>{user.nickname[0]}</AvatarFallback>
+                        </Avatar>
+                    )
+                }
+            })
+            if (icons.length > 0) {
+                return (
+                    <div className='flex gap-1 mr-2'>
+                        {icons}
+                    </div>
+                )
+            } else return null
+        }
+    }))
+
+
     return (
         <div className={`Sidebar ${isOpen ? 'w-[243px]' : 'w-[0px]'} transition-width duration-300 ease-in-out`}>
-            <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredFiles.length} sortOptions={sortOptions} />
-            <TreeView data={data} />
+            <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredFiles.length}
+                           sortOptions={sortOptions}/>
+            <TreeView data={data}/>
         </div>
     );
 };

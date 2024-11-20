@@ -43,7 +43,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
     const [files, setFiles] = useState<FileData[]>([]);
     const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
     const [users, setUsers] = useState<User[]>([]);
-    const [currentUserId] = useState<string>(uuidv4());
+    const [currentUserId, setCurrentUserId] = useState<string>(uuidv4());
     const [currentUserDetails, setCurrentUserDetails] = useState<{ nickname: string; avatar: string }>({ nickname: '', avatar: 'https://i.ibb.co/3m2w75y/smile-KDc-W-1.jpg' });
     const socketRef = useRef<WebSocket | null>(null);
 
@@ -56,9 +56,12 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         };
 
         socket.onmessage = (event) => {
-            const { action, data } = JSON.parse(event.data);
+            const { action, data, userId } = JSON.parse(event.data);
             console.log(action, data);
             switch (action) {
+                case "setUserId":
+                    setCurrentUserId(userId); // Set the currentUserId from the server
+                    break;
                 case "fileList":
                     setFiles(data.map((file: any) => ({
                         name: file.name,
@@ -67,25 +70,20 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
                         lastModified: file.lastModified ? new Date(file.lastModified) : null
                     })));
                     break;
-
                 case "fileContent":
                     if (selectedFile) {
                         setSelectedFile({ ...selectedFile, content: data });
                     }
                     break;
-
                 case "updateUsers":
                     setUsers(data);
                     break;
-
                 case "success":
                     fetchFiles();
                     break;
-
                 case "error":
                     alert(data.message);
                     break;
-
                 default:
                     console.error("Unknown action:", action);
             }
@@ -94,7 +92,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         return () => {
             socket.close();
         };
-    }, [selectedFile]);
+    }, []);
 
     const fetchFiles = () => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {

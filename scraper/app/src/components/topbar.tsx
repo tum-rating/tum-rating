@@ -16,8 +16,6 @@ interface TopbarProps {
 const Topbar = ({ isRightSidebarOpen, setIsRightSidebarOpen, isLeftSidebarOpen, setIsLeftSidebarOpen }: TopbarProps) => {
     const { users, currentUserId } = useContext(AppDataContext);
 
-    console.log(currentUserId)
-    console.log(users)
     return (
         <div className="relative z-10 min-h-[38px] bg-white w-full flex items-center border-b border-1 border-b-border px-2">
             <Button
@@ -39,11 +37,15 @@ const Topbar = ({ isRightSidebarOpen, setIsRightSidebarOpen, isLeftSidebarOpen, 
                                     <AvatarFallback>{user.nickname[0]}</AvatarFallback>
                                 </Avatar>
                             </TooltipTrigger>
-                            <TooltipContent>
+                            <TooltipContent className='flex gap-1'>
                                 {user.nickname}
+                                {
+                                    user.id === currentUserId && (
+                                        <span className="text-xs font-bold text-blue-500 block">(You)</span>
+                                    )
+                                }
                             </TooltipContent>
                         </Tooltip>
-                        {user.selectedFile && <span className="text-sm">{user.selectedFile}</span>}
                     </div>
                 ))}
             </div>
