@@ -35,5 +35,12 @@ type FetchedData = {
     allCoursesMap: Record<string, number>;
     allCourses: FetchedCourse[];
 }
+type FileData = {
+    name: string;
+    content: string;
+    size: number;
+    lastModified: Date;
+};
 
-export type {FetchedData, FetchedComputedCourse, FetchedCourse};
+export type { FileData, FetchedData, FetchedComputedCourse, FetchedCourse };
+

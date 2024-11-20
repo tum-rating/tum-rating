@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label.tsx";
 
 interface SidebarSearchSortingDropdownProps {
     onSortChange: (options: DatasetOptions) => void;
+    sortOptionsObject: DatasetOptions;
 }
 
 const icons = {
@@ -23,13 +24,8 @@ const icons = {
     "descending-string": <ArrowDownAZ />,
 };
 
-const SidebarSearchSortingDropdown = ({ onSortChange }: SidebarSearchSortingDropdownProps) => {
-    const [sortOptions, setSortOptions] = useState<DatasetOptions>({
-        name: { enabled: false, ascending: true, label: 'Name', type: "string" },
-        acceptedCount: { enabled: false, ascending: true, label: 'Accepted Count', type: "number" },
-        rejectedCount: { enabled: false, ascending: true, label: 'Rejected Count', type: "number" },
-        notResolvedCount: { enabled: false, ascending: true, label: 'Not Resolved Count', type: "number" },
-    });
+const SidebarSearchSortingDropdown = ({ onSortChange, sortOptionsObject }: SidebarSearchSortingDropdownProps) => {
+    const [sortOptions, setSortOptions] = useState<DatasetOptions>(sortOptionsObject);
 
     const handleSortChange = (key: keyof DatasetOptions) => {
         setSortOptions((prev) => {

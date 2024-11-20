@@ -1,109 +1,156 @@
-import { createContext, PropsWithChildren, useEffect, useState, useTransition } from 'react';
-import { FetchedComputedCourse, FetchedData } from '@/types/fetchedData.ts';
-import { TreeDataItem } from '@/components/tree-view';
+import { createContext, PropsWithChildren, useEffect, useState, useRef } from 'react';
+import { FileData } from "@/types/fetchedData.ts";
+import { v4 as uuidv4 } from 'uuid';
+
+interface User {
+    id: string;
+    avatar: string;
+    selectedFile: string | null;
+    nickname: string;
+}
 
 interface AppDataContextType {
-  appData: FetchedData;
-  isPending: boolean;
-  selectedItemId: string | null;
-  setSelectedItemId: (id: string | null) => void;
-  computedDataToCheck: FetchedComputedCourse[] | undefined;
-  getSelectedItemById: (id: string | null) => FetchedComputedCourse | undefined;
-  saveSelectedCourse: (course: FetchedComputedCourse) => void;
-  fileSystem: TreeDataItem[];
-  fetchFileSystem: () => void;
+    files: FileData[];
+    hasFiles: boolean;
+    selectedFile: FileData | null;
+    setSelectedFile: (file: FileData | null) => void;
+    fetchFiles: () => void;
+    saveFile: (file: FileData) => void;
+    deleteFile: (fileName: string) => void;
+    users: User[];
+    currentUserId: string;
+    setUserDetails: (details: { nickname: string; avatar: string }) => void;
+    socketRef: React.MutableRefObject<WebSocket | null>;
 }
 
 const AppDataContext = createContext<AppDataContextType>({
-  appData: {
-    computedCourses: [],
-    allCoursesMap: {},
-    allCourses: []
-  },
-  isPending: false,
-  selectedItemId: null,
-  setSelectedItemId: () => {},
-  computedDataToCheck: undefined,
-  getSelectedItemById: () => undefined,
-  saveSelectedCourse: () => {},
-  fileSystem: [],
-  fetchFileSystem: () => {}
+    files: [],
+    hasFiles: false,
+    selectedFile: null,
+    setSelectedFile: () => {},
+    fetchFiles: () => {},
+    saveFile: () => {},
+    deleteFile: () => {},
+    users: [],
+    currentUserId: '',
+    setUserDetails: () => {},
+    socketRef: { current: null }
 });
 
 type AppDataContextProps = PropsWithChildren;
 
 const AppDataProvider = ({ children }: AppDataContextProps) => {
-  const [appData, setAppData] = useState<FetchedData>({ computedCourses: [], allCoursesMap: {}, allCourses: [] });
-  const [computedDataToCheck, setComputedDataToCheck] = useState<FetchedComputedCourse[]>([]);
-  const [computedCoursesMap, setComputedCoursesMap] = useState(new Map());
-  const [isPending, startTransition] = useTransition();
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-  const [fileSystem, setFileSystem] = useState<TreeDataItem[]>([]);
+    const [files, setFiles] = useState<FileData[]>([]);
+    const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
+    const [users, setUsers] = useState<User[]>([]);
+    const [currentUserId] = useState<string>(uuidv4());
+    const [currentUserDetails, setCurrentUserDetails] = useState<{ nickname: string; avatar: string }>({ nickname: '', avatar: 'https://i.ibb.co/3m2w75y/smile-KDc-W-1.jpg' });
+    const socketRef = useRef<WebSocket | null>(null);
 
-  useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8080');
+    useEffect(() => {
+        const socket = new WebSocket("ws://localhost:8080");
+        socketRef.current = socket;
 
-    ws.onopen = () => {
-      ws.send(JSON.stringify({ action: 'list' }));
+        socket.onopen = () => {
+            fetchFiles();
+        };
+
+        socket.onmessage = (event) => {
+            const { action, data } = JSON.parse(event.data);
+            console.log(action, data);
+            switch (action) {
+                case "fileList":
+                    setFiles(data.map((file: any) => ({
+                        name: file.name,
+                        content: "",
+                        size: file.size || 0,
+                        lastModified: file.lastModified ? new Date(file.lastModified) : null
+                    })));
+                    break;
+
+                case "fileContent":
+                    if (selectedFile) {
+                        setSelectedFile({ ...selectedFile, content: data });
+                    }
+                    break;
+
+                case "updateUsers":
+                    setUsers(data);
+                    break;
+
+                case "success":
+                    fetchFiles();
+                    break;
+
+                case "error":
+                    alert(data.message);
+                    break;
+
+                default:
+                    console.error("Unknown action:", action);
+            }
+        };
+
+        return () => {
+            socket.close();
+        };
+    }, [selectedFile]);
+
+    const fetchFiles = () => {
+        if (socketRef.current?.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({ action: "getFiles" }));
+        }
     };
 
-    ws.onmessage = (event) => {
-      const { action, files } = JSON.parse(event.data);
-
-      if (action === 'list') {
-        setFileSystem(files);
-      }
+    const fetchFileContent = (fileName: string) => {
+        if (socketRef.current?.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({ action: "getFile", fileName }));
+        }
     };
 
-    return () => {
-      ws.close();
+    const handleSetSelectedFile = (file: FileData | null) => {
+        setSelectedFile(file);
+        if (file) {
+            fetchFileContent(file.name);
+        }
     };
-  }, []);
 
-  const fetchFileSystem = () => {
-    const ws = new WebSocket('ws://localhost:8080');
-    ws.onopen = () => {
-      ws.send(JSON.stringify({ action: 'list' }));
+    const saveFile = (file: FileData) => {
+        if (socketRef.current?.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({ action: "saveFile", fileName: file.name, content: file.content }));
+        }
     };
-    ws.onmessage = (event) => {
-      const { action, files } = JSON.parse(event.data);
-      if (action === 'list') {
-        setFileSystem(files);
-      }
+
+    const deleteFile = (fileName: string) => {
+        if (socketRef.current?.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({ action: "deleteFile", fileName }));
+        }
     };
-  };
 
-  const saveSelectedCourse = (updatedCourse: FetchedComputedCourse) => {
-    if (!updatedCourse || !computedDataToCheck) return;
+    const setUserDetails = (details: { nickname: string; avatar: string }) => {
+        setCurrentUserDetails(details);
+        if (socketRef.current?.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({ action: "setUserDetails", ...details }));
+        }
+    };
 
-    setComputedDataToCheck((prev) => {
-      if (!prev) return prev;
-      return prev.map(course => course.id === updatedCourse.id ? updatedCourse : course);
-    });
-  };
-
-  const getSelectedItemById = (selectedId: string | null): FetchedComputedCourse | undefined => {
-    return selectedId ? computedCoursesMap.get(selectedId) : undefined;
-  };
-
-  return (
-    <AppDataContext.Provider value={{
-      appData,
-      isPending,
-      selectedItemId,
-      setSelectedItemId,
-      computedDataToCheck,
-      getSelectedItemById,
-      saveSelectedCourse,
-      fileSystem,
-      fetchFileSystem
-    }}>
-      {children}
-    </AppDataContext.Provider>
-  );
+    return (
+        <AppDataContext.Provider value={{
+            files,
+            hasFiles: files.length > 0,
+            selectedFile,
+            setSelectedFile: handleSetSelectedFile,
+            fetchFiles,
+            saveFile,
+            deleteFile,
+            users,
+            currentUserId,
+            setUserDetails,
+            socketRef
+        }}>
+            {children}
+        </AppDataContext.Provider>
+    );
 };
 
-export {
-  AppDataProvider,
-  AppDataContext
-};
+export { AppDataProvider, AppDataContext };

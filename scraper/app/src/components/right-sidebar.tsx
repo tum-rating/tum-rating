@@ -76,7 +76,8 @@ const RightSidebar = ({ isOpen }: SidebarProps) => {
 
     return (
         <div className={`Sidebar ${isOpen ? 'w-[400px]' : 'w-[0px]'} transition-width duration-300 ease-in-out`}>
-            <SidebarSearch searchTerm={searchTerm} onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredCourses.length} />
+            <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredCourses.length}
+                           sortOptions={sortOptions} />
             {isPending || showSkeleton ? (
                 <div
                     style={{
