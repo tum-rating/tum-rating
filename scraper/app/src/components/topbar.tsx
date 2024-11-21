@@ -28,26 +28,7 @@ const Topbar = ({ isRightSidebarOpen, setIsRightSidebarOpen, isLeftSidebarOpen, 
                 <PanelLeftClose className="w-12 h-12" />
             </Button>
             <div className="flex items-center gap-2">
-                {users.map(user => (
-                    <div key={user.id} className="flex items-center gap-1">
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Avatar className={`h-6 w-6 ${user.id === currentUserId ? 'border-2 border-blue-500' : 'border-2 border-gray-900'}`}>
-                                    <AvatarImage src={user.avatar} />
-                                    <AvatarFallback>{user.nickname[0]}</AvatarFallback>
-                                </Avatar>
-                            </TooltipTrigger>
-                            <TooltipContent className='flex gap-1'>
-                                {user.nickname}
-                                {
-                                    user.id === currentUserId && (
-                                        <span className="text-xs font-bold text-blue-500 block">(You)</span>
-                                    )
-                                }
-                            </TooltipContent>
-                        </Tooltip>
-                    </div>
-                ))}
+
             </div>
             <Button
                 variant='outline'

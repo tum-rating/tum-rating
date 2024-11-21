@@ -4,6 +4,7 @@ import {TreeView} from "@/components/tree-view.tsx";
 import SidebarSearch from "@/components/sidebar-search.tsx";
 import {DatasetOptions} from "@/types/dataset-options.ts";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
+import {Separator} from "@/components/ui/separator.tsx";
 
 interface LeftSidebarProps {
     isOpen: boolean;
@@ -90,10 +91,39 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
 
 
     return (
-        <div className={`Sidebar ${isOpen ? 'w-[243px]' : 'w-[0px]'} transition-width duration-300 ease-in-out`}>
-            <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredFiles.length}
-                           sortOptions={sortOptions}/>
-            <TreeView data={data}/>
+        <div
+            className={`Sidebar flex flex-col justify-between ${isOpen ? 'w-[243px]' : 'w-[0px]'} h-full transition-width duration-300 ease-in-out`}>
+            <div className="flex flex-col">
+                <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredFiles.length}
+                               sortOptions={sortOptions}/>
+                <TreeView data={data}/>
+            </div>
+            <div>
+                <Separator/>
+                <div className={'px-4 py-3'}>
+                    <span className="text-xs font-bold text-gray-500 block">Active users</span>
+                    <div className={'flex flex-col gap-1 mt-2'}>
+                        {users.map(user => (
+                            <div key={user.id} className="flex items-center gap-1 ">
+                                <Avatar
+                                    className={`h-6 w-6 ${user.id === currentUserId ? 'border-2 border-blue-500' : 'border-2 border-gray-900'}`}>
+                                    <AvatarImage src={user.avatar}/>
+                                    <AvatarFallback>{user.nickname[0]}</AvatarFallback>
+                                </Avatar>
+                                <span className="text-sm font-bold">
+                                    {user.nickname}
+                                </span>
+                                {
+                                    user.id === currentUserId && (
+                                        <span className="text-sm font-bold text-blue-500 block">(You)</span>
+                                    )
+                                }
+                            </div>
+                        ))}
+                    </div>
+
+                </div>
+            </div>
         </div>
     );
 };
