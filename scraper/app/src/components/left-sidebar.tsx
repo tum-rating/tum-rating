@@ -6,6 +6,7 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {File} from "lucide-react";
+import FetchDialog from "@/components/fetch-dialog.tsx";
 
 interface LeftSidebarProps {
     isOpen: boolean;
@@ -62,8 +63,6 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
         });
         return sortedData;
     };
-
-    console.log()
     const data = sortData(filteredFiles).map(file => ({
         id: file.name,
         name: file.name,
@@ -122,12 +121,21 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
                 <div className={'px-4 py-3'}>
                     <span className="text-xs font-bold text-gray-500 block">Server actions</span>
                     <div className={'flex flex-col gap-1 mt-2'}>
+                        <FetchDialog>
+                            <Button variant={'outline'}
+                                    onClick={() => {
+                                        setSelectedFile(null);
+                                    }}>
+                                Fetch data
+                            </Button>
+                        </FetchDialog>
                         <Button variant={'outline'}
                                 onClick={() => window.location.reload()}>
                             Reload
                         </Button>
                     </div>
                 </div>
+                <Separator/>
                 <div className={'px-4 py-3'}>
                     <span className="text-xs font-bold text-gray-500 block">Active users</span>
                     <div className={'flex flex-col gap-1 mt-2'}>

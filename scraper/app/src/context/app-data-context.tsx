@@ -16,7 +16,7 @@ interface AppDataContextType {
     setSelectedFile: (file: FileData | null) => void;
     fetchFiles: () => void;
     saveFile: (file: FileData) => void;
-    deleteFile: (fileName: string) => void;
+    deleteFile: (name: string) => void;
     users: User[];
     currentUserId: string;
     setUserDetails: (details: { nickname: string; avatar: string }) => void;
@@ -44,7 +44,6 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
     const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
     const [users, setUsers] = useState<User[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string>(uuidv4());
-    const [currentUserDetails, setCurrentUserDetails] = useState<{ nickname: string; avatar: string }>({ nickname: '', avatar: 'https://i.ibb.co/3m2w75y/smile-KDc-W-1.jpg' });
     const socketRef = useRef<WebSocket | null>(null);
 
     useEffect(() => {
@@ -56,11 +55,10 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         };
 
         socket.onmessage = (event) => {
-            const { action, data, userId } = JSON.parse(event.data);
-            console.log(action, data);
+            const { action, data, userId, name } = JSON.parse(event.data);
             switch (action) {
                 case "setUserId":
-                    setCurrentUserId(userId); // Set the currentUserId from the server
+                    setCurrentUserId(userId);
                     break;
                 case "fileList":
                     setFiles(data.map((file: any) => ({
@@ -71,12 +69,18 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
                     })));
                     break;
                 case "fileContent":
-                    if (selectedFile) {
-                        setSelectedFile({ ...selectedFile, content: data });
-                    }
+                    setSelectedFile({
+                        ...data
+                    });
                     break;
                 case "updateUsers":
                     setUsers(data);
+                    break;
+                case "deleteFile":
+                    setFiles(prevFiles => prevFiles.filter(file => file.name !== name));
+                    if (selectedFile && selectedFile.name === name) {
+                        setSelectedFile(null);
+                    }
                     break;
                 case "success":
                     fetchFiles();
@@ -92,7 +96,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         return () => {
             socket.close();
         };
-    }, []);
+    }, [selectedFile]);
 
     const fetchFiles = () => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
@@ -100,33 +104,31 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         }
     };
 
-    const fetchFileContent = (fileName: string) => {
+    const fetchFileContent = (file: FileData) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify({ action: "getFile", fileName }));
+            socketRef.current.send(JSON.stringify({ action: "getFile", ...file }));
         }
     };
 
     const handleSetSelectedFile = (file: FileData | null) => {
-        setSelectedFile(file);
         if (file) {
-            fetchFileContent(file.name);
+            fetchFileContent(file);
         }
     };
 
     const saveFile = (file: FileData) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify({ action: "saveFile", fileName: file.name, content: file.content }));
+            socketRef.current.send(JSON.stringify({ action: "saveFile", name: file.name, content: file.content }));
         }
     };
 
-    const deleteFile = (fileName: string) => {
+    const deleteFile = (name: string) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify({ action: "deleteFile", fileName }));
+            socketRef.current.send(JSON.stringify({ action: "deleteFile", name }));
         }
     };
 
     const setUserDetails = (details: { nickname: string; avatar: string }) => {
-        setCurrentUserDetails(details);
         if (socketRef.current?.readyState === WebSocket.OPEN) {
             socketRef.current.send(JSON.stringify({ action: "setUserDetails", ...details }));
         }
