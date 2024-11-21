@@ -18,7 +18,8 @@ const UserSetupDialog = () => {
     const [nickname, setNickname] = useState("");
     const [avatar, setAvatar] = useState(Avatar1);
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        if(nickname === "") { return; }
         setUserDetails({nickname, avatar});
         if (socketRef.current?.readyState === WebSocket.OPEN) {
             socketRef.current.send(JSON.stringify({action: "setUserDetails", nickname, avatar}));
@@ -27,7 +28,10 @@ const UserSetupDialog = () => {
 
     return (
         <AlertDialog defaultOpen>
-            <AlertDialogContent>
+            <AlertDialogContent
+            onEscapeKeyDown={e => e.preventDefault()}
+            >
+
                 <AlertDialogHeader>
                     <AlertDialogTitle>Set Up Your Profile</AlertDialogTitle>
                     <AlertDialogDescription>

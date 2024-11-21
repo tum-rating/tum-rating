@@ -1,10 +1,11 @@
 import {useContext, useEffect, useState} from "react";
 import {AppDataContext} from "@/context/app-data-context.tsx";
-import {TreeView} from "@/components/tree-view.tsx";
 import SidebarSearch from "@/components/sidebar-search.tsx";
 import {DatasetOptions} from "@/types/dataset-options.ts";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {File} from "lucide-react";
 
 interface LeftSidebarProps {
     isOpen: boolean;
@@ -96,10 +97,37 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
             <div className="flex flex-col">
                 <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredFiles.length}
                                sortOptions={sortOptions}/>
-                <TreeView data={data}/>
+                <div className={'flex flex-col'}>
+                    {
+                        data.map(x => (
+                            <Button key={x.id} variant={'ghost'}
+                                    className="flex justify-between w-full gap-2 cursor-pointer px-1 pl-4 hover:bg-gray-100"
+                                    onClick={x.onClick}>
+                                <div className="flex gap-2 items-center">
+                                    <File className="w-6 h-6"/>
+                                    <span className="text-sm font-bold truncate">
+                                    {x.name}
+                                </span>
+                                </div>
+                                <div className={`flex gap-1 items-center`}>
+                                    {x.icon()}
+                                </div>
+                            </Button>
+                        ))
+                    }
+                </div>
             </div>
             <div>
                 <Separator/>
+                <div className={'px-4 py-3'}>
+                    <span className="text-xs font-bold text-gray-500 block">Server actions</span>
+                    <div className={'flex flex-col gap-1 mt-2'}>
+                        <Button variant={'outline'}
+                                onClick={() => window.location.reload()}>
+                            Reload
+                        </Button>
+                    </div>
+                </div>
                 <div className={'px-4 py-3'}>
                     <span className="text-xs font-bold text-gray-500 block">Active users</span>
                     <div className={'flex flex-col gap-1 mt-2'}>
@@ -115,7 +143,7 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
                                 </span>
                                 {
                                     user.id === currentUserId && (
-                                        <span className="text-sm font-bold text-blue-500 block">(You)</span>
+                                        <span className="text-xs font-bold text-blue-500 block">(You)</span>
                                     )
                                 }
                             </div>
