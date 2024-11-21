@@ -5,6 +5,7 @@ import { AppDataContext } from "@/context/app-data-context.tsx";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar.tsx";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip.tsx";
+import isCoursesFile from "@/lib/is-courses-file.ts";
 
 interface TopbarProps {
     isRightSidebarOpen: boolean;
@@ -14,8 +15,10 @@ interface TopbarProps {
 }
 
 const Topbar = ({ isRightSidebarOpen, setIsRightSidebarOpen, isLeftSidebarOpen, setIsLeftSidebarOpen }: TopbarProps) => {
-    const { users, currentUserId } = useContext(AppDataContext);
+    const { selectedFile } = useContext(AppDataContext);
 
+
+    const isCoursesFileFlag = isCoursesFile(selectedFile?.id);
     return (
         <div className="relative z-10 min-h-[38px] bg-white w-full flex items-center border-b border-1 border-b-border px-2">
             <Button
@@ -32,6 +35,7 @@ const Topbar = ({ isRightSidebarOpen, setIsRightSidebarOpen, isLeftSidebarOpen, 
             </div>
             <Button
                 variant='outline'
+                disabled={!isCoursesFileFlag}
                 size='icon'
                 data-state={isRightSidebarOpen ? 'open' : 'closed'}
                 onClick={() => setIsRightSidebarOpen(!isRightSidebarOpen)}

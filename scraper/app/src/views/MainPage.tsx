@@ -9,7 +9,7 @@ const MainPage = () => {
         <div className="relative w-full h-full overflow-y-hidden">
             <div className="absolute inset-0 h-full w-full bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
             {selectedFile ? (
-                <SelectedFileCard file={selectedFile} />
+                <SelectedFileCard />
             ) : (
                 <div className="flex justify-center items-center h-full w-full relative">
                     <div className="absolute inset-0 h-full w-full bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />

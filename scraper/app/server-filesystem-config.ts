@@ -13,9 +13,10 @@ interface ServerFilesystemConfig {
     files: ServerFilesystemConfigFile[];
 }
 
+
 const serverFilesystemConfig: ServerFilesystemConfig = {
     PORT: "8080",
-    DIRECTORY: "data",
+    DIRECTORY: 'data',
     files: [
         {
             id: "tum-semesters",

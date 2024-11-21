@@ -7,8 +7,8 @@ import {useEffect, useState} from "react";
 interface ComputedCoursesListItemProps {
     data: FetchedComputedCourse;
     selected: boolean;
-    onClick: (id: string | null) => void;
     searchTerm: string;
+    usersRenderer?: () => JSX.Element;
 }
 
 const highlightText = (text: string, searchTerm: string) => {
@@ -19,7 +19,7 @@ const highlightText = (text: string, searchTerm: string) => {
     );
 };
 
-const ComputedCoursesListItem = ({data, selected, onClick, searchTerm}: ComputedCoursesListItemProps) => {
+const ComputedCoursesListItem = ({data, selected, searchTerm,usersRenderer}: ComputedCoursesListItemProps) => {
     const [status, setStatus] = useState({
         accepted: data.acceptedCount || 0,
         rejected: data.rejectedCount || 0,
@@ -36,7 +36,6 @@ const ComputedCoursesListItem = ({data, selected, onClick, searchTerm}: Computed
 
     return (
         <div
-            onClick={() => onClick(data.id)}
             tabIndex={0}
             role="button"
             className={cn(
@@ -65,6 +64,13 @@ const ComputedCoursesListItem = ({data, selected, onClick, searchTerm}: Computed
                         <Badge tooltip="rejected" variant="destructive">{status.rejected}</Badge>
                         <Badge tooltip="unresolved">{status.notResolved}</Badge>
                     </div>
+                    {
+                        usersRenderer && (
+                            <div className="flex gap-1">
+                                {usersRenderer()}
+                            </div>
+                        )
+                    }
                 </div>
                 {searchTerm && data.merged && data.merged.length > 0 && (
                     <div className="mt-2">

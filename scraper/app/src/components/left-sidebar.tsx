@@ -25,6 +25,7 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
     }, [files]);
 
     const handleFileClick = (file) => {
+        console.log(file)
         setSelectedFile(file);
     };
 
@@ -92,7 +93,7 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
 
     return (
         <div
-            className={`Sidebar flex flex-col justify-between ${isOpen ? 'w-[243px]' : 'w-[0px]'} h-full transition-width duration-300 ease-in-out`}>
+            className={`Sidebar flex flex-col justify-between ${isOpen ? 'w-[280px]' : 'w-[0px]'} h-full transition-width duration-300 ease-in-out`}>
             <div className="flex flex-col">
                 <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredFiles.length}
                                sortOptions={sortOptions}/>
@@ -104,7 +105,7 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
                                     onClick={x.onClick}>
                                 <div className="flex gap-2 items-center">
                                     <File className="w-6 h-6"/>
-                                    <span className="text-sm font-bold truncate">
+                                    <span className="text-sm font-bold truncate max-w-[197px]">
                                     {x.name}
                                 </span>
                                 </div>
@@ -157,7 +158,6 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
                             </div>
                         ))}
                     </div>
-
                 </div>
             </div>
         </div>

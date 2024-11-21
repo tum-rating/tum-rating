@@ -36,8 +36,8 @@ type FetchedData = {
     allCourses: FetchedCourse[];
 }
 type FileData = {
+    id: string;
     name: string;
-    content: string;
     size: number;
     lastModified: Date;
 };

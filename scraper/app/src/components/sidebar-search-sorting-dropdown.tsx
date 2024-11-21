@@ -42,7 +42,7 @@ const SidebarSearchSortingDropdown = ({ onSortChange, sortOptionsObject }: Sideb
             return newOptions;
         });
     };
-
+    console.log(sortOptions)
     return (
         <DropdownMenu>
             <DropdownMenuTrigger >

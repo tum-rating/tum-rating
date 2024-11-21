@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useEffect, useState, useRef } from 'react';
+import { createContext, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { FileData } from "@/types/fetchedData.ts";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -7,6 +7,7 @@ interface User {
     avatar: string;
     selectedFile: string | null;
     nickname: string;
+    selectedCourse: string | null; // Add selectedCourse property
 }
 
 interface AppDataContextType {
@@ -21,6 +22,11 @@ interface AppDataContextType {
     currentUserId: string;
     setUserDetails: (details: { nickname: string; avatar: string }) => void;
     socketRef: React.MutableRefObject<WebSocket | null>;
+    fetchProgress: { [key: string]: number };
+    startFetchingProductionCourses: (suffix: string) => void;
+    startFetchingTUMSemesters: (suffix: string) => void;
+    getFileContent: (fileName: string) => Promise<FileData>;
+    selectCourse: (courseId: string) => void; // Add selectCourse method
 }
 
 const AppDataContext = createContext<AppDataContextType>({
@@ -34,7 +40,12 @@ const AppDataContext = createContext<AppDataContextType>({
     users: [],
     currentUserId: '',
     setUserDetails: () => {},
-    socketRef: { current: null }
+    socketRef: { current: null },
+    fetchProgress: {},
+    startFetchingProductionCourses: () => {},
+    startFetchingTUMSemesters: () => {},
+    getFileContent: () => Promise.resolve({} as FileData),
+    selectCourse: () => {} // Initialize selectCourse
 });
 
 type AppDataContextProps = PropsWithChildren;
@@ -44,6 +55,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
     const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
     const [users, setUsers] = useState<User[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string>(uuidv4());
+    const [fetchProgress, setFetchProgress] = useState<{ [key: string]: number }>({});
     const socketRef = useRef<WebSocket | null>(null);
 
     useEffect(() => {
@@ -55,23 +67,30 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         };
 
         socket.onmessage = (event) => {
-            const { action, data, userId, name } = JSON.parse(event.data);
+            const { action, data, userId, name, progress, type, content } = JSON.parse(event.data);
             switch (action) {
                 case "setUserId":
                     setCurrentUserId(userId);
                     break;
                 case "fileList":
+                    console.log("Received file list:", data);
                     setFiles(data.map((file: any) => ({
+                        id: file.name.slice(0, file.name.indexOf("-", file.name.indexOf("-") + 1)),
                         name: file.name,
-                        content: "",
                         size: file.size || 0,
                         lastModified: file.lastModified ? new Date(file.lastModified) : null
                     })));
                     break;
                 case "fileContent":
                     setSelectedFile({
-                        ...data
+                        name: data.name,
+                        size: data.size,
+                        lastModified: new Date(data.lastModified),
+                        id: data.id,
                     });
+                    break;
+                case "getFileContent":
+
                     break;
                 case "updateUsers":
                     setUsers(data);
@@ -86,7 +105,14 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
                     fetchFiles();
                     break;
                 case "error":
+                    console.log(data)
                     alert(data.message);
+                    break;
+                case "fetchProgress":
+                    setFetchProgress(prevProgress => ({ ...prevProgress, [type]: progress }));
+                    break;
+                case "newFile":
+                    fetchFiles();
                     break;
                 default:
                     console.error("Unknown action:", action);
@@ -96,7 +122,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         return () => {
             socket.close();
         };
-    }, [selectedFile]);
+    }, []);
 
     const fetchFiles = () => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
@@ -134,6 +160,43 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         }
     };
 
+    const startFetchingProductionCourses = (suffix: string) => {
+        if (socketRef.current?.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({ action: "fetchProductionCourses", suffix }));
+        }
+    };
+
+    const startFetchingTUMSemesters = (suffix: string) => {
+        if (socketRef.current?.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({ action: "fetchTUMSemesters", suffix }));
+        }
+    };
+
+    const getFileContent = (fileName: string): Promise<FileData> => {
+        return new Promise((resolve, reject) => {
+            if (socketRef.current?.readyState === WebSocket.OPEN) {
+                const handleMessage = (event: MessageEvent) => {
+                    const { action, data } = JSON.parse(event.data);
+                    if (action === "getFileContent" && data.name === fileName) {
+                        socketRef.current?.removeEventListener("message", handleMessage);
+                        resolve(data);
+                    }
+                };
+
+                socketRef.current.addEventListener("message", handleMessage);
+                socketRef.current.send(JSON.stringify({ action: "getFileContent", name: fileName }));
+            } else {
+                reject(new Error("WebSocket is not open"));
+            }
+        });
+    };
+
+    const selectCourse = (courseId: string) => {
+        if (socketRef.current?.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({ action: "selectCourse", courseId }));
+        }
+    };
+
     return (
         <AppDataContext.Provider value={{
             files,
@@ -146,7 +209,12 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
             users,
             currentUserId,
             setUserDetails,
-            socketRef
+            socketRef,
+            fetchProgress,
+            startFetchingProductionCourses,
+            startFetchingTUMSemesters,
+            getFileContent,
+            selectCourse // Provide selectCourse method
         }}>
             {children}
         </AppDataContext.Provider>
