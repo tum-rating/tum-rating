@@ -149,18 +149,24 @@ const FetchDialog = (props: PropsWithChildren) => {
                                     )
                                 }
                             </div>
+                            <div>
+                                {fetchProgress[config.typeOfData] && (
+                                    <Progress value={fetchProgress[config.typeOfData]} />
+                                )}
+
+                            </div>
                         </div>
                     ))}
                 </div>
                 <DialogFooter>
                     <div className="flex flex-col gap-2">
                         <Button onClick={startFetching}>Start fetching</Button>
-                        {Object.keys(fetchProgress).map(type => (
-                            <div key={type}>
-                                <div>{type} Progress: {fetchProgress[type]}</div>
-                                <Progress value={fetchProgress[type]} />
-                            </div>
-                        ))}
+                        {/*{Object.keys(fetchProgress).map(type => (*/}
+                        {/*    <div key={type}>*/}
+                        {/*        <div>{type} Progress: {fetchProgress[type]}</div>*/}
+                        {/*        <Progress value={fetchProgress[type]} />*/}
+                        {/*    </div>*/}
+                        {/*))}*/}
                     </div>
                 </DialogFooter>
             </DialogContent>
