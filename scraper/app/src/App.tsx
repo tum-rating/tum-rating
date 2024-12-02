@@ -6,9 +6,11 @@ import PageLoader from "@/components/page-loader.tsx";
 import { TooltipProvider } from "@/components/ui/tooltip.tsx";
 import UserSetupDialog from "@/components/user-setup-dialog.tsx";
 
+import { Toaster } from "@/components/ui/sonner"
 function App() {
     return (
         <AppDataProvider>
+            <Toaster />
             <TooltipProvider>
                 <UserSetupDialog />
                 <AppLayout>

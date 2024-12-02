@@ -1,6 +1,7 @@
-import { createContext, PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { createContext, PropsWithChildren, useEffect, useMemo, useRef, useState } from 'react';
 import { FileData } from "@/types/fetchedData.ts";
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'sonner';
 
 interface User {
     id: string;
@@ -22,49 +23,37 @@ interface AppDataContextType {
     currentUserId: string;
     setUserDetails: (details: { nickname: string; avatar: string }) => void;
     socketRef: React.MutableRefObject<WebSocket | null>;
-    fetchProgress: { [key: string]: number };
+    fetchStatus: { [key: string]: boolean };
     startFetchingProductionCourses: (suffix: string) => void;
     startFetchingTUMSemesters: (suffix: string) => void;
     getFileContent: (fileName: string) => Promise<FileData>;
     selectCourse: (courseId: string) => void;
-    selectedCourse: string | null; // Add selectedCourse property
-    setSelectedCourse: (courseId: string | null) => void; // Add setSelectedCourse method
+    selectedCourse: string | null;
+    setSelectedCourse: (courseId: string | null) => void;
 }
 
-const AppDataContext = createContext<AppDataContextType>({
-    files: [],
-    hasFiles: false,
-    selectedFile: null,
-    setSelectedFile: () => {},
-    fetchFiles: () => {},
-    saveFile: () => {},
-    deleteFile: () => {},
-    users: [],
-    currentUserId: '',
-    setUserDetails: () => {},
-    socketRef: { current: null },
-    fetchProgress: {},
-    startFetchingProductionCourses: () => {},
-    startFetchingTUMSemesters: () => {},
-    getFileContent: () => Promise.resolve({} as FileData),
-    selectCourse: () => {},
-    selectedCourse: null, // Initialize selectedCourse
-    setSelectedCourse: () => {} // Initialize setSelectedCourse
-});
+const AppDataContext = createContext<AppDataContextType | undefined>(undefined);
 
 type AppDataContextProps = PropsWithChildren;
 
 const AppDataProvider = ({ children }: AppDataContextProps) => {
     const [files, setFiles] = useState<FileData[]>([]);
     const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
-    const [selectedCourse, setSelectedCourse] = useState<string | null>(null); // Add selectedCourse state
+    const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
     const [users, setUsers] = useState<User[]>([]);
-    const [currentUserId, setCurrentUserId] = useState<string>(uuidv4());
-    const [fetchProgress, setFetchProgress] = useState<{ [key: string]: number }>({});
+    const [currentUserId, setCurrentUserId] = useState<string>(() => {
+        let userId = localStorage.getItem('userId');
+        if (!userId) {
+            userId = uuidv4();
+            localStorage.setItem('userId', userId);
+        }
+        return userId;
+    });
+    const [fetchStatus, setFetchStatus] = useState<{ [key: string]: boolean }>({});
     const socketRef = useRef<WebSocket | null>(null);
 
     useEffect(() => {
-        const socket = new WebSocket("ws://localhost:8080");
+        const socket = new WebSocket(`ws://localhost:8080`);
         socketRef.current = socket;
 
         socket.onopen = () => {
@@ -72,21 +61,27 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         };
 
         socket.onmessage = (event) => {
-            const { action, data, userId, name, progress, type, content } = JSON.parse(event.data);
+            console.log(event)
+            const { action, data, userId, name, fetchStatus, type, selectedFileExists, userSelectedFile } = JSON.parse(event.data);
             switch (action) {
                 case "setUserId":
                     setCurrentUserId(userId);
                     break;
                 case "fileList":
-                    console.log("Received file list:", data);
                     setFiles(data.map((file: any) => ({
                         id: file.name.slice(0, file.name.indexOf("-", file.name.indexOf("-") + 1)),
                         name: file.name,
                         size: file.size || 0,
                         lastModified: file.lastModified ? new Date(file.lastModified) : null
                     })));
+                    if (!selectedFileExists && userSelectedFile) {
+                        toast.error(`Your selected file was deleted from the server.`);
+                        setSelectedFile(null);
+                        setSelectedCourse(null);
+                    }
                     break;
                 case "fileContent":
+                    console.log(data)
                     setSelectedFile({
                         name: data.name,
                         size: data.size,
@@ -94,27 +89,24 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
                         id: data.id,
                     });
                     break;
-                case "getFileContent":
-
-                    break;
                 case "updateUsers":
                     setUsers(data);
                     break;
                 case "deleteFile":
-                    setFiles(prevFiles => prevFiles.filter(file => file.name !== name));
                     if (selectedFile && selectedFile.name === name) {
                         setSelectedFile(null);
+                        setSelectedCourse(null);
                     }
                     break;
                 case "success":
                     fetchFiles();
                     break;
                 case "error":
-                    console.log(data)
+                    console.error(data.message);
                     alert(data.message);
                     break;
-                case "fetchProgress":
-                    setFetchProgress(prevProgress => ({ ...prevProgress, [type]: progress }));
+                case "fetchStatus":
+                    setFetchStatus(prevProgress => ({ ...prevProgress, [type]: fetchStatus }));
                     break;
                 case "newFile":
                     fetchFiles();
@@ -122,6 +114,17 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
                 default:
                     console.error("Unknown action:", action);
             }
+        };
+
+        socket.onerror = (error) => {
+            console.error("WebSocket error:", error);
+        };
+
+        socket.onclose = () => {
+            console.info("WebSocket connection closed");
+            setTimeout(() => {
+                socketRef.current = new WebSocket(`ws://localhost:8080`);
+            }, 1000);
         };
 
         return () => {
@@ -143,7 +146,13 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
 
     const handleSetSelectedFile = (file: FileData | null) => {
         if (file) {
+            console.log(file)
             fetchFileContent(file);
+            if (!file.name.includes("courses-production")) {
+                setSelectedCourse(null);
+            }
+        } else {
+            setSelectedCourse(null);
         }
     };
 
@@ -202,27 +211,29 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         }
     };
 
+    const contextValue = useMemo(() => ({
+        files,
+        hasFiles: files.length > 0,
+        selectedFile,
+        setSelectedFile: handleSetSelectedFile,
+        fetchFiles,
+        saveFile,
+        deleteFile,
+        users,
+        currentUserId,
+        setUserDetails,
+        socketRef,
+        fetchStatus,
+        startFetchingProductionCourses,
+        startFetchingTUMSemesters,
+        getFileContent,
+        selectCourse,
+        selectedCourse,
+        setSelectedCourse,
+    }), [files, selectedFile, users, currentUserId, fetchStatus, selectedCourse]);
+
     return (
-        <AppDataContext.Provider value={{
-            files,
-            hasFiles: files.length > 0,
-            selectedFile,
-            setSelectedFile: handleSetSelectedFile,
-            fetchFiles,
-            saveFile,
-            deleteFile,
-            users,
-            currentUserId,
-            setUserDetails,
-            socketRef,
-            fetchProgress,
-            startFetchingProductionCourses,
-            startFetchingTUMSemesters,
-            getFileContent,
-            selectCourse,
-            selectedCourse, // Provide selectedCourse
-            setSelectedCourse // Provide setSelectedCourse method
-        }}>
+        <AppDataContext.Provider value={contextValue}>
             {children}
         </AppDataContext.Provider>
     );

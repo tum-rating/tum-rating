@@ -1,20 +1,21 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { AppDataContext } from "@/context/app-data-context.tsx";
 import SelectedFileCard from "@/components/selected-file-card.tsx";
 import MergedCourseCard from "@/components/merged-course-card.tsx";
 
 const MainPage = () => {
-    const { selectedFile, selectedCourse } = useContext(AppDataContext);
-
-    console.log(selectedCourse)
+    const { selectedFile, selectedCourse } = useContext(AppDataContext)!;
     return (
         <div className="relative w-full h-full overflow-y-hidden">
             <div className="absolute inset-0 h-full w-full bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
             {selectedFile ? (
                 selectedCourse ? (
-                    <MergedCourseCard course={selectedCourse} />
+                    <>
+                        dd
+                    </>
+                    // <MergedCourseCard course={selectedCourse || null} />
                 ) : (
-                    <SelectedFileCard file={selectedFile} />
+                    <SelectedFileCard />
                 )
             ) : (
                 <div className="flex justify-center items-center h-full w-full relative">

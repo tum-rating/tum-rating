@@ -5,14 +5,14 @@ import {Button} from "@/components/ui/button.tsx";
 import {Badge} from "@/components/ui/badge.tsx";
 
 const SelectedFileCard = () => {
-    const {selectedFile, deleteFile} = useContext(AppDataContext);
+    const {selectedFile, deleteFile} = useContext(AppDataContext)!;
 
     const handleDelete = () => {
         if (selectedFile) {
             deleteFile(selectedFile.name);
         }
     };
-
+    console.log(selectedFile)
     if (!selectedFile) {
         return <div>No file selected</div>;
     }

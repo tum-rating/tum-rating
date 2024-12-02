@@ -1,5 +1,4 @@
-// right-sidebar.tsx
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import VirtualList from "@/components/ui/virtual-list";
 import { FetchedComputedCourse } from "@/types/fetchedData";
 import ComputedCoursesListItem from "@/components/computed-courses-list-item";
@@ -15,7 +14,7 @@ interface RightSidebarProps {
 }
 
 const RightSidebar = ({ isOpen }: RightSidebarProps) => {
-    const { getFileContent, selectedFile, selectCourse, users, currentUserId,setSelectedCourse } = useContext(AppDataContext);
+    const { getFileContent, selectedFile, selectCourse, users, currentUserId, setSelectedCourse } = useContext(AppDataContext)!;
     const [computedCourses, setComputedCourses] = useState<FetchedComputedCourse[]>([]);
     const [filteredCourses, setFilteredCourses] = useState<FetchedComputedCourse[]>([]);
     const [showSkeleton, setShowSkeleton] = useState(true);
@@ -26,28 +25,6 @@ const RightSidebar = ({ isOpen }: RightSidebarProps) => {
         notResolvedCount: { enabled: false, ascending: true, label: 'Not Resolved Count', type: "number" },
     });
     const [searchTerm, setSearchTerm] = useState<string>("");
-
-    useEffect(() => {
-        const fetchFileData = async () => {
-            try {
-                if (selectedFile) {
-                    const fileData = await getFileContent(selectedFile.name);
-                    setComputedCourses(fileData.content);
-                    setShowSkeleton(false);
-                }
-            } catch (error) {
-                console.error("Error fetching file data:", error);
-            }
-        };
-
-        fetchFileData();
-    }, [getFileContent, selectedFile]);
-
-    useEffect(() => {
-        setFilteredCourses(sortData(computedCourses));
-    }, [computedCourses]);
-
-    const getRandomWidth = () => `${Math.floor(Math.random() * (75 - 50 + 1) + 50)}%`;
 
     const sortData = (data: FetchedComputedCourse[]) => {
         const sortedData = [...data];
@@ -66,6 +43,30 @@ const RightSidebar = ({ isOpen }: RightSidebarProps) => {
         });
         return sortedData;
     };
+
+    useEffect(() => {
+        const fetchFileData = async () => {
+            try {
+                if (selectedFile) {
+                    const fileData = await getFileContent(selectedFile.name);
+                    setComputedCourses(fileData.content);
+                    setShowSkeleton(false);
+                }
+            } catch (error) {
+                console.error("Error fetching file data:", error);
+            }
+        };
+
+        fetchFileData();
+    }, [getFileContent, selectedFile]);
+
+    const sortedCourses = useMemo(() => sortData(computedCourses), [computedCourses, sortOptions]);
+
+    useEffect(() => {
+        setFilteredCourses(sortedCourses);
+    }, [sortedCourses]);
+
+    const getRandomWidth = () => `${Math.floor(Math.random() * (75 - 50 + 1) + 50)}%`;
 
     const handleSearch = (searchTerm: string) => {
         setSearchTerm(searchTerm);
@@ -88,10 +89,10 @@ const RightSidebar = ({ isOpen }: RightSidebarProps) => {
         selectCourse(courseId);
     };
 
-     return (
+    return (
         <>
             <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredCourses.length}
-                           sortOptions={sortOptions}/>
+                           sortOptions={sortOptions} />
             {showSkeleton ? (
                 <div
                     style={{
@@ -102,19 +103,19 @@ const RightSidebar = ({ isOpen }: RightSidebarProps) => {
                         contain: 'strict',
                     }}
                 >
-                    {Array.from({length: 10}).map((_, index) => (
+                    {Array.from({ length: 10 }).map((_, index) => (
                         <>
                             <div key={index} className="bg-gray-100 px-4 py-4 w-[388px] h-[107.5px]">
-                                <Skeleton className="h-6 mb-2 transition-[width]" style={{width: getRandomWidth()}}/>
+                                <Skeleton className="h-6 mb-2 transition-[width]" style={{ width: getRandomWidth() }} />
                                 {Math.random() > 0.5 && <Skeleton className="h-6 mb-2 transition-[width]"
-                                                                  style={{width: getRandomWidth()}}/>}
+                                                                  style={{ width: getRandomWidth() }} />}
                                 <div className="flex gap-1">
-                                    <Skeleton className="h-[22px] w-[29px]"/>
-                                    <Skeleton className="h-[22px] w-[29px]"/>
-                                    <Skeleton className="h-[22px] w-[29px]"/>
+                                    <Skeleton className="h-[22px] w-[29px]" />
+                                    <Skeleton className="h-[22px] w-[29px]" />
+                                    <Skeleton className="h-[22px] w-[29px]" />
                                 </div>
                             </div>
-                            <Separator/>
+                            <Separator />
                         </>
                     ))}
                 </div>
@@ -126,11 +127,11 @@ const RightSidebar = ({ isOpen }: RightSidebarProps) => {
                 ) : (
                     <VirtualList
                         height={'calc(100vh - 36px)'}
-                        data={sortData(filteredCourses)}
+                        data={sortedCourses}
                         renderer={(row) => (
-                            <div key={row.id} onClick={() =>{
-                                handleCourseSelect(row.id)
-                                setSelectedCourse(row)
+                            <div key={row.id} onClick={() => {
+                                handleCourseSelect(row.id);
+                                setSelectedCourse(row);
                             }}>
                                 <ComputedCoursesListItem
                                     data={row}
@@ -142,7 +143,7 @@ const RightSidebar = ({ isOpen }: RightSidebarProps) => {
                                                 <div key={user.id} className="active-user">
                                                     <Avatar
                                                         className={`h-6 w-6 ${user.id === currentUserId ? 'border-2 border-blue-500' : 'border-2 border-gray-900'}`}>
-                                                        <AvatarImage src={user.avatar}/>
+                                                        <AvatarImage src={user.avatar} />
                                                         <AvatarFallback>{user.nickname[0]}</AvatarFallback>
                                                     </Avatar>
                                                 </div>
@@ -150,7 +151,6 @@ const RightSidebar = ({ isOpen }: RightSidebarProps) => {
                                         </>
                                     )}
                                 />
-
                             </div>
                         )}
                         searchTerm={searchTerm}

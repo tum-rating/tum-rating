@@ -1,4 +1,3 @@
-// scraper/app/src/components/fetch-dialog.tsx
 import { PropsWithChildren, useContext, useState } from "react";
 import { AppDataContext } from "@/context/app-data-context.tsx";
 import {
@@ -58,9 +57,10 @@ const FetchingConfigurationForm = ({ config, onChange }: FetchingConfigurationFo
 };
 
 const FetchDialog = (props: PropsWithChildren) => {
-    const { startFetchingProductionCourses, startFetchingTUMSemesters, fetchProgress } = useContext(AppDataContext);
+    const { startFetchingProductionCourses, startFetchingTUMSemesters, fetchStatus } = useContext(AppDataContext)!;
     const [configurations, setConfigurations] = useState<FetchingConfiguration[]>([{ typeOfData: "", customSuffix: "" }]);
     const [errors, setErrors] = useState<string[]>([]);
+    const [open, setOpen] = useState(false);
 
     const addConfiguration = () => {
         setConfigurations([...configurations, { typeOfData: "", customSuffix: "" }]);
@@ -111,11 +111,12 @@ const FetchDialog = (props: PropsWithChildren) => {
                     startFetchingTUMSemesters(config.customSuffix);
                 }
             });
+            setOpen(false); // Close the dialog after starting the fetching process
         }
     };
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 {props.children}
             </DialogTrigger>
@@ -150,10 +151,9 @@ const FetchDialog = (props: PropsWithChildren) => {
                                 }
                             </div>
                             <div>
-                                {fetchProgress[config.typeOfData] && (
-                                    <Progress value={fetchProgress[config.typeOfData]} />
+                                {fetchStatus[config.typeOfData] && (
+                                    <Progress value={fetchStatus[config.typeOfData]} />
                                 )}
-
                             </div>
                         </div>
                     ))}
@@ -161,12 +161,6 @@ const FetchDialog = (props: PropsWithChildren) => {
                 <DialogFooter>
                     <div className="flex flex-col gap-2">
                         <Button onClick={startFetching}>Start fetching</Button>
-                        {/*{Object.keys(fetchProgress).map(type => (*/}
-                        {/*    <div key={type}>*/}
-                        {/*        <div>{type} Progress: {fetchProgress[type]}</div>*/}
-                        {/*        <Progress value={fetchProgress[type]} />*/}
-                        {/*    </div>*/}
-                        {/*))}*/}
                     </div>
                 </DialogFooter>
             </DialogContent>
