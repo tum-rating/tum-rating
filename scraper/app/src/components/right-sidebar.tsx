@@ -1,30 +1,29 @@
 // right-sidebar.tsx
-import {useContext, useEffect, useState} from "react";
+import { useContext, useEffect, useState } from "react";
 import VirtualList from "@/components/ui/virtual-list";
-import {FetchedComputedCourse} from "@/types/fetchedData";
+import { FetchedComputedCourse } from "@/types/fetchedData";
 import ComputedCoursesListItem from "@/components/computed-courses-list-item";
-import {Skeleton} from "@/components/ui/skeleton";
-import {Separator} from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
 import SidebarSearch from "@/components/sidebar-search";
-import {DatasetOptions} from "@/types/dataset-options";
-import {AppDataContext} from "@/context/app-data-context";
-import {Avatar, AvatarFallback, AvatarImage} from "./ui/avatar";
-
+import { DatasetOptions } from "@/types/dataset-options";
+import { AppDataContext } from "@/context/app-data-context";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 interface RightSidebarProps {
     isOpen?: boolean;
 }
 
-const RightSidebar = ({isOpen}: RightSidebarProps) => {
-    const {getFileContent, selectedFile, selectCourse, users, currentUserId} = useContext(AppDataContext);
+const RightSidebar = ({ isOpen }: RightSidebarProps) => {
+    const { getFileContent, selectedFile, selectCourse, users, currentUserId,setSelectedCourse } = useContext(AppDataContext);
     const [computedCourses, setComputedCourses] = useState<FetchedComputedCourse[]>([]);
     const [filteredCourses, setFilteredCourses] = useState<FetchedComputedCourse[]>([]);
     const [showSkeleton, setShowSkeleton] = useState(true);
     const [sortOptions, setSortOptions] = useState<DatasetOptions>({
-        name: {enabled: false, ascending: true, label: 'Name', type: "string"},
-        acceptedCount: {enabled: false, ascending: true, label: 'Accepted Count', type: "number"},
-        rejectedCount: {enabled: false, ascending: true, label: 'Rejected Count', type: "number"},
-        notResolvedCount: {enabled: false, ascending: true, label: 'Not Resolved Count', type: "number"},
+        name: { enabled: false, ascending: true, label: 'Name', type: "string" },
+        acceptedCount: { enabled: false, ascending: true, label: 'Accepted Count', type: "number" },
+        rejectedCount: { enabled: false, ascending: true, label: 'Rejected Count', type: "number" },
+        notResolvedCount: { enabled: false, ascending: true, label: 'Not Resolved Count', type: "number" },
     });
     const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -79,11 +78,7 @@ const RightSidebar = ({isOpen}: RightSidebarProps) => {
                     course.name.toLowerCase().includes(phrase) ||
                     course.professor.toLowerCase().includes(phrase) ||
                     course.codes?.some(code => code.toLowerCase().includes(phrase)) ||
-                    (course.merged && course.merged.some(mergedItem =>
-                        mergedItem.name.toLowerCase().includes(phrase) ||
-                        mergedItem.professor.toLowerCase().includes(phrase) ||
-                        mergedItem.codes?.some(code => code.toLowerCase().includes(phrase))
-                    ))
+                    course.offeredInSemesters?.some(semester => semester.toLowerCase().includes(phrase))
                 )
             ));
         }
@@ -93,7 +88,7 @@ const RightSidebar = ({isOpen}: RightSidebarProps) => {
         selectCourse(courseId);
     };
 
-    return (
+     return (
         <>
             <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredCourses.length}
                            sortOptions={sortOptions}/>
@@ -133,7 +128,10 @@ const RightSidebar = ({isOpen}: RightSidebarProps) => {
                         height={'calc(100vh - 36px)'}
                         data={sortData(filteredCourses)}
                         renderer={(row) => (
-                            <div key={row.id} onClick={() => handleCourseSelect(row.id)}>
+                            <div key={row.id} onClick={() =>{
+                                handleCourseSelect(row.id)
+                                setSelectedCourse(row)
+                            }}>
                                 <ComputedCoursesListItem
                                     data={row}
                                     searchTerm={searchTerm}

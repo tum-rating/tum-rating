@@ -7,7 +7,7 @@ interface User {
     avatar: string;
     selectedFile: string | null;
     nickname: string;
-    selectedCourse: string | null; // Add selectedCourse property
+    selectedCourse: string | null;
 }
 
 interface AppDataContextType {
@@ -26,7 +26,9 @@ interface AppDataContextType {
     startFetchingProductionCourses: (suffix: string) => void;
     startFetchingTUMSemesters: (suffix: string) => void;
     getFileContent: (fileName: string) => Promise<FileData>;
-    selectCourse: (courseId: string) => void; // Add selectCourse method
+    selectCourse: (courseId: string) => void;
+    selectedCourse: string | null; // Add selectedCourse property
+    setSelectedCourse: (courseId: string | null) => void; // Add setSelectedCourse method
 }
 
 const AppDataContext = createContext<AppDataContextType>({
@@ -45,7 +47,9 @@ const AppDataContext = createContext<AppDataContextType>({
     startFetchingProductionCourses: () => {},
     startFetchingTUMSemesters: () => {},
     getFileContent: () => Promise.resolve({} as FileData),
-    selectCourse: () => {} // Initialize selectCourse
+    selectCourse: () => {},
+    selectedCourse: null, // Initialize selectedCourse
+    setSelectedCourse: () => {} // Initialize setSelectedCourse
 });
 
 type AppDataContextProps = PropsWithChildren;
@@ -53,6 +57,7 @@ type AppDataContextProps = PropsWithChildren;
 const AppDataProvider = ({ children }: AppDataContextProps) => {
     const [files, setFiles] = useState<FileData[]>([]);
     const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
+    const [selectedCourse, setSelectedCourse] = useState<string | null>(null); // Add selectedCourse state
     const [users, setUsers] = useState<User[]>([]);
     const [currentUserId, setCurrentUserId] = useState<string>(uuidv4());
     const [fetchProgress, setFetchProgress] = useState<{ [key: string]: number }>({});
@@ -214,7 +219,9 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
             startFetchingProductionCourses,
             startFetchingTUMSemesters,
             getFileContent,
-            selectCourse // Provide selectCourse method
+            selectCourse,
+            selectedCourse, // Provide selectedCourse
+            setSelectedCourse // Provide setSelectedCourse method
         }}>
             {children}
         </AppDataContext.Provider>

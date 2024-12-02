@@ -104,7 +104,7 @@ const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined 
                         </div>
                     </div>
                 </div>
-                <div className="sticky right-[30px] bottom-[15px] controls">
+                <div className="sticky right-[30px] bottom-[50px] controls">
                     <div className="flex flex-col mt-3 items-end justify-end px-2 mr-2">
                         <div>
                             <Badge

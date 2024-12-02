@@ -21,7 +21,6 @@ export default async function keySimilarityCore(arr, key, identificationKey, pro
         const delimitersPattern = /[()\[\],-]/g;
         const cleanedTitle = title.replace(redundantWordsPattern, "").replace(codePattern, "").replace(delimitersPattern, "").trim();
         const codes = extractCodes(title);
-        return {cleanedTitle, codes};
     }
 
     function checkIfCoursesHaveAtLeastOneCommonWord(course1, course2) {

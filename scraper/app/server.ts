@@ -1,8 +1,8 @@
 import fs from "fs";
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
-import { serverFilesystemConfig } from "./server-filesystem-config.js";
-import { fetchAndSaveProductionCourses, fetchAndSaveTUMSemesters } from "./server-actions.ts";
+import path, {dirname} from "path";
+import {fileURLToPath} from "url";
+import {serverFilesystemConfig} from "./server-filesystem-config.js";
+import {fetchAndSaveProductionCourses, fetchAndSaveTUMSemesters} from "./server-actions.ts";
 import Logger from './server-logger.ts';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -16,8 +16,8 @@ if (!fs.existsSync(DIRECTORY)) {
 }
 
 (async () => {
-    const { WebSocketServer } = await import("ws");
-    const wss = new WebSocketServer({ port: PORT });
+    const {WebSocketServer} = await import("ws");
+    const wss = new WebSocketServer({port: PORT});
     const users = new Map();
 
     Logger.info(`WebSocket server is running on ${PORT}`);
@@ -26,7 +26,7 @@ if (!fs.existsSync(DIRECTORY)) {
         const userList = Array.from(users.values());
         wss.clients.forEach(client => {
             if (client.readyState === client.OPEN) {
-                client.send(JSON.stringify({ action: "updateUsers", data: userList }));
+                client.send(JSON.stringify({action: "updateUsers", data: userList}));
             }
         });
     };
@@ -34,7 +34,7 @@ if (!fs.existsSync(DIRECTORY)) {
     const broadcastFileDeletion = (fileName) => {
         wss.clients.forEach(client => {
             if (client.readyState === client.OPEN) {
-                client.send(JSON.stringify({ action: "deleteFile", name: fileName }));
+                client.send(JSON.stringify({action: "deleteFile", name: fileName}));
             }
         });
     };
@@ -42,11 +42,12 @@ if (!fs.existsSync(DIRECTORY)) {
     const broadcastFileSave = (fileName) => {
         wss.clients.forEach(client => {
             if (client.readyState === client.OPEN) {
-                client.send(JSON.stringify({ action: "fileList", name: fileName }));
+                client.send(JSON.stringify({action: "fileList", name: fileName}));
             }
         });
     };
 
+    // scraper/app/server.ts
     wss.on("connection", (ws) => {
         const userId = Date.now().toString();
         users.set(userId, {
@@ -58,12 +59,12 @@ if (!fs.existsSync(DIRECTORY)) {
         });
 
         Logger.info(`Client connected: ${userId}`);
-        ws.send(JSON.stringify({ action: "setUserId", userId })); // Send userId to client
+        ws.send(JSON.stringify({action: "setUserId", userId})); // Send userId to client
         broadcastUsers();
 
         const handleMessage = async (message) => {
             try {
-                const { action, name, content, nickname, avatar, suffix, courseId } = JSON.parse(message.toString());
+                const {action, name, content, nickname, avatar, suffix, courseId} = JSON.parse(message.toString());
                 Logger.info(`Received action: ${action}`);
                 switch (action) {
                     case "setUserDetails":
@@ -78,13 +79,13 @@ if (!fs.existsSync(DIRECTORY)) {
                         break;
                     case "fetchProductionCourses":
                         if (suffix) {
-                            await fetchAndSaveProductionCourses({ suffix, ws });
+                            await fetchAndSaveProductionCourses({suffix, ws});
                         }
                         break;
                     case "fetchTUMSemesters":
                         Logger.info(suffix);
                         if (suffix) {
-                            await fetchAndSaveTUMSemesters({ suffix, ws });
+                            await fetchAndSaveTUMSemesters({suffix, ws});
                         }
                         break;
                     case "getFiles": {
@@ -100,7 +101,7 @@ if (!fs.existsSync(DIRECTORY)) {
                                 };
                             });
                         Logger.info("Files fetched");
-                        ws.send(JSON.stringify({ action: "fileList", data: files }));
+                        ws.send(JSON.stringify({action: "fileList", data: files}));
                         break;
                     }
                     case "getFile":
@@ -122,7 +123,7 @@ if (!fs.existsSync(DIRECTORY)) {
                                 users.get(userId).selectedFile = name;
                                 broadcastUsers();
                             } else {
-                                ws.send(JSON.stringify({ action: "error", message: "File not found" }));
+                                ws.send(JSON.stringify({action: "error", message: "File not found"}));
                             }
                         }
                         break;
@@ -138,7 +139,7 @@ if (!fs.existsSync(DIRECTORY)) {
                                     }
                                 }));
                             } else {
-                                ws.send(JSON.stringify({ action: "error", message: "File not found" }));
+                                ws.send(JSON.stringify({action: "error", message: "File not found"}));
                             }
                         }
                         break;
@@ -147,7 +148,7 @@ if (!fs.existsSync(DIRECTORY)) {
                             Logger.info(`Saving file: ${name}`);
                             const filePath = path.join(DIRECTORY, name);
                             fs.writeFileSync(filePath, content, "utf-8");
-                            ws.send(JSON.stringify({ action: "success", message: "File saved successfully" }));
+                            ws.send(JSON.stringify({action: "success", message: "File saved successfully"}));
                         }
                         break;
                     case "deleteFile":
@@ -156,10 +157,10 @@ if (!fs.existsSync(DIRECTORY)) {
                             const filePath = path.join(DIRECTORY, name);
                             if (fs.existsSync(filePath)) {
                                 fs.unlinkSync(filePath);
-                                ws.send(JSON.stringify({ action: "success", message: "File deleted successfully" }));
+                                ws.send(JSON.stringify({action: "success", message: "File deleted successfully"}));
                                 broadcastFileDeletion(name);
                             } else {
-                                ws.send(JSON.stringify({ action: "error", message: "File not found" }));
+                                ws.send(JSON.stringify({action: "error", message: "File not found"}));
                             }
                         }
                         break;
@@ -167,17 +168,18 @@ if (!fs.existsSync(DIRECTORY)) {
                         if (courseId) {
                             const user = users.get(userId);
                             if (user) {
+                                console.log("selecting cousres",courseId)
                                 user.selectedCourse = courseId;
                                 broadcastUsers();
                             }
                         }
                         break;
                     default:
-                        ws.send(JSON.stringify({ action: "error", message: "Unknown action" }));
+                        ws.send(JSON.stringify({action: "error", message: "Unknown action"}));
                 }
             } catch (error) {
                 Logger.error(`Error handling message: ${error}`);
-                ws.send(JSON.stringify({ action: "error", message: "Invalid request format" }));
+                ws.send(JSON.stringify({action: "error", message: "Invalid request format"}));
             }
         };
 
