@@ -11,11 +11,10 @@ import {
 import { Dialog } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button.tsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
-import { serverFilesystemConfig } from "../../server-filesystem-config.ts";
+import { serverFilesystemConfig } from "../../../server/src/server-filesystem-config.ts";
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@radix-ui/react-label";
 import { Minus, Plus } from "lucide-react";
-import { Progress } from "@/components/ui/progress.tsx";
 
 interface FetchingConfiguration {
     typeOfData: string;
@@ -57,7 +56,7 @@ const FetchingConfigurationForm = ({ config, onChange }: FetchingConfigurationFo
 };
 
 const FetchDialog = (props: PropsWithChildren) => {
-    const { startFetchingProductionCourses, startFetchingTUMSemesters, fetchStatus } = useContext(AppDataContext)!;
+    const { startFetchingProductionCourses, startFetchingTUMSemesters  } = useContext(AppDataContext)!;
     const [configurations, setConfigurations] = useState<FetchingConfiguration[]>([{ typeOfData: "", customSuffix: "" }]);
     const [errors, setErrors] = useState<string[]>([]);
     const [open, setOpen] = useState(false);
@@ -149,11 +148,6 @@ const FetchDialog = (props: PropsWithChildren) => {
                                         </Button>
                                     )
                                 }
-                            </div>
-                            <div>
-                                {fetchStatus[config.typeOfData] && (
-                                    <Progress value={fetchStatus[config.typeOfData]} />
-                                )}
                             </div>
                         </div>
                     ))}

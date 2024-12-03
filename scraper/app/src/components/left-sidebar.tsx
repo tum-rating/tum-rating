@@ -7,25 +7,22 @@ import {Separator} from "@/components/ui/separator.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {File} from "lucide-react";
 import FetchDialog from "@/components/fetch-dialog.tsx";
+import { FileData } from "@/types/fetchedData";
 
 interface LeftSidebarProps {
     isOpen: boolean;
 }
 
 const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
-    const {files, setSelectedFile, deleteFile, currentUserId, users, fetchStatus} = useContext(AppDataContext)!;
+    const {files, setSelectedFile , currentUserId, users, fetchStatus} = useContext(AppDataContext)!;
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [sortOptions, setSortOptions] = useState<DatasetOptions>({
         name: {enabled: false, ascending: true, label: 'Name', type: "string"},
     });
 
-    const handleFileClick = useCallback((file) => {
+    const handleFileClick = useCallback((file: FileData | null) => {
         setSelectedFile(file);
     }, [setSelectedFile]);
-
-    const handleDeleteClick = useCallback((fileName: string) => {
-        deleteFile(fileName);
-    }, [deleteFile]);
 
     const handleSearch = useCallback((searchTerm: string) => {
         setSearchTerm(searchTerm);
@@ -64,6 +61,8 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
         id: file.name,
         name: file.name,
         onClick: () => handleFileClick(file),
+        lastModified: file.lastModified,
+        size: file.size,
         icon: () => {
             const icons = users.map((user) => {
                 if (user.selectedFile === file.name) {
@@ -83,7 +82,6 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
 
     })), [sortedFiles, users, currentUserId, handleFileClick, fetchStatus]);
 
-    console.log(fetchStatus)
     return (
         <div
             className={`Sidebar flex flex-col justify-between ${isOpen ? 'w-[280px]' : 'w-[0px]'} h-full transition-width duration-300 ease-in-out`}>
@@ -94,14 +92,15 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
                     {fileData.map(x => (
                         <Button key={x.id} variant='ghost'
                                 className="flex justify-between w-full gap-2 cursor-pointer px-1 pl-4 hover:bg-gray-100"
-                             onClick={() => handleFileClick(x)}>
-                            <div className="flex gap-2 items-center">
+                                onClick={() => handleFileClick(x)}>
+                            <div className="flex gap-2 items-center w-full">
                                 <File className="w-6 h-6"/>
-                                <span className="text-sm font-bold truncate max-w-[197px]">{x.name}</span>
+                                <span className="text-sm font-bold truncate">{x.name}</span>
+                                <div className='flex gap-1 items-center'>
+                                    {x.icon()}
+                                </div>
                             </div>
-                            <div className='flex gap-1 items-center'>
-                                {x.icon()}
-                            </div>
+
                         </Button>
                     ))}
                     {

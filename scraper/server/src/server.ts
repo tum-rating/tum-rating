@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import WebSocket, { WebSocketServer } from 'ws';
+import {fileURLToPath} from 'url';
+import WebSocket, {WebSocketServer} from 'ws';
 import Logger from './server-logger.ts';
-import { fetchAndSaveProductionCourses, fetchAndSaveTUMSemesters } from "./server-actions.ts";
+import {fetchAndSaveProductionCourses, fetchAndSaveTUMSemesters} from "./server-actions.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,7 +15,7 @@ if (!fs.existsSync(DIRECTORY)) {
     fs.mkdirSync(DIRECTORY);
 }
 
-const wss = new WebSocketServer({ port: PORT });
+const wss = new WebSocketServer({port: PORT});
 const users = new Map();
 
 Logger.info(`WebSocket server is running on ${PORT}`);
@@ -24,18 +24,18 @@ const broadcastUsers = () => {
     const userList = Array.from(users.values());
     wss.clients.forEach((client: WebSocket) => {
         if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({ action: 'updateUsers', data: userList }));
+            client.send(JSON.stringify({action: 'updateUsers', data: userList}));
         }
     });
 };
 
-const broadcastFetchStatus = (type: string, status: boolean) => {
-    wss.clients.forEach((client: WebSocket) => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({ action: "fetchStatus", fetchStatus: status, type }));
-        }
-    });
-};
+// const broadcastFetchStatus = (type: string, status: boolean) => {
+//     wss.clients.forEach((client: WebSocket) => {
+//         if (client.readyState === WebSocket.OPEN) {
+//             client.send(JSON.stringify({action: "fetchStatus", fetchStatus: status, type}));
+//         }
+//     });
+// };
 
 const broadcastFileList = (wss: WebSocketServer, userId: string) => {
     const files = fs.readdirSync(DIRECTORY)
@@ -63,8 +63,8 @@ const broadcastFileList = (wss: WebSocketServer, userId: string) => {
     });
 };
 
-wss.on('connection', (ws, req) => {
-         const userId = uuidv4();
+wss.on('connection', (ws) => {
+    const userId = String(+new Date());
     users.set(userId, {
         id: userId,
         avatar: 'https://i.ibb.co/3m2w75y/smile-KDc-W-1.jpg',
@@ -74,12 +74,12 @@ wss.on('connection', (ws, req) => {
     });
 
     Logger.info(`Client connected: ${userId}`);
-    ws.send(JSON.stringify({ action: 'setUserId', userId }));
+    ws.send(JSON.stringify({action: 'setUserId', userId}));
     broadcastUsers();
 
     ws.on('message', async (message) => {
         try {
-            const { action, name, content, nickname, avatar, suffix, courseId } = JSON.parse(message.toString());
+            const {action, name, content, nickname, avatar, suffix, courseId} = JSON.parse(message.toString());
             Logger.info(`Received action: ${action}`);
             switch (action) {
                 case 'setUserDetails':
@@ -105,7 +105,7 @@ wss.on('connection', (ws, req) => {
                             };
                         });
                     Logger.info('Files fetched');
-                    ws.send(JSON.stringify({ action: 'fileList', data: files }));
+                    ws.send(JSON.stringify({action: 'fileList', data: files}));
                     break;
                 }
                 case 'getFile':
@@ -116,7 +116,7 @@ wss.on('connection', (ws, req) => {
                         if (fs.existsSync(filePath)) {
                             console.log(filePath)
                             const stats = fs.statSync(filePath);
-                            console.log(stats,"<--")
+                            console.log(stats, "<--")
                             ws.send(JSON.stringify({
                                 action: 'fileContent',
                                 data: {
@@ -129,7 +129,7 @@ wss.on('connection', (ws, req) => {
                             users.get(userId).selectedFile = name;
                             broadcastUsers();
                         } else {
-                            ws.send(JSON.stringify({ action: 'error', message: 'File not found' }));
+                            ws.send(JSON.stringify({action: 'error', message: 'File not found'}));
                         }
                     }
                     break;
@@ -138,7 +138,7 @@ wss.on('connection', (ws, req) => {
                         Logger.info(`Saving file: ${name}`);
                         const filePath = path.join(DIRECTORY, name);
                         fs.writeFileSync(filePath, content, 'utf-8');
-                        ws.send(JSON.stringify({ action: 'success', message: 'File saved successfully' }));
+                        ws.send(JSON.stringify({action: 'success', message: 'File saved successfully'}));
                     }
                     break;
                 case 'deleteFile':
@@ -149,7 +149,7 @@ wss.on('connection', (ws, req) => {
                             fs.unlinkSync(filePath);
                             broadcastFileList(wss, userId);
                         } else {
-                            ws.send(JSON.stringify({ action: 'error', message: 'File not found' }));
+                            ws.send(JSON.stringify({action: 'error', message: 'File not found'}));
                         }
                     }
                     break;
@@ -167,7 +167,7 @@ wss.on('connection', (ws, req) => {
                                 }
                             }));
                         } else {
-                            ws.send(JSON.stringify({ action: "error", message: "File not found" }));
+                            ws.send(JSON.stringify({action: "error", message: "File not found"}));
                         }
                     }
                     break;
@@ -182,21 +182,21 @@ wss.on('connection', (ws, req) => {
                     break;
                 case "fetchProductionCourses":
                     if (suffix) {
-                        await fetchAndSaveProductionCourses({ suffix, ws, wss });
+                        await fetchAndSaveProductionCourses({suffix, ws, wss});
                     }
                     break;
                 case "fetchTUMSemesters":
                     Logger.info(suffix);
                     if (suffix) {
-                        await fetchAndSaveTUMSemesters({ suffix, ws, wss });
+                        await fetchAndSaveTUMSemesters({suffix, ws, wss});
                     }
                     break;
                 default:
-                    ws.send(JSON.stringify({ action: 'error', message: 'Unknown action' }));
+                    ws.send(JSON.stringify({action: 'error', message: 'Unknown action'}));
             }
         } catch (error) {
             Logger.error(`Error handling message: ${error}`);
-            ws.send(JSON.stringify({ action: 'error', message: 'Invalid request format' }));
+            ws.send(JSON.stringify({action: 'error', message: 'Invalid request format'}));
         }
     });
 

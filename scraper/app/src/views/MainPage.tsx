@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AppDataContext } from "@/context/app-data-context.tsx";
 import SelectedFileCard from "@/components/selected-file-card.tsx";
-import MergedCourseCard from "@/components/merged-course-card.tsx";
+// import MergedCourseCard from "@/components/merged-course-card.tsx";
 
 const MainPage = () => {
     const { selectedFile, selectedCourse } = useContext(AppDataContext)!;
@@ -10,10 +10,8 @@ const MainPage = () => {
             <div className="absolute inset-0 h-full w-full bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
             {selectedFile ? (
                 selectedCourse ? (
-                    <>
-                        dd
-                    </>
                     // <MergedCourseCard course={selectedCourse || null} />
+                    <>d</>
                 ) : (
                     <SelectedFileCard />
                 )

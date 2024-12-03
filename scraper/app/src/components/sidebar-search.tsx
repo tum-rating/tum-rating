@@ -9,7 +9,7 @@ interface SidebarSearchProps {
     sortOptions: DatasetOptions;
 }
 
-const SidebarSearch = ({onSortChange, onSearch, listLength,sortOptions}: SidebarSearchProps) => {
+const SidebarSearch = ({onSortChange, onSearch, listLength, sortOptions}: SidebarSearchProps) => {
     return (
         <div className="flex items-center shadow-2xl border-b border-1 border-b-border my-[1px] pr-2 w-full">
             <SearchInput

@@ -1,17 +1,18 @@
 import * as React from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { XIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { type InputProps } from "./input";
+import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import {XIcon} from "lucide-react";
+import {cn} from "@/lib/utils";
 
-type InputTagsProps = Omit<InputProps, "value" | "onChange"> & {
+type InputTagsProps = Omit<
+    React.ComponentProps<"input">,
+    "value" | "onChange"> & {
     value: string[];
     onChange: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const InputTags = React.forwardRef<HTMLInputElement, InputTagsProps>(
-    ({ className, value, onChange, ...props }, ref) => {
+    ({className, value, onChange, ...props}, ref) => {
         const [pendingDataPoint, setPendingDataPoint] = React.useState("");
 
         React.useEffect(() => {
@@ -55,7 +56,7 @@ const InputTags = React.forwardRef<HTMLInputElement, InputTagsProps>(
                                 onChange(value.filter((i) => i !== item));
                             }}
                         >
-                            <XIcon className="w-3" />
+                            <XIcon className="w-3"/>
                         </Button>
                     </Badge>
                 ))}
@@ -86,4 +87,4 @@ const InputTags = React.forwardRef<HTMLInputElement, InputTagsProps>(
 
 InputTags.displayName = "InputTags";
 
-export { InputTags };
+export {InputTags};

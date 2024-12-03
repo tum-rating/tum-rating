@@ -1,14 +1,14 @@
-import {InputProps} from "@/components/ui/input.tsx";
 import React from "react";
 import {cn} from "@/lib/utils.ts";
-import {Button} from "@/components/ui/button.tsx";
-import {X} from "lucide-react";
+
+export type SearchInputProps = {
+    rightSection?: React.ReactNode;
+    type?: string;
+} & React.ComponentProps<"input">;
 
 
-export type SearchInputProps = InputProps
-
-const SearchInput = React.forwardRef<HTMLInputElement, InputProps>(
-    ({className, type, leftSection, rightSection, ...props}, ref) => {
+const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
+    ({className, type , rightSection, ...props}, ref) => {
         return (
             <div className="relative flex items-center w-full">
                 <input

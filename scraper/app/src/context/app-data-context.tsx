@@ -11,6 +11,11 @@ interface User {
     selectedCourse: string | null;
 }
 
+type FileContent = {
+    name: string;
+    content: string;
+}
+
 interface AppDataContextType {
     files: FileData[];
     hasFiles: boolean;
@@ -26,7 +31,7 @@ interface AppDataContextType {
     fetchStatus: { [key: string]: boolean };
     startFetchingProductionCourses: (suffix: string) => void;
     startFetchingTUMSemesters: (suffix: string) => void;
-    getFileContent: (fileName: string) => Promise<FileData>;
+    getFileContent: (fileName: string) => Promise<FileContent>;
     selectCourse: (courseId: string) => void;
     selectedCourse: string | null;
     setSelectedCourse: (courseId: string | null) => void;
@@ -61,8 +66,16 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         };
 
         socket.onmessage = (event) => {
-            console.log(event)
-            const { action, data, userId, name, fetchStatus, type, selectedFileExists, userSelectedFile } = JSON.parse(event.data);
+            const {
+                action,
+                data,
+                userId,
+                name,
+                fetchStatus,
+                type,
+                selectedFileExists,
+                userSelectedFile
+            } = JSON.parse(event.data);
             switch (action) {
                 case "setUserId":
                     setCurrentUserId(userId);
@@ -81,13 +94,15 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
                     }
                     break;
                 case "fileContent":
-                    console.log(data)
                     setSelectedFile({
                         name: data.name,
                         size: data.size,
                         lastModified: new Date(data.lastModified),
                         id: data.id,
                     });
+                    break;
+
+                case "getFileContent":
                     break;
                 case "updateUsers":
                     setUsers(data);
@@ -122,9 +137,6 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
 
         socket.onclose = () => {
             console.info("WebSocket connection closed");
-            setTimeout(() => {
-                socketRef.current = new WebSocket(`ws://localhost:8080`);
-            }, 1000);
         };
 
         return () => {
@@ -146,7 +158,6 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
 
     const handleSetSelectedFile = (file: FileData | null) => {
         if (file) {
-            console.log(file)
             fetchFileContent(file);
             if (!file.name.includes("courses-production")) {
                 setSelectedCourse(null);
@@ -158,7 +169,8 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
 
     const saveFile = (file: FileData) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify({ action: "saveFile", name: file.name, content: file.content }));
+            console.log(file)
+            // socketRef.current.send(JSON.stringify({action: "saveFile", name: file.name, content: file.content}));
         }
     };
 
@@ -186,14 +198,14 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         }
     };
 
-    const getFileContent = (fileName: string): Promise<FileData> => {
+    const getFileContent = (fileName: string): Promise<FileContent> => {
         return new Promise((resolve, reject) => {
             if (socketRef.current?.readyState === WebSocket.OPEN) {
                 const handleMessage = (event: MessageEvent) => {
                     const { action, data } = JSON.parse(event.data);
                     if (action === "getFileContent" && data.name === fileName) {
                         socketRef.current?.removeEventListener("message", handleMessage);
-                        resolve(data);
+                        resolve({ name: data.name, content: data.content });
                     }
                 };
 

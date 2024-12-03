@@ -9,12 +9,11 @@ import {ArrowLeft, ArrowRight, CheckIcon} from "lucide-react";
 import {ScrollArea} from "@/components/ui/scroll-area.tsx";
 import MergedSubCourseCard from "@/components/merged-sub-course-card.tsx";
 import Masonry from "@/components/masonry.tsx";
-import useAppData from "@/hooks/useAppData";
 import {Badge} from "./ui/badge";
 
 const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined }) => {
     const [internalCourse, setInternalCourse] = useState<FetchedComputedCourse | undefined>(undefined);
-    const {saveSelectedCourse} = useAppData();
+    // const {saveSelectedCourse} = useAppData()!;
 
     useEffect(() => {
         if (course) {
@@ -128,7 +127,7 @@ const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined 
                             <Button
                                 disabled={(internalCourse.acceptedCount ?? 0) + (internalCourse.rejectedCount ?? 0) !== (internalCourse.merged?.length ?? 0)}
                                 onClick={() => {
-                                    saveSelectedCourse(internalCourse)
+                                    // saveSelectedCourse(internalCourse)
                                 }}>
                                 Save
                             </Button>

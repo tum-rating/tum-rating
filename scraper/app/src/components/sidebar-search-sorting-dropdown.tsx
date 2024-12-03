@@ -42,7 +42,7 @@ const SidebarSearchSortingDropdown = ({ onSortChange, sortOptionsObject }: Sideb
             return newOptions;
         });
     };
-    console.log(sortOptions)
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger >
@@ -78,7 +78,7 @@ const SidebarSearchSortingDropdown = ({ onSortChange, sortOptionsObject }: Sideb
                             disabled={!sortOptions[key as keyof DatasetOptions]?.enabled}
                             onClick={() => handleOrderChange(key as keyof DatasetOptions)}
                         >
-                            {icons[`${sortOptions[key as keyof DatasetOptions]?.ascending ? "ascending" : "descending"}-${sortOptions[key as keyof DatasetOptions]?.type}`]}
+                            {icons[`${sortOptions[key as keyof DatasetOptions]?.ascending ? "ascending" : "descending"}-${sortOptions[key as keyof DatasetOptions]?.type}` as keyof typeof icons]}
                         </Button>
                     </div>
                 ))}

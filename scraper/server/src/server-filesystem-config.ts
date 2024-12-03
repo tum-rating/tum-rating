@@ -1,4 +1,3 @@
-
 interface ServerFilesystemConfigFile {
     id: string;
     name: string;
@@ -13,6 +12,9 @@ interface ServerFilesystemConfig {
     files: ServerFilesystemConfigFile[];
 }
 
+interface ServerFilesystemConfigFilesMap {
+    [key: string]: ServerFilesystemConfigFile;
+}
 
 const serverFilesystemConfig: ServerFilesystemConfig = {
     PORT: "8080",
@@ -35,11 +37,7 @@ const serverFilesystemConfig: ServerFilesystemConfig = {
     ]
 }
 
-const serverFilesystemConfigFilesMap = serverFilesystemConfig.files.reduce((acc, file) => {
-    acc[file.id] = file
-    return acc
-}, {})
-
+const serverFilesystemConfigFilesMap: ServerFilesystemConfigFilesMap = Object.fromEntries(serverFilesystemConfig.files.map(file => [file.id, file]))
 
 export {
     serverFilesystemConfig,

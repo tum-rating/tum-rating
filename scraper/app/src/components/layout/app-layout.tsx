@@ -7,7 +7,7 @@ import {AppDataContext} from "@/context/app-data-context.tsx";
 import isCoursesFile from "@/lib/is-courses-file.ts";
 
 const AppLayout = ({children}: PropsWithChildren) => {
-    const {selectedFile} = useContext(AppDataContext);
+    const {selectedFile} = useContext(AppDataContext)!;
     const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
     const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(true);
 
@@ -19,7 +19,7 @@ const AppLayout = ({children}: PropsWithChildren) => {
             } else {
                 setIsRightSidebarOpen(false);
             }
-        }else{
+        } else {
             setIsRightSidebarOpen(false);
         }
     }, [selectedFile]);
@@ -45,7 +45,7 @@ const AppLayout = ({children}: PropsWithChildren) => {
                 <div
                     className={`Sidebar ${isRightSidebarOpen ? 'w-[400px]' : 'w-[0px]'} transition-width duration-300 ease-in-out`}>
                     {selectedFile && isRightSidebarOpen && (
-                        <RightSidebar isOpen={isCoursesFile(selectedFile.id) ? isRightSidebarOpen : false}/>
+                        <RightSidebar/>
                     )}
                 </div>
             </div>
