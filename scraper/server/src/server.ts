@@ -2,8 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import WebSocket, {WebSocketServer} from 'ws';
-import Logger from './server-logger.ts';
-import {fetchAndSaveProductionCourses, fetchAndSaveTUMSemesters} from "./server-actions.ts";
+import Logger from './server-logger';
+import {fetchAndSaveProductionCourses, fetchAndSaveTUMSemesters} from "./server-actions";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,14 +28,6 @@ const broadcastUsers = () => {
         }
     });
 };
-
-// const broadcastFetchStatus = (type: string, status: boolean) => {
-//     wss.clients.forEach((client: WebSocket) => {
-//         if (client.readyState === WebSocket.OPEN) {
-//             client.send(JSON.stringify({action: "fetchStatus", fetchStatus: status, type}));
-//         }
-//     });
-// };
 
 const broadcastFileList = (wss: WebSocketServer, userId: string) => {
     const files = fs.readdirSync(DIRECTORY)
@@ -112,11 +104,8 @@ wss.on('connection', (ws) => {
                     if (name) {
                         Logger.info(`Fetching content for file: ${name}`);
                         const filePath = path.join(DIRECTORY, name);
-                        console.log(1)
                         if (fs.existsSync(filePath)) {
-                            console.log(filePath)
                             const stats = fs.statSync(filePath);
-                            console.log(stats, "<--")
                             ws.send(JSON.stringify({
                                 action: 'fileContent',
                                 data: {
