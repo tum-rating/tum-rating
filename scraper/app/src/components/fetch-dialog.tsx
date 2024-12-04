@@ -11,7 +11,6 @@ import {
 import { Dialog } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button.tsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
-import { serverFilesystemConfig } from "../../../server/src/server-filesystem-config.ts";
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@radix-ui/react-label";
 import { Minus, Plus } from "lucide-react";
@@ -27,6 +26,9 @@ interface FetchingConfigurationFormProps {
 }
 
 const FetchingConfigurationForm = ({ config, onChange }: FetchingConfigurationFormProps) => {
+    const { serverFilesystemConfig } = useContext(AppDataContext)!;
+
+    console.log(serverFilesystemConfig)
     return (
         <div className={'flex gap-3'}>
             <div className="grid w-auto max-w-sm items-center gap-1.5">
@@ -36,7 +38,7 @@ const FetchingConfigurationForm = ({ config, onChange }: FetchingConfigurationFo
                         <SelectValue placeholder="Select file" />
                     </SelectTrigger>
                     <SelectContent>
-                        {serverFilesystemConfig.files.map(file => (
+                        {serverFilesystemConfig?.files.map((file: any) => (
                             <SelectItem key={file.id} value={file.id}>{file.name}</SelectItem>
                         ))}
                     </SelectContent>
@@ -56,7 +58,7 @@ const FetchingConfigurationForm = ({ config, onChange }: FetchingConfigurationFo
 };
 
 const FetchDialog = (props: PropsWithChildren) => {
-    const { startFetchingProductionCourses, startFetchingTUMSemesters  } = useContext(AppDataContext)!;
+    const { startFetchingProductionCourses, startFetchingTUMSemesters } = useContext(AppDataContext)!;
     const [configurations, setConfigurations] = useState<FetchingConfiguration[]>([{ typeOfData: "", customSuffix: "" }]);
     const [errors, setErrors] = useState<string[]>([]);
     const [open, setOpen] = useState(false);

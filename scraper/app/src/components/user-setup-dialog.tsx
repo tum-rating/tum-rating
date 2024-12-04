@@ -1,15 +1,15 @@
-import { SetStateAction, useContext, useEffect, useState} from "react";
-import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from "@/components/ui/dialog";
-import {Input} from "@/components/ui/input";
-import {AppDataContext} from "@/context/app-data-context";
-import {Button} from "@/components/ui/button";
+import { SetStateAction, useContext, useEffect, useState } from "react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { AppDataContext } from "@/context/app-data-context";
+import { Button } from "@/components/ui/button";
 import Avatar1 from "@/assets/avatar-1.jpg";
 import Avatar2 from "@/assets/avatar-2.png";
-import {Avatar, AvatarImage} from "@/components/ui/avatar.tsx";
-import {Label} from "@radix-ui/react-label";
+import { Avatar, AvatarImage } from "@/components/ui/avatar.tsx";
+import { Label } from "@radix-ui/react-label";
 
-const UserSetupDialog = ({open = true}) => {
-    const {setUserDetails, socketRef} = useContext(AppDataContext)!;
+const UserSetupDialog = ({ open = true }) => {
+    const { setUserDetails, socketRef } = useContext(AppDataContext)!;
     const [nickname, setNickname] = useState("");
     const [avatar, setAvatar] = useState(Avatar1);
     const [dialogOpened, setDialogOpened] = useState(open);
@@ -30,13 +30,13 @@ const UserSetupDialog = ({open = true}) => {
         if (nickname === "") {
             return;
         }
-        setUserDetails({nickname, avatar});
+        setUserDetails({ nickname, avatar });
         localStorage.setItem('nickname', nickname);
         localStorage.setItem('avatar', avatar);
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify({action: "setUserDetails", nickname, avatar}));
+            socketRef.current.send(JSON.stringify({ action: "setUserDetails", nickname, avatar }));
+            setDialogOpened(false);
         }
-        setDialogOpened(false);
     };
 
     const handleAvatarClick = (selectedAvatar: SetStateAction<string>) => {

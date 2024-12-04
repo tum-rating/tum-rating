@@ -1,6 +1,6 @@
 import {useContext, useEffect, useMemo, useState} from "react";
 import VirtualList from "@/components/ui/virtual-list";
-import {FetchedComputedCourse} from "@/types/fetchedData";
+import {FetchedComputedCourse, FetchedCourse} from "@/types/fetchedData";
 import ComputedCoursesListItem from "@/components/computed-courses-list-item";
 import {Skeleton} from "@/components/ui/skeleton";
 import {Separator} from "@/components/ui/separator";
@@ -16,7 +16,7 @@ const RightSidebar = () => {
         selectCourse,
         users,
         currentUserId,
-        setSelectedCourse
+        filesContent
     } = useContext(AppDataContext)!;
     const [computedCourses, setComputedCourses] = useState<FetchedComputedCourse[]>([]);
     const [filteredCourses, setFilteredCourses] = useState<FetchedComputedCourse[]>([]);
@@ -48,21 +48,19 @@ const RightSidebar = () => {
     };
 
     useEffect(() => {
-        const fetchFileData = async () => {
-            try {
-                if (selectedFile) {
-                    const data = await getFileContent(selectedFile.name);
-                    console.log(data)
-                    setComputedCourses(JSON.parse(data.content));
+        if (selectedFile) {
+            if (filesContent) {
+                const fileNameWithoutExtension = selectedFile.name.split('.').slice(0, -1).join('.');
+                if (filesContent[fileNameWithoutExtension]) {
+                    setComputedCourses(filesContent[fileNameWithoutExtension]);
+
                     setShowSkeleton(false);
                 }
-            } catch (error) {
-                console.error("Error fetching file data:", error);
             }
-        };
+        }
 
-        fetchFileData();
-    }, [getFileContent, selectedFile]);
+    }, [filesContent]);
+
 
     const sortedCourses = useMemo(() => sortData(computedCourses), [computedCourses, sortOptions]);
 
@@ -89,8 +87,9 @@ const RightSidebar = () => {
         }
     };
 
-    const handleCourseSelect = (courseId: string) => {
-        selectCourse(courseId);
+    const handleCourseSelect = (course: FetchedCourse | FetchedComputedCourse | null) => {
+        if (!course) return;
+        selectCourse(course);
     };
 
     return (
@@ -134,8 +133,7 @@ const RightSidebar = () => {
                         data={sortedCourses}
                         renderer={(row) => (
                             <div key={row.id} onClick={() => {
-                                handleCourseSelect(row.id);
-                                setSelectedCourse(row.id);
+                                handleCourseSelect(row);
                             }}>
                                 <ComputedCoursesListItem
                                     data={row}

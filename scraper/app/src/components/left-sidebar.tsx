@@ -7,7 +7,6 @@ import {Separator} from "@/components/ui/separator.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {File} from "lucide-react";
 import FetchDialog from "@/components/fetch-dialog.tsx";
-import { FileData } from "@/types/fetchedData";
 
 interface LeftSidebarProps {
     isOpen: boolean;
@@ -20,9 +19,7 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
         name: {enabled: false, ascending: true, label: 'Name', type: "string"},
     });
 
-    const handleFileClick = useCallback((file: FileData | null) => {
-        setSelectedFile(file);
-    }, [setSelectedFile]);
+
 
     const handleSearch = useCallback((searchTerm: string) => {
         setSearchTerm(searchTerm);
@@ -60,7 +57,7 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
     const fileData = useMemo(() => sortedFiles.map(file => ({
         id: file.name,
         name: file.name,
-        onClick: () => handleFileClick(file),
+        onClick: () => setSelectedFile(file),
         lastModified: file.lastModified,
         size: file.size,
         icon: () => {
@@ -80,7 +77,7 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
             return icons.length > 0 ? <div className='flex gap-1 mr-2'>{icons}</div> : null;
         },
 
-    })), [sortedFiles, users, currentUserId, handleFileClick, fetchStatus]);
+    })), [sortedFiles, users, currentUserId , fetchStatus]);
 
     return (
         <div
@@ -92,7 +89,7 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
                     {fileData.map(x => (
                         <Button key={x.id} variant='ghost'
                                 className="flex justify-between w-full gap-2 cursor-pointer px-1 pl-4 hover:bg-gray-100"
-                                onClick={() => handleFileClick(x)}>
+                                onClick={() => setSelectedFile(x)}>
                             <div className="flex gap-2 items-center w-full">
                                 <File className="w-6 h-6"/>
                                 <span className="text-sm font-bold truncate">{x.name}</span>

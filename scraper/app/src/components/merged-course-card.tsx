@@ -11,9 +11,11 @@ import MergedSubCourseCard from "@/components/merged-sub-course-card.tsx";
 import Masonry from "@/components/masonry.tsx";
 import {Badge} from "./ui/badge";
 
+import useAppData from "@/hooks/useAppData";
+
 const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined }) => {
     const [internalCourse, setInternalCourse] = useState<FetchedComputedCourse | undefined>(undefined);
-    // const {saveSelectedCourse} = useAppData()!;
+    const {saveUserEditedCourse} = useAppData();
 
     useEffect(() => {
         if (course) {
@@ -37,6 +39,13 @@ const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined 
         }
 
         setInternalCourse(updatedCourse);
+    };
+
+    const handleSave = () => {
+        console.log(internalCourse)
+        if (internalCourse) {
+            saveUserEditedCourse(internalCourse);
+        }
     };
 
     if (!internalCourse) return <div>No course selected</div>;
@@ -91,13 +100,10 @@ const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined 
                                     {internalCourse.merged ? internalCourse.merged.map((x) => (
                                         <MergedSubCourseCard subCourse={x} key={x.id}
                                                              setSubCourse={(updatedSubCourse) => {
-                                                                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                                                 // @ts-expect-error
                                                                  const updatedMerged = internalCourse.merged.map((sub) => sub.id === updatedSubCourse.id ? updatedSubCourse : sub);
                                                                  updateInternalCourse("merged", updatedMerged);
                                                              }}/>
                                     )) : null}
-
                                 </Masonry>
                             </div>
                         </div>
@@ -126,9 +132,7 @@ const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined 
                             </Button>
                             <Button
                                 disabled={(internalCourse.acceptedCount ?? 0) + (internalCourse.rejectedCount ?? 0) !== (internalCourse.merged?.length ?? 0)}
-                                onClick={() => {
-                                    // saveSelectedCourse(internalCourse)
-                                }}>
+                                onClick={handleSave}>
                                 Save
                             </Button>
                         </div>
