@@ -7,16 +7,26 @@ import {Badge} from "@/components/ui/badge.tsx";
 const SelectedFileCard = () => {
     const {selectedFile, deleteFile} = useContext(AppDataContext)!;
 
+
+    if (!selectedFile) {
+        return <div>No file selected</div>;
+    }
+
     const handleDelete = () => {
         if (selectedFile) {
             deleteFile(selectedFile.name);
         }
     };
-    console.log(selectedFile)
-    if (!selectedFile) {
-        return <div>No file selected</div>;
+
+    const handlePreview = () => {
+        if (selectedFile) {
+            console.log(selectedFile)
+            console.log(import.meta.env.VITE_FILE_SERVER)
+            window.open(import.meta.env.VITE_FILE_SERVER_URL  + "/" + selectedFile.name, '_blank');
+        }
     }
-    console.log(selectedFile)
+
+
     return (
         <div className="relative z-10 w-full h-full flex justify-center items-center gap-4">
             <ScrollArea className='w-full h-screen'>
@@ -37,9 +47,7 @@ const SelectedFileCard = () => {
                     <div className="mb-4">
                         <p className={'text-sm font-semibold'}>Actions:</p>
                         <div className="flex gap-1">
-                            <Button onClick={() => {
-                                window.open(`/data/${selectedFile.name}`, '_blank');
-                            }}>Preview</Button>
+                            <Button onClick={handlePreview}>Preview</Button>
                             <Button variant="destructive" onClick={handleDelete}>Delete File</Button>
                         </div>
                     </div>
