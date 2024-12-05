@@ -1,13 +1,14 @@
-import {useContext, useEffect, useMemo, useState} from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import VirtualList from "@/components/ui/virtual-list";
-import {FetchedComputedCourse, FetchedCourse} from "@/types/fetchedData";
+import { FetchedComputedCourse, FetchedCourse } from "@/types/fetchedData";
 import ComputedCoursesListItem from "@/components/computed-courses-list-item";
-import {Skeleton} from "@/components/ui/skeleton";
-import {Separator} from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
 import SidebarSearch from "@/components/sidebar-search";
-import {DatasetOptions} from "@/types/dataset-options";
-import {AppDataContext} from "@/context/app-data-context";
-import {Avatar, AvatarFallback, AvatarImage} from "./ui/avatar";
+import { DatasetOptions } from "@/types/dataset-options";
+import { AppDataContext } from "@/context/app-data-context";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import isCoursesFile from "@/lib/is-courses-file.ts";
 
 const RightSidebar = () => {
     const {
@@ -21,64 +22,65 @@ const RightSidebar = () => {
     const [filteredCourses, setFilteredCourses] = useState<FetchedComputedCourse[]>([]);
     const [showSkeleton, setShowSkeleton] = useState(true);
     const [sortOptions, setSortOptions] = useState<DatasetOptions>({
-        name: {enabled: false, ascending: true, label: 'Name', type: "string"},
-        acceptedCount: {enabled: false, ascending: true, label: 'Accepted Count', type: "number"},
-        rejectedCount: {enabled: false, ascending: true, label: 'Rejected Count', type: "number"},
-        notResolvedCount: {enabled: false, ascending: true, label: 'Not Resolved Count', type: "number"},
+        name: { enabled: false, ascending: true, label: 'Name', type: "string" },
+        acceptedCount: { enabled: false, ascending: true, label: 'Accepted Count', type: "number" },
+        rejectedCount: { enabled: false, ascending: true, label: 'Rejected Count', type: "number" },
+        notResolvedCount: { enabled: false, ascending: true, label: 'Not Resolved Count', type: "number" },
     });
     const [searchTerm, setSearchTerm] = useState<string>("");
 
-    const sortData = (data: FetchedComputedCourse[]) => {
-        const sortedData = [...data];
-        Object.entries(sortOptions).forEach(([key, value]) => {
-            if (value?.enabled) {
-                sortedData.sort((a, b) => {
-                    const aValue = a[key as keyof FetchedComputedCourse];
-                    const bValue = b[key as keyof FetchedComputedCourse];
-                    if (aValue !== undefined && bValue !== undefined) {
-                        if (aValue < bValue) return value!.ascending ? -1 : 1;
-                        if (aValue > bValue) return value!.ascending ? 1 : -1;
-                    }
-                    return 0;
-                });
+    useEffect(() => {
+        if (selectedFile) {
+            const fileNameWithoutExtension = selectedFile.name.split('.').slice(0, -1).join('.');
+            if (isCoursesFile(fileNameWithoutExtension)) {
+                if (filesContent[fileNameWithoutExtension]) {
+                    setComputedCourses([...filesContent[fileNameWithoutExtension]]);
+                    setShowSkeleton(false);
+                }
             }
-        });
-        return sortedData;
-    };
-useEffect(() => {
-    if (selectedFile) {
-        const fileNameWithoutExtension = selectedFile.name.split('.').slice(0, -1).join('.');
-        if (filesContent[fileNameWithoutExtension]) {
-            setComputedCourses([...filesContent[fileNameWithoutExtension]]);
-            setShowSkeleton(false);
         }
-    }
-}, [filesContent, selectedFile]);;
-
-
-    const sortedCourses = useMemo(() => sortData(computedCourses), [computedCourses, sortOptions]);
+    }, [filesContent, selectedFile]);
 
     useEffect(() => {
-        setFilteredCourses(sortedCourses);
-    }, [sortedCourses]);
+        const filterAndSortData = () => {
+            let data = [...computedCourses];
 
-    const getRandomWidth = () => `${Math.floor(Math.random() * (75 - 50 + 1) + 50)}%`;
+            // Apply search filter
+            if (searchTerm) {
+                const phrases = searchTerm.toLowerCase().split(',').map(phrase => phrase.trim());
+                data = data.filter(course =>
+                    phrases.every(phrase =>
+                        course.name.toLowerCase().includes(phrase) ||
+                        course.professor.toLowerCase().includes(phrase) ||
+                        course.codes?.some(code => code.toLowerCase().includes(phrase)) ||
+                        course.offeredInSemesters?.some(semester => semester.toLowerCase().includes(phrase))
+                    )
+                );
+            }
+
+            // Apply sorting
+            Object.entries(sortOptions).forEach(([key, value]) => {
+                if (value?.enabled) {
+                    data.sort((a, b) => {
+                        const aValue = a[key as keyof FetchedComputedCourse];
+                        const bValue = b[key as keyof FetchedComputedCourse];
+                        if (aValue !== undefined && bValue !== undefined) {
+                            if (aValue < bValue) return value!.ascending ? -1 : 1;
+                            if (aValue > bValue) return value!.ascending ? 1 : -1;
+                        }
+                        return 0;
+                    });
+                }
+            });
+
+            setFilteredCourses(data);
+        };
+
+        filterAndSortData();
+    }, [computedCourses, sortOptions, searchTerm]);
 
     const handleSearch = (searchTerm: string) => {
         setSearchTerm(searchTerm);
-        if (!searchTerm) {
-            setFilteredCourses(computedCourses);
-        } else {
-            const phrases = searchTerm.toLowerCase().split(',').map(phrase => phrase.trim());
-            setFilteredCourses(computedCourses.filter(course =>
-                phrases.every(phrase =>
-                    course.name.toLowerCase().includes(phrase) ||
-                    course.professor.toLowerCase().includes(phrase) ||
-                    course.codes?.some(code => code.toLowerCase().includes(phrase)) ||
-                    course.offeredInSemesters?.some(semester => semester.toLowerCase().includes(phrase))
-                )
-            ));
-        }
     };
 
     const handleCourseSelect = (course: FetchedCourse | FetchedComputedCourse | null) => {
@@ -86,10 +88,11 @@ useEffect(() => {
         selectCourse(course);
     };
 
+    const getRandomWidth = () => `${Math.floor(Math.random() * (75 - 50 + 1) + 50)}%`;
+
     return (
         <>
-            <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredCourses.length}
-                           sortOptions={sortOptions}/>
+            <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredCourses.length} sortOptions={sortOptions} />
             {showSkeleton ? (
                 <div
                     style={{
@@ -100,19 +103,18 @@ useEffect(() => {
                         contain: 'strict',
                     }}
                 >
-                    {Array.from({length: 10}).map((_, index) => (
+                    {Array.from({ length: 10 }).map((_, index) => (
                         <>
                             <div key={index} className="bg-gray-100 px-4 py-4 w-[388px] h-[107.5px]">
-                                <Skeleton className="h-6 mb-2 transition-[width]" style={{width: getRandomWidth()}}/>
-                                {Math.random() > 0.5 && <Skeleton className="h-6 mb-2 transition-[width]"
-                                                                  style={{width: getRandomWidth()}}/>}
+                                <Skeleton className="h-6 mb-2 transition-[width]" style={{ width: getRandomWidth() }} />
+                                {Math.random() > 0.5 && <Skeleton className="h-6 mb-2 transition-[width]" style={{ width: getRandomWidth() }} />}
                                 <div className="flex gap-1">
-                                    <Skeleton className="h-[22px] w-[29px]"/>
-                                    <Skeleton className="h-[22px] w-[29px]"/>
-                                    <Skeleton className="h-[22px] w-[29px]"/>
+                                    <Skeleton className="h-[22px] w-[29px]" />
+                                    <Skeleton className="h-[22px] w-[29px]" />
+                                    <Skeleton className="h-[22px] w-[29px]" />
                                 </div>
                             </div>
-                            <Separator/>
+                            <Separator />
                         </>
                     ))}
                 </div>
@@ -124,7 +126,7 @@ useEffect(() => {
                 ) : (
                     <VirtualList
                         height={'calc(100vh - 36px)'}
-                        data={sortedCourses}
+                        data={filteredCourses}
                         renderer={(row) => (
                             <div key={row.id} onClick={() => {
                                 handleCourseSelect(row);
@@ -139,7 +141,7 @@ useEffect(() => {
                                                 <div key={user.id} className="active-user">
                                                     <Avatar
                                                         className={`h-6 w-6 ${user.id === currentUserId ? 'border-2 border-blue-500' : 'border-2 border-gray-900'}`}>
-                                                        <AvatarImage src={user.avatar}/>
+                                                        <AvatarImage src={user.avatar} />
                                                         <AvatarFallback>{user.nickname[0]}</AvatarFallback>
                                                     </Avatar>
                                                 </div>

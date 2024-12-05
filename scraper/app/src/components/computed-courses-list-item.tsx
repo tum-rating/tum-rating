@@ -19,7 +19,7 @@ const highlightText = (text: string, searchTerm: string) => {
     );
 };
 
-const ComputedCoursesListItem = ({data, selected, searchTerm,usersRenderer}: ComputedCoursesListItemProps) => {
+const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: ComputedCoursesListItemProps) => {
     const [status, setStatus] = useState({
         accepted: data.acceptedCount || 0,
         rejected: data.rejectedCount || 0,
@@ -27,13 +27,17 @@ const ComputedCoursesListItem = ({data, selected, searchTerm,usersRenderer}: Com
     });
 
     useEffect(() => {
+        let acceptedCount = data.acceptedCount || 0;
+        let rejectedCount = data.rejectedCount || 0;
+        let notResolvedCount = data.merged ? data.merged.length - acceptedCount - rejectedCount : 0;
         setStatus({
-            accepted: data.acceptedCount || 0,
-            rejected: data.rejectedCount || 0,
-            notResolved: data.notResolvedCount || 0
+            accepted: acceptedCount,
+            rejected: rejectedCount,
+            notResolved: notResolvedCount
         });
     }, [data]);
 
+    console.log(data)
     return (
         <div
             tabIndex={0}
@@ -47,7 +51,7 @@ const ComputedCoursesListItem = ({data, selected, searchTerm,usersRenderer}: Com
         >
 
             <div className={`min-w-[8px] h-auto mr-4  ${status.notResolved === 0 ? 'bg-blue-500' : 'bg-gray-300'}`}/>
-            <div className="py-4">
+            <div className="py-4 w-full">
                 <span className="text-sm font-bold leading-relaxed ">
                     {status.notResolved === 0 && (
                         <CircleCheck className="inline-block w-5 h-5 mr-1 fill-blue-500 stroke-white"/>

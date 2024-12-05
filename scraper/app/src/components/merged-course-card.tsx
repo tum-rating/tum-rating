@@ -5,7 +5,7 @@ import {Label} from "@radix-ui/react-label";
 import {Input} from "./ui/input";
 import {InputTags} from "./ui/input-tags";
 import {Button} from "@/components/ui/button.tsx";
-import {ArrowLeft, ArrowRight, CheckIcon} from "lucide-react";
+import {ArrowLeft, ArrowRight, CheckIcon, ChevronLeft, Link} from "lucide-react";
 import {ScrollArea} from "@/components/ui/scroll-area.tsx";
 import MergedSubCourseCard from "@/components/merged-sub-course-card.tsx";
 import Masonry from "@/components/masonry.tsx";
@@ -13,9 +13,10 @@ import {Badge} from "./ui/badge";
 
 import useAppData from "@/hooks/useAppData";
 
+
 const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined }) => {
     const [internalCourse, setInternalCourse] = useState<FetchedComputedCourse | undefined>(undefined);
-    const {saveUserEditedCourse} = useAppData();
+    const {saveUserEditedCourse, selectedFile, selectCourse} = useAppData();
 
     useEffect(() => {
         if (course) {
@@ -53,7 +54,22 @@ const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined 
     return (
         <div className="relative z-10 w-full h-full flex justify-center items-center gap-4">
             <ScrollArea className='w-full h-screen'>
-                <div className='relative bg-gray-100/40 p-4 h-full flex flex-col gap-0'>
+                <div className='relative bg-gray-100/40 px-4 py-2 h-full flex flex-col gap-0'>
+                    <div>
+                        <a className="
+                            text-primary underline-offset-4 hover:underline
+                            text-xs font-bold cursor-pointer
+
+                        " onClick={(e) => {
+                            e.preventDefault()
+                            selectCourse(null)
+                        }}>
+                            ←
+                            {" "}
+                            {selectedFile?.name}
+                        </a>
+                    </div>
+
                     <Label className='text-md font-bold' htmlFor="course-name">Merged Course Name</Label>
                     <Textarea
                         className='font-extrabold shadow-xl text-[26px] mt-1'
@@ -101,7 +117,9 @@ const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined 
                                         <MergedSubCourseCard subCourse={x} key={x.id}
                                                              setSubCourse={(updatedSubCourse) => {
                                                                  if (!internalCourse.merged) return;
-                                                                 const updatedMerged = internalCourse.merged.map((sub) => sub.id === updatedSubCourse.id ? updatedSubCourse : sub);
+                                                                 console.log(internalCourse)
+                                                                 console.log(updatedSubCourse)
+                                                                 const updatedMerged = internalCourse.merged.map((sub) => sub.courseId === updatedSubCourse.courseId ? updatedSubCourse : sub);
                                                                  updateInternalCourse("merged", updatedMerged);
                                                              }}/>
                                     )) : null}
@@ -111,6 +129,7 @@ const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined 
                     </div>
                 </div>
                 <div className="sticky right-[30px] bottom-[50px] controls">
+
                     <div className="flex flex-col mt-3 items-end justify-end px-2 mr-2">
                         <div>
                             <Badge

@@ -1,7 +1,7 @@
-import { createContext, PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FetchedComputedCourse, FetchedCourse, FileData } from "@/types/fetchedData.ts";
-import { v4 as uuidv4 } from 'uuid';
-import { toast } from 'sonner';
+import {createContext, PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {FetchedComputedCourse, FetchedCourse, FileData} from "@/types/fetchedData.ts";
+import {v4 as uuidv4} from 'uuid';
+import {toast} from 'sonner';
 import fastJsonPatch from "fast-json-patch";
 
 interface User {
@@ -28,19 +28,23 @@ interface AppDataContextType {
     fetchStatus: { [key: string]: boolean };
     startFetchingProductionCourses: (suffix: string) => void;
     startFetchingTUMSemesters: (suffix: string) => void;
+    startFetchingTUMCourses: (suffix: string, semesters: string[]) => void;
+    startFetchingMrozonRatingData: (suffix: string) => void;
+    keySimilarityMerging: (filesToMerge: any[], suffix: string) => void;
     getFileContent: (fileName: string) => Promise<any>;
-    selectCourse: (course: FetchedCourse | FetchedComputedCourse) => void;
+    selectCourse: (course: FetchedCourse | FetchedComputedCourse | null) => void;
     selectedCourse: FetchedCourse | FetchedComputedCourse | null;
     setSelectedCourse: (courseId: FetchedComputedCourse | FetchedCourse | null) => void;
     serverFilesystemConfig: any;
     serverFilesystemConfigFilesMap: any;
+    getAndUseFileContent: (file: FileData) => Promise<any>;
 }
 
 const AppDataContext = createContext<AppDataContextType | undefined>(undefined);
 
 type AppDataContextProps = PropsWithChildren;
 
-const AppDataProvider = ({ children }: AppDataContextProps) => {
+const AppDataProvider = ({children}: AppDataContextProps) => {
     // const [filesContent, setFilesContent] = useState<{ [key: string]: any }>({});
     const [files, setFiles] = useState<FileData[]>([]);
     const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
@@ -61,7 +65,6 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
     const filesContentRef = useRef<
         { [key: string]: any[] }
     >({});
-
 
 
     useEffect(() => {
@@ -101,7 +104,18 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         };
 
         socketRef.current.onmessage = (event) => {
-            const { action, data, userId, name, fetchStatus, type, selectedFileExists, userSelectedFile, updatedItem, fileName } = JSON.parse(event.data);
+            const {
+                action,
+                data,
+                userId,
+                name,
+                fetchStatus,
+                type,
+                selectedFileExists,
+                userSelectedFile,
+                updatedItem,
+                fileName
+            } = JSON.parse(event.data);
             switch (action) {
                 case "setUserId":
                     setCurrentUserId(userId);
@@ -114,12 +128,13 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
                         lastModified: file.lastModified ? new Date(file.lastModified) : null
                     })));
                     if (data.length) {
-                        const tempFilesContent = { ...filesContentRef.current };
+                        const tempFilesContent = {...filesContentRef.current};
                         for (let i = 0; i < data.length; i++) {
                             if (!tempFilesContent[data[i].name]) {
                                 tempFilesContent[data[i].name] = []
                             } else {
-                                tempFilesContent[data[i].name] = filesContentRef.current[data[i].name]
+                                const withoutExtension = data[i].name.slice(0, data[i].name.lastIndexOf('.'));
+                                tempFilesContent[withoutExtension] = filesContentRef.current[withoutExtension];
                             }
                         }
                         filesContentRef.current = tempFilesContent;
@@ -151,7 +166,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
                     alert(data.message);
                     break;
                 case "fetchStatus":
-                    setFetchStatus(prevProgress => ({ ...prevProgress, [type]: fetchStatus }));
+                    setFetchStatus(prevProgress => ({...prevProgress, [type]: fetchStatus}));
                     break;
                 case "newFile":
                     fetchFiles();
@@ -180,7 +195,8 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         };
 
         return () => {
-            socketRef.current?.removeEventListener("message", () => {});
+            socketRef.current?.removeEventListener("message", () => {
+            });
 
             if (socketRef.current?.readyState === WebSocket.OPEN) {
                 socketRef.current?.close();
@@ -190,7 +206,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
 
     const fetchFiles = () => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify({ action: "getFiles" }));
+            socketRef.current.send(JSON.stringify({action: "getFiles"}));
         }
     };
 
@@ -208,6 +224,16 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
             setSelectedCourse(null);
         }
     };
+
+    const getAndUseFileContent = async (file: FileData | null) => {
+        if (file) {
+            const data = await getFileContent(file.name);
+            const fileNameWithoutExtension = file.name.slice(0, file.name.lastIndexOf('.'));
+            filesContentRef.current[fileNameWithoutExtension] = data;
+            return data;
+        }
+        return null
+    }
 
     const saveUserEditedCourse = (updatedCourse: FetchedCourse | FetchedComputedCourse) => {
         if (!selectedFile) return;
@@ -234,27 +260,48 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
 
     const deleteFile = (name: string) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify({ action: "deleteFile", name }));
+            socketRef.current.send(JSON.stringify({action: "deleteFile", name}));
         }
     };
 
     const setUserDetails = useCallback((details: { nickname: string; avatar: string }) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify({ action: "setUserDetails", ...details }));
+            socketRef.current.send(JSON.stringify({action: "setUserDetails", ...details}));
         }
     }, []);
 
     const startFetchingProductionCourses = (suffix: string) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify({ action: "fetchProductionCourses", suffix }));
+            socketRef.current.send(JSON.stringify({action: "fetchProductionCourses", suffix}));
         }
     };
 
     const startFetchingTUMSemesters = (suffix: string) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify({ action: "fetchTUMSemesters", suffix }));
+            socketRef.current.send(JSON.stringify({action: "fetchTUMSemesters", suffix}));
         }
     };
+
+
+    const startFetchingTUMCourses = (suffix: string, semesters: string[]) => {
+        console.log(suffix)
+        console.log(semesters)
+        if (socketRef.current?.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({action: "fetchTUMCourses", suffix, semesters}));
+        }
+    }
+
+    const startFetchingMrozonRatingData = (suffix: string) => {
+        if (socketRef.current?.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({action: "fetchMrozonRatingData", suffix}));
+        }
+    }
+
+    const keySimilarityMerging = (filesToMerge: any[], suffix: string) => {
+        if (socketRef.current?.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({action: "keySimilarityMerging", filesToMerge, suffix}));
+        }
+    }
 
     const getFileContent = async (fileName: string) => {
         const response = await fetch(import.meta.env.VITE_API_URL + `/files/${fileName}`);
@@ -267,15 +314,20 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
 
     const selectFile = (file: FileData) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify({ action: "selectFile", name: file.name }));
+            socketRef.current.send(JSON.stringify({action: "selectFile", name: file.name}));
         }
     }
 
+
     const selectCourse = (course: FetchedComputedCourse | FetchedCourse | null) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-            if (!course) return;
-            setSelectedCourse(course);
-            socketRef.current.send(JSON.stringify({ action: "selectCourse", courseId: course.id }));
+            if (!course) {
+                setSelectedCourse(null);
+                socketRef.current.send(JSON.stringify({action: "selectCourse", courseId: null}));
+            } else {
+                setSelectedCourse(course);
+                socketRef.current.send(JSON.stringify({action: "selectCourse", courseId: course.id}));
+            }
         }
     };
 
@@ -295,12 +347,16 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         fetchStatus,
         startFetchingProductionCourses,
         startFetchingTUMSemesters,
+        startFetchingMrozonRatingData,
+        startFetchingTUMCourses,
+        keySimilarityMerging,
         getFileContent,
         selectCourse,
         selectedCourse,
         setSelectedCourse,
         serverFilesystemConfig,
         serverFilesystemConfigFilesMap,
+        getAndUseFileContent
     }), [files, selectedFile, users, currentUserId, fetchStatus, selectedCourse, serverFilesystemConfig, serverFilesystemConfigFilesMap, filesContentRef.current]);
 
     return (
@@ -310,4 +366,4 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
     );
 };
 
-export { AppDataProvider, AppDataContext, type AppDataContextType };
+export {AppDataProvider, AppDataContext, type AppDataContextType};

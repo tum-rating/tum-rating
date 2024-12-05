@@ -7,6 +7,7 @@ import {Separator} from "@/components/ui/separator.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {File} from "lucide-react";
 import FetchDialog from "@/components/fetch-dialog.tsx";
+import MergeDialog from "@/components/merge-dialog.tsx";
 
 interface LeftSidebarProps {
     isOpen: boolean;
@@ -129,6 +130,9 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
                 <div className='px-4 py-3'>
                     <span className="text-xs font-bold text-gray-500 block">Server actions</span>
                     <div className='flex flex-col gap-1 mt-2'>
+                        <MergeDialog>
+                            <Button variant='outline' onClick={() => setSelectedFile(null)}>Merge data</Button>
+                        </MergeDialog>
                         <FetchDialog>
                             <Button variant='outline' onClick={() => setSelectedFile(null)}>Fetch data</Button>
                         </FetchDialog>
