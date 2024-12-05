@@ -4,6 +4,7 @@ interface ServerFilesystemConfigFile {
     extension: string;
     serverAction: string;
     regex: RegExp;
+    dependencies?: string[];
 }
 
 interface ServerFilesystemConfig {
@@ -34,6 +35,22 @@ const serverFilesystemConfig: ServerFilesystemConfig = {
             serverAction: "getProductionCourses",
             regex: /courses-production/,
         },
+        {
+            id: "courses-tum-campus",
+            name: "Courses TUM Campus",
+            extension: ".json",
+            serverAction: "getTUMCampusCourses",
+            regex: /courses-tum-campus/,
+            dependencies: ["tum-semesters"]
+        },
+        {
+            id: 'mrozon-rating-data',
+            name: 'Mrozon Rating Data',
+            extension: '.json',
+            serverAction: 'getMrozonRatingData',
+            regex: /mrozon-rating-data/
+        }
+
     ]
 }
 

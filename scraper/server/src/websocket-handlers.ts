@@ -2,7 +2,13 @@ import WebSocket, {WebSocketServer} from 'ws';
 import http from 'http';
 import Logger from './server-logger';
 import {handleReconnection, handleTimeout, validateConnection} from './websocket-utils';
-import {fetchAndSaveProductionCourses, fetchAndSaveTUMSemesters} from './server-actions';
+import {
+    fetchAndSaveMrozonRatingData,
+    fetchAndSaveProductionCourses,
+    fetchAndSaveTUMCourses,
+    fetchAndSaveTUMSemesters,
+    keySimilarityMerging
+} from './server-actions';
 import fs from 'fs';
 import path from 'path';
 import {serverFilesystemConfig} from './server-filesystem-config';
@@ -96,7 +102,9 @@ const handleMessage = async (userId: string, message: WebSocket.Data, wss: WebSo
             fileName,
             diffs,
             index,
-            updatedItem
+            updatedItem,
+            semesters,
+            filesToMerge
         } = JSON.parse(message.toString());
         Logger.info(`Received action: ${action}`);
         switch (action) {
@@ -178,12 +186,12 @@ const handleMessage = async (userId: string, message: WebSocket.Data, wss: WebSo
                 }
                 break;
             case 'selectCourse':
-                if (courseId) {
-                    const user = clients.get(userId);
-                    if (user) {
-                        user.selectedCourse = courseId;
-                        broadcastUsers(wss);
-                    }
+                const user = clients.get(userId);
+                if (!user) {
+                    return;
+                } else {
+                    user.selectedCourse = courseId;
+                    broadcastUsers(wss);
                 }
                 break;
             case 'saveFile':
@@ -214,6 +222,26 @@ const handleMessage = async (userId: string, message: WebSocket.Data, wss: WebSo
                     await fetchAndSaveTUMSemesters({suffix, ws, wss});
                 }
                 break;
+
+            case 'fetchTUMCourses':
+                console.log(1)
+                if (suffix) {
+                    console.log(2)
+                    await fetchAndSaveTUMCourses({suffix, semesters, ws, wss});
+                }
+                break;
+            case 'fetchMrozonRatingData':
+                console.log(1)
+                if (suffix) {
+                    console.log(2)
+                    await fetchAndSaveMrozonRatingData({suffix, ws, wss});
+                }
+                break;
+            case 'keySimilarityMerging':
+                if (filesToMerge) {
+                    await keySimilarityMerging({filesToMerge, ws, wss, suffix});
+                }
+
             case 'updateFile':
                 if (fileName && diffs) {
                     const filePath = path.join(serverFilesystemConfig.DIRECTORY, fileName);
