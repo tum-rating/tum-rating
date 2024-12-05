@@ -100,6 +100,7 @@ const MergedCourseCard = ({course}: { course: FetchedComputedCourse | undefined 
                                     {internalCourse.merged ? internalCourse.merged.map((x) => (
                                         <MergedSubCourseCard subCourse={x} key={x.id}
                                                              setSubCourse={(updatedSubCourse) => {
+                                                                 if (!internalCourse.merged) return;
                                                                  const updatedMerged = internalCourse.merged.map((sub) => sub.id === updatedSubCourse.id ? updatedSubCourse : sub);
                                                                  updateInternalCourse("merged", updatedMerged);
                                                              }}/>

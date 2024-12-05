@@ -44,7 +44,6 @@ app.get(BASE_API_URL + '/files/:filename', (req, res) => {
     }
 });
 
-//the same but with :id, so user getting /files/:filename?id=123 will get the file with id 123 (this only can work if filename.includes("courses-production"))
 app.get(BASE_API_URL + '/files/:filename/:id', (req, res) => {
     const filePath = path.join(DIRECTORY, req.params.filename);
     if (fs.existsSync(filePath)) {
@@ -62,7 +61,6 @@ app.get(BASE_API_URL + '/files/:filename/:id', (req, res) => {
 })
 
 
-
 app.get(`${BASE_API_URL}/filesystem-config`, (req, res) => {
     res.json(serverFilesystemConfig);
 });
@@ -71,11 +69,11 @@ app.get(`${BASE_API_URL}/filesystem-config-map`, (req, res) => {
     res.json(serverFilesystemConfigFilesMap);
 });
 
-// app.use(express.static(path.join(__dirname, '../../app/dist')));
-//
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../../app/dist/index.html'));
-// });
+app.use(express.static(path.join(__dirname, '../../app/dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../app/dist/index.html'));
+});
 
 wss.on('connection', (ws, req) => {
     handleConnection(ws, req, wss);

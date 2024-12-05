@@ -22,7 +22,7 @@ const SelectedFileCard = () => {
         if (selectedFile) {
             console.log(selectedFile)
             console.log(import.meta.env.VITE_FILE_SERVER)
-            window.open(import.meta.env.VITE_FILE_SERVER_URL  + "/" + selectedFile.name, '_blank');
+            window.open(import.meta.env.VITE_API_URL + "/files/" + selectedFile.name, '_blank');
         }
     }
 

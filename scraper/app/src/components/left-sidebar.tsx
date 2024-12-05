@@ -79,6 +79,7 @@ const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
 
     })), [sortedFiles, users, currentUserId , fetchStatus]);
 
+    console.log(users)
     return (
         <div
             className={`Sidebar flex flex-col justify-between ${isOpen ? 'w-[280px]' : 'w-[0px]'} h-full transition-width duration-300 ease-in-out`}>

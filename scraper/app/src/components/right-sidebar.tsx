@@ -11,7 +11,6 @@ import {Avatar, AvatarFallback, AvatarImage} from "./ui/avatar";
 
 const RightSidebar = () => {
     const {
-        getFileContent,
         selectedFile,
         selectCourse,
         users,
@@ -46,20 +45,15 @@ const RightSidebar = () => {
         });
         return sortedData;
     };
-
-    useEffect(() => {
-        if (selectedFile) {
-            if (filesContent) {
-                const fileNameWithoutExtension = selectedFile.name.split('.').slice(0, -1).join('.');
-                if (filesContent[fileNameWithoutExtension]) {
-                    setComputedCourses(filesContent[fileNameWithoutExtension]);
-
-                    setShowSkeleton(false);
-                }
-            }
+useEffect(() => {
+    if (selectedFile) {
+        const fileNameWithoutExtension = selectedFile.name.split('.').slice(0, -1).join('.');
+        if (filesContent[fileNameWithoutExtension]) {
+            setComputedCourses([...filesContent[fileNameWithoutExtension]]);
+            setShowSkeleton(false);
         }
-
-    }, [filesContent]);
+    }
+}, [filesContent, selectedFile]);;
 
 
     const sortedCourses = useMemo(() => sortData(computedCourses), [computedCourses, sortOptions]);

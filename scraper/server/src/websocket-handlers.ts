@@ -1,11 +1,11 @@
-import WebSocket, { WebSocketServer } from 'ws';
+import WebSocket, {WebSocketServer} from 'ws';
 import http from 'http';
 import Logger from './server-logger';
-import { validateConnection, handleReconnection, handleTimeout } from './websocket-utils';
-import { fetchAndSaveProductionCourses, fetchAndSaveTUMSemesters } from './server-actions';
+import {handleReconnection, handleTimeout, validateConnection} from './websocket-utils';
+import {fetchAndSaveProductionCourses, fetchAndSaveTUMSemesters} from './server-actions';
 import fs from 'fs';
 import path from 'path';
-import { serverFilesystemConfig } from './server-filesystem-config';
+import {serverFilesystemConfig} from './server-filesystem-config';
 import {applyPatch} from "fast-json-patch";
 
 interface ExtendedWebSocket extends WebSocket {
@@ -30,6 +30,7 @@ let isUpdating = false;
 
 const broadcastUsers = (wss: WebSocketServer) => {
     // If already updating, skip this update
+    console.log(isUpdating)
     if (isUpdating) {
         return;
     }
@@ -46,8 +47,9 @@ const broadcastUsers = (wss: WebSocketServer) => {
             selectedCourse: ws.selectedCourse || null
         }));
 
+        console.log(userList)
         // Send update to all clients
-        const message = JSON.stringify({ action: 'updateUsers', data: userList });
+        const message = JSON.stringify({action: 'updateUsers', data: userList});
         wss.clients.forEach((client: WebSocket) => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(message);
@@ -83,9 +85,52 @@ export const handleConnection = (ws: ExtendedWebSocket, req: http.IncomingMessag
 
 const handleMessage = async (userId: string, message: WebSocket.Data, wss: WebSocketServer, ws: ExtendedWebSocket) => {
     try {
-        const { action, name, content, nickname, avatar, suffix, courseId,fileName,diffs } = JSON.parse(message.toString());
+        const {
+            action,
+            name,
+            content,
+            nickname,
+            avatar,
+            suffix,
+            courseId,
+            fileName,
+            diffs,
+            index,
+            updatedItem
+        } = JSON.parse(message.toString());
         Logger.info(`Received action: ${action}`);
         switch (action) {
+            case 'updateItem':
+                if (fileName && updatedItem && typeof index === 'number' && diffs) {
+                    const filePath = path.join(serverFilesystemConfig.DIRECTORY, fileName);
+                    if (fs.existsSync(filePath)) {
+                        const fileContent = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+                        if (index >= 0 && index < fileContent.length) {
+                            const updatedContent = applyPatch(fileContent[index], diffs).newDocument;
+                            fileContent[index] = updatedContent;
+                            fs.writeFileSync(filePath, JSON.stringify(fileContent, null, 2), 'utf-8');
+                            ws.send(JSON.stringify({action: 'success', message: 'Item updated successfully'}));
+
+                            // Broadcast the updated item to all connected clients
+                            const message = JSON.stringify({
+                                action: 'fileUpdated', fileName, updatedItem: {
+                                    index,
+                                    updatedItem
+                                }
+                            });
+                            wss.clients.forEach((client: WebSocket) => {
+                                if (client.readyState === WebSocket.OPEN) {
+                                    client.send(message);
+                                }
+                            });
+                        } else {
+                            ws.send(JSON.stringify({action: 'error', message: 'Invalid item index'}));
+                        }
+                    } else {
+                        ws.send(JSON.stringify({action: 'error', message: 'File not found'}));
+                    }
+                }
+                break;
             case 'setUserDetails':
                 if (nickname && avatar) {
                     const user = clients.get(userId);
@@ -123,6 +168,15 @@ const handleMessage = async (userId: string, message: WebSocket.Data, wss: WebSo
             //         }
             //     }
             //     break;
+            case 'selectFile':
+                if (name) {
+                    const user = clients.get(userId);
+                    if (user) {
+                        user.selectedFile = name;
+                        broadcastUsers(wss);
+                    }
+                }
+                break;
             case 'selectCourse':
                 if (courseId) {
                     const user = clients.get(userId);
@@ -136,7 +190,7 @@ const handleMessage = async (userId: string, message: WebSocket.Data, wss: WebSo
                 if (name && content) {
                     const filePath = path.join(serverFilesystemConfig.DIRECTORY, name);
                     fs.writeFileSync(filePath, content, 'utf-8');
-                    ws.send(JSON.stringify({ action: 'success', message: 'File saved successfully' }));
+                    ws.send(JSON.stringify({action: 'success', message: 'File saved successfully'}));
                 }
                 break;
             case 'deleteFile':
@@ -146,35 +200,18 @@ const handleMessage = async (userId: string, message: WebSocket.Data, wss: WebSo
                         fs.unlinkSync(filePath);
                         broadcastFileList(wss, userId);
                     } else {
-                        ws.send(JSON.stringify({ action: 'error', message: 'File not found' }));
-                    }
-                }
-                break;
-            case 'getFileContent':
-                if (name) {
-                    const filePath = path.join(serverFilesystemConfig.DIRECTORY, name);
-                    if (fs.existsSync(filePath)) {
-                        const content = fs.readFileSync(filePath, 'utf-8');
-                        ws.send(JSON.stringify({
-                            action: 'getFileContent',
-                            data: {
-                                name,
-                                content
-                            }
-                        }));
-                    } else {
-                        ws.send(JSON.stringify({ action: 'error', message: 'File not found' }));
+                        ws.send(JSON.stringify({action: 'error', message: 'File not found'}));
                     }
                 }
                 break;
             case 'fetchProductionCourses':
                 if (suffix) {
-                    await fetchAndSaveProductionCourses({ suffix, ws, wss });
+                    await fetchAndSaveProductionCourses({suffix, ws, wss});
                 }
                 break;
             case 'fetchTUMSemesters':
                 if (suffix) {
-                    await fetchAndSaveTUMSemesters({ suffix, ws, wss });
+                    await fetchAndSaveTUMSemesters({suffix, ws, wss});
                 }
                 break;
             case 'updateFile':
@@ -184,26 +221,26 @@ const handleMessage = async (userId: string, message: WebSocket.Data, wss: WebSo
                         const fileContent = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
                         const updatedContent = applyPatch(fileContent, diffs).newDocument;
                         fs.writeFileSync(filePath, JSON.stringify(updatedContent, null, 2), 'utf-8');
-                        ws.send(JSON.stringify({ action: 'success', message: 'File updated successfully' }));
+                        ws.send(JSON.stringify({action: 'success', message: 'File updated successfully'}));
 
                         // Broadcast the diffs to all connected clients
-                        const message = JSON.stringify({ action: 'updateFile', fileName, diffs });
+                        const message = JSON.stringify({action: 'updateFile', fileName, diffs});
                         wss.clients.forEach((client: WebSocket) => {
                             if (client.readyState === WebSocket.OPEN) {
                                 client.send(message);
                             }
                         });
                     } else {
-                        ws.send(JSON.stringify({ action: 'error', message: 'File not found' }));
+                        ws.send(JSON.stringify({action: 'error', message: 'File not found'}));
                     }
                 }
                 break;
             default:
-                ws.send(JSON.stringify({ action: 'error', message: 'Unknown action' }));
+                ws.send(JSON.stringify({action: 'error', message: 'Unknown action'}));
         }
     } catch (error) {
         Logger.error(`Error handling message: ${error}`);
-        ws.send(JSON.stringify({ action: 'error', message: 'Invalid request format' }));
+        ws.send(JSON.stringify({action: 'error', message: 'Invalid request format'}));
     }
 };
 

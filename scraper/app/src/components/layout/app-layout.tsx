@@ -13,13 +13,19 @@ const AppLayout = ({children}: PropsWithChildren) => {
 
 
     useEffect(() => {
+
         if (selectedFile) {
+            console.log(1)
+            console.log(selectedFile)
             if (isCoursesFile(selectedFile.id)) {
+                console.log(2)
                 setIsRightSidebarOpen(true);
             } else {
+                console.log(3)
                 setIsRightSidebarOpen(false);
             }
         } else {
+            console.log(4)
             setIsRightSidebarOpen(false);
         }
     }, [selectedFile]);
