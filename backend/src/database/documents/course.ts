@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 
 import { Review } from './review';
+import { ExamStats, ExamStatsSchema } from './examStats';
 
 @Schema({
     autoCreate: true, 
@@ -45,6 +46,15 @@ export class Course {
         type: [{ type: MongooseSchema.Types.ObjectId, ref: Review.name }],
     })
     reviews: string[];
+
+    @Prop({
+        type: Map,
+        of: {
+            type: Map,
+            of: ExamStatsSchema,
+        },
+    })
+    examStats: Map<string, Map<string, ExamStats>>;
 }
 
 export type CourseWithPopulatedReviews = Omit<Course, 'reviews'> & { reviews: Review[] };
