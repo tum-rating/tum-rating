@@ -1,6 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { ClientSession, Model } from 'mongoose';
 import { Course, CourseDocument, CourseWithoutReviews} from 'src/database/documents/course';
+import { ExamStats } from 'src/database/documents/examStats';
 import { Review } from 'src/database/documents/review';
 import { BaseRepository } from './base.repository';
 
@@ -14,6 +15,7 @@ export interface CourseWithReviews {
     howEasyRatingAverage: number;
     howInterestingRatingAverage: number;
     votesNumber: number;
+    examStats: Map<string, Map<string, ExamStats>>;
     reviews: WithId<Review>[];
 }
 
@@ -81,5 +83,16 @@ export class CourseRepository extends BaseRepository<Course> {
 
     public async updateCourseStats(courseId: string, stats: Pick<Course, 'howEasyRatingAverage' | 'howInterestingRatingAverage' | 'votesNumber'>, session?: ClientSession) {
         return this._courseModel.findOneAndUpdate({ _id: courseId }, stats, { session });
+    }
+
+    public async patchCourseExamStats(courseId: string, semester: string, examType: 'endterm' | 'retake', stats: ExamStats) {
+        return this._courseModel.findOneAndUpdate(
+            { _id: courseId },
+            {
+                $set: {
+                    [`examStats.${semester}.${examType}`]: stats,
+                },
+            },
+        );
     }
 }
