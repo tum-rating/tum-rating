@@ -16,7 +16,7 @@ export const createCourseMockRequest = async (token: string, review?: Partial<Cr
         courseNumber: fakeNumberOfLenght(8),
         name: faker.word.words(faker.number.int({ min: 2, max: 10 })),
         professor: faker.word.words(2),
-        offeredInSemesters: ['SS 2023', 'WS 2023'],
+        offeredInSemesters: ['2023 S', '2023 W'],
         otherLecturers: [faker.word.words(2)],
         ...review,
     };
