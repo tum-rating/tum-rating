@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-enum ExamGrade {
+export enum ExamGrade {
     GRADE_1_0 = 1.0,
     GRADE_1_3 = 1.3,
     GRADE_1_7 = 1.7,
@@ -14,6 +14,7 @@ enum ExamGrade {
     GRADE_4_3 = 4.3,
     GRADE_4_7 = 4.7,
     GRADE_5_0 = 5.0,
+    // student registered but did not attend to the exam
     GRADE_6_0 = 6.0,
 }
 
@@ -23,19 +24,19 @@ export class ExamStats {
     peopleTotal: number;
 
     @Prop({ required: true, type: Number })
-    peopleFailed: number;
-
-    @Prop({ required: true, type: Number })
     attemptsTotal: number;
 
     @Prop({ required: true, type: Number })
-    attemptsFailedPercent: number;
+    peopleAttemptsFailed: number;
 
     @Prop({ required: true, type: Number })
-    averageTotal: number;
+    attemptsFailedPercentage: number;
 
     @Prop({ required: true, type: Number })
-    averagePassed: number;
+    averageAttemptsTotal: number;
+
+    @Prop({ required: true, type: Number })
+    averageAttemptsPassed: number;
 
     @Prop({
         type: [
