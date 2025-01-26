@@ -341,6 +341,8 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                 opened={modalOpened}
                 onClose={() => setModalOpened(false)}
                 title="Add/Edit Grades"
+                closeOnClickOutside={false}
+
             >
 
 
@@ -349,26 +351,33 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                     checked={useJson}
                     onChange={(event) => setUseJson(event.currentTarget.checked)}
                 />
-
+                {
+                    useJson && (
+                        <Button my={4} onClick={()=>{
+                            addGradesToCourse({courseId, ...JSON.parse(jsonInput)});
+                            setModalOpened(false);
+                        }}>
+                            Submit
+                        </Button>
+                    )
+                }
 
                 {
                     useJson ? (
-                        <Flex direction='column'>
+                        <Flex direction='column' h={'80vh'} >
 
                             <JsonInput
                                 value={jsonInput}
-                                style={{marginTop:"10px"}}
                                 onChange={setJsonInput}
                                 minRows={10}
                                 autosize
                                 placeholder="Enter JSON"
+                                formatOnBlur
+                                style={{
+                                    marginTop:"10px",
+                                    height: '70%',
+                                }}
                             />
-                            <Button onClick={()=>{
-                                addGradesToCourse({courseId, ...JSON.parse(jsonInput)});
-                                setModalOpened(false);
-                            }}>
-                                Submit
-                            </Button>
                         </Flex>
 
                         ) :
