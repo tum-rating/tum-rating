@@ -1,6 +1,20 @@
-import {Button, Divider, Flex, Stack, TagsInput, Text, TextInput} from '@mantine/core';
+import {
+    Button,
+    Divider,
+    Flex,
+    Grid, JsonInput,
+    Modal,
+    NumberInput,
+    Select,
+    Stack,
+    Switch,
+    TagsInput,
+    Text,
+    Textarea,
+    TextInput
+} from '@mantine/core';
 import {useForm} from '@mantine/form';
-import {IconEditCircle, IconTrashX} from '@tabler/icons-react';
+import {IconEditCircle, IconPlus, IconTrashX} from '@tabler/icons-react';
 import {MRT_Row} from 'mantine-react-table';
 import {HTMLAttributes, useEffect, useState} from 'react';
 
@@ -8,12 +22,14 @@ import classes from '../Shared/styles/ExpansionStyles.module.css';
 
 import {useEditCourse} from '@/admin/courses/useEditCourse.tsx';
 import {useRemoveCourse} from '@/admin/courses/useRemoveCourse.tsx';
+import {useAddGradesToCourse} from '@/admin/courses/useAddGradesToCourse.tsx';
 import {CollectionDetailsReviewsSection} from '@/components/AdminTable/Shared/CollectionDetailsReviewsSection';
 import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 import {Skeleton} from '@/components/Skeleton';
 import {Course} from '@/courses/types.ts';
 import {useDetailCourse} from '@/courses/useCourse.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
+
 
 interface CourseExpansionProps extends HTMLAttributes<HTMLElement> {
     courseId: string;
@@ -25,16 +41,38 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
 
     const {mutate: editCourse} = useEditCourse();
     const {mutate: removeCourse, isSuccess: removeCourseIsSuccess} = useRemoveCourse();
+    const {mutate: addGradesToCourse} = useAddGradesToCourse();
+    const [useJson, setUseJson] = useState(true);
+    const [jsonInput, setJsonInput] = useState('');
 
     const [editing, setEditing] = useState(false);
-
     const [statusAlertFlag, setStatusAlertFlag] = useState(false);
+    const [modalOpened, setModalOpened] = useState(false);
+    const [grades, setGrades] = useState([
+        {grade: '1.0', people: 0},
+        {grade: '1.3', people: 0},
+        {grade: '1.7', people: 0},
+        {grade: '2.0', people: 0},
+        {grade: '2.3', people: 0},
+        {grade: '2.7', people: 0},
+        {grade: '3.0', people: 0},
+        {grade: '3.3', people: 0},
+        {grade: '3.7', people: 0},
+        {grade: '4.0', people: 0},
+        {grade: '4.3', people: 0},
+        {grade: '4.7', people: 0},
+        {grade: '5.0', people: 0},
+        {grade: '6.0', people: 0},
+    ]);
 
     useEffect(() => {
         if (courseDetails) {
             ['id', 'courseId', 'courseNumber', 'name', 'professor', 'otherLecturers', 'offeredInSemesters'].forEach((x) => {
                 form.setFieldValue(x, courseDetails[x]);
             });
+            if(courseDetails.examStats){
+                setJsonInput(JSON.stringify(courseDetails.examStats));
+            }
         }
     }, [courseDetails]);
 
@@ -57,16 +95,45 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
         },
     });
 
+    const gradesForm = useForm({
+        initialValues: {
+            semester: '',
+            examType: '',
+        },
+        validate: {
+            semester: (value) => !value && 'Semester is required',
+            examType: (value) => !value && 'Exam Type is required',
+        },
+    });
+
     useEffect(() => {
         setStatusAlertFlag(isError || removeCourseIsSuccess);
     }, [isError || removeCourseIsSuccess]);
+
+    const handleAddGrades = (values: { semester: string, examType: string }) => {
+        if (useJson) {
+            addGradesToCourse({courseId, ...jsonInput});
+
+        } else {
+            addGradesToCourse({courseId, ...values, grades});
+            setModalOpened(false);
+        }
+    };
+
+    const handleGradeChange = (index: number, field: string, value: any) => {
+        const newGrades = [...grades];
+        newGrades[index][field] = value;
+        setGrades(newGrades);
+    };
+
 
     return (
         <Flex wrap={{base: 'wrap', sm: 'nowrap'}} className={classes.expansionContainer} gap="md" {...rest}>
             {statusAlertFlag ? (
                 <Flex justify="center" w="100%" direction="column" gap="lg">
-                    <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error" />
-                    <CollectionDetailsStatusAlert status={removeCourseIsSuccess} message="Course removed" type="success" />
+                    <CollectionDetailsStatusAlert status={isError} message={error?.message} type="error"/>
+                    <CollectionDetailsStatusAlert status={removeCourseIsSuccess} message="Course removed"
+                                                  type="success"/>
                     {isError && (
                         <Button
                             variant="subtle"
@@ -86,7 +153,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                                 Details
                             </Text>
                         </Flex>
-                        <Divider variant="dashed" size="sm" />
+                        <Divider variant="dashed" size="sm"/>
                         <Flex direction="column" gap="xs">
                             <Flex justify="flex-start" gap="xs" wrap="wrap">
                                 <Flex align="center" gap="3">
@@ -136,14 +203,35 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                             </Flex>
                             <form>
                                 <Flex wrap="wrap" gap="xs" direction="column">
-                                    <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput label="Course Name" disabled={!editing} placeholder="Enter course name" value={form.values.name} error={form.errors.name} onChange={(event) => form.setFieldValue('name', event.currentTarget.value)} />}></Skeleton>
+                                    <Skeleton height={36} radius="sm" mt={22} loading={isLoading}
+                                              component={<TextInput label="Course Name" disabled={!editing}
+                                                                    placeholder="Enter course name"
+                                                                    value={form.values.name} error={form.errors.name}
+                                                                    onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}/>}></Skeleton>
                                     <Flex gap="xs" wrap={{base: 'wrap', sm: 'nowrap'}} w="100%">
-                                        <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput w={{base: '100%', sm: '50%'}} disabled={!editing} label="Course ID" placeholder="Enter course id" value={form.values.courseId} error={form.errors.courseId} onChange={(event) => form.setFieldValue('courseId', event.currentTarget.value)} />}></Skeleton>
-                                        <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput w={{base: '100%', sm: '50%'}} disabled={!editing} label="Course Number" placeholder="Enter course number" value={form.values.courseNumber} error={form.errors.courseNumber} onChange={(event) => form.setFieldValue('courseNumber', event.currentTarget.value)} />}></Skeleton>
+                                        <Skeleton height={36} radius="sm" mt={22} loading={isLoading}
+                                                  component={<TextInput w={{base: '100%', sm: '50%'}}
+                                                                        disabled={!editing} label="Course ID"
+                                                                        placeholder="Enter course id"
+                                                                        value={form.values.courseId}
+                                                                        error={form.errors.courseId}
+                                                                        onChange={(event) => form.setFieldValue('courseId', event.currentTarget.value)}/>}></Skeleton>
+                                        <Skeleton height={36} radius="sm" mt={22} loading={isLoading}
+                                                  component={<TextInput w={{base: '100%', sm: '50%'}}
+                                                                        disabled={!editing} label="Course Number"
+                                                                        placeholder="Enter course number"
+                                                                        value={form.values.courseNumber}
+                                                                        error={form.errors.courseNumber}
+                                                                        onChange={(event) => form.setFieldValue('courseNumber', event.currentTarget.value)}/>}></Skeleton>
                                     </Flex>
 
                                     <Flex direction="column" gap="xs" w="100%">
-                                        <Skeleton height={36} radius="sm" mt={22} loading={isLoading} component={<TextInput label="Main Professor" disabled={!editing} placeholder="Enter professor name" value={form.values.professor} error={form.errors.professor} onChange={(event) => form.setFieldValue('professor', event.currentTarget.value)} />}></Skeleton>
+                                        <Skeleton height={36} radius="sm" mt={22} loading={isLoading}
+                                                  component={<TextInput label="Main Professor" disabled={!editing}
+                                                                        placeholder="Enter professor name"
+                                                                        value={form.values.professor}
+                                                                        error={form.errors.professor}
+                                                                        onChange={(event) => form.setFieldValue('professor', event.currentTarget.value)}/>}></Skeleton>
                                     </Flex>
                                     <Flex gap="xs" wrap={{base: 'wrap', sm: 'nowrap'}} w="100%">
                                         <Skeleton
@@ -201,7 +289,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                             </form>
                         </Flex>
                     </Flex>
-                    <CollectionDetailsReviewsSection courseId={courseId} />
+                    <CollectionDetailsReviewsSection courseId={courseId}/>
                     <Flex direction="column" gap="xs" className={classes.expansionActions}>
                         <Flex align="center" gap="xs">
                             <Text fz="sm" fw={500}>
@@ -211,7 +299,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                         <Stack gap="xs">
                             <Button
                                 color="green"
-                                leftSection={<IconEditCircle width={16} />}
+                                leftSection={<IconEditCircle width={16}/>}
                                 onClick={() => {
                                     if (editing) {
                                         editCourse(form.values);
@@ -233,15 +321,114 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                                         row && row.toggleExpanded();
                                     }
                                 }}
-                                leftSection={<IconTrashX width={16} />}
+                                leftSection={<IconTrashX width={16}/>}
                                 color="red"
                             >
                                 Remove Course
+                            </Button>
+                            <Button
+                                onClick={() => setModalOpened(true)}
+                                leftSection={<IconPlus width={16}/>}
+                                color="blue"
+                            >
+                                Add/Edit Grades
                             </Button>
                         </Stack>
                     </Flex>
                 </>
             )}
+            <Modal
+                opened={modalOpened}
+                onClose={() => setModalOpened(false)}
+                title="Add/Edit Grades"
+            >
+
+
+                <Switch
+                    label={'Use JSON'}
+                    checked={useJson}
+                    onChange={(event) => setUseJson(event.currentTarget.checked)}
+                />
+
+
+                {
+                    useJson ? (
+                        <Flex direction='column'>
+
+                            <JsonInput
+                                value={jsonInput}
+                                style={{marginTop:"10px"}}
+                                onChange={setJsonInput}
+                                minRows={10}
+                                autosize
+                                placeholder="Enter JSON"
+                            />
+                            <Button onClick={()=>{
+                                addGradesToCourse({courseId, ...JSON.parse(jsonInput)});
+                                setModalOpened(false);
+                            }}>
+                                Submit
+                            </Button>
+                        </Flex>
+
+                        ) :
+
+                        <form onSubmit={gradesForm.onSubmit(handleAddGrades)}>
+                            <Select
+                                label="Semester"
+                                placeholder="Select semester"
+                                data={[
+                                    {value: '2021 W', label: '2021 W'},
+                                    {value: '2021 S', label: '2021 S'},
+                                    {value: '2022 W', label: '2022 W'},
+                                    {value: '2022 S', label: '2022 S'},
+                                    {value: '2023 W', label: '2023 W'},
+                                    {value: '2023 S', label: '2023 S'},
+                                    {value: '2024 W', label: '2024 W'},
+                                    {value: '2024 S', label: '2024 S'},
+                                    {value: '2025 W', label: '2025 W'},
+                                    {value: '2025 S', label: '2025 S'},
+                                ]}
+                                {...gradesForm.getInputProps('semester')}
+                            />
+                            <Select
+                                label="Exam Type"
+                                placeholder="Select exam type"
+                                data={[
+                                    {value: 'endterm', label: 'Endterm'},
+                                    {value: 'retake', label: 'Retake'},
+                                ]}
+                                {...gradesForm.getInputProps('examType')}
+                            />
+                            <Divider my="md"/>
+                            <Grid>
+                                {grades.map((item, index) => (
+                                    <Grid.Col span={4} key={index}>
+                                        <Flex align="center" gap="xs" p={2}>
+                                            <TextInput
+                                                label="Grade"
+                                                value={item.grade}
+                                                readOnly
+                                                disabled
+                                            />
+                                            <NumberInput
+                                                label="People"
+                                                placeholder="Enter number of people"
+                                                value={item.people}
+                                                onChange={(value) => handleGradeChange(index, 'people', value)}
+                                            />
+                                        </Flex>
+                                    </Grid.Col>
+                                ))}
+                            </Grid>
+                            <Button type="submit" mt="md">
+                                Submit
+                            </Button>
+                        </form>
+
+                }
+
+            </Modal>
         </Flex>
     );
 };
