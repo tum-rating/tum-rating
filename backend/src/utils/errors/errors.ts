@@ -36,3 +36,10 @@ export class CourseReviewSemesterMismatch extends Error {
         this.name = 'user review semester mismatch';
     }
 }
+
+export class CourseExamStatsSemesterMismatch extends Error {
+    constructor(examStatsSemester: string, courseSemesters: string[]) {
+        super(`Exam stats semester ${examStatsSemester} does not match course semesters ${courseSemesters}`);
+        this.name = 'course exam stats semester mismatch';
+    }
+}
