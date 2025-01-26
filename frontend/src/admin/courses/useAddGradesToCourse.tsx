@@ -16,6 +16,7 @@ async function addGradesToCourse(token: string, {courseId, semester, examType, g
     grades: string[]
 }): Promise<any> {
     const endpoint = endpoints.addGradesToCourse(courseId);
+
     const response = await fetchWithServices(endpoint, {
         method: 'PATCH',
         headers: {
@@ -25,6 +26,7 @@ async function addGradesToCourse(token: string, {courseId, semester, examType, g
         body: JSON.stringify({
             semester,
             examType,
+            // @ts-ignore
             grades: grades.map(({grade, people}) => ({people, grade: Number(grade)}))
         }),
     });
@@ -40,7 +42,11 @@ export function useAddGradesToCourse(): any {
             courseId: string,
             semester: string,
             examType: string,
-            grades: string[]
+            grades: {
+                grade: number;
+                people: number;
+            }
+            // @ts-ignore
         }) => addGradesToCourse(token, params),
         onMutate: (params) => {
             notifications.show({

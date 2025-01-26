@@ -10,7 +10,6 @@ import {
     Switch,
     TagsInput,
     Text,
-    Textarea,
     TextInput
 } from '@mantine/core';
 import {useForm} from '@mantine/form';
@@ -20,9 +19,9 @@ import {HTMLAttributes, useEffect, useState} from 'react';
 
 import classes from '../Shared/styles/ExpansionStyles.module.css';
 
+import {useAddGradesToCourse} from '@/admin/courses/useAddGradesToCourse.tsx';
 import {useEditCourse} from '@/admin/courses/useEditCourse.tsx';
 import {useRemoveCourse} from '@/admin/courses/useRemoveCourse.tsx';
-import {useAddGradesToCourse} from '@/admin/courses/useAddGradesToCourse.tsx';
 import {CollectionDetailsReviewsSection} from '@/components/AdminTable/Shared/CollectionDetailsReviewsSection';
 import {CollectionDetailsStatusAlert} from '@/components/AdminTable/Shared/CollectionDetailsStatusAlert';
 import {Skeleton} from '@/components/Skeleton';
@@ -112,8 +111,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
 
     const handleAddGrades = (values: { semester: string, examType: string }) => {
         if (useJson) {
-            addGradesToCourse({courseId, ...jsonInput});
-
+            return null
         } else {
             addGradesToCourse({courseId, ...values, grades});
             setModalOpened(false);
