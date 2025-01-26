@@ -61,7 +61,7 @@ export class CourseRepository extends BaseRepository<Course> {
             .find()
             .sort({ votesNumber: -1 })
             .limit(limit)
-            .select('-reviews -__v');
+            .select('-reviews -__v -examStats');
     }
 
     public async findOneByIdWithPopulatedReviews(id: string): Promise<WithId<CourseWithReviews>> {
