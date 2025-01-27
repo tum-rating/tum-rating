@@ -13,7 +13,7 @@ export const addReviewMockRequest = async (token: string, reviewId: string, user
         howInterestingRating: faker.number.int({ min: 0, max: 5 }),
         howEasyRating: faker.number.int({ min: 0, max: 5 }),
         comment: faker.word.words(faker.number.int({ min: 2, max: 100 })),
-        semester: 'SS 2023',
+        semester: '2023 S',
         ...userReview,
     };
 
