@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PinoLogger } from 'nestjs-pino';
 
 import { CourseRepository } from 'src/database/repositories/course.repository';
-import { ExamGrade, ExamStats } from 'src/database/documents/examStats';
+import { ExamStats } from 'src/database/documents/examStats';
 import { NotFoundError, CourseExamStatsSemesterMismatch } from 'src/utils/errors/errors';
 import { calculateExamStats } from 'src/utils/exam-stats/calculateExamStats';
 
