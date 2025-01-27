@@ -4,7 +4,8 @@
   "preset": "ts-jest/presets/js-with-ts",
   "rootDir": ".",
   "moduleNameMapper": {
-    "^@tum-rating/(.*)$": "<rootDir>/../../$1"
+    "^@tum-rating/(.*)$": "<rootDir>/../../$1",
+    "^src/(.*)$": "<rootDir>/../../backend/src/$1"
   },
   "testEnvironment": "node",
   "transform": {

@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ExamGrade, ExamStats } from 'src/database/documents/examStats';
+import { ExamStats } from 'src/database/documents/examStats';
 import { Course, CourseWithoutReviews } from 'src/database/documents/course';
 import { CourseWithReviews } from 'src/database/repositories/course.repository';
 import { GetReviewResponseDto } from 'src/modules/review/dto/GetReviewRequest.dto';
 
 export class ExamGradeDto {
     constructor(
-        examGrade: ExamGrade,
+        examGrade: number,
         people: number,
     ) {
         this.grade = Number(examGrade).toFixed(1).toString();
