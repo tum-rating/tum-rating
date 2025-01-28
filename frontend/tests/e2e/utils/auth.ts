@@ -122,6 +122,7 @@ const signIn = async (props: AuthAction) => {
                     .locator('[data-testid="user-btn-username-desktop"]')
                     .textContent()
                     .then((text) => {
+                        console.log(text)
                         return expect(text).toBe(user.username);
                     });
             });

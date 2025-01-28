@@ -1,0 +1,18 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "TUM-REVIEW-USER",
+          "value": "eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOjAsInVzZXJSb2xlIjowLCJzdWIiOiI2Nzk5MmY5ODQ5YjIyZDU0MTA1N2JlZDYiLCJleHAiOjE3MzgxNzg4NDF9.5PIHODLJRyp43cbefqD3__Oz4NVb_qFzXD1YMbqWUyM"
+        },
+        {
+          "name": "x-trace-id",
+          "value": "e700a2bf-1005-438b-8e91-ab23cbabebeb"
+        }
+      ]
+    }
+  ]
+}
