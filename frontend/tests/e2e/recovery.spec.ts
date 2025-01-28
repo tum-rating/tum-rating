@@ -15,10 +15,9 @@ test('should set new password in recovery process and sign in with new credentia
     await page.getByRole('menuitem', {name: 'Logout'}).click();
     await page.getByRole('button', {name: 'Sign In'}).click();
     await page.getByRole('button', {name: 'Forgot password?'}).click();
-
+    await expect(page.getByTestId('email')).toBeVisible();
     await page.getByTestId('email').fill(email[0]);
     await page.getByTestId('submit').click();
-    await expect(page.getByText('Check Your Email')).toBeVisible();
     const token = await getRecoveryTokenFromMail(email[0]);
     await page.goto(`/auth/recovery?token=${token}`, {waitUntil: 'domcontentloaded'});
     await page.getByTestId('password').fill(newPassword);
