@@ -1,5 +1,6 @@
 import {
     ActionIcon,
+    Badge,
     Box,
     Button,
     Divider,
@@ -7,7 +8,8 @@ import {
     JsonInput,
     Modal,
     Stack,
-    Tabs, TagsInput,
+    Tabs,
+    TagsInput,
     Text,
     TextInput,
 } from '@mantine/core';
@@ -27,6 +29,7 @@ import {Skeleton} from '@/components/Skeleton';
 import {Course} from '@/courses/types.ts';
 import {useDetailCourse} from '@/courses/useCourse.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
+import {CopyButton} from "@/components/CopyButton";
 
 interface CourseExpansionProps extends HTMLAttributes<HTMLElement> {
     courseId: string;
@@ -39,7 +42,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
     const {mutate: editCourse} = useEditCourse();
     const {mutate: removeCourse, isSuccess: removeCourseIsSuccess} = useRemoveCourse();
     const {mutate: addGradesToCourse} = useAddGradesToCourse();
-    const [jsonInputs, setJsonInputs] = useState([{ id: "1", value: '' }]);
+    const [jsonInputs, setJsonInputs] = useState([{id: "1", value: ''}]);
     const [activeTab, setActiveTab] = useState("1");
 
     const [editing, setEditing] = useState(false);
@@ -80,24 +83,23 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
 
     const handleAddTab = () => {
         const newId = String(jsonInputs.length ? Number(jsonInputs[jsonInputs.length - 1].id) + 1 : 1);
-        setJsonInputs([...jsonInputs, { id: newId, value: '' }]);
+        setJsonInputs([...jsonInputs, {id: newId, value: ''}]);
         setActiveTab(String(newId));
     };
 
     const handleJsonInputChange = (id, value) => {
-        setJsonInputs(jsonInputs.map(input => input.id === id ? { ...input, value } : input));
+        setJsonInputs(jsonInputs.map(input => input.id === id ? {...input, value} : input));
     };
 
     const handleRemoveTab = (id) => {
         setJsonInputs(jsonInputs.filter(input => input.id !== id));
-        if (activeTab === id) {
-            setActiveTab(jsonInputs[0]?.id || "1");
-        }
+        setActiveTab(null)
     };
 
     const handleSubmit = () => {
         jsonInputs.forEach(input => {
-            addGradesToCourse({ courseId, ...JSON.parse(input.value) });
+            if (input.value === '') return;
+            addGradesToCourse({courseId, ...JSON.parse(input.value)});
         });
         setModalOpened(false);
     };
@@ -141,6 +143,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                                         radius="sm"
                                         loading={isLoading}
                                         component={
+                                        <>
                                             <Button
                                                 px={4}
                                                 m={0}
@@ -156,6 +159,8 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                                             >
                                                 {courseId}
                                             </Button>
+                                            <CopyButton value={courseId}/>
+                                        </>
                                         }
                                     ></Skeleton>
                                 </Flex>
@@ -333,14 +338,15 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                                         <Tabs.Tab key={input.id} value={input.id}>
                                             <Flex align={'center'} gap={2}>
                                                 {`JSON ${input.id}`}
-                                                <ActionIcon variant='subtle' size={'sm'} color={'red'} onClick={() => handleRemoveTab(input.id)} ml={4}>
-                                                    <IconX size={15} />
+                                                <ActionIcon variant='subtle' size={'sm'} color={'red'}
+                                                            onClick={() => handleRemoveTab(input.id)} ml={4}>
+                                                    <IconX size={15}/>
                                                 </ActionIcon>
                                             </Flex>
                                         </Tabs.Tab>
                                     ))}
                                     <ActionIcon onClick={handleAddTab} ml={'auto'}>
-                                        <IconPlus size={16} />
+                                        <IconPlus size={16}/>
                                     </ActionIcon>
                                 </Tabs.List>
                                 {courseDetails?.examStats && (
@@ -385,11 +391,28 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                                         </Box>
                                     </Tabs.Panel>
                                 ))}
+                                <Tabs.Panel value={'null'}>
+                                    <Text>No tab selected</Text>
+                                </Tabs.Panel>
                             </Tabs>
                         </Flex>
-                        <Flex py={2} direction={'column'}>
+                        <Flex py={2} direction={'row'} justify={'space-between'}>
+                            <Flex direction='column'>
+                                <Text size={'xs'} fw={'bold'}>
+                                    Semesters from examStats:
+                                </Text>
+                                {
+                                    Object.entries(courseDetails?.examStats).map(([key] ) => {
+                                        return (
+                                            <Badge>
+                                                {key}
+                                            </Badge>
+                                        )
+                                    })
+                                }
+                            </Flex>
                             <Button onClick={handleSubmit}>
-                                Submit
+                                Submit added JSON
                             </Button>
                         </Flex>
                     </Modal.Body>
