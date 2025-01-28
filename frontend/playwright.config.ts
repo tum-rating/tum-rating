@@ -42,9 +42,4 @@ export default defineConfig({
             testMatch: 'userAccountDeletion.spec.ts',
         },
     ],
-    webServer: {
-        command: 'npm run dev',
-        url: 'http://localhost:3000',
-        reuseExistingServer: !process.env.CI,
-    },
 });
