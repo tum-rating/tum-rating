@@ -18,7 +18,7 @@ interface AuthAction {
 const generateTestUser = () => {
     return {
         email: faker.internet.email({provider: 'mytum.de'}),
-        username: faker.internet.userName(),
+        username: faker.internet.username(),
         password: faker.internet.password(),
     };
 };
