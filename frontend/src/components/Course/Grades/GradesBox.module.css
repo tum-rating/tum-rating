@@ -1,0 +1,159 @@
+.gradesBox {
+    border-radius: 16px;
+    /*max-width: 215px;*/
+    /*max-height: 157px;*/
+    /*min-width: 175px;*/
+    background: var(--primary-light-gradient);
+    position: relative;
+    overflow: hidden;
+    margin-right: 20px;
+    @media (max-width: $ mantine-breakpoint-sm) {
+        min-width: 100%;
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+.highlightCard {
+    border-radius: var(--mantine-radius-md);
+    padding: var(--mantine-spacing-sm);
+    padding-right: var(--mantine-spacing-lg);
+
+    gap: 4px;
+    & p {
+        white-space: nowrap;
+    }
+}
+
+.highlightCyanToTeal {
+    background-image: linear-gradient(
+            0,
+            var(--mantine-color-cyan-1),
+            var(--mantine-color-teal-1)
+    );
+
+    & p:not(.highlightCardTitle) {
+
+        background-image: linear-gradient(
+                0,
+                var(--mantine-color-cyan-8),
+                var(--mantine-color-teal-9)
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    & svg > path, rect, circle {
+        stroke: var(--mantine-color-teal-9);
+    }
+
+}
+
+.highlightTealToLime {
+    background-image: linear-gradient(
+            0,
+            var(--mantine-color-teal-1),
+            var(--mantine-color-lime-2)
+    );
+
+    & p:not(.highlightCardTitle) {
+
+        background-image: linear-gradient(
+                0,
+                var(--mantine-color-teal-8),
+                var(--mantine-color-lime-9)
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+.highlightBlueToIndigo {
+    background-image: linear-gradient(
+            0,
+            var(--mantine-color-blue-light),
+            var(--mantine-color-blue-light)
+    );
+
+    & p:not(.highlightCardTitle) {
+
+        background-image: linear-gradient(
+                0,
+                var(--mantine-color-blue-8),
+                var(--mantine-color-indigo-9)
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    & svg > path, rect, circle {
+        stroke: var(--mantine-color-indigo-9);
+        stroke-width: 2px;
+    }
+}
+
+.highlightRed{
+    background-image: linear-gradient(
+            0,
+            var(--mantine-color-red-1),
+            var(--mantine-color-red-2)
+    );
+
+    & p:not(.highlightCardTitle) {
+
+        background-image: linear-gradient(
+                0,
+                var(--mantine-color-red-8),
+                var(--mantine-color-red-9)
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    & svg > path, rect, circle {
+        stroke: var(--mantine-color-red-9);
+    }
+}
+.highlightGray{
+    background-image: linear-gradient(
+            0,
+            var(--mantine-color-gray-0),
+            var(--mantine-color-gray-1)
+    );
+
+    & p:not(.highlightCardTitle) {
+
+        background-image: linear-gradient(
+                0,
+                var(--mantine-color-gray-8),
+                var(--mantine-color-gray-9)
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    & svg > path, rect, circle {
+        stroke: var(--mantine-color-gray-9);
+    }
+}
+.highlightCardTitle {
+    color: black !important;
+    font-size: var(--mantine-font-size-xs);
+}
+.highlightCardTop{
+    display: flex;
+    gap: 6px
+}
+.highlightCardValue{
+    font-size: var(--mantine-font-size-lg);
+    font-weight: 600;
+    white-space: nowrap;
+}
+.barChart{
+    position: relative;
+    right: 10px;
+}

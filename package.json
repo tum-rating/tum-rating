@@ -15,5 +15,9 @@
     "backend"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@mantine/charts": "^7.16.2",
+    "recharts": "^2.15.1"
+  }
 }
