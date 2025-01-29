@@ -18,7 +18,7 @@ interface AuthAction {
 const generateTestUser = () => {
     return {
         email: faker.internet.email({provider: 'mytum.de'}),
-        username: faker.internet.userName(),
+        username: faker.internet.username(),
         password: faker.internet.password(),
     };
 };
@@ -122,6 +122,7 @@ const signIn = async (props: AuthAction) => {
                     .locator('[data-testid="user-btn-username-desktop"]')
                     .textContent()
                     .then((text) => {
+                        console.log(text)
                         return expect(text).toBe(user.username);
                     });
             });
