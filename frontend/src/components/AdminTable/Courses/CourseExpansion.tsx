@@ -402,7 +402,7 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                                     Semesters from examStats:
                                 </Text>
                                 <Flex gap={4}>
-                                    {
+                                    {courseDetails?.examStats &&
                                         Object.entries(courseDetails.examStats)
                                             .flatMap(([semester, exams]) =>
                                                 Object.entries(exams).map(([examType]) => ({
