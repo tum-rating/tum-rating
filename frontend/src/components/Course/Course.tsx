@@ -1,6 +1,4 @@
-import '@mantine/core/styles.css';
-import {useMediaQuery} from '@mantine/hooks';
-import {Badge, Box, Button, Center, Divider, Flex, Image, rem, Text, useMantineTheme} from '@mantine/core';
+import {Badge, Box, Button, Center, Divider, Flex, Image, rem, Text} from '@mantine/core';
 import {IconAlien, IconCalendarMonth, IconCirclePlus, IconEditCircle} from '@tabler/icons-react';
 import clsx from 'clsx';
 import {Fragment, useEffect, useState} from 'react';
@@ -18,12 +16,13 @@ import {HowEasyRating} from '@/components/Course/Rating/HowEasyRating.tsx';
 import {HowInterestingRating} from '@/components/Course/Rating/HowInterestingRating.tsx';
 import {ReviewsBox} from '@/components/Course/Reviews';
 import {Skeleton} from '@/components/Skeleton';
-import {CONTENT_TOP_SPACING, HEADER_HEIGHT, MAX_SITE_WIDTH} from '@/constants';
+import {CONTENT_TOP_SPACING, EXAM_STATS_KEY, HEADER_HEIGHT, MAX_SITE_WIDTH} from '@/constants';
 import {useDetailCourse} from '@/courses/useCourse.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
 import {ExamStats} from "@/courses/types.ts";
 import {GradesBox} from "@/components/Course/Grades";
 import {Carousel} from "@/components/Carousel";
+import {useTogglesClient} from "@/auth/useTogglesClient.tsx";
 
 interface FormatedExamStats extends ExamStats {
     semester: string;
@@ -36,8 +35,7 @@ const Course = () => {
     const navigate = useNavigate();
     const {data, isLoading, isError} = useDetailCourse(id || '');
     const [examResults, setExamResults] = useState<FormatedExamStats[]>([]);
-    const theme = useMantineTheme();
-    const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+    const {data: examStatsToggle} = useTogglesClient(EXAM_STATS_KEY);
 
     useEffect(() => {
         const children = document.querySelectorAll('.children-animation > *');
@@ -169,23 +167,25 @@ const Course = () => {
                                 </Flex>
                             </Flex>
                             {
-                                data?.examStats && (
-                                    <Flex mt="xl" direction="column" className="children-animation"
-                                          style={{background: 'var(--mantine-color-body)'}}>
-                                        <Flex align="center" gap="xs" mb="lg">
-                                            <Box bg="blue" w={10} h={30} style={{borderRadius: '8px'}}/>
-                                            <Text fw="bold" fz="xl">
-                                                Exam results
-                                            </Text>
+                                examStatsToggle?.enabled && (
+                                    data?.examStats && (
+                                        <Flex mt="xl" direction="column" className="children-animation"
+                                              style={{background: 'var(--mantine-color-body)'}}>
+                                            <Flex align="center" gap="xs" mb="lg">
+                                                <Box bg="blue" w={10} h={30} style={{borderRadius: '8px'}}/>
+                                                <Text fw="bold" fz="xl">
+                                                    Exam results
+                                                </Text>
+                                            </Flex>
+                                            <Carousel>
+                                                {examResults.map((value, index) => (
+                                                    <div className={classes.slide} key={index}>
+                                                        <GradesBox {...value} />
+                                                    </div>
+                                                ))}
+                                            </Carousel>
                                         </Flex>
-                                        <Carousel>
-                                            {examResults.map((value, index) => (
-                                                <div className={classes.slide} key={index}>
-                                                    <GradesBox {...value} />
-                                                </div>
-                                            ))}
-                                        </Carousel>
-                                    </Flex>
+                                    )
                                 )
                             }
 
