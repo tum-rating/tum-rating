@@ -66,7 +66,7 @@ const generateCourseReview = withOverrides(() => ({
     id: faker.string.uuid(),
     courseId: faker.string.uuid(),
     userId: faker.string.uuid(),
-    userName: faker.internet.userName(),
+    userName: faker.internet.username(),
     howInterestingRating: faker.number.int({min: 0, max: 5}),
     howEasyRating: faker.number.int({min: 0, max: 5}),
     comment: faker.lorem.sentence(),
@@ -76,7 +76,7 @@ const generateCourseReview = withOverrides(() => ({
 }));
 
 const user = {
-    username: faker.internet.userName(),
+    username: faker.internet.username(),
     email: faker.internet.email({
         provider: 'mytum.de',
     }),
