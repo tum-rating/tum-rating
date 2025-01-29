@@ -9,7 +9,7 @@ export default defineConfig({
     timeout: 80_000,
     reporter: 'line',
     use: {
-        baseURL: 'http://localhost:5174',
+        baseURL: 'http://localhost:3000',
         trace: 'on-first-retry',
     },
     projects: [
@@ -42,9 +42,4 @@ export default defineConfig({
             testMatch: 'userAccountDeletion.spec.ts',
         },
     ],
-    webServer: {
-        command: 'npm run dev',
-        url: 'http://localhost:5174',
-        reuseExistingServer: !process.env.CI,
-    },
 });

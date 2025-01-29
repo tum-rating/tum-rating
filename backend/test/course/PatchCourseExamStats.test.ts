@@ -275,7 +275,7 @@ describe('Patch Course Exam Stats', () => {
             .expect(404);
     });
 
-    it('should return 400 if there is no enough grades', async () => {
+    it('should return 400 if there is no grades', async () => {
         const signInAdminResponse = await signInAdminRequestMock();
 
         const semesters = ['2023 S', '2023 W', '2024 S'];
@@ -286,21 +286,7 @@ describe('Patch Course Exam Stats', () => {
         const requestBody: TestPatchCourseExamStatsDto = {
             semester: '2023 S',
             examType: 'endterm',
-            grades: [
-                { grade: 1.3, people: 22 },
-                { grade: 1.7, people: 39 },
-                { grade: 2.0, people: 41 },
-                { grade: 2.3, people: 21 },
-                { grade: 2.7, people: 23 },
-                { grade: 3.0, people: 20 },
-                { grade: 3.3, people: 17 },
-                { grade: 3.7, people: 14 },
-                { grade: 4.0, people: 11 },
-                { grade: 4.3, people: 8 },
-                { grade: 4.7, people: 10 },
-                { grade: 5.0, people: 9 },
-                { grade: 6.0, people: 56 }
-            ], 
+            grades: [],
         };
 
         return supertest(courseUrl)
@@ -452,5 +438,42 @@ describe('Patch Course Exam Stats', () => {
             .patch(`/` + mockCourse.id + '/exam-stats')
             .send(requestBody)
             .expect(401);
+    });
+
+    it('should return 400 if grade is out of range', async () => {
+        const signInAdminResponse = await signInAdminRequestMock();
+
+        const semesters = ['2023 S', '2023 W', '2024 S'];
+        const mockCourse = await createCourseMockRequest(signInAdminResponse.token, {
+            offeredInSemesters: semesters
+        });
+
+        const requestBody: TestPatchCourseExamStatsDto = {
+            semester: '2023 S',
+            examType: 'retake',
+            grades: [
+                { grade: 1.0, people: 13 },
+                { grade: 1.3, people: 22 },
+                { grade: 1.7, people: 39 },
+                { grade: 2.0, people: 41 },
+                { grade: 2.3, people: 21 },
+                { grade: 2.7, people: 23 },
+                { grade: 3.0, people: 20 },
+                { grade: 3.3, people: 17 },
+                { grade: 3.7, people: 14 },
+                { grade: 4.0, people: 11 },
+                { grade: 4.3, people: 8 },
+                { grade: 4.7, people: 10 },
+                { grade: 5.0, people: 9 },
+                { grade: 5.1, people: 56 },
+                { grade: 6.0, people: 56 }
+            ], 
+        };
+
+        return supertest(courseUrl)
+            .patch(`/` + mockCourse.id + '/exam-stats')
+            .send(requestBody)
+            .set('Authorization', 'Bearer ' + signInAdminResponse.token)
+            .expect(400);
     });
 });

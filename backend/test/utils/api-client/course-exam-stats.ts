@@ -7,15 +7,26 @@ import { courseUrl } from './course';
 
 export type TestPatchCourseExamStatsDto = Omit<PatchCourseExamStatsDto, 'examType'> & { examType: string };
 
-export const generateExamStatsGrades = (): {grade: ExamGrade, people: number}[] => {
-    const grades: {grade: ExamGrade, people: number}[] = [];
+export const generateExamStatsGrades = (): {grade: number, people: number}[] => {
+    const grades: {grade: number, people: number}[] = [];
 
-    // values of returns both keys and values, thus filter for the values
-    const gradesValues = Object.values(ExamGrade).filter(value => typeof value === 'number');
+    const count = faker.number.int({ min: 5, max: 16});
+    const gradeValues: number[] = []
+    while (gradeValues.length < count) {
+        const gradeValue = faker.number.float({
+            min: ExamGrade.GRADE_HIGHEST,
+            max: ExamGrade.GRADE_LOWEST,
+            multipleOf: 0.1,
+        });
 
-    for (const grade of gradesValues) {
+        if (!gradeValues.includes(gradeValue)) {
+            gradeValues.push(gradeValue);
+        }
+    }
+
+    for (const grade of gradeValues) {
         grades.push({
-            grade: grade as ExamGrade,
+            grade: grade,
             people: faker.number.int({ min: 0, max: 100 }),
         });
     }
