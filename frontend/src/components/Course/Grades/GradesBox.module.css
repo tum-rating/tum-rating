@@ -17,7 +17,7 @@
     border-radius: var(--mantine-radius-md);
     padding: var(--mantine-spacing-sm);
     padding-right: var(--mantine-spacing-lg);
-    margin-top: var(--mantine-spacing-md);
+
     gap: 4px;
     & p {
         white-space: nowrap;
@@ -72,8 +72,8 @@
 .highlightBlueToIndigo {
     background-image: linear-gradient(
             0,
-            var(--mantine-color-blue-1),
-            var(--mantine-color-indigo-1)
+            var(--mantine-color-blue-light),
+            var(--mantine-color-blue-light)
     );
 
     & p:not(.highlightCardTitle) {
@@ -94,6 +94,52 @@
     }
 }
 
+.highlightRed{
+    background-image: linear-gradient(
+            0,
+            var(--mantine-color-red-1),
+            var(--mantine-color-red-2)
+    );
+
+    & p:not(.highlightCardTitle) {
+
+        background-image: linear-gradient(
+                0,
+                var(--mantine-color-red-8),
+                var(--mantine-color-red-9)
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    & svg > path, rect, circle {
+        stroke: var(--mantine-color-red-9);
+    }
+}
+.highlightGray{
+    background-image: linear-gradient(
+            0,
+            var(--mantine-color-gray-0),
+            var(--mantine-color-gray-1)
+    );
+
+    & p:not(.highlightCardTitle) {
+
+        background-image: linear-gradient(
+                0,
+                var(--mantine-color-gray-8),
+                var(--mantine-color-gray-9)
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    & svg > path, rect, circle {
+        stroke: var(--mantine-color-gray-9);
+    }
+}
 .highlightCardTitle {
     color: black !important;
     font-size: var(--mantine-font-size-xs);
@@ -106,4 +152,8 @@
     font-size: var(--mantine-font-size-lg);
     font-weight: 600;
     white-space: nowrap;
+}
+.barChart{
+    position: relative;
+    right: 10px;
 }
