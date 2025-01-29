@@ -143,24 +143,24 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                                         radius="sm"
                                         loading={isLoading}
                                         component={
-                                        <>
-                                            <Button
-                                                px={4}
-                                                m={0}
-                                                h={20}
-                                                variant="subtle"
-                                                fz="xs"
-                                                fw="600"
-                                                c={'blue'}
-                                                onClick={() => {
-                                                    const dynamicPath = getPath(Paths.adminCoursesDetails).replace(':adminCourseId', courseId);
-                                                    window.open(dynamicPath, '_blank');
-                                                }}
-                                            >
-                                                {courseId}
-                                            </Button>
-                                            <CopyButton value={courseId}/>
-                                        </>
+                                            <>
+                                                <Button
+                                                    px={4}
+                                                    m={0}
+                                                    h={20}
+                                                    variant="subtle"
+                                                    fz="xs"
+                                                    fw="600"
+                                                    c={'blue'}
+                                                    onClick={() => {
+                                                        const dynamicPath = getPath(Paths.adminCoursesDetails).replace(':adminCourseId', courseId);
+                                                        window.open(dynamicPath, '_blank');
+                                                    }}
+                                                >
+                                                    {courseId}
+                                                </Button>
+                                                <CopyButton value={courseId}/>
+                                            </>
                                         }
                                     ></Skeleton>
                                 </Flex>
@@ -397,19 +397,51 @@ const CourseExpansion = ({courseId, row, ...rest}: CourseExpansionProps) => {
                             </Tabs>
                         </Flex>
                         <Flex py={2} direction={'row'} justify={'space-between'}>
-                            <Flex direction='column'>
+                            <Flex direction='column' gap={2}>
                                 <Text size={'xs'} fw={'bold'}>
                                     Semesters from examStats:
                                 </Text>
-                                {
-                                    Object.entries(courseDetails?.examStats).map(([key] ) => {
-                                        return (
-                                            <Badge>
-                                                {key}
-                                            </Badge>
-                                        )
-                                    })
-                                }
+                                <Flex gap={4}>
+                                    {
+                                        Object.entries(courseDetails.examStats)
+                                            .flatMap(([semester, exams]) =>
+                                                Object.entries(exams).map(([examType]) => ({
+                                                    semester,
+                                                    examType,
+                                                }))
+                                            )
+                                            .sort((a, b) => {
+                                                const [yearA, seasonA] = a.semester.split(' ');
+                                                const [yearB, seasonB] = b.semester.split(' ');
+                                                if (yearA !== yearB) {
+                                                    return parseInt(yearB) - parseInt(yearA);
+                                                }
+                                                if (seasonA !== seasonB) {
+                                                    return seasonA === 'W' ? -1 : 1;
+                                                }
+                                                return a.examType === 'endterm' ? -1 : 1;
+                                            }).map((item, index) => {
+                                            return (
+                                                <Badge
+                                                    variant="gradient"
+                                                    gradient={item.examType === "retake" ? {
+                                                        from: 'yellow',
+                                                        to: 'orange',
+                                                        deg: 90
+                                                    } : {
+                                                        from: 'indigo',
+                                                        to: 'blue',
+                                                        deg: 90
+                                                    }}
+                                                    key={index}
+                                                >
+                                                    {item.semester} {item.examType}
+                                                </Badge>
+                                            )
+                                        })
+
+                                    }
+                                </Flex>
                             </Flex>
                             <Button onClick={handleSubmit}>
                                 Submit added JSON
