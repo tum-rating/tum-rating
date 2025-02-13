@@ -1,4 +1,4 @@
-import {Badge, Box, Button, Center, Divider, Flex, Image, rem, Text} from '@mantine/core';
+import {Anchor, Badge, Box, Button, Center, Divider, Flex, Image, rem, Text} from '@mantine/core';
 import {IconAlien, IconCalendarMonth, IconCirclePlus, IconEditCircle} from '@tabler/icons-react';
 import clsx from 'clsx';
 import {Fragment, useEffect, useState} from 'react';
@@ -16,7 +16,7 @@ import {HowEasyRating} from '@/components/Course/Rating/HowEasyRating.tsx';
 import {HowInterestingRating} from '@/components/Course/Rating/HowInterestingRating.tsx';
 import {ReviewsBox} from '@/components/Course/Reviews';
 import {Skeleton} from '@/components/Skeleton';
-import {CONTENT_TOP_SPACING, EXAM_STATS_KEY, HEADER_HEIGHT, MAX_SITE_WIDTH} from '@/constants';
+import {CONTENT_TOP_SPACING, EXAM_STATS_KEY, HEADER_HEIGHT, MAX_SITE_WIDTH, TUM_INFO_COURSES_GRADES} from '@/constants';
 import {useDetailCourse} from '@/courses/useCourse.tsx';
 import {getPath, Paths} from '@/routes/paths.ts';
 import {ExamStats} from "@/courses/types.ts";
@@ -172,10 +172,18 @@ const Course = () => {
                                         <Flex mt="xl" direction="column" className="children-animation"
                                               style={{background: 'var(--mantine-color-body)'}}>
                                             <Flex align="center" gap="xs" mb="lg">
-                                                <Box bg="blue" w={10} h={30} style={{borderRadius: '8px'}}/>
-                                                <Text fw="bold" fz="xl">
-                                                    Exam results
-                                                </Text>
+                                                <Box bg="blue" w={10} h={30} pos={'relative'} bottom={8} style={{borderRadius: '8px'}}/>
+                                                <Flex display='flex' direction='column' pos='relative'>
+                                                    <Text fw="bold" fz="xl">
+                                                        Exam results
+                                                    </Text>
+                                                    <Text fz={11} fw={'bold'}  pos={'relative'} truncate maw={'88vw'}  style={{textWrap: 'nowrap'}}>
+                                                        Source: <Anchor  fz={11} ml={4} href={TUM_INFO_COURSES_GRADES}
+                                                                       target="_blank" rel="noreferrer"   >
+                                                        {TUM_INFO_COURSES_GRADES}
+                                                    </Anchor>
+                                                    </Text>
+                                                </Flex>
                                             </Flex>
                                             <Carousel>
                                                 {examResults.map((value, index) => (
