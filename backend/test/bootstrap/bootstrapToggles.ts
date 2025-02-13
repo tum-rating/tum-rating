@@ -11,6 +11,11 @@ const toggles: CreateToggleRequestDto[] = [
         description: 'Enables OAuth Sign In Button',
         enabled: true,
     },
+    {
+        name: 'examStats',
+        description:'toggle for exam stats visibility in course view',
+        enabled: true,
+    }
 ];
 
 (async () => {
