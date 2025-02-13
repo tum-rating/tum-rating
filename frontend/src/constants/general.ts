@@ -5,3 +5,4 @@ export const COUNTRY = 'Bayern, Germany';
 export const WEBSITE_URL = 'https://www.tum-rating.de';
 export const CONTACT_PAGE_URL = 'https://tum-rating.de/feedback';
 export const LAST_TERMS_UPDATED_DATE = 'July 06, 2024';
+export const TUM_INFO_COURSES_GRADES = 'https://mcmikecreations.github.io/tum_info/courses/'
