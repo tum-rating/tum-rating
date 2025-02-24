@@ -15,6 +15,7 @@ interface FetchParams {
     filesToMerge?: any[]
     ws: WebSocket;
     wss: WebSocketServer;
+    content?: any;
 }
 
 const broadcastFetchStatus = (wss: WebSocketServer, type: string, status: boolean) => {
@@ -138,8 +139,6 @@ const fetchAndSaveTUMCourses = async ({suffix, semesters, ws, wss}: FetchParams)
     const allCourses = [];
 
     broadcastFetchStatus(wss, `${fileConfig.id}-${suffix}`, true);
-    console.log(1)
-    console.log(2)
     for (const termId of semesters) {
         const options = {pageSize: 100, termId};
         const courses = await fetchAllPages(options);
@@ -157,6 +156,11 @@ const fetchAndSaveTUMCourses = async ({suffix, semesters, ws, wss}: FetchParams)
     ws.send(JSON.stringify({action: 'newFile', name: `${fileConfig.id}-${suffix}${fileConfig.extension}`}));
     broadcastNewFile(wss, `${fileConfig.id}-${suffix}${fileConfig.extension}`);
 };
+
+
+const mergeCoursesNamesAi = ({content,ws,wss}) =>{
+
+}
 
 export {
     fetchAndSaveProductionCourses,
