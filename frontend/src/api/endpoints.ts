@@ -61,6 +61,7 @@ type AdminEndpoints = {
     //---COURSES
     addCourse: string;
     editCourse: (courseId: string) => string;
+    addGradesToCourse: (courseId: string) => string;
     //---PROPOSALS
     getAllProposals: string;
     getSingleProposal: (proposalId: string) => string;
@@ -101,6 +102,8 @@ const admin: AdminEndpoints = {
     banUser: (userId: string) => `${baseApiUrl}/users/${userId}/ban`,
     addCourse: `${baseApiUrl}/courses`,
     editCourse: (courseId: string) => `${baseApiUrl}/courses/${courseId}`,
+    addGradesToCourse: (courseId: string) =>
+        `${baseApiUrl}/courses/${courseId}/exam-stats`,
     toggles: `${baseApiUrl}/toggles`,
     getSingleToggle: (toggleId: string) => `${baseApiUrl}/toggles/${toggleId}`,
     setToggle: (toggleId: string) => `${baseApiUrl}/toggles/${toggleId}`,

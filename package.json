@@ -1,6 +1,6 @@
 {
   "name": "tum-rating",
-  "version": "1.1.2",
+  "version": "1.1.7",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,5 +15,9 @@
     "backend"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@mantine/charts": "^7.16.2",
+    "recharts": "^2.15.1"
+  }
 }

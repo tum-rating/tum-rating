@@ -1,0 +1,32 @@
+.carouselWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.prevButtonWrapper, .nextButtonWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.prevButtonWrapper {
+  left: -15px;
+}
+
+.nextButtonWrapper {
+  right: -15px;
+}
+
+.carousel {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carouselContainer {
+  display: flex;
+}

@@ -10,6 +10,7 @@ import { ReviewRepository } from 'src/database/repositories/review.repository';
 import { CourseControllerV1 } from './course.controller.v1';
 import { CourseControllerAdminV1 } from './course.controller.admin.v1';
 import { CourseService } from './course.service';
+import { CourseExamStatsService } from './courseExamStats.service';
 
 @Module({
     imports: [
@@ -20,7 +21,14 @@ import { CourseService } from './course.service';
         UserModule,
     ],
     controllers: [CourseControllerV1, CourseControllerAdminV1],
-    providers: [JWTService, CourseService, CourseRepository, ReviewRepository, Logger],
-    exports: [CourseService, CourseRepository],
+    providers: [
+        JWTService, 
+        CourseService, 
+        CourseExamStatsService,
+        CourseRepository, 
+        ReviewRepository, 
+        Logger
+    ],
+    exports: [CourseService, CourseExamStatsService, CourseRepository],
 })
 export class CourseModule {}

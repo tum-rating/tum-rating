@@ -23,13 +23,16 @@ import { USER_ID } from 'src/utils/headers/context.headers';
 import { AdminGuard } from 'src/common/guards/admin.guard';
 import { MongoIdPipe } from 'src/common/pipes/MongoId.pipe';
 import { JoiObjectSchemaPipe } from 'src/common/pipes/JoiObjectSchema.pipe';
-import { DuplicateError, NotFoundError } from 'src/utils/errors/errors';
+import { DuplicateError, NotFoundError, CourseExamStatsSemesterMismatch } from 'src/utils/errors/errors';
 
 import { CourseService } from './course.service';
+import { CourseExamStatsService } from './courseExamStats.service';
+
 import { CreateCourseRequestDto, CreateCourseRequestSchema, CreateCourseResponseDto } from './dto/CreateCourseRequest.dto';
 import { PatchCourseRequestDto, PatchCourseRequestSchema, PatchCourseResponseDto } from './dto/PatchCourseRequest.dto';
 import { DeleteCourseResponseDto } from './dto/DeleteCourseRequest.dto';
 import { GetCourseWithoutReviewResponseDto } from './dto/GetCourseRequest.dto';
+import { PatchCourseExamStatsDto, PatchCourseExamStatsRequestSchema, PatchCourseExamStatsResponseDto } from './dto/PatchCourseExamStatsRequest.dto';
 
 @ApiTags('courses')
 @UseGuards(AdminGuard)
@@ -37,6 +40,7 @@ import { GetCourseWithoutReviewResponseDto } from './dto/GetCourseRequest.dto';
 export class CourseControllerAdminV1 {
     constructor(
         private readonly _courseService: CourseService,
+        private readonly _courseExamStatsService: CourseExamStatsService,
         private readonly _logger: PinoLogger,
     ) {
         this._logger.setContext(CourseControllerAdminV1.name);
@@ -191,4 +195,54 @@ export class CourseControllerAdminV1 {
         }
     }
 
+    // course exam stats
+
+    @ApiBearerAuth()
+    @ApiParam({
+        name: 'user-id',
+        required: false,
+        description: '(Leave empty. It will be extracted from JWT token)',
+    })
+    @ApiOkResponse({
+        status: 204,
+        type: PatchCourseExamStatsResponseDto,
+    })
+    @Patch('/:course_id/exam-stats')
+    public async patchCourseExamStats(
+        @Headers(USER_ID) userId: string,
+        @Param('course_id', new JoiObjectSchemaPipe(MongoIdPipe)) courseId: string,
+        @Body(new JoiObjectSchemaPipe(PatchCourseExamStatsRequestSchema)) body: PatchCourseExamStatsDto,
+    ): Promise<PatchCourseExamStatsResponseDto> {
+        this._logger.info('Patch course exam stats request received for course: %s, by admin: %s', courseId, userId);
+
+        try {
+            const updatedExamStats = await this._courseExamStatsService.patchExamStats(courseId, body.semester, body.examType, body);
+
+            this._logger.info('Successfuly patched course exam stats for course %s, by admin %s', courseId, userId);
+
+            return new PatchCourseExamStatsResponseDto(
+                updatedExamStats.peopleTotal,
+                updatedExamStats.attemptsTotal,
+                updatedExamStats.peopleAttemptsFailed,
+                updatedExamStats.attemptsFailedPercentage,
+                updatedExamStats.averageAttemptsTotal,
+                updatedExamStats.averageAttemptsPassed,
+                updatedExamStats.grades,
+            );
+        } catch (error: any) {
+            if (error instanceof NotFoundError) {
+                this._logger.debug('Course not found with id %s', courseId);
+                throw new NotFoundException(error.message);
+            }
+            if (error instanceof CourseExamStatsSemesterMismatch) {
+                this._logger.debug('Course exam stats semester mismatch for course %s', courseId);
+                throw new BadRequestException(error.message);
+            }
+
+            this._logger.error('Failed to patch course exam stats for course %s, by admin %s: ', courseId, userId, error);
+            throw error;
+        }
+    }
+
+    // end course exam stats
 }
