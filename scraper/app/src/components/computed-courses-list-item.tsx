@@ -27,8 +27,8 @@ const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: Co
     });
 
     useEffect(() => {
-        let acceptedCount = data.acceptedCount || 0;
-        let rejectedCount = data.rejectedCount || 0;
+        let acceptedCount = data.acceptedCount || data?.merged?.filter(x=>x.accepted).length || 0;
+        let rejectedCount = data.rejectedCount || data?.merged?.filter(x=>x.accepted === false).length || 0;
         let notResolvedCount = data.merged ? data.merged.length - acceptedCount - rejectedCount : 0;
         setStatus({
             accepted: acceptedCount,

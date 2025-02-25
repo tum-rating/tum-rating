@@ -94,6 +94,10 @@ function keySimilarityCore(
             const { cleanedTitle: recordTitle, codes: recordCodes } = redundantWordsExtractor(record[key]);
             const similarity = levenshteinDistance(itemTitle, recordTitle);
 
+            if (record.rejectedId && record.rejectedId.includes(item["id"])) {
+                continue;
+            }
+
             if (similarity < 25 && record.professor === item.professor && checkIfCoursesHaveAtLeastOneCommonWord(itemTitle, recordTitle)) {
                 similarRecords.push({
                     ...record,

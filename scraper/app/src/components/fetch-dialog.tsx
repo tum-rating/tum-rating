@@ -30,10 +30,13 @@ interface FetchingConfigurationFormProps {
 
 const FetchingConfigurationForm = ({config, onChange}: FetchingConfigurationFormProps) => {
     const {serverFilesystemConfig, files, filesContent, getAndUseFileContent} = useContext(AppDataContext)!;
+    console.log(filesContent)
     const [fileSelection, setFileSelection] = useState<string | null>(null);
     const [internalFilesContent, setInternalFilesContent] = useState<any>({});
     const renderDependentFileSelection = () => {
-        const selectedFileDependency = serverFilesystemConfig?.files.find(x => x.id === fileSelection)?.dependencies;
+        const selectedFileDependency = serverFilesystemConfig?.files.find(
+          (x: { id: string | null }) => x.id === fileSelection,
+        )?.dependencies;
         if (fileSelection && selectedFileDependency && selectedFileDependency.length > 0) {
             const matchingExistingFiles = files.filter(x => x.id === selectedFileDependency[0]) || []
             return (

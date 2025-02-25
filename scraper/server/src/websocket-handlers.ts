@@ -282,6 +282,11 @@ const handleMessage = async (
           await keySimilarityMerging({ filesToMerge, ws, wss, suffix });
         }
         break;
+     case 'finishKeySimilarityMerging':
+                if (filesToMerge) {
+                    await finishKeySimilarityMerging({filesToMerge, ws, wss, suffix});
+                }
+                break;
 
       case "coursesNamesMergingAi":
         if (content) {

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect , useState } from "react";
 import VirtualList from "@/components/ui/virtual-list";
 import { FetchedComputedCourse, FetchedCourse } from "@/types/fetchedData";
 import ComputedCoursesListItem from "@/components/computed-courses-list-item";
