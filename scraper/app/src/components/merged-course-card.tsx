@@ -17,7 +17,9 @@ const MergedCourseCard = ({
 }: {
   course: FetchedComputedCourse | undefined;
 }) => {
-  const [internalCourse, setInternalCourse] = useState<FetchedComputedCourse | undefined>(undefined);
+  const [internalCourse, setInternalCourse] = useState<
+    FetchedComputedCourse | undefined
+  >(undefined);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [aiResponse, setAiResponse] = useState<any>(null);
@@ -41,9 +43,14 @@ const MergedCourseCard = ({
     const updatedCourse = { ...internalCourse, [key]: value };
 
     if (key === "merged" && Array.isArray(value)) {
-      const acceptedCount = value?.filter((item: FetchedCourse) => item.accepted === true).length ?? 0;
-      const rejectedCount = value?.filter((item: FetchedCourse) => item.accepted === false).length ?? 0;
-      const notResolvedCount = (value?.length ?? 0) - acceptedCount - rejectedCount;
+      const acceptedCount =
+        value?.filter((item: FetchedCourse) => item.accepted === true).length ??
+        0;
+      const rejectedCount =
+        value?.filter((item: FetchedCourse) => item.accepted === false)
+          .length ?? 0;
+      const notResolvedCount =
+        (value?.length ?? 0) - acceptedCount - rejectedCount;
 
       updatedCourse.acceptedCount = acceptedCount;
       updatedCourse.rejectedCount = rejectedCount;
@@ -64,21 +71,21 @@ const MergedCourseCard = ({
   const handleMergeWithAi = async () => {
     if (!course?.merged) return;
     setIsLoading(true);
-    const response = await coursesNamesMergingAi([...course.merged.map((x) => x.name)]);
-    setAiResponse(response);
-    setIsLoading(false);
+    await coursesNamesMergingAi([...course.merged.map((x) => x.name)], course);
+    // setAiResponse(response);
+    // setIsLoading(false);
 
-    if (response?.match) {
-      const updatedMerged = internalCourse.merged.map((subCourse) => {
-        if (response.merged.includes(subCourse.name)) {
-          return { ...subCourse, accepted: true };
-        } else {
-          return { ...subCourse, accepted: false };
-        }
-      });
-      internalCourse.name = response.name;
-      updateInternalCourse("merged", updatedMerged);
-    }
+    // if (response?.match) {
+    //   const updatedMerged = internalCourse.merged.map((subCourse) => {
+    //     if (response.merged.includes(subCourse.name)) {
+    //       return { ...subCourse, accepted: true };
+    //     } else {
+    //       return { ...subCourse, accepted: false };
+    //     }
+    //   });
+    //   internalCourse.name = response.name;
+    //   updateInternalCourse("merged", updatedMerged);
+    // }
   };
 
   if (!internalCourse) return <div>No course selected</div>;
@@ -117,7 +124,9 @@ const MergedCourseCard = ({
                 <Input
                   id="course-professor"
                   value={internalCourse.professor}
-                  onChange={(e) => updateInternalCourse("professor", e.target.value)}
+                  onChange={(e) =>
+                    updateInternalCourse("professor", e.target.value)
+                  }
                 />
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5 mt-3">
@@ -140,7 +149,9 @@ const MergedCourseCard = ({
                   id="course-semesters"
                   className="bg-transparent"
                   value={internalCourse.offeredInSemesters || []}
-                  onChange={(semesters) => updateInternalCourse("offeredInSemesters", semesters)}
+                  onChange={(semesters) =>
+                    updateInternalCourse("offeredInSemesters", semesters)
+                  }
                   placeholder="Enter values, comma separated..."
                 />
               </div>
@@ -224,16 +235,19 @@ const MergedCourseCard = ({
               <Button variant="outline" tooltip="Next">
                 <ArrowRight />
               </Button>
-              <Button
-                disabled={!hasUnsavedChanges}
-                onClick={handleSave}
-              >
+              <Button disabled={!hasUnsavedChanges} onClick={handleSave}>
                 Save
               </Button>
             </div>
             <div className="mt-2 text-sm">
-              <p className={`text-${hasUnsavedChanges ? "red-500" : "gray-500"} text-sm`}>
-                {hasUnsavedChanges ? "You have unsaved changes" : "No changes to save"}
+              <p
+                className={`text-${
+                  hasUnsavedChanges ? "red-500" : "gray-500"
+                } text-sm`}
+              >
+                {hasUnsavedChanges
+                  ? "You have unsaved changes"
+                  : "No changes to save"}
               </p>
             </div>
           </div>

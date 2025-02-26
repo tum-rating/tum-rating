@@ -90,6 +90,7 @@ const RightSidebar = () => {
 
     const getRandomWidth = () => `${Math.floor(Math.random() * (75 - 50 + 1) + 50)}%`;
 
+    console.log(filteredCourses)
     return (
         <>
             <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredCourses.length} sortOptions={sortOptions} />

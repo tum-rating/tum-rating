@@ -1,19 +1,40 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
+import path from "path";
+import fs from "fs";
 
 dotenv.config();
+
+const logFilePath = path.join(__dirname, 'aiLogs.json');
+
+const logRequestResponse = (request: any, response: any) => {
+    const logEntry = {
+        timestamp: new Date().toISOString(),
+        request,
+        response
+    };
+    let logs = [];
+    if (fs.existsSync(logFilePath)) {
+        logs = JSON.parse(fs.readFileSync(logFilePath, 'utf-8'));
+    } else {
+        fs.writeFileSync(logFilePath, JSON.stringify(logs, null, 2), 'utf-8');
+    }
+    logs.push(logEntry);
+    fs.writeFileSync(logFilePath, JSON.stringify(logs, null, 2), 'utf-8');
+};
 
 const mergeCoursesByNamesWithAi = async (courses: string[]): Promise<any> => {
     console.log(courses);
     const prompt = `
 You will receive name of university courses in a form of nominal name and following possible matches that might be a course duplicate, the input structure is a following JSON:
-
 [
   "name",
   "name second",
   "name third"
 ]
-
+Data to merge:
+${JSON.stringify(courses, null, 2)}
+First element is always a nominal name, and the rest are possible matches.
 You want to return the names from the merge that are actually matching according to the rules:
 If the name is the same but one has advanced in it do not match courses.
 Example input:
@@ -73,12 +94,13 @@ Merge them and output:
   ]
 }
 
-5. If there are the same courses, but one is a lecture and other is exercise or tutorial merge them:
+5. If there are the same courses, but one is a lecture and other is exercise or tutorial or practical course merge them:
 Example input:
 [
   "Interaction Programming Block Course",
   "Interaction Programming Block Course Exercise",
   "Interaction Programming Block Course Tutorial",
+  "Practical course Interaction Programming Block Course",
   "Interaction Prototyping Practical Course"
 ]
 Output should be, "Interaction Prototyping Practical Course" is not matching:
@@ -88,7 +110,8 @@ Output should be, "Interaction Prototyping Practical Course" is not matching:
   "merged": [
     "Interaction Programming Block Course",
     "Interaction Programming Block Course Exercise",
-    "Interaction Programming Block Course Tutorial"
+    "Interaction Programming Block Course Tutorial",
+    "Practical course Interaction Programming Block Course"
   ]
 }
 
@@ -146,9 +169,7 @@ Merge them, in the nominal name place all the values of those codes:
     "Quantum Computing Tutorial (IN2107,IN2183,IN0014,IN2190)"
   ]
 }
-
-Now based on those rules combined and common sense perform merge for, return only the output without reasoning:
-${JSON.stringify(courses, null, 2)}
+Now based on those rules combined and common sense perform merge for, return only the output without reasoning.
 `;
 
     try {
@@ -167,8 +188,10 @@ ${JSON.stringify(courses, null, 2)}
                 }
             }
         );
-        console.log(JSON.parse(response.data.choices[0].message.content));
-        return JSON.parse(response.data.choices[0].message.content);
+        const aiResponse = JSON.parse(response.data.choices[0].message.content);
+        console.log(aiResponse,"<----ai response")
+        logRequestResponse(courses, aiResponse);
+        return aiResponse;
     } catch (error) {
         throw new Error(error.response ? error.response.data : error.message);
     }

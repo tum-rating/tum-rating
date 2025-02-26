@@ -50,7 +50,6 @@ const serverFilesystemConfig: ServerFilesystemConfig = {
             serverAction: 'getMrozonRatingData',
             regex: /mrozon-rating-data/
         }
-
     ]
 }
 
