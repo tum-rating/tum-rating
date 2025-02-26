@@ -37,7 +37,6 @@ const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: Co
         });
     }, [data]);
 
-    console.log(data)
     return (
         <div
             tabIndex={0}

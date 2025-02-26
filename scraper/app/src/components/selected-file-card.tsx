@@ -20,8 +20,6 @@ const SelectedFileCard = () => {
 
   const handlePreview = () => {
     if (selectedFile) {
-      console.log(selectedFile);
-      console.log(import.meta.env.VITE_FILE_SERVER);
       window.open(
         import.meta.env.VITE_API_URL + "/files/" + selectedFile.name,
         "_blank",
@@ -29,11 +27,8 @@ const SelectedFileCard = () => {
     }
   };
 
-  console.log(selectedFile);
-  console.log(filesContent);
 
   const isMergedFileReady = filesContent[selectedFile.id]?.notResolvedCount === 0;
-  console.log(filesContent[selectedFile.id]);
 
   return (
     <div className="relative z-10 w-full h-full flex justify-center items-center gap-4">

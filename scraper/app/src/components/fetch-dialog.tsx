@@ -30,7 +30,6 @@ interface FetchingConfigurationFormProps {
 
 const FetchingConfigurationForm = ({config, onChange}: FetchingConfigurationFormProps) => {
     const {serverFilesystemConfig, files, filesContent, getAndUseFileContent} = useContext(AppDataContext)!;
-    console.log(filesContent)
     const [fileSelection, setFileSelection] = useState<string | null>(null);
     const [internalFilesContent, setInternalFilesContent] = useState<any>({});
     const renderDependentFileSelection = () => {
@@ -45,14 +44,12 @@ const FetchingConfigurationForm = ({config, onChange}: FetchingConfigurationForm
                         <Label className='text-xs' htmlFor="type-of-data">Dependent file</Label>
                         <Select disabled={!matchingExistingFiles} value={config.dependentFile}
                                 onValueChange={async (value) => {
-                                    console.log(value)
                                     const data = await getAndUseFileContent({
                                         name: value,
                                         id: selectedFileDependency[0],
                                         size: 0,
                                         lastModified: new Date(),
                                     })
-                                    console.log(data)
 
                                     setInternalFilesContent(data)
                                     onChange({...config, dependentFile: value})
@@ -85,7 +82,6 @@ const FetchingConfigurationForm = ({config, onChange}: FetchingConfigurationForm
                                     }).reverse()}
                                     onValueChange={(value) => {
                                         config.dependentFileData = value
-                                        console.log(value)
                                     }}
                                     defaultValue={[]}
                                     placeholder="Select semesters"
@@ -184,7 +180,6 @@ const FetchDialog = (props: PropsWithChildren) => {
 
         setErrors(newErrors);
 
-        console.log(newErrors)
         if (newErrors.some(error => error !== "")) {
             return false;
         }

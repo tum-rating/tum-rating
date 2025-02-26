@@ -14,7 +14,6 @@ interface MergedSubCourseCardProps {
 }
 
 const MergedSubCourseCard = ({subCourse, setSubCourse}: MergedSubCourseCardProps) => {
-    console.log(subCourse)
     return (
         <Card
             className={`relative flex flex-col gap-2 p-2 max-w-[250px] ${subCourse.accepted ? 'bg-green-50' : subCourse.accepted === false ? 'bg-red-50' : 'bg-gray-50'}`}>

@@ -5,7 +5,6 @@ interface SimilarityLabelProps {
 }
 
 const SimilarityLabel = ({similarity}: SimilarityLabelProps) => {
-    console.log(similarity)
     const {label, color} = getLabelAndColor(similarity);
 
     return (
