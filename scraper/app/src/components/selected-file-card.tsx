@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 
 const SelectedFileCard = () => {
-  const { selectedFile, deleteFile, filesContent } =
+  const { selectedFile, deleteFile, filesContent,finishKeySimilarityMerging,coursesNamesMergingAiForWholeFile } =
     useContext(AppDataContext)!;
 
   if (!selectedFile) {
@@ -28,7 +28,13 @@ const SelectedFileCard = () => {
   };
 
 
-  const isMergedFileReady = filesContent[selectedFile.id]?.notResolvedCount === 0;
+const isMergingFile = selectedFile.name.includes("merge")
+  const isMergedFileReady = isMergingFile ? !filesContent[selectedFile.name.replace(/\.json$/, "")]?.some(x=> "notResolvedCount" in x && x.notResolvedCount > 0) : false;
+  console.log(filesContent[selectedFile.name.replace(/\.json$/, "")])
+  console.log(selectedFile.name.replace(/\.json$/, ""))
+  console.log(isMergedFileReady)
+  console.log(filesContent)
+  console.log(selectedFile)
 
   return (
     <div className="relative z-10 w-full h-full flex justify-center items-center gap-4">
@@ -53,7 +59,12 @@ const SelectedFileCard = () => {
               <Button variant="destructive" onClick={handleDelete}>
                 Delete File
               </Button>
-              {isMergedFileReady && <Button>Finish merging</Button>}
+              {isMergedFileReady && <Button onClick={()=>{
+                finishKeySimilarityMerging([selectedFile.name],"merged")
+              }}>Finish merging</Button>}
+              {isMergingFile && <Button  onClick={()=>{
+                coursesNamesMergingAiForWholeFile()
+              }}>Auto accept/decline merged sub-courses </Button>}
             </div>
           </div>
         </div>

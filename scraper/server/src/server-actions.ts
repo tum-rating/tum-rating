@@ -1,5 +1,7 @@
 import WebSocket, { WebSocketServer } from 'ws';
 import axios from 'axios';
+import mergeCoursesByNamesWithAi from "./merge-courses-by-names-with-ai";
+import Logger from "./server-logger";
 import { PRODUCTION_API_COURSES_URL, TUM_ONLINE_SEMESTERS_URL } from './server-actions-config';
 import { serverFilesystemConfig, serverFilesystemConfigFilesMap } from './server-filesystem-config';
 import fs from 'fs';
@@ -190,6 +192,55 @@ const fetchAndSaveTUMCourses = async ({ suffix, semesters = [], ws, wss }: Fetch
     broadcastFetchStatus(wss, `${fileConfig.id}-${suffix}`, false);
     ws.send(JSON.stringify({ action: 'newFile', name: `${fileConfig.id}-${suffix}${fileConfig.extension}` }));
     broadcastNewFile(wss, `${fileConfig.id}-${suffix}${fileConfig.extension}`);
+};
+const batchMergeCoursesByNamesWithAi = async (coursesSets: string[][], fileName: string, wss: WebSocketServer, ws: ExtendedWebSocket) => {
+    const batchSize = 10; // Adjust the batch size as needed
+    for (let i = 0; i < coursesSets.length; i += batchSize) {
+        const batch = coursesSets.slice(i, i + batchSize);
+        try {
+            const mergedData = await mergeCoursesByNamesWithAi(batch);
+            const filePath = path.join(serverFilesystemConfig.DIRECTORY, fileName);
+            if (fs.existsSync(filePath)) {
+                const fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+                mergedData.forEach((data, index) => {
+                    if (data.match) {
+                        const itemIndex = i + index;
+                        const item = fileContent[itemIndex];
+                        let acceptedCount = 0;
+                        let rejectedCount = 0;
+                        for (let el of item.merged) {
+                            if (data.merged.includes(el.name)) {
+                                el.accepted = true;
+                                acceptedCount++;
+                            } else {
+                                el.accepted = false;
+                                rejectedCount++;
+                            }
+                        }
+                        item.name = data.name;
+                        item.acceptedCount = acceptedCount;
+                        item.rejectedCount = rejectedCount;
+                        item.notResolvedCount = 0;
+                        const diffs = compare(fileContent[itemIndex], item);
+                        fileContent[itemIndex] = applyPatch(fileContent[itemIndex], diffs).newDocument;
+                    }
+                });
+                fs.writeFileSync(filePath, JSON.stringify(fileContent, null, 2), "utf-8");
+                ws.send(JSON.stringify({ action: "success", message: "Courses merged successfully" }));
+                const message = JSON.stringify({ action: "fileUpdated", fileName, updatedItems: mergedData });
+                wss.clients.forEach((client: WebSocket) => {
+                    if (client.readyState === WebSocket.OPEN) {
+                        client.send(message);
+                    }
+                });
+            } else {
+                Logger.warn(`File not found: ${filePath}`);
+            }
+        } catch (error) {
+            Logger.error(`Error in batchMergeCoursesByNamesWithAi: ${error.message}`);
+            ws.send(JSON.stringify({ action: "error", message: "An error occurred while merging courses" }));
+        }
+    }
 };
 
 export {

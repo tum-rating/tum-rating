@@ -48,6 +48,7 @@ interface AppDataContextType {
     suffix: string,
   ) => void;
   finishKeySimilarityMerging: (filesToMerge: any[], suffix: string) => void;
+  coursesNamesMergingAiForWholeFile: () => void;
   coursesNamesMergingAi: (
     courses: string[],
     course: FetchedComputedCourse,
@@ -167,11 +168,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         case "fileList":
           setFiles(
             data.map((file: any) => ({
-           id: file.name.match(/-\d{2}\.\d{2}\.\d{4}/)
-                ? file.name.slice(0, file.name.indexOf("-", file.name.indexOf("-") + 1))
-                : file.name.endsWith(".json")
-                ? file.name.slice(0, -5)
-                : file.name,
+              id: file.name.replace(/\.json$/, ""),
               name: file.name,
               size: file.size || 0,
               lastModified: file.lastModified
@@ -181,18 +178,12 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
           );
           if (data.length) {
             const tempFilesContent = { ...filesContentRef.current };
-            for (let i = 0; i < data.length; i++) {
-              if (!tempFilesContent[data[i].name]) {
-                tempFilesContent[data[i].name] = [];
-              } else {
-                const withoutExtension = data[i].name.slice(
-                  0,
-                  data[i].name.lastIndexOf("."),
-                );
-                tempFilesContent[withoutExtension] =
-                  filesContentRef.current[withoutExtension];
+            data.forEach((file: any) => {
+              const fileNameWithoutExtension = file.name.replace(/\.json$/, "");
+              if (!tempFilesContent[fileNameWithoutExtension]) {
+                tempFilesContent[fileNameWithoutExtension] = [];
               }
-            }
+            });
             filesContentRef.current = tempFilesContent;
           }
           if (!selectedFileExists && userSelectedFile) {
@@ -201,6 +192,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
             setSelectedCourse(null);
           }
           break;
+
         case "fileContent":
           break;
         case "getFileContent":
@@ -275,10 +267,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
   const handleSetSelectedFile = async (file: FileData | null) => {
     if (file) {
       const data = await getFileContent(file.name);
-      const fileNameWithoutExtension = file.name.slice(
-        0,
-        file.name.lastIndexOf("."),
-      );
+      const fileNameWithoutExtension = file.name.replace(/\.json$/, "");
       filesContentRef.current[fileNameWithoutExtension] = data;
       if (!file.name.includes("courses-production")) {
         setSelectedCourse(null);
@@ -322,7 +311,6 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
 
     const originalCourse = selectedFileContent[originalCourseIndex];
     const diffs = fastJsonPatch.compare(originalCourse, updatedCourse);
-
 
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(
@@ -468,31 +456,44 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
     }
   };
 
+  const coursesNamesMergingAiForWholeFile = async () => {
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      const fileNameWithoutExtension = selectedFile.name.replace(/\.json$/, "");
+      const coursesSets = filesContentRef.current[fileNameWithoutExtension].map((course) =>
+        course.merged.map((subCourse) => subCourse.name),
+      );
+      console.log(coursesSets);
+      socketRef.current.send(JSON.stringify({
+        action: "batchMergeCoursesByNamesWithAi",
+        coursesSets,
+        fileName: selectedFile.name,
+      }));
+    }
+  };
+
   const coursesNamesMergingAi = async (
     courses: string[],
     item: FetchedCourse,
   ): Promise<Record<string, unknown>> => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       console.log(selectedFile);
-      console.log(item)
+      console.log(item);
       console.log(files);
-         const fileNameWithoutExtension = selectedFile.name.slice(
-          0,
-          selectedFile.name.lastIndexOf("."),
+      const fileNameWithoutExtension = selectedFile.name.slice(
+        0,
+        selectedFile.name.lastIndexOf("."),
       );
       const selectedFileContent =
-          filesContentRef.current[fileNameWithoutExtension];
+        filesContentRef.current[fileNameWithoutExtension];
       if (!selectedFileContent) return;
-      console.log(selectedFileContent)
+      console.log(selectedFileContent);
 
       const originalCourseIndex = selectedFileContent.findIndex(
-          (x) => x.id === item.id,
+        (x) => x.id === item.id,
       );
       if (originalCourseIndex === -1) return;
 
       const originalCourse = selectedFileContent[originalCourseIndex];
-      console.log(originalCourseIndex)
-      console.log(originalCourse)
       socketRef.current.send(
         JSON.stringify({
           action: "coursesNamesMergingAi",
@@ -527,6 +528,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
       keySimilarityMerging,
       keySimilarityMergingAi,
       coursesNamesMergingAi,
+      coursesNamesMergingAiForWholeFile,
       finishKeySimilarityMerging,
       getFileContent,
       selectCourse,

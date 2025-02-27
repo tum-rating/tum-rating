@@ -2,8 +2,15 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import path from "path";
 import fs from "fs";
+import { Logger } from './logger';
 
 dotenv.config();
+
+type AiResponse = {
+    match: boolean;
+    name: string;
+    merged: string[];
+};
 
 const logFilePath = path.join(__dirname, 'aiLogs.json');
 
@@ -16,22 +23,13 @@ const logRequestResponse = (request: any, response: any) => {
     let logs = [];
     if (fs.existsSync(logFilePath)) {
         logs = JSON.parse(fs.readFileSync(logFilePath, 'utf-8'));
-    } else {
-        fs.writeFileSync(logFilePath, JSON.stringify(logs, null, 2), 'utf-8');
     }
     logs.push(logEntry);
     fs.writeFileSync(logFilePath, JSON.stringify(logs, null, 2), 'utf-8');
 };
 
-const mergeCoursesByNamesWithAi = async (courses: string[]): Promise<any> => {
-    console.log(courses);
-    const prompt = `
+const getSingleCoursePrompt = (courses: string[]) => `
 You will receive name of university courses in a form of nominal name and following possible matches that might be a course duplicate, the input structure is a following JSON:
-[
-  "name",
-  "name second",
-  "name third"
-]
 Data to merge:
 ${JSON.stringify(courses, null, 2)}
 First element is always a nominal name, and the rest are possible matches.
@@ -169,15 +167,48 @@ Merge them, in the nominal name place all the values of those codes:
     "Quantum Computing Tutorial (IN2107,IN2183,IN0014,IN2190)"
   ]
 }
-Now based on those rules combined and common sense perform merge for, return only the output without reasoning.
-`;
+Now based on those rules combined and common sense perform merge for, return only the output without reasoning.`;
+
+const getBatchPrompt = () => `
+You will receive multiple sets of university courses in the form of nominal names and possible matches that might be duplicates. Each set is a separate case. The input structure is a JSON array of arrays:
+[
+  ["name1", "name2", "name3"],
+  ["name4", "name5", "name6"]
+]
+Each inner array represents a separate case to analyze.
+
+For each set, return the merged result according to the rules:
+1. If the name is the same but one has "advanced" in it, do not match courses.
+2. If there are two courses that one is a continuation of the other, do not match them.
+3. If there is a language in the name that is exactly the same, match those courses.
+4. If there are some random words in the name that do not change the meaning of the course, merge them.
+5. If there are the same courses, but one is a lecture and the other is an exercise or tutorial or practical course, merge them.
+6. If there are language courses with different levels, merge them.
+7. If there are different values of SWS or other similar values, merge them, removing this value.
+8. If there are names with codes and the names correspond to their meanings and previous rules, match them.
+
+Return the results as an array of objects, each containing:
+{
+  "match": boolean,
+  "name": string,
+  "merged": string[]
+}`;
+
+const mergeCoursesByNamesWithAi = async (courses: string[] | string[][]): Promise<AiResponse | AiResponse[]> => {
+    const isBatch = Array.isArray(courses[0]);
+    Logger.info(`Processing ${isBatch ? 'batch' : 'single'} course merge request`);
 
     try {
+        const prompt = isBatch ? getBatchPrompt() : getSingleCoursePrompt(courses as string[]);
+
         const response = await axios.post(
             'https://api.openai.com/v1/chat/completions',
             {
                 model: "gpt-4o-mini",
-                messages: [{role: "user", content: prompt}],
+                messages: [{
+                    role: "user",
+                    content: prompt + (isBatch ? `\nData to merge:\n${JSON.stringify(courses, null, 2)}` : '')
+                }],
                 max_tokens: 1000,
                 temperature: 0.2
             },
@@ -188,11 +219,17 @@ Now based on those rules combined and common sense perform merge for, return onl
                 }
             }
         );
+
         const aiResponse = JSON.parse(response.data.choices[0].message.content);
-        console.log(aiResponse,"<----ai response")
         logRequestResponse(courses, aiResponse);
+
+        if (isBatch) {
+            Logger.info(`Processed ${(courses as string[][]).length} course sets`);
+        }
+
         return aiResponse;
     } catch (error) {
+        Logger.error(`Error in mergeCoursesByNamesWithAi: ${error.message}`);
         throw new Error(error.response ? error.response.data : error.message);
     }
 };

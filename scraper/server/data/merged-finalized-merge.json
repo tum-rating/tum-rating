@@ -55,6 +55,30 @@
     "merged": []
   },
   {
+    "id": "66b28b90d34856d36eb2e330",
+    "courseId": "950672060",
+    "courseNumber": "0000005501",
+    "professor": "Matthias Gaderer",
+    "otherLecturers": [
+      "Szymon Herdzik",
+      "Bernhard Huber",
+      "Daniel Klüh",
+      "Gabriel Naumann"
+    ],
+    "name": "Practical course Process Design Project I",
+    "offeredInSemesters": [
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "similarity": 12,
+    "codes": [],
+    "rejectedId": [
+      "ee0a73eb-b926-4e10-a502-55c46baf5688"
+    ]
+  },
+  {
     "name": "Process Design Project",
     "merged": [
       {
@@ -82,28 +106,6 @@
         "similarity": 0,
         "codes": [],
         "accepted": true
-      },
-      {
-        "id": "66b28b90d34856d36eb2e330",
-        "courseId": "950672060",
-        "courseNumber": "0000005501",
-        "professor": "Matthias Gaderer",
-        "otherLecturers": [
-          "Szymon Herdzik",
-          "Bernhard Huber",
-          "Daniel Klüh",
-          "Gabriel Naumann"
-        ],
-        "name": "Practical course Process Design Project I",
-        "offeredInSemesters": [
-          "2023 S"
-        ],
-        "howInterestingRatingAverage": 0,
-        "howEasyRatingAverage": 0,
-        "votesNumber": 0,
-        "similarity": 12,
-        "codes": [],
-        "accepted": false
       },
       {
         "id": "66b28900d34856d36eb2a090",
@@ -140,10 +142,7 @@
     "professor": "Matthias Gaderer",
     "courseId": "",
     "courseNumber": "",
-    "id": "ee0a73eb-b926-4e10-a502-55c46baf5688",
-    "acceptedCount": 2,
-    "rejectedCount": 1,
-    "notResolvedCount": 0
+    "id": "ee0a73eb-b926-4e10-a502-55c46baf5688"
   },
   {
     "id": "f73260c0-d694-4614-abc4-b21602326bce",
