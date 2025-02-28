@@ -7,6 +7,7 @@ import {
   validateConnection,
 } from "./websocket-utils";
 import {
+  batchMergeCoursesByNamesWithAi,
   fetchAndSaveMrozonRatingData,
   fetchAndSaveProductionCourses,
   fetchAndSaveTUMCourses,
@@ -42,7 +43,7 @@ let isUpdating = false;
 
 const broadcastUsers = (wss: WebSocketServer) => {
   // If already updating, skip this update
-  console.log(isUpdating);
+
   if (isUpdating) {
     return;
   }
@@ -59,7 +60,7 @@ const broadcastUsers = (wss: WebSocketServer) => {
       selectedCourse: ws.selectedCourse || null,
     }));
 
-    console.log(userList);
+
     // Send update to all clients
     const message = JSON.stringify({ action: "updateUsers", data: userList });
     wss.clients.forEach((client: WebSocket) => {
@@ -71,6 +72,7 @@ const broadcastUsers = (wss: WebSocketServer) => {
     isUpdating = false;
   }
 };
+
 
 export const handleConnection = (
   ws: ExtendedWebSocket,
@@ -88,15 +90,40 @@ export const handleConnection = (
   clients.set(userId, ws);
   Logger.info(`Client connected: ${userId}`);
 
+  // Send initial AI logs
+  try {
+    const aiLogsPath = path.join(__dirname, 'aiLogs.json');
+    let aiLogs = [];
+
+    // Check if file exists and has content
+    if (fs.existsSync(aiLogsPath)) {
+      const fileContent = fs.readFileSync(aiLogsPath, 'utf-8');
+      if (fileContent.trim()) {
+        aiLogs = JSON.parse(fileContent);
+      }
+    } else {
+      // Create file with empty array if it doesn't exist
+      fs.writeFileSync(aiLogsPath, JSON.stringify([], null, 2));
+    }
+
+    ws.send(JSON.stringify({
+      action: 'updateLogs',
+        initial: true,
+      data: aiLogs
+    }));
+  } catch (error) {
+    Logger.error(`Error sending initial AI logs: ${error.message}`);
+    // Send empty array if there's an error
+    ws.send(JSON.stringify({
+      action: 'updateLogs',
+      initial: true,
+      data: []
+    }));
+  }
+
   ws.on("message", (message) => handleMessage(userId, message, wss, ws));
   ws.on("close", () => handleDisconnection(userId, wss));
   ws.on("error", (error) => handleError(userId, error));
-
-  handleReconnection(ws, userId);
-  handleTimeout(ws, userId);
-
-  // Broadcast updated user list when a new user connects
-  broadcastUsers(wss);
 };
 
 const logFilePath = path.join(__dirname, "aiLogs.json");
@@ -112,6 +139,18 @@ const broadcastLogs = (wss: WebSocketServer) => {
     }
   });
 };
+const handleInitialConnection = (ws: ExtendedWebSocket) => {
+  try {
+    const aiLogsPath = path.join(__dirname, 'aiLogs.json');
+    const aiLogs = JSON.parse(fs.readFileSync(aiLogsPath, 'utf-8'));
+    ws.send(JSON.stringify({
+      action: 'updateLogs',
+      data: aiLogs
+    }));
+  } catch (error) {
+    Logger.error(`Error sending initial AI logs: ${error.message}`);
+  }
+}
 
 const handleMessage = async (
   userId: string,
@@ -134,6 +173,7 @@ const handleMessage = async (
       updatedItem,
       semesters,
       filesToMerge,
+      coursesSets,
       item,
     } = JSON.parse(message.toString());
     Logger.info(`Received action: ${action}`);
@@ -304,15 +344,23 @@ const handleMessage = async (
         }
         break;
 
+      case "batchMergeCoursesByNamesWithAi":
+        if (coursesSets && fileName) {
+          await batchMergeCoursesByNamesWithAi(coursesSets, fileName, wss, ws);
+        }
+        break;
+
       case "coursesNamesMergingAi":
         if (content) {
           try {
-            const mergedData = await mergeCoursesByNamesWithAi(content);
-
+            console.log(144)
+            const mergedData = await mergeCoursesByNamesWithAi(content,wss);
+            console.log(mergedData)
             const filePath = path.join(
               serverFilesystemConfig.DIRECTORY,
               fileName,
             );
+            console.log(1)
             if (fs.existsSync(filePath)) {
               if (mergedData?.match) {
                 const fileContent = JSON.parse(
@@ -335,13 +383,7 @@ const handleMessage = async (
                 item.rejectedCount = rejectedCount;
                 item.notResolvedCount = 0;
 
-
-
                 const diffs = compare(fileContent[index], item);
-
-                console.log("----------------------------fileContent---------------------------")
-                console.log(fileContent)
-                console.log("-------------------------------------------------------")
                 fileContent[index] = applyPatch(
                   fileContent[index],
                   diffs,
@@ -367,9 +409,12 @@ const handleMessage = async (
                     updatedItem: item,
                   },
                 });
+                console.log(1)
                 wss.clients.forEach((client: WebSocket) => {
+                  console.log(2)
                   if (client.readyState === WebSocket.OPEN) {
                     client.send(message);
+                    broadcastLogs(wss)
                   }
                 });
               } else {

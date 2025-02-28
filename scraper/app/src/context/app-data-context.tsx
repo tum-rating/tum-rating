@@ -62,6 +62,12 @@ interface AppDataContextType {
   serverFilesystemConfig: Record<string, unknown>;
   serverFilesystemConfigFilesMap: Record<string, unknown>;
   getAndUseFileContent: (file: FileData) => Promise<FetchedCourse[]>;
+  aiLogs: any[];
+  setAiLogs: (logs: any[]) => void;
+  isAiWorking: boolean;
+  setIsAiWorking: (isWorking: boolean) => void;
+  unseenLogsCount: number;
+  setUnseenLogsCount: (count: number) => void;
 }
 
 const AppDataContext = createContext<AppDataContextType | undefined>(undefined);
@@ -70,7 +76,6 @@ type AppDataContextProps = PropsWithChildren;
 
 const AppDataProvider = ({ children }: AppDataContextProps) => {
   const [files, setFiles] = useState<FileData[]>([]);
-  const [aiLogs, setAiLogs] = useState<any[]>([]);
   const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<
     FetchedComputedCourse | FetchedCourse | null
@@ -84,6 +89,9 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
     }
     return userId;
   });
+  const [aiLogs, setAiLogs] = useState<any[]>([]);
+  const [isAiWorking, setIsAiWorking] = useState(false);
+  const [unseenLogsCount, setUnseenLogsCount] = useState(0);
   const [fetchStatus, setFetchStatus] = useState<{ [key: string]: boolean }>(
     {},
   );
@@ -150,11 +158,22 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         userSelectedFile,
         updatedItem,
         fileName,
+          initial
       } = JSON.parse(event.data);
       switch (action) {
         case "updateLogs":
-          console.log(data);
+          console.log(data)
+
           setAiLogs(data);
+          if(!initial){
+            setUnseenLogsCount((prev) => prev + 1);
+          }
+          break;
+        case "aiRequestStarted":
+          setIsAiWorking(true);
+          break;
+        case "aiRequestFinished":
+          setIsAiWorking(false);
           break;
 
         case "coursesNamesMergingAi":
@@ -459,15 +478,17 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
   const coursesNamesMergingAiForWholeFile = async () => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       const fileNameWithoutExtension = selectedFile.name.replace(/\.json$/, "");
-      const coursesSets = filesContentRef.current[fileNameWithoutExtension].map((course) =>
-        course.merged.map((subCourse) => subCourse.name),
+      const coursesSets = filesContentRef.current[fileNameWithoutExtension].map(
+        (course) => course.merged.map((subCourse) => subCourse.name),
       );
       console.log(coursesSets);
-      socketRef.current.send(JSON.stringify({
-        action: "batchMergeCoursesByNamesWithAi",
-        coursesSets,
-        fileName: selectedFile.name,
-      }));
+      socketRef.current.send(
+        JSON.stringify({
+          action: "batchMergeCoursesByNamesWithAi",
+          coursesSets,
+          fileName: selectedFile.name,
+        }),
+      );
     }
   };
 
@@ -537,6 +558,12 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
       serverFilesystemConfig,
       serverFilesystemConfigFilesMap,
       getAndUseFileContent,
+      aiLogs,
+      setAiLogs,
+      isAiWorking,
+      setIsAiWorking,
+      unseenLogsCount,
+      setUnseenLogsCount,
     }),
     [
       files,
@@ -546,6 +573,9 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
       fetchStatus,
       selectedCourse,
       serverFilesystemConfig,
+      aiLogs,
+      isAiWorking,
+      unseenLogsCount,
       serverFilesystemConfigFilesMap,
       filesContentRef.current,
     ],

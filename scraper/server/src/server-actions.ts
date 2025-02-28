@@ -9,6 +9,7 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 import { fetchAllPages, keySimilarityCore, summarizeFetchedData } from './server-actions-utils';
+import {applyPatch, compare} from "fast-json-patch";
 
 interface FetchParams {
     suffix: string;
@@ -208,7 +209,7 @@ const batchMergeCoursesByNamesWithAi = async (coursesSets: string[][], fileName:
                         const item = fileContent[itemIndex];
                         let acceptedCount = 0;
                         let rejectedCount = 0;
-                        for (let el of item.merged) {
+                        for (let el of item.merged)  {
                             if (data.merged.includes(el.name)) {
                                 el.accepted = true;
                                 acceptedCount++;
@@ -249,5 +250,6 @@ export {
     fetchAndSaveTUMCourses,
     fetchAndSaveMrozonRatingData,
     keySimilarityMerging,
-    finishKeySimilarityMerging
+    finishKeySimilarityMerging,
+    batchMergeCoursesByNamesWithAi
 };

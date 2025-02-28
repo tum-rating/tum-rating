@@ -1,6 +1,6 @@
 [
   {
-    "id": "94799fb8-d78d-4e25-9ee0-38c07c90b460",
+    "id": "c5c5b41b-1d15-42f1-b9fa-fb27ffd71d72",
     "courseId": "950629098",
     "courseNumber": "CVL0001025",
     "professor": "Ingrid Lughofer",
@@ -18,7 +18,7 @@
     "merged": []
   },
   {
-    "id": "eeca1217-6700-4eec-952b-aa8781029ba2",
+    "id": "7fbdebde-aa02-4365-946c-f7e4fd263069",
     "courseId": "950761414",
     "courseNumber": "CVL0001041",
     "professor": "Esther Emmerich",
@@ -34,7 +34,7 @@
     "merged": []
   },
   {
-    "id": "96ec44ff-0023-4d38-8429-0055593f75b4",
+    "id": "645374f9-fe04-4109-8724-4cb68ec16451",
     "courseId": "950738466",
     "courseNumber": "0000004346",
     "professor": "Sven Liedtke",
@@ -55,34 +55,8 @@
     "merged": []
   },
   {
-    "name": "(Cooperative) Design Project",
+    "name": "Practical course Process Design Project I",
     "merged": [
-      {
-        "id": "66b286b1d34856d36eb263d6",
-        "courseId": "950637289",
-        "courseNumber": "0000002443",
-        "professor": "Matthias Gaderer",
-        "otherLecturers": [
-          "Yusheng Chen",
-          "Szymon Herdzik",
-          "Bernhard Huber",
-          "Daniel Klüh"
-        ],
-        "name": "(Cooperative) Design Project",
-        "offeredInSemesters": [
-          "2022 S",
-          "2022 W",
-          "2023 S",
-          "2023 W",
-          "2024 S"
-        ],
-        "howInterestingRatingAverage": 0,
-        "howEasyRatingAverage": 0,
-        "votesNumber": 0,
-        "similarity": 0,
-        "codes": [],
-        "accepted": true
-      },
       {
         "id": "66b28b90d34856d36eb2e330",
         "courseId": "950672060",
@@ -96,57 +70,104 @@
         ],
         "name": "Practical course Process Design Project I",
         "offeredInSemesters": [
-          "2023 S"
+          "2023 S",
+          "2022 S",
+          "2022 W",
+          "2023 W",
+          "2024 S"
         ],
         "howInterestingRatingAverage": 0,
         "howEasyRatingAverage": 0,
         "votesNumber": 0,
-        "similarity": 12,
+        "similarity": 0,
         "codes": [],
-        "accepted": false
+        "rejectedId": [
+          "ee0a73eb-b926-4e10-a502-55c46baf5688"
+        ]
       },
       {
-        "id": "66b28900d34856d36eb2a090",
-        "courseId": "950634188",
-        "courseNumber": "0000002502",
-        "professor": "Matthias Gaderer",
-        "otherLecturers": [
-          "Yusheng Chen",
-          "Szymon Herdzik",
-          "Bernhard Huber",
-          "Daniel Klüh"
+        "name": "(Cooperative) Design Project",
+        "merged": [
+          {
+            "id": "66b286b1d34856d36eb263d6",
+            "courseId": "950637289",
+            "courseNumber": "0000002443",
+            "professor": "Matthias Gaderer",
+            "otherLecturers": [
+              "Yusheng Chen",
+              "Szymon Herdzik",
+              "Bernhard Huber",
+              "Daniel Klüh"
+            ],
+            "name": "(Cooperative) Design Project",
+            "offeredInSemesters": [
+              "2022 S",
+              "2022 W",
+              "2023 S",
+              "2023 W",
+              "2024 S"
+            ],
+            "howInterestingRatingAverage": 0,
+            "howEasyRatingAverage": 0,
+            "votesNumber": 0,
+            "similarity": 0,
+            "codes": [],
+            "accepted": true
+          },
+          {
+            "id": "66b28900d34856d36eb2a090",
+            "courseId": "950634188",
+            "courseNumber": "0000002502",
+            "professor": "Matthias Gaderer",
+            "otherLecturers": [
+              "Yusheng Chen",
+              "Szymon Herdzik",
+              "Bernhard Huber",
+              "Daniel Klüh"
+            ],
+            "name": "Process Design Project (Practical and Exercise)",
+            "offeredInSemesters": [
+              "2022 W",
+              "2023 W"
+            ],
+            "howInterestingRatingAverage": 0,
+            "howEasyRatingAverage": 0,
+            "votesNumber": 0,
+            "similarity": 15,
+            "codes": [],
+            "accepted": true
+          }
         ],
-        "name": "Process Design Project (Practical and Exercise)",
-        "offeredInSemesters": [
-          "2022 W",
-          "2023 W"
-        ],
-        "howInterestingRatingAverage": 0,
-        "howEasyRatingAverage": 0,
-        "votesNumber": 0,
-        "similarity": 15,
         "codes": [],
-        "accepted": true
+        "offeredInSemesters": [
+          "2022 S",
+          "2022 W",
+          "2023 S",
+          "2023 W",
+          "2024 S"
+        ],
+        "professor": "Matthias Gaderer",
+        "courseId": "",
+        "courseNumber": "",
+        "id": "ee0a73eb-b926-4e10-a502-55c46baf5688",
+        "similarity": 12
       }
     ],
     "codes": [],
     "offeredInSemesters": [
+      "2023 S",
       "2022 S",
       "2022 W",
-      "2023 S",
       "2023 W",
       "2024 S"
     ],
     "professor": "Matthias Gaderer",
     "courseId": "",
     "courseNumber": "",
-    "id": "ee0a73eb-b926-4e10-a502-55c46baf5688",
-    "acceptedCount": 2,
-    "rejectedCount": 1,
-    "notResolvedCount": 0
+    "id": "cbb6c70f-9ed5-4a02-9cc3-761948b5f8cc"
   },
   {
-    "id": "f73260c0-d694-4614-abc4-b21602326bce",
+    "id": "29fb8e95-c8d3-46b6-9389-405efaa8d048",
     "courseId": "950635400",
     "courseNumber": "8610170000",
     "professor": "Elke Langbein",
@@ -164,7 +185,7 @@
     "merged": []
   },
   {
-    "id": "0c99731b-7aac-4727-8f80-ad4b546a3ad4",
+    "id": "6faa1726-19ce-4f11-a803-d309722d44db",
     "courseId": "950632769",
     "courseNumber": "0000000795",
     "professor": "Alexander Besner",
@@ -184,7 +205,7 @@
     "merged": []
   },
   {
-    "id": "3665756c-447e-4a3f-8713-cf1600ab1a1f",
+    "id": "ab6a749a-04b1-441e-9e88-b023ce937122",
     "courseId": "950671588",
     "courseNumber": "0000004838",
     "professor": "Sebastian Nagl",

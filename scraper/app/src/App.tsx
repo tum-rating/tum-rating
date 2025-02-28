@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import PageLoader from "@/components/page-loader.tsx";
 import { TooltipProvider } from "@/components/ui/tooltip.tsx";
 import UserSetupDialog from "@/components/user-setup-dialog.tsx";
-
+import AIRequestLogger from "@/components/ai-request-logger.tsx";
 import { Toaster } from "@/components/ui/sonner"
 function App() {
     return (
@@ -17,6 +17,7 @@ function App() {
                     <Suspense fallback={<PageLoader />}>
                         <MainPage />
                     </Suspense>
+                    <AIRequestLogger />
                 </AppLayout>
             </TooltipProvider>
         </AppDataProvider>
