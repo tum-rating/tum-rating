@@ -41,44 +41,51 @@ const RightSidebar = () => {
         }
     }, [filesContent, selectedFile]);
 
-    useEffect(() => {
-        const filterAndSortData = () => {
-            let data = [...computedCourses];
+useEffect(() => {
+    const filterAndSortData = () => {
+        let data = [...computedCourses];
 
-            // Apply search filter
-            if (searchTerm) {
-                const phrases = searchTerm.toLowerCase().split(',').map(phrase => phrase.trim());
-                data = data.filter(course =>
-                    phrases.every(phrase =>
-                        course.name.toLowerCase().includes(phrase) ||
-                        course.professor.toLowerCase().includes(phrase) ||
-                        course.codes?.some(code => code.toLowerCase().includes(phrase)) ||
-                        course.offeredInSemesters?.some(semester => semester.toLowerCase().includes(phrase))
-                    )
-                );
-            }
+        // Apply search filter
+        if (searchTerm) {
+            const phrases = searchTerm.toLowerCase().split(',').map(phrase => phrase.trim());
+            data = data.filter(course =>
+                phrases.every(phrase =>
+                    course.name.toLowerCase().includes(phrase) ||
+                    course.professor.toLowerCase().includes(phrase) ||
+                    course.codes?.some(code => code.toLowerCase().includes(phrase)) ||
+                    course.offeredInSemesters?.some(semester => semester.toLowerCase().includes(phrase))
+                )
+            );
+        }
+        Object.entries(sortOptions).forEach(([key, value]) => {
+            if (value?.enabled) {
+                data.sort((a, b) => {
+                    let aValue = a[key as keyof FetchedComputedCourse];
+                    let bValue = b[key as keyof FetchedComputedCourse];
 
-            // Apply sorting
-            Object.entries(sortOptions).forEach(([key, value]) => {
-                if (value?.enabled) {
-                    data.sort((a, b) => {
-                        const aValue = a[key as keyof FetchedComputedCourse];
-                        const bValue = b[key as keyof FetchedComputedCourse];
-                        if (aValue !== undefined && bValue !== undefined) {
-                            if (aValue < bValue) return value!.ascending ? -1 : 1;
-                            if (aValue > bValue) return value!.ascending ? 1 : -1;
+                    // Treat undefined as 0 for specific keys
+                    if (['acceptedCount', 'rejectedCount', 'notResolvedCount'].includes(key)) {
+                        aValue = aValue ?? 0;
+                        bValue = bValue ?? 0;
+                    }
+
+                    if (aValue !== undefined && bValue !== undefined) {
+                        if (typeof aValue === 'string' && typeof bValue === 'string') {
+                            return value.ascending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+                        } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+                            return value.ascending ? aValue - bValue : bValue - aValue;
                         }
-                        return 0;
-                    });
-                }
-            });
+                    }
+                    return 0;
+                });
+            }
+        });
 
-            setFilteredCourses(data);
-        };
+        setFilteredCourses(data);
+    };
 
-        filterAndSortData();
-    }, [computedCourses, sortOptions, searchTerm]);
-
+    filterAndSortData();
+}, [computedCourses, sortOptions, searchTerm]);
     const handleSearch = (searchTerm: string) => {
         setSearchTerm(searchTerm);
     };

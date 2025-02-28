@@ -37,7 +37,11 @@ const FetchingConfigurationForm = ({config, onChange}: FetchingConfigurationForm
           (x: { id: string | null }) => x.id === fileSelection,
         )?.dependencies;
         if (fileSelection && selectedFileDependency && selectedFileDependency.length > 0) {
-            const matchingExistingFiles = files.filter(x => x.id === selectedFileDependency[0]) || []
+            console.log(selectedFileDependency)
+            console.log(fileSelection)
+            console.log(files)
+            const matchingExistingFiles = files.filter(x => x.id.includes(selectedFileDependency[0])) || []
+            console.log(matchingExistingFiles)
             return (
                 <>
                     <div className="grid w-full items-center gap-1.5">
