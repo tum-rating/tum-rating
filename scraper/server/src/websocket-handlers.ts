@@ -353,14 +353,11 @@ const handleMessage = async (
       case "coursesNamesMergingAi":
         if (content) {
           try {
-            console.log(144)
             const mergedData = await mergeCoursesByNamesWithAi(content,wss);
-            console.log(mergedData)
             const filePath = path.join(
               serverFilesystemConfig.DIRECTORY,
               fileName,
             );
-            console.log(1)
             if (fs.existsSync(filePath)) {
               if (mergedData?.match) {
                 const fileContent = JSON.parse(
@@ -409,9 +406,7 @@ const handleMessage = async (
                     updatedItem: item,
                   },
                 });
-                console.log(1)
                 wss.clients.forEach((client: WebSocket) => {
-                  console.log(2)
                   if (client.readyState === WebSocket.OPEN) {
                     client.send(message);
                     broadcastLogs(wss)

@@ -1,0 +1,824 @@
+[
+  {
+    "id": "e8debe38-29e7-4f3a-bfbf-a188aa2ea2e2",
+    "courseId": "950634640",
+    "courseNumber": "0000003012",
+    "professor": "Kai Zoßeder",
+    "otherLecturers": [
+      "Kai Zoßeder"
+    ],
+    "name": "sustainable infrastructure planing",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": [],
+    "acceptedCount": 0,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "id": "2546a994-b6e6-4179-a393-dc431541d457",
+    "courseId": "950727924",
+    "courseNumber": "0000002096",
+    "professor": "Jörg Rehm",
+    "otherLecturers": [
+      "Tobias Bastier",
+      "Jörg Rehm"
+    ],
+    "name": "The Right of Data Use in Germany and Europe (IN0014, IN2107, SOT82504, SOT82518)",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": [],
+    "acceptedCount": 0,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "id": "e68043ef-a933-4a3f-82c8-6882496c768b",
+    "courseId": "950601607",
+    "courseNumber": "0000004696",
+    "professor": "Regine Keller",
+    "otherLecturers": [
+      "Felix Lüdicke",
+      "Gero Engeser"
+    ],
+    "name": "Legal issues of the use of artificial intelligence (IN0014, IN2107, SOT82500, SOT82519, SOT82531)",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": [],
+    "acceptedCount": 0,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "name": "sustainable infrastructure planing exercise",
+    "merged": [
+      {
+        "id": "66b28a15d34856d36eb2bd16",
+        "courseId": "950633720",
+        "courseNumber": "0000004389",
+        "professor": "Stephan Freudenstein",
+        "otherLecturers": [
+          "Timo Wastlhuber",
+          "Konstantin Geisler",
+          "Dominik Rudisch",
+          "Christoph Simon"
+        ],
+        "name": "sustainable infrastructure planing exercise",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": []
+      },
+      {
+        "id": "66b28a15d34856d36eb2bd19",
+        "courseId": "950634828",
+        "courseNumber": "0000004374",
+        "professor": "Stephan Freudenstein",
+        "otherLecturers": [],
+        "name": "sustainable infrastructure planing lecture",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 8,
+        "codes": []
+      }
+    ],
+    "codes": [],
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "professor": "Stephan Freudenstein",
+    "courseId": "",
+    "courseNumber": "",
+    "id": "d9cae5ec-88e7-47c0-a154-8a23f3c689c3"
+  },
+  {
+    "id": "7d023fa0-aebf-4eab-9681-f33c30f5d0db",
+    "courseId": "950631211",
+    "courseNumber": "0000000140",
+    "professor": "Jeannette Kuo",
+    "otherLecturers": [
+      "Thomas Auer",
+      "Laura Brixel",
+      "Pierluigi D'Acunto",
+      "Tobias Fink"
+    ],
+    "name": "technology and material based architectural design: Group Project 3",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": []
+  },
+  {
+    "id": "5fe2bf68-a553-473b-85b4-a8a409b88dff",
+    "courseId": "950727986",
+    "courseNumber": "0000002197",
+    "professor": "Martina Rößle",
+    "otherLecturers": [],
+    "name": "test1",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": []
+  },
+  {
+    "id": "3a3e23f8-009a-46d1-bb1a-d239fbcee91b",
+    "courseId": "950601448",
+    "courseNumber": "4200002621",
+    "professor": "Hanna Baum",
+    "otherLecturers": [
+      "Doris Leonhardt"
+    ],
+    "name": "typo3 test summer",
+    "offeredInSemesters": [
+      "2022 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": []
+  },
+  {
+    "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+    "merged": [
+      {
+        "id": "66b289d3d34856d36eb2b653",
+        "courseId": "950658511",
+        "courseNumber": "0000000996",
+        "professor": "Alexander Besner",
+        "otherLecturers": [],
+        "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W",
+          "2022 S",
+          "2023 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "IN0014",
+          "IN2107",
+          "SOT82518",
+          "SOT82504"
+        ]
+      },
+      {
+        "id": "66b28865d34856d36eb290d0",
+        "courseId": "950629108",
+        "courseNumber": "0000001708",
+        "professor": "Alexander Besner",
+        "otherLecturers": [],
+        "name": "(SOT82504) The Right of Data Use in Germany and Europe",
+        "offeredInSemesters": [
+          "2022 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "SOT82504"
+        ]
+      },
+      {
+        "id": "66b28bafd34856d36eb2e675",
+        "courseId": "950691985",
+        "courseNumber": "0000002849",
+        "professor": "Alexander Besner",
+        "otherLecturers": [],
+        "name": "(SOT82518) The Right of Data Use in Germany and Europe",
+        "offeredInSemesters": [
+          "2023 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "SOT82518"
+        ]
+      }
+    ],
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82518",
+      "SOT82504"
+    ],
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W",
+      "2022 S",
+      "2023 S"
+    ],
+    "professor": "Alexander Besner",
+    "courseId": "",
+    "courseNumber": "",
+    "id": "60ae5da5-a9aa-41a3-9016-cac6709d80f0"
+  },
+  {
+    "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+    "merged": [
+      {
+        "id": "66b289d3d34856d36eb2b656",
+        "courseId": "950662502",
+        "courseNumber": "0000002476",
+        "professor": "Pascal Bronner",
+        "otherLecturers": [],
+        "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "offeredInSemesters": [
+          "2022 W",
+          "2022 S",
+          "2023 S",
+          "2024 S",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "IN0014",
+          "IN2107",
+          "SOT82519",
+          "SOT82500",
+          "SOT82531"
+        ]
+      },
+      {
+        "id": "66b28865d34856d36eb290c4",
+        "courseId": "950629104",
+        "courseNumber": "0000001701",
+        "professor": "Pascal Bronner",
+        "otherLecturers": [],
+        "name": "(SOT82500) Legal issues of the use of artificial intelligence",
+        "offeredInSemesters": [
+          "2022 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "SOT82500"
+        ]
+      },
+      {
+        "id": "66b28bafd34856d36eb2e678",
+        "courseId": "950691986",
+        "courseNumber": "0000002868",
+        "professor": "Pascal Bronner",
+        "otherLecturers": [],
+        "name": "(SOT82519) Legal issues of the use of artificial intelligence",
+        "offeredInSemesters": [
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "SOT82519"
+        ]
+      },
+      {
+        "id": "66b28c75d34856d36eb2fb8b",
+        "courseId": "950728427",
+        "courseNumber": "0000002279",
+        "professor": "Pascal Bronner",
+        "otherLecturers": [],
+        "name": "(SOT82531) Legal Principles of Artificial Intelligence",
+        "offeredInSemesters": [
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 17,
+        "codes": [
+          "SOT82531"
+        ]
+      }
+    ],
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82519",
+      "SOT82500",
+      "SOT82531"
+    ],
+    "offeredInSemesters": [
+      "2022 W",
+      "2022 S",
+      "2023 S",
+      "2024 S",
+      "2023 W"
+    ],
+    "professor": "Pascal Bronner",
+    "courseId": "",
+    "courseNumber": "",
+    "id": "6501635e-f9d9-4f80-aad9-d62c0a70cf27"
+  },
+  {
+    "id": "c1fa0599-e0c9-4c0a-bbdb-17c7445f6080",
+    "courseId": "950658625",
+    "courseNumber": "0000001119",
+    "professor": "Sarah Rachut",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107,SOT82508) Legal Tech Hackathon",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82508"
+    ],
+    "merged": []
+  },
+  {
+    "id": "82c877f8-b601-494b-b1f4-a47ea928ef52",
+    "courseId": "950701408",
+    "courseNumber": "0000001118",
+    "professor": "Sarah Rachut",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107,SOT82509) CDR: Digital Future Challenge – Responsible AI",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82509"
+    ],
+    "merged": []
+  },
+  {
+    "id": "f8f73e03-1361-4ff5-b246-9830c3f10baa",
+    "courseId": "950658624",
+    "courseNumber": "0000001118",
+    "professor": "Sarah Rachut",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107,SOT82509) Corporate Digital ResponsibilityParticipation in the CDR Challenge by Initiative D21",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82509"
+    ],
+    "merged": []
+  },
+  {
+    "name": "(Introduction to) Renewables Utilization (Exercise)",
+    "merged": [
+      {
+        "id": "66b28955d34856d36eb2a966",
+        "courseId": "950630689",
+        "courseNumber": "0000002094",
+        "professor": "Broder Rühmann",
+        "otherLecturers": [],
+        "name": "(Introduction to) Renewables Utilization (Exercise)",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W",
+          "2022 S",
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": []
+      },
+      {
+        "id": "66b2874ad34856d36eb2738a",
+        "courseId": "950604842",
+        "courseNumber": "0000002823",
+        "professor": "Broder Rühmann",
+        "otherLecturers": [
+          "Broder Rühmann"
+        ],
+        "name": "Basics Renewables Utilization (Tutorial)",
+        "offeredInSemesters": [
+          "2022 S",
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 23,
+        "codes": []
+      }
+    ],
+    "codes": [],
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W",
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "professor": "Broder Rühmann",
+    "courseId": "",
+    "courseNumber": "",
+    "id": "eaef2daa-b9c4-42cd-9dee-ce70870e3b2d"
+  },
+  {
+    "id": "b139df44-08dd-4cd6-9978-0f533f70476b",
+    "courseId": "950631160",
+    "courseNumber": "0000002093",
+    "professor": "Volker Sieber",
+    "otherLecturers": [
+      "Broder Rühmann",
+      "Volker Sieber"
+    ],
+    "name": "(Introduction to) Renewables Utilization (Lecture)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": []
+  },
+  {
+    "id": "68941a5b-dfb0-45a7-9d43-f37d4d8c035a",
+    "courseId": "950604508",
+    "courseNumber": "0000003464",
+    "professor": "Tim Büthe",
+    "otherLecturers": [],
+    "name": "(POL00011) Politics for Rocket Scientists (An Introduction to Political Science for Non-Political Scientists)",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL00011"
+    ],
+    "merged": []
+  },
+  {
+    "name": "understanding historic building structures of the pre-industrial age I – theory",
+    "merged": [
+      {
+        "id": "66b28bead34856d36eb2ecc0",
+        "courseId": "950728491",
+        "courseNumber": "0000002341",
+        "professor": "Christian Kayser",
+        "otherLecturers": [
+          "Kilian Wolf",
+          "Viola Scheumann"
+        ],
+        "name": "understanding historic building structures of the pre-industrial age I – theory",
+        "offeredInSemesters": [
+          "2023 W",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": []
+      },
+      {
+        "id": "66b28cdad34856d36eb3064c",
+        "courseId": "950728494",
+        "courseNumber": "0000002052",
+        "professor": "Christian Kayser",
+        "otherLecturers": [
+          "Kilian Wolf"
+        ],
+        "name": "understanding historic building structures of the pre-industrial age II – practical seminar",
+        "offeredInSemesters": [
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 1,
+        "codes": []
+      }
+    ],
+    "codes": [],
+    "offeredInSemesters": [
+      "2023 W",
+      "2024 S"
+    ],
+    "professor": "Christian Kayser",
+    "courseId": "",
+    "courseNumber": "",
+    "id": "e2411784-4faa-40d0-9966-67ef36c4f7ad"
+  },
+  {
+    "id": "0777e2c0-2571-4381-ae52-1d4aa3bd0df7",
+    "courseId": "950759158",
+    "courseNumber": "0000004624",
+    "professor": "Nicola Breugst",
+    "otherLecturers": [
+      "Julia Kirsch",
+      "Lieke Steeghs"
+    ],
+    "name": "xam Review on Entrepereneurship, Part I of WI001185_ winter term 2023/2024",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": []
+  },
+  {
+    "id": "2f955aec-3f4d-42e6-80a4-c0165a037330",
+    "courseId": "950664045",
+    "courseNumber": "LS030038VI",
+    "professor": "Johannes Sauer",
+    "otherLecturers": [],
+    "name": "Ökonomie für Life Science Engineering (LS30038, German)",
+    "offeredInSemesters": [
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "LS30038"
+    ],
+    "merged": []
+  },
+  {
+    "id": "1a006e01-7f49-469f-a528-68fb69a76fce",
+    "courseId": "950634970",
+    "courseNumber": "0000002811",
+    "professor": "Harald Hilbig",
+    "otherLecturers": [
+      "Annette Spengler"
+    ],
+    "name": "Übung - Werkstoffe im Bauwesen",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": []
+  },
+  {
+    "id": "b491661b-7b3f-4a56-b7f4-bbf67bbdabc7",
+    "courseId": "950633503",
+    "courseNumber": "1202140003",
+    "professor": "Cara Krudewig",
+    "otherLecturers": [
+      "Carolin Lehner",
+      "Vanesa Osmani",
+      "Gunther Schauberger",
+      "Florian Schederecker"
+    ],
+    "name": "Übung zu Biostatistik II",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": []
+  },
+  {
+    "id": "b719b663-9a77-4c54-9def-36ed1d92a9b5",
+    "courseId": "950630049",
+    "courseNumber": "0240705126",
+    "professor": "Bernhard Förster",
+    "otherLecturers": [
+      "Isabel Augenstein"
+    ],
+    "name": "Übung zur Landschaftsentwicklung (Landscape development - application study)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": []
+  },
+  {
+    "id": "fd514ef2-7607-4486-a74d-2390cb168ab9",
+    "courseId": "950605368",
+    "courseNumber": "0000005446",
+    "professor": "Michael Prähofer",
+    "otherLecturers": [
+      "Vera Pazukhina"
+    ],
+    "name": "Übungen zu Analysis 1 & 2 und zu Linearer Algebra 1 & 2 - Ana 1/2 LG [MA1100]",
+    "offeredInSemesters": [
+      "2022 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "MA1100"
+    ],
+    "merged": []
+  },
+  {
+    "id": "bf7feaac-8e8c-4561-87d2-2d9f85a9b143",
+    "courseId": "950670127",
+    "courseNumber": "0000005446",
+    "professor": "Frank Hofmaier",
+    "otherLecturers": [],
+    "name": "Übungen zu Analysis 1 & 2 und zu Linearer Algebra 1 & 2 - Ana 1/2 LG [MA1100]",
+    "offeredInSemesters": [
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "MA1100"
+    ],
+    "merged": []
+  },
+  {
+    "id": "c835fe32-c6f6-4171-99b4-08079ae13ae0",
+    "courseId": "950732291",
+    "courseNumber": "0000005446",
+    "professor": "Oliver Deiser",
+    "otherLecturers": [],
+    "name": "Übungen zu Analysis 1 & 2 und zu Linearer Algebra 1 & 2 - Ana 1/2 LG [MA1100]",
+    "offeredInSemesters": [
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "MA1100"
+    ],
+    "merged": []
+  },
+  {
+    "id": "0fe05a47-8cc8-48b4-82db-2211598a00e7",
+    "courseId": "950605369",
+    "courseNumber": "0000005535",
+    "professor": "Jürgen Richter-Gebert",
+    "otherLecturers": [
+      "Vanessa Landgraf"
+    ],
+    "name": "Übungen zu Analysis 1 & 2 und zu Linearer Algebra 1 & 2 - LA1/2 LG [MA1100]",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "LA1",
+      "MA1100"
+    ],
+    "merged": []
+  },
+  {
+    "id": "6736d0a4-67ee-4a82-a435-8cdc3b514abd",
+    "courseId": "950732292",
+    "courseNumber": "0000005535",
+    "professor": "Vanessa Landgraf",
+    "otherLecturers": [],
+    "name": "Übungen zu Analysis 1 & 2 und zu Linearer Algebra 1 & 2 - LA1/2 LG [MA1100]",
+    "offeredInSemesters": [
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "LA1",
+      "MA1100"
+    ],
+    "merged": []
+  },
+  {
+    "id": "cf20a25b-9997-4f27-a5da-371a6beeac2c",
+    "courseId": "950727500",
+    "courseNumber": "0000001979",
+    "professor": "Michael Prähofer",
+    "otherLecturers": [],
+    "name": "Übungen zu den Grundzügen der Höheren Mathematik 1 für Lehramt an Berufsschulen [MA9951]",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "MA9951"
+    ],
+    "merged": []
+  },
+  {
+    "id": "f9caa9a2-f742-41fd-8bc0-fc7dc9f7d9f9",
+    "courseId": "950632098",
+    "courseNumber": "0000005591",
+    "professor": "Frank Hofmaier",
+    "otherLecturers": [
+      "Frank Himstedt",
+      "Birgit Lenz",
+      "Stefan Recksiegel"
+    ],
+    "name": "Übungen zum Vorkurs Mathematik/Physik",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": []
+  },
+  {
+    "id": "91460564-8f1b-4580-abf8-5630891dd46c",
+    "courseId": "950634440",
+    "courseNumber": "0000003632",
+    "professor": "Peter Biber",
+    "otherLecturers": [
+      "Hans Pretzsch"
+    ],
+    "name": "Übungen zur Waldwachstumssimulation",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "merged": []
+  }
+]

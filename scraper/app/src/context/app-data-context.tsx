@@ -62,12 +62,20 @@ interface AppDataContextType {
   serverFilesystemConfig: Record<string, unknown>;
   serverFilesystemConfigFilesMap: Record<string, unknown>;
   getAndUseFileContent: (file: FileData) => Promise<FetchedCourse[]>;
+  //------------------- ai things
   aiLogs: any[];
   setAiLogs: (logs: any[]) => void;
   isAiWorking: boolean;
   setIsAiWorking: (isWorking: boolean) => void;
   unseenLogsCount: number;
   setUnseenLogsCount: (count: number) => void;
+
+  aiProgress: number;
+  setAiProgress: (progress: number) => void;
+  totalData: number;
+  setTotalData: (total: number) => void;
+  analyzedData: number;
+  setAnalyzedData: (analyzed: number) => void;
 }
 
 const AppDataContext = createContext<AppDataContextType | undefined>(undefined);
@@ -75,6 +83,10 @@ const AppDataContext = createContext<AppDataContextType | undefined>(undefined);
 type AppDataContextProps = PropsWithChildren;
 
 const AppDataProvider = ({ children }: AppDataContextProps) => {
+  const [aiProgress, setAiProgress] = useState(0);
+  const [totalData, setTotalData] = useState(0);
+  const [analyzedData, setAnalyzedData] = useState(0);
+  //----
   const [files, setFiles] = useState<FileData[]>([]);
   const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<
@@ -564,6 +576,12 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
       setIsAiWorking,
       unseenLogsCount,
       setUnseenLogsCount,
+      aiProgress,
+      setAiProgress,
+      totalData,
+      setTotalData,
+      analyzedData,
+      setAnalyzedData,
     }),
     [
       files,
@@ -578,6 +596,9 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
       unseenLogsCount,
       serverFilesystemConfigFilesMap,
       filesContentRef.current,
+      aiProgress,
+      totalData,
+      analyzedData,
     ],
   );
   return (

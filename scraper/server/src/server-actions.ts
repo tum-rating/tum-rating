@@ -46,7 +46,6 @@ const keySimilarityMerging = async ({ filesToMerge = [], ws, wss, suffix }: Fetc
     broadcastFetchStatus(wss, `merged-${suffix}`, true);
 
     let allCourses = [];
-    console.log(filesToMerge)
     for (const file of filesToMerge) {
         let filePath = path.join(serverFilesystemConfig.DIRECTORY, `${file}`);
         const content = fs.readFileSync(filePath, 'utf-8');
@@ -59,10 +58,8 @@ const keySimilarityMerging = async ({ filesToMerge = [], ws, wss, suffix }: Fetc
         summarizedData[i].id = uuidv4();
     }
 
-    console.log(filePath)
     fs.writeFileSync(filePath, JSON.stringify(summarizedData, null, 2), 'utf-8');
 
-    console.log(2)
     broadcastFetchStatus(wss, `merged-${suffix}`, false);
     ws.send(JSON.stringify({ action: 'newFile', name: `${suffix}-merged${fileConfig.extension}` }));
     broadcastNewFile(wss, `merged-${suffix}${fileConfig.extension}`);
@@ -78,7 +75,6 @@ const finishKeySimilarityMerging = async ({ filesToMerge = [], ws, wss, suffix }
     broadcastFetchStatus(wss, `merged-${suffix}`, true);
     broadcastFetchStatus(wss, filePath, true);
     let allCourses = [];
-    console.log(filesToMerge)
     for (const file of filesToMerge) {
         let filePath = path.join(serverFilesystemConfig.DIRECTORY, `${file}`);
         const content = fs.readFileSync(filePath, 'utf-8');
@@ -111,7 +107,6 @@ const finishKeySimilarityMerging = async ({ filesToMerge = [], ws, wss, suffix }
         }
         finalizedData.push(item);
     }
-    console.log(filePath)
     fs.writeFileSync(filePath, JSON.stringify(finalizedData, null, 2), 'utf-8');
     broadcastFetchStatus(wss, `merged-${suffix}`, false);
     broadcastFetchStatus(wss, filePath, false);
@@ -194,54 +189,80 @@ const fetchAndSaveTUMCourses = async ({ suffix, semesters = [], ws, wss }: Fetch
     ws.send(JSON.stringify({ action: 'newFile', name: `${fileConfig.id}-${suffix}${fileConfig.extension}` }));
     broadcastNewFile(wss, `${fileConfig.id}-${suffix}${fileConfig.extension}`);
 };
-const batchMergeCoursesByNamesWithAi = async (coursesSets: string[][], fileName: string, wss: WebSocketServer, ws: ExtendedWebSocket) => {
-    const batchSize = 10; // Adjust the batch size as needed
-    for (let i = 0; i < coursesSets.length; i += batchSize) {
-        const batch = coursesSets.slice(i, i + batchSize);
-        try {
-            const mergedData = await mergeCoursesByNamesWithAi(batch);
-            const filePath = path.join(serverFilesystemConfig.DIRECTORY, fileName);
-            if (fs.existsSync(filePath)) {
-                const fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-                mergedData.forEach((data, index) => {
-                    if (data.match) {
-                        const itemIndex = i + index;
-                        const item = fileContent[itemIndex];
-                        let acceptedCount = 0;
-                        let rejectedCount = 0;
-                        for (let el of item.merged)  {
-                            if (data.merged.includes(el.name)) {
-                                el.accepted = true;
-                                acceptedCount++;
-                            } else {
-                                el.accepted = false;
-                                rejectedCount++;
-                            }
-                        }
-                        item.name = data.name;
-                        item.acceptedCount = acceptedCount;
-                        item.rejectedCount = rejectedCount;
-                        item.notResolvedCount = 0;
-                        const diffs = compare(fileContent[itemIndex], item);
-                        fileContent[itemIndex] = applyPatch(fileContent[itemIndex], diffs).newDocument;
-                    }
-                });
-                fs.writeFileSync(filePath, JSON.stringify(fileContent, null, 2), "utf-8");
-                ws.send(JSON.stringify({ action: "success", message: "Courses merged successfully" }));
-                const message = JSON.stringify({ action: "fileUpdated", fileName, updatedItems: mergedData });
-                wss.clients.forEach((client: WebSocket) => {
-                    if (client.readyState === WebSocket.OPEN) {
-                        client.send(message);
-                    }
-                });
-            } else {
-                Logger.warn(`File not found: ${filePath}`);
-            }
-        } catch (error) {
-            Logger.error(`Error in batchMergeCoursesByNamesWithAi: ${error.message}`);
-            ws.send(JSON.stringify({ action: "error", message: "An error occurred while merging courses" }));
-        }
+const batchMergeCoursesByNamesWithAi = async (
+  coursesSets: string[][],
+  fileName: string,
+  wss: WebSocketServer,
+  ws: ExtendedWebSocket,
+) => {
+  const batchSize = 10; // Adjust the batch size as needed
+  console.log("COURSES SETS", coursesSets);
+  const coursesSetWithoutEmptyIdx: number[] = [];
+  const coursesSetWithoutEmpty = coursesSets.reduce((acc, set, index) => {
+    if (set.length) {
+      acc.push(set);
+      coursesSetWithoutEmptyIdx.push(index);
     }
+    return acc;
+  }, []);
+
+  const mergedData = await mergeCoursesByNamesWithAi(coursesSetWithoutEmpty);
+
+  console.log(coursesSetWithoutEmpty);
+  console.log(coursesSetWithoutEmptyIdx);
+  console.log(mergedData);
+
+  // const mergedData = await mergeCoursesByNamesWithAi(batch);
+  // for (let i = 0; i < coursesSets.length; i += batchSize) {
+  //     const batch = coursesSets.slice(i, i + batchSize);
+  //     try {
+  //         console.log("-==============BATCH-----------------")
+  //         console.log(batch)
+  //         console.log("-==============BATCH-----------------")
+  //         const mergedData = await mergeCoursesByNamesWithAi(batch);
+  //         console.log("MERGED DATA",mergedData)
+  //         const filePath = path.join(serverFilesystemConfig.DIRECTORY, fileName);
+  //         if (fs.existsSync(filePath)) {
+  //             const fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  //             mergedData.forEach((data, index) => {
+  //                 if (data.match) {
+  //                     const itemIndex = i + index;
+  //                     const item = fileContent[itemIndex];
+  //                     let acceptedCount = 0;
+  //                     let rejectedCount = 0;
+  //                     for (let el of item.merged)  {
+  //                         if (data.merged.includes(el.name)) {
+  //                             el.accepted = true;
+  //                             acceptedCount++;
+  //                         } else {
+  //                             el.accepted = false;
+  //                             rejectedCount++;
+  //                         }
+  //                     }
+  //                     item.name = data.name;
+  //                     item.acceptedCount = acceptedCount;
+  //                     item.rejectedCount = rejectedCount;
+  //                     item.notResolvedCount = 0;
+  //                     const diffs = compare(fileContent[itemIndex], item);
+  //                     fileContent[itemIndex] = applyPatch(fileContent[itemIndex], diffs).newDocument;
+  //                 }
+  //             });
+  //             fs.writeFileSync(filePath, JSON.stringify(fileContent, null, 2), "utf-8");
+  //             ws.send(JSON.stringify({ action: "success", message: "Courses merged successfully" }));
+  //             const message = JSON.stringify({ action: "fileUpdated", fileName, updatedItems: mergedData });
+  //             wss.clients.forEach((client: WebSocket) => {
+  //                 if (client.readyState === WebSocket.OPEN) {
+  //                     client.send(message);
+  //                 }
+  //             });
+  //         } else {
+  //             Logger.warn(`File not found: ${filePath}`);
+  //         }
+  //     } catch (error) {
+  //         Logger.error(`Error in batchMergeCoursesByNamesWithAi: ${error.message}`);
+  //         ws.send(JSON.stringify({ action: "error", message: "An error occurred while merging courses" }));
+  //     }
+  // }
 };
 
 export {

@@ -146,7 +146,6 @@ const fetchPage = async (page: number, options: FetchOptions): Promise<Course[]>
     const skip = (page - 1) * pageSize;
     const xmlUrl = `${baseUrl}?${queryParams}&$skip=${skip}&$top=${pageSize}`;
 
-    console.log(xmlUrl);
 
     try {
         const response = await axios.get(xmlUrl);

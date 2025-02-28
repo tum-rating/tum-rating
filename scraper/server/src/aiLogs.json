@@ -1,32 +1,291 @@
 [
   {
-    "timestamp": "2025-02-28T12:16:04.380Z",
+    "timestamp": "2025-02-28T14:48:04.245Z",
     "request": [
-      "(Cooperative) Design Project",
-      "Practical course Process Design Project I",
-      "Process Design Project (Practical and Exercise)"
-    ],
-    "response": {
-      "match": true,
-      "name": "(Cooperative) Design Project",
-      "merged": [
-        "(Cooperative) Design Project",
-        "Practical course Process Design Project I",
-        "Process Design Project (Practical and Exercise)"
+      [
+        "sustainable infrastructure planing exercise",
+        "sustainable infrastructure planing lecture"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [
+        "understanding historic building structures of the pre-industrial age I – theory",
+        "understanding historic building structures of the pre-industrial age II – practical seminar"
       ]
-    }
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "sustainable infrastructure planing",
+        "merged": [
+          "sustainable infrastructure planing exercise",
+          "sustainable infrastructure planing lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82518, SOT82504) The Right of Data Use in Germany and Europe",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82519, SOT82500) Legal issues of the use of artificial intelligence",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
   },
   {
-    "timestamp": "2025-02-28T12:15:24.617Z",
+    "timestamp": "2025-02-28T14:41:54.064Z",
+    "request": [
+      [
+        "sustainable infrastructure planing exercise",
+        "sustainable infrastructure planing lecture"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [
+        "understanding historic building structures of the pre-industrial age I – theory",
+        "understanding historic building structures of the pre-industrial age II – practical seminar"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "sustainable infrastructure planing",
+        "merged": [
+          "sustainable infrastructure planing exercise",
+          "sustainable infrastructure planing lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82518, SOT82504) The Right of Data Use in Germany and Europe",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82519, SOT82500) Legal issues of the use of artificial intelligence",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82531) Legal Principles of Artificial Intelligence"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-02-28T14:34:45.299Z",
     "request": [
       [],
       [],
       [],
       [
-        "(Cooperative) Design Project",
-        "Practical course Process Design Project I",
-        "Process Design Project (Practical and Exercise)"
+        "sustainable infrastructure planing exercise",
+        "sustainable infrastructure planing lecture"
       ],
+      [],
+      [],
+      [],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [],
+      [],
+      [],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [],
+      [],
+      [
+        "understanding historic building structures of the pre-industrial age I – theory",
+        "understanding historic building structures of the pre-industrial age II – practical seminar"
+      ],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "sustainable infrastructure planing",
+        "merged": [
+          "sustainable infrastructure planing exercise",
+          "sustainable infrastructure planing lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "The Right of Data Use in Germany and Europe (IN0014, IN2107, SOT82518)",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-02-28T14:22:18.610Z",
+    "request": [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
       [],
       [],
       []
@@ -48,13 +307,19 @@
         "merged": []
       },
       {
-        "match": true,
-        "name": "Process Design Project",
-        "merged": [
-          "(Cooperative) Design Project",
-          "Practical course Process Design Project I",
-          "Process Design Project (Practical and Exercise)"
-        ]
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
       },
       {
         "match": false,
@@ -74,173 +339,132 @@
     ]
   },
   {
-    "timestamp": "2025-02-28T12:14:51.972Z",
+    "timestamp": "2025-02-28T14:22:15.840Z",
     "request": [
-      "(Cooperative) Design Project",
-      "Practical course Process Design Project I",
-      "Process Design Project (Practical and Exercise)"
+      [],
+      [],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [],
+      [],
+      [
+        "understanding historic building structures of the pre-industrial age I – theory",
+        "understanding historic building structures of the pre-industrial age II – practical seminar"
+      ],
+      [],
+      [],
+      [],
+      []
     ],
-    "response": {
-      "match": true,
-      "name": "(Cooperative) Design Project",
-      "merged": [
-        "(Cooperative) Design Project",
-        "Practical course Process Design Project I",
-        "Process Design Project (Practical and Exercise)"
-      ]
-    }
+    "response": [
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
   },
   {
-    "timestamp": "2025-02-28T12:14:48.952Z",
+    "timestamp": "2025-02-28T14:22:12.773Z",
     "request": [
-      "(Cooperative) Design Project",
-      "Practical course Process Design Project I",
-      "Process Design Project (Practical and Exercise)"
+      [],
+      [],
+      [],
+      [
+        "sustainable infrastructure planing exercise",
+        "sustainable infrastructure planing lecture"
+      ],
+      [],
+      [],
+      [],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      []
     ],
-    "response": {
-      "match": true,
-      "name": "(Cooperative) Design Project",
-      "merged": [
-        "(Cooperative) Design Project",
-        "Practical course Process Design Project I",
-        "Process Design Project (Practical and Exercise)"
-      ]
-    }
-  },
-  {
-    "timestamp": "2025-02-28T12:05:58.201Z",
-    "request": [
-      "(Cooperative) Design Project",
-      "Practical course Process Design Project I",
-      "Process Design Project (Practical and Exercise)"
-    ],
-    "response": {
-      "match": true,
-      "name": "(Cooperative) Design Project",
-      "merged": [
-        "(Cooperative) Design Project",
-        "Practical course Process Design Project I",
-        "Process Design Project (Practical and Exercise)"
-      ]
-    }
-  },
-  {
-    "timestamp": "2025-02-28T12:05:43.697Z",
-    "request": [
-      "(Cooperative) Design Project",
-      "Practical course Process Design Project I",
-      "Process Design Project (Practical and Exercise)"
-    ],
-    "response": {
-      "match": true,
-      "name": "(Cooperative) Design Project",
-      "merged": [
-        "(Cooperative) Design Project",
-        "Practical course Process Design Project I",
-        "Process Design Project (Practical and Exercise)"
-      ]
-    }
-  },
-  {
-    "timestamp": "2025-02-28T12:05:19.158Z",
-    "request": [
-      "(Cooperative) Design Project",
-      "Practical course Process Design Project I",
-      "Process Design Project (Practical and Exercise)"
-    ],
-    "response": {
-      "match": true,
-      "name": "(Cooperative) Design Project",
-      "merged": [
-        "(Cooperative) Design Project",
-        "Practical course Process Design Project I",
-        "Process Design Project (Practical and Exercise)"
-      ]
-    }
-  },
-  {
-    "timestamp": "2025-02-28T11:59:42.977Z",
-    "request": [
-      "(Cooperative) Design Project",
-      "Practical course Process Design Project I",
-      "Process Design Project (Practical and Exercise)"
-    ],
-    "response": {
-      "match": true,
-      "name": "(Cooperative) Design Project",
-      "merged": [
-        "(Cooperative) Design Project",
-        "Practical course Process Design Project I",
-        "Process Design Project (Practical and Exercise)"
-      ]
-    }
-  },
-  {
-    "timestamp": "2025-02-28T11:52:54.145Z",
-    "request": [
-      "(Cooperative) Design Project",
-      "Practical course Process Design Project I",
-      "Process Design Project (Practical and Exercise)"
-    ],
-    "response": {
-      "match": true,
-      "name": "(Cooperative) Design Project",
-      "merged": [
-        "(Cooperative) Design Project",
-        "Practical course Process Design Project I",
-        "Process Design Project (Practical and Exercise)"
-      ]
-    }
-  },
-  {
-    "timestamp": "2025-02-28T11:45:17.454Z",
-    "request": [
-      "(Cooperative) Design Project",
-      "Practical course Process Design Project I",
-      "Process Design Project (Practical and Exercise)"
-    ],
-    "response": {
-      "match": true,
-      "name": "Process Design Project",
-      "merged": [
-        "(Cooperative) Design Project",
-        "Practical course Process Design Project I",
-        "Process Design Project (Practical and Exercise)"
-      ]
-    }
-  },
-  {
-    "timestamp": "2025-02-28T11:31:43.157Z",
-    "request": [
-      "(Cooperative) Design Project",
-      "Practical course Process Design Project I",
-      "Process Design Project (Practical and Exercise)"
-    ],
-    "response": {
-      "match": true,
-      "name": "(Cooperative) Design Project",
-      "merged": [
-        "(Cooperative) Design Project",
-        "Practical course Process Design Project I",
-        "Process Design Project (Practical and Exercise)"
-      ]
-    }
-  },
-  {
-    "timestamp": "2025-02-28T11:06:58.918Z",
-    "request": [
-      "(Cooperative) Design Project",
-      "Practical course Process Design Project I",
-      "Process Design Project (Practical and Exercise)"
-    ],
-    "response": {
-      "match": true,
-      "name": "(Cooperative) Design Project",
-      "merged": [
-        "(Cooperative) Design Project",
-        "Practical course Process Design Project I",
-        "Process Design Project (Practical and Exercise)"
-      ]
-    }
+    "response": [
+      {
+        "match": true,
+        "name": "sustainable infrastructure planing",
+        "merged": [
+          "sustainable infrastructure planing exercise",
+          "sustainable infrastructure planing lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "The Right of Data Use in Germany and Europe (IN0014, IN2107, SOT82504, SOT82518)",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Legal issues of the use of artificial intelligence (IN0014, IN2107, SOT82500, SOT82519, SOT82531)",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82531) Legal Principles of Artificial Intelligence"
+        ]
+      }
+    ]
   }
 ]

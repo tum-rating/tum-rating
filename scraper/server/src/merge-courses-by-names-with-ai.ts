@@ -21,13 +21,11 @@ const logRequestResponse = (
   response: any,
   wss?: WebSocketServer,
 ) => {
-  console.log(1);
   const logEntry = {
     timestamp: new Date().toISOString(),
     request,
     response,
   };
-  console.log(2);
   let logs = [];
   const logFilePath = path.join(__dirname, "aiLogs.json");
   // Read existing logs
@@ -149,9 +147,7 @@ const mergeCoursesByNamesWithAi = async (
 
     const aiResponse = JSON.parse(response.data.choices[0].message.content);
 
-    console.log(aiResponse);
     logRequestResponse(courses, aiResponse);
-    console.log(2);
     if (isBatch) {
       Logger.info(`Processed ${(courses as string[][]).length} course sets`);
     }

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { AppDataContext } from "@/context/app-data-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -11,9 +11,23 @@ const SelectedFileCard = () => {
     filesContent,
     finishKeySimilarityMerging,
     coursesNamesMergingAiForWholeFile,
-    isAiWorking
+    isAiWorking,
+    aiProgress,
+    totalData,
+    setTotalData,
+    setAnalyzedData,
+    analyzedData,
   } = useContext(AppDataContext)!;
 
+  useEffect(() => {
+    if (selectedFile && isAiWorking) {
+      // Update totalData and analyzedData based on the selected file
+      const fileNameWithoutExtension = selectedFile.name.replace(/\.json$/, "");
+      const total = filesContent[fileNameWithoutExtension]?.length || 0;
+      setTotalData(total);
+      setAnalyzedData(0); // Reset analyzed data
+    }
+  }, [selectedFile, isAiWorking]);
 
   if (!selectedFile) {
     return <div>No file selected</div>;
@@ -34,9 +48,12 @@ const SelectedFileCard = () => {
     }
   };
 
-
-const isMergingFile = selectedFile.name.includes("merge")
-  const isMergedFileReady = isMergingFile ? !filesContent[selectedFile.name.replace(/\.json$/, "")]?.some(x=> "notResolvedCount" in x && x.notResolvedCount > 0) : false;
+  const isMergingFile = selectedFile.name.includes("merge");
+  const isMergedFileReady = isMergingFile
+    ? !filesContent[selectedFile.name.replace(/\.json$/, "")]?.some(
+        (x) => "notResolvedCount" in x && x.notResolvedCount > 0,
+      )
+    : false;
 
   return (
     <div className="relative z-10 w-full h-full flex justify-center items-center gap-4">
@@ -57,36 +74,43 @@ const isMergingFile = selectedFile.name.includes("merge")
           <div className="mb-4">
             <p className="text-sm font-semibold">Actions:</p>
             <div className="flex gap-1">
-          <Button
-        onClick={handlePreview}
-        loading={isAiWorking}
-      >
-        Preview
-      </Button>
-      <Button
-        variant="destructive"
-        onClick={handleDelete}
-        loading={isAiWorking}
-      >
-        Delete File
-      </Button>
-      {isMergedFileReady && (
-        <Button
-          onClick={() => finishKeySimilarityMerging([selectedFile.name], "merged")}
-          loading={isAiWorking}
-        >
-          Finish merging
-        </Button>
-      )}
-      {isMergingFile && (
-        <Button
-          onClick={() => coursesNamesMergingAiForWholeFile()}
-          loading={isAiWorking}
-        >
-          Auto accept/decline merged sub-courses
-        </Button>
-      )}
+              <Button onClick={handlePreview} loading={isAiWorking}>
+                Preview
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleDelete}
+                loading={isAiWorking}
+              >
+                Delete File
+              </Button>
+              {isMergedFileReady && (
+                <Button
+                  onClick={() =>
+                    finishKeySimilarityMerging([selectedFile.name], "merged")
+                  }
+                  loading={isAiWorking}
+                >
+                  Finish merging
+                </Button>
+              )}
+              {isMergingFile && (
+                <Button
+                  onClick={() => coursesNamesMergingAiForWholeFile()}
+                  loading={isAiWorking}
+                >
+                  Auto accept/decline merged sub-courses
+                </Button>
+              )}
             </div>
+            {isAiWorking && (
+                <div>
+                  {/*<ProgressBar progress={aiProgress} />*/}
+                  <p>
+                    Analyzed: {analyzedData} / {totalData}
+                  </p>
+                </div>
+            )}
           </div>
         </div>
       </ScrollArea>
