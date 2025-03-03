@@ -3,6 +3,7 @@ import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { AppDataContext } from "@/context/app-data-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
+// import { ProgressBar } from "@/components/ui/progress.tsx";
 
 const SelectedFileCard = () => {
   const {
@@ -12,7 +13,7 @@ const SelectedFileCard = () => {
     finishKeySimilarityMerging,
     coursesNamesMergingAiForWholeFile,
     isAiWorking,
-    aiProgress,
+    // Remove aiProgress since it's unused
     totalData,
     setTotalData,
     setAnalyzedData,
@@ -25,9 +26,12 @@ const SelectedFileCard = () => {
       const fileNameWithoutExtension = selectedFile.name.replace(/\.json$/, "");
       const total = filesContent[fileNameWithoutExtension]?.length || 0;
       setTotalData(total);
-      setAnalyzedData(0); // Reset analyzed data
+      // setAnalyzedData(0); // Reset analyzed data
     }
   }, [selectedFile, isAiWorking]);
+
+  // Calculate progress percentage
+  const progressPercentage = totalData > 0 ? (analyzedData / totalData) * 100 : 0;
 
   if (!selectedFile) {
     return <div>No file selected</div>;
@@ -51,7 +55,7 @@ const SelectedFileCard = () => {
   const isMergingFile = selectedFile.name.includes("merge");
   const isMergedFileReady = isMergingFile
     ? !filesContent[selectedFile.name.replace(/\.json$/, "")]?.some(
-        (x) => "notResolvedCount" in x && x.notResolvedCount > 0,
+        (x) => x.notResolvedCount != null && x.notResolvedCount > 0,
       )
     : false;
 
@@ -104,12 +108,12 @@ const SelectedFileCard = () => {
               )}
             </div>
             {isAiWorking && (
-                <div>
-                  {/*<ProgressBar progress={aiProgress} />*/}
-                  <p>
-                    Analyzed: {analyzedData} / {totalData}
-                  </p>
-                </div>
+              <div className="mt-4">
+                {/*<ProgressBar progress={progressPercentage} className="mb-2" />*/}
+                <p className="text-sm">
+                  Analyzed: {analyzedData} / {totalData} ({Math.round(progressPercentage)}%)
+                </p>
+              </div>
             )}
           </div>
         </div>

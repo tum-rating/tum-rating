@@ -67,7 +67,7 @@
     "notResolvedCount": 0
   },
   {
-    "name": "sustainable infrastructure planing exercise",
+    "name": "sustainable infrastructure planing",
     "merged": [
       {
         "id": "66b28a15d34856d36eb2bd16",
@@ -89,7 +89,8 @@
         "howEasyRatingAverage": 0,
         "votesNumber": 0,
         "similarity": 0,
-        "codes": []
+        "codes": [],
+        "accepted": true
       },
       {
         "id": "66b28a15d34856d36eb2bd19",
@@ -106,7 +107,8 @@
         "howEasyRatingAverage": 0,
         "votesNumber": 0,
         "similarity": 8,
-        "codes": []
+        "codes": [],
+        "accepted": true
       }
     ],
     "codes": [],
@@ -117,7 +119,10 @@
     "professor": "Stephan Freudenstein",
     "courseId": "",
     "courseNumber": "",
-    "id": "d9cae5ec-88e7-47c0-a154-8a23f3c689c3"
+    "id": "d9cae5ec-88e7-47c0-a154-8a23f3c689c3",
+    "acceptedCount": 2,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
   },
   {
     "id": "7d023fa0-aebf-4eab-9681-f33c30f5d0db",
@@ -176,7 +181,7 @@
     "merged": []
   },
   {
-    "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+    "name": "The Right of Data Use in Germany and Europe (IN0014, IN2107, SOT82504, SOT82518)",
     "merged": [
       {
         "id": "66b289d3d34856d36eb2b653",
@@ -200,7 +205,8 @@
           "IN2107",
           "SOT82518",
           "SOT82504"
-        ]
+        ],
+        "accepted": true
       },
       {
         "id": "66b28865d34856d36eb290d0",
@@ -218,7 +224,8 @@
         "similarity": 0,
         "codes": [
           "SOT82504"
-        ]
+        ],
+        "accepted": true
       },
       {
         "id": "66b28bafd34856d36eb2e675",
@@ -236,7 +243,8 @@
         "similarity": 0,
         "codes": [
           "SOT82518"
-        ]
+        ],
+        "accepted": true
       }
     ],
     "codes": [
@@ -254,10 +262,13 @@
     "professor": "Alexander Besner",
     "courseId": "",
     "courseNumber": "",
-    "id": "60ae5da5-a9aa-41a3-9016-cac6709d80f0"
+    "id": "60ae5da5-a9aa-41a3-9016-cac6709d80f0",
+    "acceptedCount": 3,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
   },
   {
-    "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+    "name": "Legal issues of the use of artificial intelligence (IN0014, IN2107, SOT82500, SOT82519)",
     "merged": [
       {
         "id": "66b289d3d34856d36eb2b656",
@@ -283,7 +294,8 @@
           "SOT82519",
           "SOT82500",
           "SOT82531"
-        ]
+        ],
+        "accepted": true
       },
       {
         "id": "66b28865d34856d36eb290c4",
@@ -301,7 +313,8 @@
         "similarity": 0,
         "codes": [
           "SOT82500"
-        ]
+        ],
+        "accepted": true
       },
       {
         "id": "66b28bafd34856d36eb2e678",
@@ -320,7 +333,8 @@
         "similarity": 0,
         "codes": [
           "SOT82519"
-        ]
+        ],
+        "accepted": true
       },
       {
         "id": "66b28c75d34856d36eb2fb8b",
@@ -338,7 +352,8 @@
         "similarity": 17,
         "codes": [
           "SOT82531"
-        ]
+        ],
+        "accepted": true
       }
     ],
     "codes": [
@@ -358,7 +373,10 @@
     "professor": "Pascal Bronner",
     "courseId": "",
     "courseNumber": "",
-    "id": "6501635e-f9d9-4f80-aad9-d62c0a70cf27"
+    "id": "6501635e-f9d9-4f80-aad9-d62c0a70cf27",
+    "acceptedCount": 4,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
   },
   {
     "id": "c1fa0599-e0c9-4c0a-bbdb-17c7445f6080",

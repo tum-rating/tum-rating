@@ -178,6 +178,14 @@ const handleMessage = async (
     } = JSON.parse(message.toString());
     Logger.info(`Received action: ${action}`);
     switch (action) {
+      case "aiProgressTotal":
+        const { total } = JSON.parse(message.toString());
+        ws.send(JSON.stringify({ action: "aiProgressTotal", total }));
+        break;
+      case "aiProgressUpdate":
+        const { processed } = JSON.parse(message.toString());
+        ws.send(JSON.stringify({ action: "aiProgressUpdate", processed }));
+        break;
       case "updateItem":
         if (fileName && updatedItem && typeof index === "number" && diffs) {
           const filePath = path.join(

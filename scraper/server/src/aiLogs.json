@@ -1,5 +1,2592 @@
 [
   {
+    "timestamp": "2025-03-03T07:12:47.013Z",
+    "request": [
+      [
+        "(POL700201) Didactics in Politics and Society – Basic Module",
+        "(POL70021) Didactics in Politics and Society – In-Depth Module"
+      ],
+      [
+        "(POL70044) Business Ethics",
+        "(POL700450) Master Seminar Business Ethics",
+        "(POL7004511) Master Seminar Business Ethics",
+        "(SOT87316) Introduction to Business Ethics"
+      ],
+      [
+        "(POL700450) Master Seminar Business Ethics",
+        "(POL700458) Master Seminar Business Ethics"
+      ],
+      [
+        "(POL700450) Master Seminar Business Ethics",
+        "(POL70056) Case Studies on Business Ethics"
+      ],
+      [
+        "(SOT82502) State handling of disasters and crises",
+        "(SOT82522) State handling of disasters and crises in law"
+      ],
+      [
+        "(SOT82505) Debate course with media law content",
+        "(SOT82521) Debate course with media law content"
+      ],
+      [
+        "(SOT82506) The Judge and his Hacker",
+        "(SOT82532) ChatGPT and Law"
+      ],
+      [
+        "(SOT825110) Media Law and Social Media",
+        "(SOT82530) Media Law and Social Media"
+      ],
+      [
+        "(SOT82800) Governing Social Media Platforms (BSc)",
+        "(SOT86801) Governing Social Media Platforms (Advanced)"
+      ],
+      [
+        "(SOT82831) Projectmodule: Governing Innovative Technologies (BSc.)",
+        "(SOT86830) Projectmodule: Governing Innovative Technologies (MSc.)"
+      ]
+    ],
+    "response": [
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Business Ethics",
+        "merged": [
+          "(POL70044) Business Ethics",
+          "(POL700450) Master Seminar Business Ethics",
+          "(POL7004511) Master Seminar Business Ethics",
+          "(SOT87316) Introduction to Business Ethics"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Master Seminar Business Ethics",
+        "merged": [
+          "(POL700450) Master Seminar Business Ethics",
+          "(POL700458) Master Seminar Business Ethics"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "State handling of disasters and crises",
+        "merged": [
+          "(SOT82502) State handling of disasters and crises",
+          "(SOT82522) State handling of disasters and crises in law"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Debate course with media law content",
+        "merged": [
+          "(SOT82505) Debate course with media law content",
+          "(SOT82521) Debate course with media law content"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Media Law and Social Media",
+        "merged": [
+          "(SOT825110) Media Law and Social Media",
+          "(SOT82530) Media Law and Social Media"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:12:40.686Z",
+    "request": [
+      [
+        "(POL62500) The Ethics and Politics of Existential Global Risks (Part 2)",
+        "(POL62500) The Ethics and Politics of Existential Global Risks (Seminar 1 + 2)"
+      ],
+      [
+        "(POL64100) Political Economy Using Game Theory",
+        "(SOT86411) Field Seminar in Political Economy"
+      ],
+      [
+        "(POL64101) The Politics of Finance and Debt",
+        "PhD - Politics of Finance"
+      ],
+      [
+        "(POL70001) Course in Contemporary History",
+        "(POL70001) Elementary course Contemporary History",
+        "(POL70001) Introduction Into Contemporary History",
+        "(POL70001) Introduction to Contemporary History",
+        "(POL70002) Seminar in Contemporary History",
+        "(POL70007, POL70008) Seminar in International Relations",
+        "(POL70007, POL70008, POL70024) War in the 20th century",
+        "(POL70013) M.A. Seminar in Contemporary History A",
+        "(POL70013) Master Course in Contemporary History",
+        "(POL70016, POL70019) Master Course in International Relations"
+      ],
+      [
+        "(POL70005, POL70009) Political Systems - An introductory course",
+        "(POL70009, POL0005, POL70024) Seminar in Political System"
+      ],
+      [
+        "(POL70006, POL70010, POL70024) Seminar in Political Theory: Political Theory in the 20th Century I",
+        "(POL70006, POL70010, POL70024) Seminar in Political Theory: Political Theory in the 20th Century II"
+      ],
+      [
+        "(POL70007, POL70008) Seminar in International Relations",
+        "(POL70012) International Relations"
+      ],
+      [
+        "(POL70007, POL70008) Seminar in International Relations",
+        "(POL70007, POL70008, POL70024) Seminar in International Relations: The European Union",
+        "(POL70012) International Relations",
+        "(POL70016, POL70019) Master Course in International Relations"
+      ],
+      [
+        "(POL70012) Introduction to Political Theory",
+        "(POL70012, POL70075) Introduction to Political Systems"
+      ],
+      [
+        "(POL70015, POL70018) Master course in political systems",
+        "(POL70018, POL70015) Master Course in Political System",
+        "Seminar in Political System"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "(POL62500) The Ethics and Politics of Existential Global Risks (Part 2)",
+        "merged": [
+          "(POL62500) The Ethics and Politics of Existential Global Risks (Part 2)",
+          "(POL62500) The Ethics and Politics of Existential Global Risks (Seminar 1 + 2)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL70001) Course in Contemporary History",
+        "merged": [
+          "(POL70001) Course in Contemporary History",
+          "(POL70001) Elementary course Contemporary History",
+          "(POL70001) Introduction Into Contemporary History",
+          "(POL70001) Introduction to Contemporary History"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL70007, POL70008) Seminar in International Relations",
+        "merged": [
+          "(POL70007, POL70008) Seminar in International Relations",
+          "(POL70012) International Relations"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL70007, POL70008) Seminar in International Relations",
+        "merged": [
+          "(POL70007, POL70008) Seminar in International Relations",
+          "(POL70007, POL70008, POL70024) Seminar in International Relations: The European Union",
+          "(POL70012) International Relations",
+          "(POL70016, POL70019) Master Course in International Relations"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL70012) Introduction to Political Theory",
+        "merged": [
+          "(POL70012) Introduction to Political Theory",
+          "(POL70012, POL70075) Introduction to Political Systems"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL70015, POL70018) Master course in political systems",
+        "merged": [
+          "(POL70015, POL70018) Master course in political systems",
+          "(POL70018, POL70015) Master Course in Political System",
+          "Seminar in Political System"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:12:32.012Z",
+    "request": [
+      [
+        "(POL40100) Introduction to Politics and Technology",
+        "(POL40100) Introduction to Politics and Technology - Exercise"
+      ],
+      [
+        "(POL40200) Advanced Qualitative Methods - Lecture",
+        "(SOT86402) Qualitative Methods"
+      ],
+      [
+        "(POL40300) Computational Methods (Exercise)",
+        "(POL40300) Computational Methods (Lecture)"
+      ],
+      [
+        "(POL60102) Science Communication and Public Engagement",
+        "Science Communication"
+      ],
+      [
+        "(POL60402) Technology and Development",
+        "(SOT82101) Digitalisation and Democracy"
+      ],
+      [
+        "(POL60901) Advanced Quantitative Methods in Conflict Studies",
+        "(SOT86901) Advanced Quantitative Methods"
+      ],
+      [
+        "(POL61500) Global Governance, Ethics, and Technology (Seminar 1 + 2)",
+        "POL61500) Global Governance, Ethics, and Technology (Seminar 1)"
+      ],
+      [
+        "(POL62100) Civil Society and Technological Change (- Seminar 1)",
+        "(POL62100) Civil Society and Technological Change (- Seminar 2)"
+      ],
+      [
+        "(POL62400) Environment and Climate Transformation (-Seminar 2)",
+        "(POL62400) Environment and Climate Transformation - Seminar 1"
+      ],
+      [
+        "(POL62500) The Ethics and Politics of Existential Global Risks (Part 2)",
+        "(POL62500) The Ethics and Politics of Existential Global Risks (Seminar 1 + 2)"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "(POL40100) Introduction to Politics and Technology",
+        "merged": [
+          "(POL40100) Introduction to Politics and Technology",
+          "(POL40100) Introduction to Politics and Technology - Exercise"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL40300) Computational Methods",
+        "merged": [
+          "(POL40300) Computational Methods (Exercise)",
+          "(POL40300) Computational Methods (Lecture)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL60102) Science Communication",
+        "merged": [
+          "(POL60102) Science Communication and Public Engagement",
+          "Science Communication"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL61500) Global Governance, Ethics, and Technology",
+        "merged": [
+          "(POL61500) Global Governance, Ethics, and Technology (Seminar 1 + 2)",
+          "(POL61500) Global Governance, Ethics, and Technology (Seminar 1)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL62100) Civil Society and Technological Change",
+        "merged": [
+          "(POL62100) Civil Society and Technological Change (- Seminar 1)",
+          "(POL62100) Civil Society and Technological Change (- Seminar 2)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL62400) Environment and Climate Transformation",
+        "merged": [
+          "(POL62400) Environment and Climate Transformation (-Seminar 2)",
+          "(POL62400) Environment and Climate Transformation - Seminar 1"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL62500) The Ethics and Politics of Existential Global Risks",
+        "merged": [
+          "(POL62500) The Ethics and Politics of Existential Global Risks (Part 2)",
+          "(POL62500) The Ethics and Politics of Existential Global Risks (Seminar 1 + 2)"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:12:23.595Z",
+    "request": [
+      [
+        "(POL10900) International Relations - fundamentals Exercise",
+        "(POL10900) International Relations - fundamentals Lecture"
+      ],
+      [
+        "(POL11000 DE) International Relations - Advanced - Lecture (International Political Economy - German)",
+        "(POL11000 DE) International Relations - Advanced Exercise (International Political Economy - German)",
+        "(POL11000 EN) International Relations - Advanced  Lecture (International Political Economy - English)",
+        "(POL11000 EN) International Relations - Advanced -Exercise (International Political Economy - English)"
+      ],
+      [
+        "(POL15100) Mathematics fpr Political Science",
+        "(POL15100) Mathematics vor Political Science",
+        "(POL20401) Political Data Science - Project"
+      ],
+      [
+        "(POL15200) Introduction to statistical learning",
+        "Introduction to statistical learning - (POL15200) Exercise"
+      ],
+      [
+        "(POL20100) Programming for Social Scientists",
+        "(POL20200) Computational Social Science",
+        "(POL20800) Introduction in R for Social Scientists",
+        "Seminar Computational Social Science (IN0014, IN2107, IN4875)"
+      ],
+      [
+        "(POL22500) Comparative Political Economy",
+        "(POL64100) Game Theory for Political Scientists"
+      ],
+      [
+        "(POL23100) Politics of Sustainability - Seminar 1",
+        "(POL23100) Politics of Sustainability - Seminar 2"
+      ],
+      [
+        "(POL23400) Energy Transition in Germany and Europe",
+        "(POL62200) Energy Transformation (Seminar 1 + 2)"
+      ],
+      [
+        "(POL24410)  Research Design - International Relations (Political Economy)",
+        "(POL24410) Research Design - International Relations",
+        "(SOT82300) Advanced Topics in International Political Economy"
+      ],
+      [
+        "(POL25100) Law of digitisation in public administration (E-Government)",
+        "(POL251001) Crash Course - Law of digitisation in public administration (E-Government)",
+        "(SOT825100) Law of Digitisation in Public Administration (E-Government)",
+        "Law of digitisation in public administration (E-Government)"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "(POL10900) International Relations - fundamentals",
+        "merged": [
+          "(POL10900) International Relations - fundamentals Exercise",
+          "(POL10900) International Relations - fundamentals Lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL11000 DE) International Relations - Advanced (International Political Economy - German)",
+        "merged": [
+          "(POL11000 DE) International Relations - Advanced - Lecture (International Political Economy - German)",
+          "(POL11000 DE) International Relations - Advanced Exercise (International Political Economy - German)",
+          "(POL11000 EN) International Relations - Advanced  Lecture (International Political Economy - English)",
+          "(POL11000 EN) International Relations - Advanced -Exercise (International Political Economy - English)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL15200) Introduction to statistical learning",
+        "merged": [
+          "(POL15200) Introduction to statistical learning",
+          "Introduction to statistical learning - (POL15200) Exercise"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL24410) Research Design - International Relations",
+        "merged": [
+          "(POL24410)  Research Design - International Relations (Political Economy)",
+          "(POL24410) Research Design - International Relations",
+          "(SOT82300) Advanced Topics in International Political Economy"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL25100) Law of digitisation in public administration (E-Government)",
+        "merged": [
+          "(POL25100) Law of digitisation in public administration (E-Government)",
+          "(POL251001) Crash Course - Law of digitisation in public administration (E-Government)",
+          "(SOT825100) Law of Digitisation in Public Administration (E-Government)",
+          "Law of digitisation in public administration (E-Government)"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:12:16.098Z",
+    "request": [
+      [
+        "(Cooperative) Design Project",
+        "Practical course Process Design Project I",
+        "Process Design Project (Practical and Exercise)"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [
+        "(POL10101) Introduction to the Law of the Digital Society",
+        "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+      ],
+      [
+        "(POL10101) Introduction to the Law of the Digital Society",
+        "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+      ],
+      [
+        "(POL10200) Methods of Complex Systems - Lecture",
+        "(POL10200) Methods of Empirical Social Research - Exercise",
+        "(SOT86055) Methods of Social Network Analysis -lecture"
+      ],
+      [
+        "(POL10300) Introduction to Political Theory",
+        "(POL10400) Political Theory - Advanced",
+        "(POL10400) Political Theory - Advanced (Group A)",
+        "Introduction to Political Theory"
+      ],
+      [
+        "(POL10300) Introduction to Political Theory",
+        "(POL10400 Sem.3) Political Theory - Advanced:"
+      ],
+      [
+        "(POL10500) Comparative Politics 1 (Lecture)",
+        "(POL10800) Policy Analysis - Advanced - Lecture",
+        "(SOT86611) Sustainability Politics and Policy"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "(Cooperative) Design Project",
+        "merged": [
+          "(Cooperative) Design Project",
+          "Practical course Process Design Project I",
+          "Process Design Project (Practical and Exercise)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82531) Legal Principles of Artificial Intelligence"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL10101) Introduction to the Law of the Digital Society",
+        "merged": [
+          "(POL10101) Introduction to the Law of the Digital Society",
+          "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10101) Introduction to the Law of the Digital Society",
+        "merged": [
+          "(POL10101) Introduction to the Law of the Digital Society",
+          "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL10200) Methods of Complex Systems",
+        "merged": [
+          "(POL10200) Methods of Complex Systems - Lecture",
+          "(POL10200) Methods of Empirical Social Research - Exercise",
+          "(SOT86055) Methods of Social Network Analysis -lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10300) Introduction to Political Theory",
+        "merged": [
+          "(POL10300) Introduction to Political Theory",
+          "(POL10400) Political Theory - Advanced",
+          "(POL10400) Political Theory - Advanced (Group A)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10300) Introduction to Political Theory",
+        "merged": [
+          "(POL10300) Introduction to Political Theory",
+          "(POL10400 Sem.3) Political Theory - Advanced:"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:11:26.657Z",
+    "request": [
+      [
+        "(Cooperative) Design Project",
+        "Practical course Process Design Project I",
+        "Process Design Project (Practical and Exercise)"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [
+        "(POL10101) Introduction to the Law of the Digital Society",
+        "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+      ],
+      [
+        "(POL10101) Introduction to the Law of the Digital Society",
+        "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+      ],
+      [
+        "(POL10200) Methods of Complex Systems - Lecture",
+        "(POL10200) Methods of Empirical Social Research - Exercise",
+        "(SOT86055) Methods of Social Network Analysis -lecture"
+      ],
+      [
+        "(POL10300) Introduction to Political Theory",
+        "(POL10400) Political Theory - Advanced",
+        "(POL10400) Political Theory - Advanced (Group A)",
+        "Introduction to Political Theory"
+      ],
+      [
+        "(POL10300) Introduction to Political Theory",
+        "(POL10400 Sem.3) Political Theory - Advanced:"
+      ],
+      [
+        "(POL10500) Comparative Politics 1 (Lecture)",
+        "(POL10800) Policy Analysis - Advanced - Lecture",
+        "(SOT86611) Sustainability Politics and Policy"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "(Cooperative) Design Project",
+        "merged": [
+          "(Cooperative) Design Project",
+          "Practical course Process Design Project I",
+          "Process Design Project (Practical and Exercise)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82531) Legal Principles of Artificial Intelligence"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL10101) Introduction to the Law of the Digital Society",
+        "merged": [
+          "(POL10101) Introduction to the Law of the Digital Society",
+          "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10101) Introduction to the Law of the Digital Society",
+        "merged": [
+          "(POL10101) Introduction to the Law of the Digital Society",
+          "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10200) Methods of Complex Systems",
+        "merged": [
+          "(POL10200) Methods of Complex Systems - Lecture",
+          "(POL10200) Methods of Empirical Social Research - Exercise",
+          "(SOT86055) Methods of Social Network Analysis -lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10300) Introduction to Political Theory",
+        "merged": [
+          "(POL10300) Introduction to Political Theory",
+          "(POL10400) Political Theory - Advanced",
+          "(POL10400) Political Theory - Advanced (Group A)",
+          "Introduction to Political Theory"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10300) Introduction to Political Theory",
+        "merged": [
+          "(POL10300) Introduction to Political Theory",
+          "(POL10400 Sem.3) Political Theory - Advanced:"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:11:09.738Z",
+    "request": [
+      [
+        "sustainable infrastructure planing exercise",
+        "sustainable infrastructure planing lecture"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [
+        "understanding historic building structures of the pre-industrial age I – theory",
+        "understanding historic building structures of the pre-industrial age II – practical seminar"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "sustainable infrastructure planing",
+        "merged": [
+          "sustainable infrastructure planing exercise",
+          "sustainable infrastructure planing lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "The Right of Data Use in Germany and Europe (IN0014, IN2107, SOT82504, SOT82518)",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Legal issues of the use of artificial intelligence (IN0014, IN2107, SOT82500, SOT82519)",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82531) Legal Principles of Artificial Intelligence"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:06:23.802Z",
+    "request": [
+      [
+        "(Cooperative) Design Project",
+        "Practical course Process Design Project I",
+        "Process Design Project (Practical and Exercise)"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [
+        "(POL10101) Introduction to the Law of the Digital Society",
+        "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+      ],
+      [
+        "(POL10101) Introduction to the Law of the Digital Society",
+        "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+      ],
+      [
+        "(POL10200) Methods of Complex Systems - Lecture",
+        "(POL10200) Methods of Empirical Social Research - Exercise",
+        "(SOT86055) Methods of Social Network Analysis -lecture"
+      ],
+      [
+        "(POL10300) Introduction to Political Theory",
+        "(POL10400) Political Theory - Advanced",
+        "(POL10400) Political Theory - Advanced (Group A)",
+        "Introduction to Political Theory"
+      ],
+      [
+        "(POL10300) Introduction to Political Theory",
+        "(POL10400 Sem.3) Political Theory - Advanced:"
+      ],
+      [
+        "(POL10500) Comparative Politics 1 (Lecture)",
+        "(POL10800) Policy Analysis - Advanced - Lecture",
+        "(SOT86611) Sustainability Politics and Policy"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "(Cooperative) Design Project",
+        "merged": [
+          "(Cooperative) Design Project",
+          "Practical course Process Design Project I",
+          "Process Design Project (Practical and Exercise)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL10101) Introduction to the Law of the Digital Society",
+        "merged": [
+          "(POL10101) Introduction to the Law of the Digital Society",
+          "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10101) Introduction to the Law of the Digital Society",
+        "merged": [
+          "(POL10101) Introduction to the Law of the Digital Society",
+          "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10200) Methods of Complex Systems",
+        "merged": [
+          "(POL10200) Methods of Complex Systems - Lecture",
+          "(POL10200) Methods of Empirical Social Research - Exercise",
+          "(SOT86055) Methods of Social Network Analysis -lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10300) Introduction to Political Theory",
+        "merged": [
+          "(POL10300) Introduction to Political Theory",
+          "(POL10400) Political Theory - Advanced",
+          "(POL10400) Political Theory - Advanced (Group A)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10300) Introduction to Political Theory",
+        "merged": [
+          "(POL10300) Introduction to Political Theory",
+          "(POL10400 Sem.3) Political Theory - Advanced:"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:04:34.453Z",
+    "request": [
+      [
+        "Additional office hours for engineering mechanics 1",
+        "Additional office hours for engineering mechanics 1 (MSE)",
+        "Additional office hours for engineering mechanics 2 (MSE)",
+        "Office hours for engineering mechanics 2 (MSE)"
+      ],
+      [
+        "Additive Manufacturing with Metals",
+        "Additive Manufacturing with Plastics",
+        "Additive Manufacturing with Plastics Exercise",
+        "Additive Manufacturing with Plastics Lecture",
+        "Basics of Additive Manufacturing",
+        "Basics of Additive Manufacturing Exercise",
+        "Basics of Additive Manufacturing Lecture",
+        "Field Trip Additive Manufacturing with Metals"
+      ],
+      [
+        "Adhesive Bonding",
+        "Adhesive Bonding (Exercise unit)"
+      ],
+      [
+        "Administrative Law",
+        "Building Law"
+      ],
+      [
+        "Advanced Analytical Techniques (CH4115)",
+        "Instrumental Analytical Chemistry I",
+        "Lab Rotation Analytical Chemistry 1",
+        "Lab Rotation Analytical Chemistry 1 (CH3124)",
+        "Lab Rotation Analytical Chemistry 2",
+        "Lab Rotation Analytical Chemistry 2 (CH3125)",
+        "Research Internship Analytical Chemistry (NAT0172)"
+      ],
+      [
+        "Advanced Analytics for Biotechnology",
+        "Advanced Analytics for Biotechnology (Seminar)",
+        "Instrumental Analytics",
+        "Instrumental Analytics Seminar"
+      ],
+      [
+        "Advanced Aspects of Inorganic Chemistry for LAG (CH7101)",
+        "Experimental Inorganic Chemistry for B.Sc. Chemical Engineering (CH0575)",
+        "Specialized Aspects of Inorganic Chemistry (CH7101)"
+      ],
+      [
+        "Advanced Bioinformatics (IN2399)",
+        "Exercise Advanced Bioinformatics (IN2399)"
+      ],
+      [
+        "Advanced Chapters in Brewing and Beverage Technology",
+        "Advanced Research Course Bioprocess Analysis and Technology",
+        "Advanced Research Course Brewing and Beverage Technology (12 SWS)",
+        "Advanced Research Course Brewing and Beverage Technology (6 SWS)",
+        "Beverage Technology",
+        "Fundamentals of Beverage Technology",
+        "Lab Course Raw Materials and Wort Technology",
+        "Practical course Yeast and brewing technology",
+        "Seminar: Brewing and beverage technology"
+      ],
+      [
+        "Advanced Chapters in Food Technology",
+        "Dairy Technology 2",
+        "Dairy Technology 2 Seminar",
+        "Dairy Technology 2- Practice",
+        "FO Pharmaceutical Bioprocess Technology",
+        "Field Trip Anuga Food Tec 2024",
+        "Food Process Engineering",
+        "Food Process Engineering - Excercise",
+        "Food Process Engineering and Bioprocess Technology",
+        "Revision Course Food Process Engineering"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "Additional office hours for engineering mechanics 1",
+        "merged": [
+          "Additional office hours for engineering mechanics 1",
+          "Additional office hours for engineering mechanics 1 (MSE)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Adhesive Bonding",
+        "merged": [
+          "Adhesive Bonding",
+          "Adhesive Bonding (Exercise unit)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Advanced Analytics for Biotechnology",
+        "merged": [
+          "Advanced Analytics for Biotechnology",
+          "Advanced Analytics for Biotechnology (Seminar)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Advanced Aspects of Inorganic Chemistry for LAG (CH7101)",
+        "merged": [
+          "Advanced Aspects of Inorganic Chemistry for LAG (CH7101)",
+          "Specialized Aspects of Inorganic Chemistry (CH7101)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Advanced Bioinformatics (IN2399)",
+        "merged": [
+          "Advanced Bioinformatics (IN2399)",
+          "Exercise Advanced Bioinformatics (IN2399)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Advanced Research Course Brewing and Beverage Technology",
+        "merged": [
+          "Advanced Research Course Brewing and Beverage Technology (12 SWS)",
+          "Advanced Research Course Brewing and Beverage Technology (6 SWS)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:04:28.493Z",
+    "request": [
+      [
+        "Actuarial Risk Theory [MA3442]",
+        "Exercises to Actuarial Risk Theory [MA3442]"
+      ],
+      [
+        "Actuarial Risk Theory [MA3442]",
+        "Exercises to Actuarial Risk Theory [MA3442]"
+      ],
+      [
+        "Actuators and Sensors in Electrical Drive Systems",
+        "Control of Electrical Drive Systems"
+      ],
+      [
+        "Adaptive Control",
+        "Robot Control Laboratory",
+        "Seminar Information Oriented Control"
+      ],
+      [
+        "Additional Exercise - Modeling and Optimization",
+        "Advanced Modeling and Optimization",
+        "Advanced Modeling and Optimization (Exercise)",
+        "Modelling and Optimization (Exercise)",
+        "Modelling and Optimization (Lecture)"
+      ],
+      [
+        "Additional Exercise - Sus. Oper., Supply Chain",
+        "BWL1 - Part: Supply Chain",
+        "Exercise-Tutorial - Sus. Oper., P&L, Supply Cain",
+        "Supply Chain (Exercise)"
+      ],
+      [
+        "Additional Exercise Advanced Mathematics 2",
+        "Additional Exercise Statistics"
+      ],
+      [
+        "Additional Exercise Advanced Mathematics 2",
+        "Additional Exercise Statistics",
+        "Advanced Mathematics 1 (Exercise)",
+        "Advanced Mathematics 1 (Lecture)",
+        "Advanced Mathematics 1 (Tutorial)",
+        "Advanced Mathematics 2 (Exercise)",
+        "Advanced Mathematics 2 (Lecture)"
+      ],
+      [
+        "Additional Practising Class in Heat and Mass Transfer",
+        "Practising Class in Heat and Mass Transfer"
+      ],
+      [
+        "Additional Tutorial to Air Conditioning, Refrigeration and Heat Pumps",
+        "Air Conditioning, Refrigeration and Heat Pumps",
+        "Tutorial to Air Conditioning, Refrigeration and Heat Pumps"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "Actuarial Risk Theory [MA3442]",
+        "merged": [
+          "Actuarial Risk Theory [MA3442]",
+          "Exercises to Actuarial Risk Theory [MA3442]"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Actuarial Risk Theory [MA3442]",
+        "merged": [
+          "Actuarial Risk Theory [MA3442]",
+          "Exercises to Actuarial Risk Theory [MA3442]"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Modeling and Optimization",
+        "merged": [
+          "Additional Exercise - Modeling and Optimization",
+          "Advanced Modeling and Optimization",
+          "Advanced Modeling and Optimization (Exercise)",
+          "Modelling and Optimization (Exercise)",
+          "Modelling and Optimization (Lecture)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Advanced Mathematics 1 Advanced Mathematics 2",
+        "merged": [
+          "Additional Exercise Advanced Mathematics 2",
+          "Additional Exercise Statistics",
+          "Advanced Mathematics 1 (Exercise)",
+          "Advanced Mathematics 1 (Lecture)",
+          "Advanced Mathematics 1 (Tutorial)",
+          "Advanced Mathematics 2 (Exercise)",
+          "Advanced Mathematics 2 (Lecture)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Heat and Mass Transfer",
+        "merged": [
+          "Additional Practising Class in Heat and Mass Transfer",
+          "Practising Class in Heat and Mass Transfer"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Air Conditioning, Refrigeration and Heat Pumps",
+        "merged": [
+          "Additional Tutorial to Air Conditioning, Refrigeration and Heat Pumps",
+          "Air Conditioning, Refrigeration and Heat Pumps",
+          "Tutorial to Air Conditioning, Refrigeration and Heat Pumps"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:04:22.180Z",
+    "request": [
+      [
+        "AND Foundation Seminar",
+        "AND Foundation Seminar for STS Students",
+        "AND Workshop",
+        "AND Workshop - Rural Resources",
+        "Project BA (Studio AND)",
+        "Projekt MA (AND Studio)"
+      ],
+      [
+        "AND Workshop - Brewing Metabolisms",
+        "AND Workshop Summer School 2022 KM"
+      ],
+      [
+        "AR2 - Least Squares Adjustment and Parameter Estimation 2",
+        "Labs in Least Squares Adjustment and Parameter Estimation 1",
+        "Least Squares Adjustment and Parameter Estimation 1"
+      ],
+      [
+        "AR2-T - Tutorübung zu Ausgleichungsrechnung 2",
+        "AR2-Ü Zentralübung zu Ausgleichungsrechnung 2"
+      ],
+      [
+        "Abiotic forest protection",
+        "Exercises in forest protection"
+      ],
+      [
+        "Abiotic forest protection",
+        "Exercises in forest protection"
+      ],
+      [
+        "Academic Seminar Plant and Process Technology",
+        "Academic Seminar Process Technology"
+      ],
+      [
+        "Accompanying Seminar for Bachelor and Master Theses",
+        "Begleitseminar für Bachelor and Master Theses"
+      ],
+      [
+        "Accompanying Seminar for Thesis Seminar",
+        "Thesis Seminar"
+      ],
+      [
+        "Actual Topics of Biomechanics",
+        "Microscopic Biomechanics",
+        "Recent Progress in Biomechanics"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "AND Foundation Seminar",
+        "merged": [
+          "AND Foundation Seminar",
+          "AND Foundation Seminar for STS Students",
+          "AND Workshop",
+          "AND Workshop - Rural Resources",
+          "Project BA (Studio AND)",
+          "Projekt MA (AND Studio)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "AR2-T Tutorübung zu Ausgleichungsrechnung 2",
+        "merged": [
+          "AR2-T - Tutorübung zu Ausgleichungsrechnung 2",
+          "AR2-Ü Zentralübung zu Ausgleichungsrechnung 2"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Abiotic forest protection",
+        "merged": [
+          "Abiotic forest protection",
+          "Exercises in forest protection"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Abiotic forest protection",
+        "merged": [
+          "Abiotic forest protection",
+          "Exercises in forest protection"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Academic Seminar Process Technology",
+        "merged": [
+          "Academic Seminar Plant and Process Technology",
+          "Academic Seminar Process Technology"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Accompanying Seminar for Bachelor and Master Theses",
+        "merged": [
+          "Accompanying Seminar for Bachelor and Master Theses",
+          "Begleitseminar für Bachelor and Master Theses"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Thesis Seminar",
+        "merged": [
+          "Accompanying Seminar for Thesis Seminar",
+          "Thesis Seminar"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:04:15.781Z",
+    "request": [
+      [
+        "(SOT86705) Disruptions in Governance and Technology",
+        "(SOT86705) Disruptions in Governance and Technology -Seminar 2"
+      ],
+      [
+        "(SOT86815) Quantum Social Lab: Art Driven Innovation with Quantum Technologies",
+        "(SOT86815, SOT82802) Quantum Social Lab: Art Driven Innovation with Quantum Technologies (B.Sc, MSc.)"
+      ],
+      [
+        "(SOT86820) Governing Innovative Technologies: Natural Catastrophes Prediction Through the Application of Artificial Intelligence",
+        "(SOT86821) Governing Innovative Technologies: Natural Catastrophes Prediction Through the Application of Artificial Intelligence"
+      ],
+      [
+        "(SOT86904) Interpersonal and Collective Violence",
+        "Interpersonal and Collective Violence"
+      ],
+      [
+        "(SOT86998) Summer School Sino-German Climate Cooperation",
+        "PhD Colloquium Energy and Climate Policy"
+      ],
+      [
+        ".Cost and investment accounting (WZ5297, German)",
+        "Cost accounting and Investment Appraisal (MGT001413, German)",
+        "Production and Resource Economics",
+        "Production and Resource Economics (WZ1513, German)",
+        "Risk Theory and Modeling - Exercises (WZ0043)",
+        "Risk Theory and Modeling - Exercises (WZ0043, English)",
+        "Risk Theory and Modeling - Lecture",
+        "Risk Theory and Modeling - Lecture (WZ0043, English)"
+      ],
+      [
+        ".Introduction to Resource Economics (WZ1505, German)",
+        "Advanced Environmental and Natural Resource Economics (WZ2757)",
+        "Advanced Environmental and Natural Resource Economics (WZ2757, English)",
+        "Climate Change Economics (WZ1590, English)",
+        "Introduction to Business Administration (WI000190, WI001062, WZ5327, WZ5329, German)",
+        "Introduction to Economics (WI000189)",
+        "Introduction to Economics (WI000189, German)",
+        "Tutorial Introduction to Economics (WI001062)",
+        "Tutorial Introduction to Economics (WI001062, German)"
+      ],
+      [
+        "3D Scanning & Motion Capture (IN2354)",
+        "Exercise - 3D Scanning & Motion Capture (IN2354)",
+        "Master Seminar 3D Vision (IN2107, IN4911)",
+        "Praktikum: 3D Scanning & Spatial Learning (IN2106, IN4263)"
+      ],
+      [
+        "A Practical Course in Numerical Methods for Engineers (MW2227)",
+        "Numerical Methods for Engineers"
+      ],
+      [
+        "AI in Production Engineering",
+        "AI in Production Engineering Exercises",
+        "Human Factors in Production Engineering",
+        "Human Factors in Production Engineering  Exercise Course",
+        "Lean Production Practical Course",
+        "Networked Production",
+        "Practical Course in Welding Technologies",
+        "Production Management",
+        "Production Planning and Control - Practical Course"
+      ]
+    ],
+    "response": [
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(SOT86815, SOT82802) Quantum Social Lab: Art Driven Innovation with Quantum Technologies",
+        "merged": [
+          "(SOT86815) Quantum Social Lab: Art Driven Innovation with Quantum Technologies",
+          "(SOT86815, SOT82802) Quantum Social Lab: Art Driven Innovation with Quantum Technologies (B.Sc, MSc.)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Interpersonal and Collective Violence",
+        "merged": [
+          "(SOT86904) Interpersonal and Collective Violence",
+          "Interpersonal and Collective Violence"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Risk Theory and Modeling",
+        "merged": [
+          "Risk Theory and Modeling - Exercises (WZ0043)",
+          "Risk Theory and Modeling - Exercises (WZ0043, English)",
+          "Risk Theory and Modeling - Lecture",
+          "Risk Theory and Modeling - Lecture (WZ0043, English)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "3D Scanning & Motion Capture (IN2354)",
+        "merged": [
+          "3D Scanning & Motion Capture (IN2354)",
+          "Exercise - 3D Scanning & Motion Capture (IN2354)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "AI in Production Engineering",
+        "merged": [
+          "AI in Production Engineering",
+          "AI in Production Engineering Exercises",
+          "Human Factors in Production Engineering",
+          "Human Factors in Production Engineering  Exercise Course",
+          "Lean Production Practical Course",
+          "Networked Production",
+          "Practical Course in Welding Technologies",
+          "Production Management",
+          "Production Planning and Control - Practical Course"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:04:03.691Z",
+    "request": [
+      [
+        "(SOT82831) Projectmodule: Governing Innovative Technologies (BSc.)",
+        "(SOT86830) Projectmodule: Governing Innovative Technologies (MSc.)"
+      ],
+      [
+        "(SOT82840) Governing Innovative Technologies (BSc.) - Cloud X Sustainability",
+        "(SOT86803) Governing Innovative Technologies: Cloud\""
+      ],
+      [
+        "(SOT86052) Responsible Data Science for Safe and Socially Aligned AI (MSc und PhD)",
+        "Responsible Data Science for Safe and Socially Aligned AI Applications"
+      ],
+      [
+        "(SOT86061) Privacy and Data Protection Law (Exercise for the 6 ECTS module)",
+        "(SOT86061,SOT86060) Privacy and Data Protection Law (3 ECTS)",
+        "(SOT86061,SOT86060) Privacy and Data Protection Law (6 ECTS)",
+        "(SOT86063) AI and Regulation (Exercise for the 6 ECTS module)"
+      ],
+      [
+        "(SOT86063) AI and Regulation (6 ECTS)",
+        "(SOT86063, SOT86062) AI and Regulation (3 ECTS)"
+      ],
+      [
+        "(SOT86065)  Machine Learning and Society (lecture for 6 ECTS)",
+        "(SOT86065) Machine Learning and Society (Seminar for the 6 ECTS module)",
+        "(SOT86066) Machine Learning and Society (3 ECTS)"
+      ],
+      [
+        "(SOT86100) Global Governance",
+        "(SOT86511) European and Global Governance -Seminar 2"
+      ],
+      [
+        "(SOT86302) Comparative Capitalism",
+        "(SOT863102) Welfare Capitalism and Technology"
+      ],
+      [
+        "(SOT86600) Experimental Methods in Political Science",
+        "(SOT86604) Experimental Methods in Political Science"
+      ],
+      [
+        "(SOT86601) Social Media and Politics: Communication, Behavior and Governance",
+        "(SOT86605) Social Media and Politics: Communication, Behavior and Governance"
+      ]
+    ],
+    "response": [
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Privacy and Data Protection Law",
+        "merged": [
+          "(SOT86061) Privacy and Data Protection Law (Exercise for the 6 ECTS module)",
+          "(SOT86061,SOT86060) Privacy and Data Protection Law (3 ECTS)",
+          "(SOT86061,SOT86060) Privacy and Data Protection Law (6 ECTS)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "AI and Regulation",
+        "merged": [
+          "(SOT86063) AI and Regulation (6 ECTS)",
+          "(SOT86063, SOT86062) AI and Regulation (3 ECTS)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Machine Learning and Society",
+        "merged": [
+          "(SOT86065)  Machine Learning and Society (lecture for 6 ECTS)",
+          "(SOT86065) Machine Learning and Society (Seminar for the 6 ECTS module)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Experimental Methods in Political Science",
+        "merged": [
+          "(SOT86600) Experimental Methods in Political Science",
+          "(SOT86604) Experimental Methods in Political Science"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Social Media and Politics: Communication, Behavior and Governance",
+        "merged": [
+          "(SOT86601) Social Media and Politics: Communication, Behavior and Governance",
+          "(SOT86605) Social Media and Politics: Communication, Behavior and Governance"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:03:57.468Z",
+    "request": [
+      [
+        "(POL700201) Didactics in Politics and Society – Basic Module",
+        "(POL70021) Didactics in Politics and Society – In-Depth Module"
+      ],
+      [
+        "(POL70044) Business Ethics",
+        "(POL700450) Master Seminar Business Ethics",
+        "(POL7004511) Master Seminar Business Ethics",
+        "(SOT87316) Introduction to Business Ethics"
+      ],
+      [
+        "(POL700450) Master Seminar Business Ethics",
+        "(POL700458) Master Seminar Business Ethics"
+      ],
+      [
+        "(POL700450) Master Seminar Business Ethics",
+        "(POL70056) Case Studies on Business Ethics"
+      ],
+      [
+        "(SOT82502) State handling of disasters and crises",
+        "(SOT82522) State handling of disasters and crises in law"
+      ],
+      [
+        "(SOT82505) Debate course with media law content",
+        "(SOT82521) Debate course with media law content"
+      ],
+      [
+        "(SOT82506) The Judge and his Hacker",
+        "(SOT82532) ChatGPT and Law"
+      ],
+      [
+        "(SOT825110) Media Law and Social Media",
+        "(SOT82530) Media Law and Social Media"
+      ],
+      [
+        "(SOT82800) Governing Social Media Platforms (BSc)",
+        "(SOT86801) Governing Social Media Platforms (Advanced)"
+      ],
+      [
+        "(SOT82831) Projectmodule: Governing Innovative Technologies (BSc.)",
+        "(SOT86830) Projectmodule: Governing Innovative Technologies (MSc.)"
+      ]
+    ],
+    "response": [
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Business Ethics",
+        "merged": [
+          "(POL70044) Business Ethics",
+          "(POL700450) Master Seminar Business Ethics",
+          "(POL7004511) Master Seminar Business Ethics",
+          "(SOT87316) Introduction to Business Ethics"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Master Seminar Business Ethics",
+        "merged": [
+          "(POL700450) Master Seminar Business Ethics",
+          "(POL700458) Master Seminar Business Ethics"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "State handling of disasters and crises",
+        "merged": [
+          "(SOT82502) State handling of disasters and crises",
+          "(SOT82522) State handling of disasters and crises in law"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Debate course with media law content",
+        "merged": [
+          "(SOT82505) Debate course with media law content",
+          "(SOT82521) Debate course with media law content"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Media Law and Social Media",
+        "merged": [
+          "(SOT825110) Media Law and Social Media",
+          "(SOT82530) Media Law and Social Media"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:03:51.563Z",
+    "request": [
+      [
+        "(POL62500) The Ethics and Politics of Existential Global Risks (Part 2)",
+        "(POL62500) The Ethics and Politics of Existential Global Risks (Seminar 1 + 2)"
+      ],
+      [
+        "(POL64100) Political Economy Using Game Theory",
+        "(SOT86411) Field Seminar in Political Economy"
+      ],
+      [
+        "(POL64101) The Politics of Finance and Debt",
+        "PhD - Politics of Finance"
+      ],
+      [
+        "(POL70001) Course in Contemporary History",
+        "(POL70001) Elementary course Contemporary History",
+        "(POL70001) Introduction Into Contemporary History",
+        "(POL70001) Introduction to Contemporary History",
+        "(POL70002) Seminar in Contemporary History",
+        "(POL70007, POL70008) Seminar in International Relations",
+        "(POL70007, POL70008, POL70024) War in the 20th century",
+        "(POL70013) M.A. Seminar in Contemporary History A",
+        "(POL70013) Master Course in Contemporary History",
+        "(POL70016, POL70019) Master Course in International Relations"
+      ],
+      [
+        "(POL70005, POL70009) Political Systems - An introductory course",
+        "(POL70009, POL0005, POL70024) Seminar in Political System"
+      ],
+      [
+        "(POL70006, POL70010, POL70024) Seminar in Political Theory: Political Theory in the 20th Century I",
+        "(POL70006, POL70010, POL70024) Seminar in Political Theory: Political Theory in the 20th Century II"
+      ],
+      [
+        "(POL70007, POL70008) Seminar in International Relations",
+        "(POL70012) International Relations"
+      ],
+      [
+        "(POL70007, POL70008) Seminar in International Relations",
+        "(POL70007, POL70008, POL70024) Seminar in International Relations: The European Union",
+        "(POL70012) International Relations",
+        "(POL70016, POL70019) Master Course in International Relations"
+      ],
+      [
+        "(POL70012) Introduction to Political Theory",
+        "(POL70012, POL70075) Introduction to Political Systems"
+      ],
+      [
+        "(POL70015, POL70018) Master course in political systems",
+        "(POL70018, POL70015) Master Course in Political System",
+        "Seminar in Political System"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "(POL62500) The Ethics and Politics of Existential Global Risks (Part 2)",
+        "merged": [
+          "(POL62500) The Ethics and Politics of Existential Global Risks (Part 2)",
+          "(POL62500) The Ethics and Politics of Existential Global Risks (Seminar 1 + 2)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL70001) Course in Contemporary History",
+        "merged": [
+          "(POL70001) Course in Contemporary History",
+          "(POL70001) Elementary course Contemporary History",
+          "(POL70001) Introduction Into Contemporary History",
+          "(POL70001) Introduction to Contemporary History"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL70007, POL70008) Seminar in International Relations",
+        "merged": [
+          "(POL70007, POL70008) Seminar in International Relations",
+          "(POL70012) International Relations"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL70007, POL70008) Seminar in International Relations",
+        "merged": [
+          "(POL70007, POL70008) Seminar in International Relations",
+          "(POL70007, POL70008, POL70024) Seminar in International Relations: The European Union",
+          "(POL70012) International Relations",
+          "(POL70016, POL70019) Master Course in International Relations"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL70012) Introduction to Political Theory",
+        "merged": [
+          "(POL70012) Introduction to Political Theory",
+          "(POL70012, POL70075) Introduction to Political Systems"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL70015, POL70018) Master course in political systems",
+        "merged": [
+          "(POL70015, POL70018) Master course in political systems",
+          "(POL70018, POL70015) Master Course in Political System",
+          "Seminar in Political System"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:03:44.039Z",
+    "request": [
+      [
+        "(POL40100) Introduction to Politics and Technology",
+        "(POL40100) Introduction to Politics and Technology - Exercise"
+      ],
+      [
+        "(POL40200) Advanced Qualitative Methods - Lecture",
+        "(SOT86402) Qualitative Methods"
+      ],
+      [
+        "(POL40300) Computational Methods (Exercise)",
+        "(POL40300) Computational Methods (Lecture)"
+      ],
+      [
+        "(POL60102) Science Communication and Public Engagement",
+        "Science Communication"
+      ],
+      [
+        "(POL60402) Technology and Development",
+        "(SOT82101) Digitalisation and Democracy"
+      ],
+      [
+        "(POL60901) Advanced Quantitative Methods in Conflict Studies",
+        "(SOT86901) Advanced Quantitative Methods"
+      ],
+      [
+        "(POL61500) Global Governance, Ethics, and Technology (Seminar 1 + 2)",
+        "POL61500) Global Governance, Ethics, and Technology (Seminar 1)"
+      ],
+      [
+        "(POL62100) Civil Society and Technological Change (- Seminar 1)",
+        "(POL62100) Civil Society and Technological Change (- Seminar 2)"
+      ],
+      [
+        "(POL62400) Environment and Climate Transformation (-Seminar 2)",
+        "(POL62400) Environment and Climate Transformation - Seminar 1"
+      ],
+      [
+        "(POL62500) The Ethics and Politics of Existential Global Risks (Part 2)",
+        "(POL62500) The Ethics and Politics of Existential Global Risks (Seminar 1 + 2)"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "(POL40100) Introduction to Politics and Technology",
+        "merged": [
+          "(POL40100) Introduction to Politics and Technology",
+          "(POL40100) Introduction to Politics and Technology - Exercise"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL40300) Computational Methods",
+        "merged": [
+          "(POL40300) Computational Methods (Exercise)",
+          "(POL40300) Computational Methods (Lecture)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL60102) Science Communication",
+        "merged": [
+          "(POL60102) Science Communication and Public Engagement",
+          "Science Communication"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL61500) Global Governance, Ethics, and Technology",
+        "merged": [
+          "(POL61500) Global Governance, Ethics, and Technology (Seminar 1 + 2)",
+          "(POL61500) Global Governance, Ethics, and Technology (Seminar 1)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL62100) Civil Society and Technological Change",
+        "merged": [
+          "(POL62100) Civil Society and Technological Change (- Seminar 1)",
+          "(POL62100) Civil Society and Technological Change (- Seminar 2)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL62400) Environment and Climate Transformation",
+        "merged": [
+          "(POL62400) Environment and Climate Transformation (-Seminar 2)",
+          "(POL62400) Environment and Climate Transformation - Seminar 1"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL62500) The Ethics and Politics of Existential Global Risks",
+        "merged": [
+          "(POL62500) The Ethics and Politics of Existential Global Risks (Part 2)",
+          "(POL62500) The Ethics and Politics of Existential Global Risks (Seminar 1 + 2)"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:03:37.960Z",
+    "request": [
+      [
+        "(POL10900) International Relations - fundamentals Exercise",
+        "(POL10900) International Relations - fundamentals Lecture"
+      ],
+      [
+        "(POL11000 DE) International Relations - Advanced - Lecture (International Political Economy - German)",
+        "(POL11000 DE) International Relations - Advanced Exercise (International Political Economy - German)",
+        "(POL11000 EN) International Relations - Advanced  Lecture (International Political Economy - English)",
+        "(POL11000 EN) International Relations - Advanced -Exercise (International Political Economy - English)"
+      ],
+      [
+        "(POL15100) Mathematics fpr Political Science",
+        "(POL15100) Mathematics vor Political Science",
+        "(POL20401) Political Data Science - Project"
+      ],
+      [
+        "(POL15200) Introduction to statistical learning",
+        "Introduction to statistical learning - (POL15200) Exercise"
+      ],
+      [
+        "(POL20100) Programming for Social Scientists",
+        "(POL20200) Computational Social Science",
+        "(POL20800) Introduction in R for Social Scientists",
+        "Seminar Computational Social Science (IN0014, IN2107, IN4875)"
+      ],
+      [
+        "(POL22500) Comparative Political Economy",
+        "(POL64100) Game Theory for Political Scientists"
+      ],
+      [
+        "(POL23100) Politics of Sustainability - Seminar 1",
+        "(POL23100) Politics of Sustainability - Seminar 2"
+      ],
+      [
+        "(POL23400) Energy Transition in Germany and Europe",
+        "(POL62200) Energy Transformation (Seminar 1 + 2)"
+      ],
+      [
+        "(POL24410)  Research Design - International Relations (Political Economy)",
+        "(POL24410) Research Design - International Relations",
+        "(SOT82300) Advanced Topics in International Political Economy"
+      ],
+      [
+        "(POL25100) Law of digitisation in public administration (E-Government)",
+        "(POL251001) Crash Course - Law of digitisation in public administration (E-Government)",
+        "(SOT825100) Law of Digitisation in Public Administration (E-Government)",
+        "Law of digitisation in public administration (E-Government)"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "(POL10900) International Relations - fundamentals",
+        "merged": [
+          "(POL10900) International Relations - fundamentals Exercise",
+          "(POL10900) International Relations - fundamentals Lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL11000 DE) International Relations - Advanced (International Political Economy - German)",
+        "merged": [
+          "(POL11000 DE) International Relations - Advanced - Lecture (International Political Economy - German)",
+          "(POL11000 DE) International Relations - Advanced Exercise (International Political Economy - German)",
+          "(POL11000 EN) International Relations - Advanced  Lecture (International Political Economy - English)",
+          "(POL11000 EN) International Relations - Advanced -Exercise (International Political Economy - English)"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL15200) Introduction to statistical learning",
+        "merged": [
+          "(POL15200) Introduction to statistical learning",
+          "Introduction to statistical learning - (POL15200) Exercise"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL24410) Research Design - International Relations",
+        "merged": [
+          "(POL24410)  Research Design - International Relations (Political Economy)",
+          "(POL24410) Research Design - International Relations",
+          "(SOT82300) Advanced Topics in International Political Economy"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL25100) Law of digitisation in public administration (E-Government)",
+        "merged": [
+          "(POL25100) Law of digitisation in public administration (E-Government)",
+          "(POL251001) Crash Course - Law of digitisation in public administration (E-Government)",
+          "(SOT825100) Law of Digitisation in Public Administration (E-Government)",
+          "Law of digitisation in public administration (E-Government)"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:03:30.696Z",
+    "request": [
+      [
+        "(Cooperative) Design Project",
+        "Practical course Process Design Project I",
+        "Process Design Project (Practical and Exercise)"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [
+        "(POL10101) Introduction to the Law of the Digital Society",
+        "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+      ],
+      [
+        "(POL10101) Introduction to the Law of the Digital Society",
+        "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+      ],
+      [
+        "(POL10200) Methods of Complex Systems - Lecture",
+        "(POL10200) Methods of Empirical Social Research - Exercise",
+        "(SOT86055) Methods of Social Network Analysis -lecture"
+      ],
+      [
+        "(POL10300) Introduction to Political Theory",
+        "(POL10400) Political Theory - Advanced",
+        "(POL10400) Political Theory - Advanced (Group A)",
+        "Introduction to Political Theory"
+      ],
+      [
+        "(POL10300) Introduction to Political Theory",
+        "(POL10400 Sem.3) Political Theory - Advanced:"
+      ],
+      [
+        "(POL10500) Comparative Politics 1 (Lecture)",
+        "(POL10800) Policy Analysis - Advanced - Lecture",
+        "(SOT86611) Sustainability Politics and Policy"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "(Cooperative) Design Project",
+        "merged": [
+          "(Cooperative) Design Project",
+          "Practical course Process Design Project I",
+          "Process Design Project (Practical and Exercise)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82531) Legal Principles of Artificial Intelligence"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(POL10101) Introduction to the Law of the Digital Society",
+        "merged": [
+          "(POL10101) Introduction to the Law of the Digital Society",
+          "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10101) Introduction to the Law of the Digital Society",
+        "merged": [
+          "(POL10101) Introduction to the Law of the Digital Society",
+          "(SOT82523) Introduction to the Law of the Digital Society -Part 2"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10200) Methods of Complex Systems",
+        "merged": [
+          "(POL10200) Methods of Complex Systems - Lecture",
+          "(POL10200) Methods of Empirical Social Research - Exercise",
+          "(SOT86055) Methods of Social Network Analysis -lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10300) Introduction to Political Theory",
+        "merged": [
+          "(POL10300) Introduction to Political Theory",
+          "(POL10400) Political Theory - Advanced",
+          "(POL10400) Political Theory - Advanced (Group A)",
+          "Introduction to Political Theory"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(POL10300) Introduction to Political Theory",
+        "merged": [
+          "(POL10300) Introduction to Political Theory",
+          "(POL10400 Sem.3) Political Theory - Advanced:"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T07:01:10.876Z",
+    "request": [
+      [
+        "sustainable infrastructure planing exercise",
+        "sustainable infrastructure planing lecture"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [
+        "understanding historic building structures of the pre-industrial age I – theory",
+        "understanding historic building structures of the pre-industrial age II – practical seminar"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "sustainable infrastructure planing",
+        "merged": [
+          "sustainable infrastructure planing exercise",
+          "sustainable infrastructure planing lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T06:59:54.482Z",
+    "request": [
+      [
+        "sustainable infrastructure planing exercise",
+        "sustainable infrastructure planing lecture"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [
+        "understanding historic building structures of the pre-industrial age I – theory",
+        "understanding historic building structures of the pre-industrial age II – practical seminar"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "sustainable infrastructure planing",
+        "merged": [
+          "sustainable infrastructure planing exercise",
+          "sustainable infrastructure planing lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T06:45:54.020Z",
+    "request": [
+      [
+        "sustainable infrastructure planing exercise",
+        "sustainable infrastructure planing lecture"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [
+        "understanding historic building structures of the pre-industrial age I – theory",
+        "understanding historic building structures of the pre-industrial age II – practical seminar"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "sustainable infrastructure planing",
+        "merged": [
+          "sustainable infrastructure planing exercise",
+          "sustainable infrastructure planing lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82504, SOT82518) The Right of Data Use in Germany and Europe",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82500, SOT82519) Legal issues of the use of artificial intelligence",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T06:30:37.840Z",
+    "request": [
+      [
+        "sustainable infrastructure planing exercise",
+        "sustainable infrastructure planing lecture"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [
+        "understanding historic building structures of the pre-industrial age I – theory",
+        "understanding historic building structures of the pre-industrial age II – practical seminar"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "sustainable infrastructure planing",
+        "merged": [
+          "sustainable infrastructure planing exercise",
+          "sustainable infrastructure planing lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-03T06:17:16.877Z",
+    "request": [
+      [
+        "sustainable infrastructure planing exercise",
+        "sustainable infrastructure planing lecture"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82531) Legal Principles of Artificial Intelligence"
+      ],
+      [
+        "(Introduction to) Renewables Utilization (Exercise)",
+        "Basics Renewables Utilization (Tutorial)"
+      ],
+      [
+        "understanding historic building structures of the pre-industrial age I – theory",
+        "understanding historic building structures of the pre-industrial age II – practical seminar"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "sustainable infrastructure planing",
+        "merged": [
+          "sustainable infrastructure planing exercise",
+          "sustainable infrastructure planing lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "The Right of Data Use in Germany and Europe (IN0014, IN2107, SOT82504, SOT82518)",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      }
+    ]
+  },
+  {
     "timestamp": "2025-02-28T14:48:04.245Z",
     "request": [
       [

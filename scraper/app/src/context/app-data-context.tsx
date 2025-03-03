@@ -173,6 +173,15 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
           initial
       } = JSON.parse(event.data);
       switch (action) {
+        case "aiProgressTotal":
+          setTotalData(data.total);
+          setAnalyzedData(0);
+          break;
+
+        case "aiProgressUpdate":
+          console.log(data)
+          setAnalyzedData(data.processed);
+          break;
         case "updateLogs":
           console.log(data)
 

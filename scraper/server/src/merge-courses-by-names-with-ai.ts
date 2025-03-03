@@ -8,7 +8,7 @@ import { WebSocketServer } from "ws";
 
 dotenv.config();
 
-type AiResponse = {
+export type AiResponse = {
   match: boolean;
   name: string;
   merged: string[];
@@ -35,13 +35,10 @@ const logRequestResponse = (
       logs = JSON.parse(fileContent);
     }
   }
-  // Add new log entry
   logs.unshift(logEntry); // Add to beginning of array
 
-  // Write logs to file
   fs.writeFileSync(logFilePath, JSON.stringify(logs, null, 2));
 
-  // Broadcast to WebSocket clients if wss is provided
   if (wss) {
     wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
