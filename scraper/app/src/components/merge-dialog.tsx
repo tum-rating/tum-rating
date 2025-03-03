@@ -34,7 +34,8 @@ const METHODS_SOURCE_MAP = [
 ];
 
 const MergeDialog = (props: PropsWithChildren) => {
-  const { files, keySimilarityMerging, keySimilarityMergingAi } = useContext(AppDataContext)!;
+  const { files, keySimilarityMerging, keySimilarityMergingAi } =
+    useContext(AppDataContext)!;
   const [open, setOpen] = useState(false);
   const [method, setMethod] = useState<string | undefined>();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -54,17 +55,17 @@ const MergeDialog = (props: PropsWithChildren) => {
     );
   };
 
-const startMerging = async () => {
+  const startMerging = async () => {
     if (!method) return;
     if (!customSuffix) return;
 
     if (method === "key-similarity") {
-        keySimilarityMerging(selectedItems, customSuffix);
+      keySimilarityMerging(selectedItems, customSuffix);
     } else if (method === "key-similarity-ai") {
-        keySimilarityMergingAi(selectedItems, customSuffix);
+      keySimilarityMergingAi(selectedItems, customSuffix);
     }
     setOpen(false);
-};
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

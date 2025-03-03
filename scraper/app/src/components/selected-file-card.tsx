@@ -16,7 +16,6 @@ const SelectedFileCard = () => {
     // Remove aiProgress since it's unused
     totalData,
     setTotalData,
-    setAnalyzedData,
     analyzedData,
   } = useContext(AppDataContext)!;
 
@@ -31,7 +30,8 @@ const SelectedFileCard = () => {
   }, [selectedFile, isAiWorking]);
 
   // Calculate progress percentage
-  const progressPercentage = totalData > 0 ? (analyzedData / totalData) * 100 : 0;
+  const progressPercentage =
+    totalData > 0 ? (analyzedData / totalData) * 100 : 0;
 
   if (!selectedFile) {
     return <div>No file selected</div>;
@@ -109,9 +109,9 @@ const SelectedFileCard = () => {
             </div>
             {isAiWorking && (
               <div className="mt-4">
-                {/*<ProgressBar progress={progressPercentage} className="mb-2" />*/}
                 <p className="text-sm">
-                  Analyzed: {analyzedData} / {totalData} ({Math.round(progressPercentage)}%)
+                  Analyzed: {analyzedData} / {totalData} (
+                  {progressPercentage.toFixed(2)}%)
                 </p>
               </div>
             )}

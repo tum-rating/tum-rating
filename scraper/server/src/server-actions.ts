@@ -64,50 +64,46 @@ const keySimilarityMerging = async ({filesToMerge = [], ws, wss, suffix}: FetchP
     ws.send(JSON.stringify({action: 'newFile', name: `${suffix}-merged${fileConfig.extension}`}));
     broadcastNewFile(wss, `merged-${suffix}${fileConfig.extension}`);
 }
-
 const finishKeySimilarityMerging = async ({filesToMerge = [], ws, wss, suffix}: FetchParams) => {
     const keysToRemove = ["acceptedCount", "rejectedCount", "notResolvedCount"];
-    if (!suffix) {
-        suffix = "merged" + new Date().getTime();
-    }
+    suffix = suffix || `merged${Date.now()}`;
     const fileConfig = serverFilesystemConfigFilesMap['mrozon-rating-data'];
     const filePath = path.join(serverFilesystemConfig.DIRECTORY, `${suffix}-finalized-merge${fileConfig.extension}`);
+
     broadcastFetchStatus(wss, `merged-${suffix}`, true);
     broadcastFetchStatus(wss, filePath, true);
-    let allCourses = [];
-    for (const file of filesToMerge) {
-        let filePath = path.join(serverFilesystemConfig.DIRECTORY, `${file}`);
-        const content = fs.readFileSync(filePath, 'utf-8');
-        const data = JSON.parse(content);
-        allCourses.push(...data);
-    }
-    const finalizedData = []
-    for (let i = 0; i < allCourses.length; i++) {
-        let item = allCourses[i];
-        for (let key of keysToRemove) {
+
+    const allCourses = filesToMerge.flatMap(file => {
+        const content = fs.readFileSync(path.join(serverFilesystemConfig.DIRECTORY, file), 'utf-8');
+        return JSON.parse(content);
+    });
+
+    const finalizedData = [];
+
+    for (const item of allCourses) {
+        for (const key of keysToRemove) {
             delete item[key];
         }
-        if (item.merged.length) {
-            const mergedItems = []
-            for (let j = 0; j < item.merged.length; j++) {
-                let mergedItem = item.merged[j];
+        if (item.merged?.length) {
+            item.merged = item.merged.filter(mergedItem => {
                 if (mergedItem.accepted) {
-                    mergedItems.push(mergedItem);
+                    return true;
                 } else {
                     delete mergedItem.accepted;
-                    if (mergedItem.rejectedId) {
-                        mergedItem.rejectedId.push(item.id)
-                    } else {
-                        mergedItem.rejectedId = [item.id]
-                    }
+                    mergedItem.rejectedId = mergedItem.rejectedId || [];
+                    mergedItem.rejectedId.push(item.id);
+                    item.rejectedId = item.rejectedId || [];
+                    item.rejectedId.push(mergedItem.id);
                     finalizedData.push(mergedItem);
+                    return false;
                 }
-            }
-            item.merged = mergedItems
+            });
         }
         finalizedData.push(item);
     }
+
     fs.writeFileSync(filePath, JSON.stringify(finalizedData, null, 2), 'utf-8');
+
     broadcastFetchStatus(wss, `merged-${suffix}`, false);
     broadcastFetchStatus(wss, filePath, false);
     ws.send(JSON.stringify({action: 'newFile', name: `${suffix}-finalized-merge${fileConfig.extension}`}));
@@ -219,7 +215,7 @@ const batchMergeCoursesByNamesWithAi = async (
         if (client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify({
                 action: "aiProgressTotal",
-                data: { total: coursesSetWithoutEmpty.length }
+                data: {total: coursesSetWithoutEmpty.length}
             }));
         }
     });
@@ -242,7 +238,7 @@ const batchMergeCoursesByNamesWithAi = async (
                 if (client.readyState === WebSocket.OPEN) {
                     client.send(JSON.stringify({
                         action: "aiProgressUpdate",
-                        data: { processed: processedCount }
+                        data: {processed: processedCount}
                     }));
                 }
             });
@@ -296,6 +292,20 @@ const batchMergeCoursesByNamesWithAi = async (
                 const diffs = compare(fileContent[originalIndex], item);
                 fileContent[originalIndex] = applyPatch(fileContent[originalIndex], diffs).newDocument;
             }
+        } else {
+            const item = fileContent[originalIndex];
+            if (item) {
+                let acceptedCount = 0;
+                let rejectedCount = data.merged.length
+                for (let el of item.merged) {
+                    el.accepted = false;
+                }
+                item.acceptedCount = acceptedCount;
+                item.rejectedCount = rejectedCount;
+                item.notResolvedCount = 0;
+                fileContent[originalIndex] = item;
+            }
+
         }
     }
 
@@ -306,7 +316,7 @@ const batchMergeCoursesByNamesWithAi = async (
     const message = JSON.stringify({
         action: "fileUpdated",
         fileName,
-        updatedItems: allMergedData
+        updatedItems: fileContent
     });
 
     wss.clients.forEach((client: WebSocket) => {

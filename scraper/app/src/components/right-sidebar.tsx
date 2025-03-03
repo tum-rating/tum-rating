@@ -63,7 +63,6 @@ useEffect(() => {
                     let aValue = a[key as keyof FetchedComputedCourse];
                     let bValue = b[key as keyof FetchedComputedCourse];
 
-                    // Treat undefined as 0 for specific keys
                     if (['acceptedCount', 'rejectedCount', 'notResolvedCount'].includes(key)) {
                         aValue = aValue ?? 0;
                         bValue = bValue ?? 0;
@@ -97,7 +96,6 @@ useEffect(() => {
 
     const getRandomWidth = () => `${Math.floor(Math.random() * (75 - 50 + 1) + 50)}%`;
 
-    console.log(filteredCourses)
     return (
         <>
             <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredCourses.length} sortOptions={sortOptions} />

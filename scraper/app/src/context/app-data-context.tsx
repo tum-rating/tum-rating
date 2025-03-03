@@ -169,8 +169,9 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         selectedFileExists,
         userSelectedFile,
         updatedItem,
+        updatedItems,
         fileName,
-          initial
+        initial,
       } = JSON.parse(event.data);
       switch (action) {
         case "aiProgressTotal":
@@ -179,14 +180,14 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
           break;
 
         case "aiProgressUpdate":
-          console.log(data)
+          console.log(data);
           setAnalyzedData(data.processed);
           break;
         case "updateLogs":
-          console.log(data)
+          console.log(data);
 
           setAiLogs(data);
-          if(!initial){
+          if (!initial) {
             setUnseenLogsCount((prev) => prev + 1);
           }
           break;
@@ -263,17 +264,27 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
           fetchFiles();
           break;
         case "fileUpdated": {
-          const fileNameWithoutExtension = fileName.slice(
-            0,
-            fileName.lastIndexOf("."),
-          );
-          const currentFilesContent =
-            filesContentRef.current[fileNameWithoutExtension];
-          if (!currentFilesContent) return;
-          const updatedFileContent = [...currentFilesContent];
-          updatedFileContent[updatedItem.index] = updatedItem.updatedItem;
-          filesContentRef.current[fileNameWithoutExtension] =
-            updatedFileContent;
+          if (updatedItems) {
+            const fileNameWithoutExtension = fileName.slice(
+                0,
+                fileName.lastIndexOf("."),
+            );
+            console.log(updatedItems)
+            filesContentRef.current[fileNameWithoutExtension] =
+                updatedItems;
+          } else {
+            const fileNameWithoutExtension = fileName.slice(
+              0,
+              fileName.lastIndexOf("."),
+            );
+            const currentFilesContent =
+              filesContentRef.current[fileNameWithoutExtension];
+            if (!currentFilesContent) return;
+            const updatedFileContent = [...currentFilesContent];
+            updatedFileContent[updatedItem.index] = updatedItem.updatedItem;
+            filesContentRef.current[fileNameWithoutExtension] =
+              updatedFileContent;
+          }
           break;
         }
         default:
@@ -502,7 +513,6 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
       const coursesSets = filesContentRef.current[fileNameWithoutExtension].map(
         (course) => course.merged.map((subCourse) => subCourse.name),
       );
-      console.log(coursesSets);
       socketRef.current.send(
         JSON.stringify({
           action: "batchMergeCoursesByNamesWithAi",
@@ -518,9 +528,6 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
     item: FetchedCourse,
   ): Promise<Record<string, unknown>> => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-      console.log(selectedFile);
-      console.log(item);
-      console.log(files);
       const fileNameWithoutExtension = selectedFile.name.slice(
         0,
         selectedFile.name.lastIndexOf("."),
@@ -528,7 +535,6 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
       const selectedFileContent =
         filesContentRef.current[fileNameWithoutExtension];
       if (!selectedFileContent) return;
-      console.log(selectedFileContent);
 
       const originalCourseIndex = selectedFileContent.findIndex(
         (x) => x.id === item.id,

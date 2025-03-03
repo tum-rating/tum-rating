@@ -28,6 +28,9 @@ type FetchedCourse = {
     similarity: number;
     codes?: string[];
     accepted?: boolean | null;
+    acceptedCount?: number;
+    rejectedCount?: number;
+    notResolvedCount?: number;
 }
 
 type FetchedData = {

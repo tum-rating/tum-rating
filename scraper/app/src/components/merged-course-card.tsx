@@ -89,7 +89,6 @@ const MergedCourseCard = ({
         // }
     };
 
-    console.log(isAiWorking)
     if (!internalCourse) return <div>No course selected</div>;
 
     return (

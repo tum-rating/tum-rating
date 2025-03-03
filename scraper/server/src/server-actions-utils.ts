@@ -113,13 +113,14 @@ function keySimilarityCore(
 
         if (similarRecords.length > 0) {
             mergedArray.push({
+                ...item,
                 name: item[key],
                 merged: [{
                     ...item,
                     similarity: 0,
                     codes: Array.from(currentCodes),
                     offeredInSemesters: Array.from(offeredInSemesters),
-                }, ...similarRecords],
+                }, ...similarRecords, ...item.merged],
                 codes: Array.from(currentCodes),
                 offeredInSemesters: Array.from(offeredInSemesters),
                 professor: item.professor,
@@ -129,9 +130,9 @@ function keySimilarityCore(
             });
         } else {
             mergedArray.push({
+                merged: [],
                 ...item,
                 codes: Array.from(currentCodes),
-                merged: [],
             });
         }
         progressCallback?.(index + 1);
