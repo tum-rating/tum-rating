@@ -21,14 +21,13 @@ const MergedCourseCard = ({
         FetchedComputedCourse | undefined
     >(undefined);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [aiResponse, setAiResponse] = useState<any>(null);
+
     const {
         saveUserEditedCourse,
         selectedFile,
         selectCourse,
         coursesNamesMergingAi,
-        isAiWorking
+        aiWorkers
     } = useAppData();
 
     useEffect(() => {
@@ -91,6 +90,7 @@ const MergedCourseCard = ({
 
     if (!internalCourse) return <div>No course selected</div>;
 
+    const fileAiWorker = aiWorkers[selectedFile.name];
     return (
         <div className="relative z-10 w-full h-full flex justify-center items-center gap-4">
             <ScrollArea className="w-full h-screen">
@@ -192,9 +192,9 @@ const MergedCourseCard = ({
                             <Button
                                 variant={"ghost"}
                                 onClick={handleMergeWithAi}
-                                disabled={isAiWorking}
+                                disabled={!!fileAiWorker}
                             >
-                                {isAiWorking ? "Merging..." : "Merge with AI 🪄"}
+                                {fileAiWorker ? "Merging..." : "Merge with AI 🪄"}
                             </Button>
                         )}
                         {aiResponse && (
@@ -233,19 +233,19 @@ const MergedCourseCard = ({
                             <Button
                                 variant="outline"
                                 tooltip="Previous"
-                                loading={isAiWorking}
+                                loading={!!fileAiWorker}
                             >
                                 <ArrowLeft/>
                             </Button>
                             <Button
                                 variant="outline"
                                 tooltip="Next"
-                                loading={isAiWorking}
+                                loading={!!fileAiWorker}
                             >
                                 <ArrowRight/>
                             </Button>
                             <Button
-                                loading={isAiWorking}
+                                loading={!!fileAiWorker}
                                 onClick={handleSave}
                             >
                                 Save

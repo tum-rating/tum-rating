@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { AppDataContext } from "@/context/app-data-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -12,26 +12,9 @@ const SelectedFileCard = () => {
     filesContent,
     finishKeySimilarityMerging,
     coursesNamesMergingAiForWholeFile,
-    isAiWorking,
-    // Remove aiProgress since it's unused
-    totalData,
-    setTotalData,
-    analyzedData,
+      aiWorkers,
   } = useContext(AppDataContext)!;
 
-  useEffect(() => {
-    if (selectedFile && isAiWorking) {
-      // Update totalData and analyzedData based on the selected file
-      const fileNameWithoutExtension = selectedFile.name.replace(/\.json$/, "");
-      const total = filesContent[fileNameWithoutExtension]?.length || 0;
-      setTotalData(total);
-      // setAnalyzedData(0); // Reset analyzed data
-    }
-  }, [selectedFile, isAiWorking]);
-
-  // Calculate progress percentage
-  const progressPercentage =
-    totalData > 0 ? (analyzedData / totalData) * 100 : 0;
 
   if (!selectedFile) {
     return <div>No file selected</div>;
@@ -59,6 +42,9 @@ const SelectedFileCard = () => {
       )
     : false;
 
+  const fileAiWorker = aiWorkers[selectedFile.name];
+
+
   return (
     <div className="relative z-10 w-full h-full flex justify-center items-center gap-4">
       <ScrollArea className="w-full h-screen">
@@ -78,13 +64,13 @@ const SelectedFileCard = () => {
           <div className="mb-4">
             <p className="text-sm font-semibold">Actions:</p>
             <div className="flex gap-1">
-              <Button onClick={handlePreview} loading={isAiWorking}>
+              <Button onClick={handlePreview} loading={!!fileAiWorker}>
                 Preview
               </Button>
               <Button
                 variant="destructive"
                 onClick={handleDelete}
-                loading={isAiWorking}
+                loading={!!fileAiWorker}
               >
                 Delete File
               </Button>
@@ -93,7 +79,7 @@ const SelectedFileCard = () => {
                   onClick={() =>
                     finishKeySimilarityMerging([selectedFile.name], "merged")
                   }
-                  loading={isAiWorking}
+                  loading={!!fileAiWorker}
                 >
                   Finish merging
                 </Button>
@@ -101,17 +87,21 @@ const SelectedFileCard = () => {
               {isMergingFile && (
                 <Button
                   onClick={() => coursesNamesMergingAiForWholeFile()}
-                  loading={isAiWorking}
+                  loading={!!fileAiWorker}
                 >
                   Auto accept/decline merged sub-courses
                 </Button>
               )}
             </div>
-            {isAiWorking && (
+            {!!fileAiWorker && (
               <div className="mt-4">
                 <p className="text-sm">
-                  Analyzed: {analyzedData} / {totalData} (
-                  {progressPercentage.toFixed(2)}%)
+                    {fileAiWorker.status === "in-progress"
+                        ? "Merging in progress"
+                        : "Merging finished"}
+                </p>
+                <p className="text-sm">
+                  {fileAiWorker.progress.toFixed(2)}%)
                 </p>
               </div>
             )}

@@ -63,19 +63,16 @@ interface AppDataContextType {
   serverFilesystemConfigFilesMap: Record<string, unknown>;
   getAndUseFileContent: (file: FileData) => Promise<FetchedCourse[]>;
   //------------------- ai things
-  aiLogs: any[];
-  setAiLogs: (logs: any[]) => void;
-  isAiWorking: boolean;
-  setIsAiWorking: (isWorking: boolean) => void;
-  unseenLogsCount: number;
-  setUnseenLogsCount: (count: number) => void;
-
-  aiProgress: number;
-  setAiProgress: (progress: number) => void;
-  totalData: number;
-  setTotalData: (total: number) => void;
-  analyzedData: number;
-  setAnalyzedData: (analyzed: number) => void;
+  aiWorkers: Record<
+    string,
+    {
+      userId: string;
+      progress: number;
+      startTime: string;
+      status: string;
+      logs: any[];
+    }
+  >;
 }
 
 const AppDataContext = createContext<AppDataContextType | undefined>(undefined);
@@ -83,9 +80,19 @@ const AppDataContext = createContext<AppDataContextType | undefined>(undefined);
 type AppDataContextProps = PropsWithChildren;
 
 const AppDataProvider = ({ children }: AppDataContextProps) => {
-  const [aiProgress, setAiProgress] = useState(0);
-  const [totalData, setTotalData] = useState(0);
-  const [analyzedData, setAnalyzedData] = useState(0);
+  const [aiWorkers, setAiWorkers] = useState<
+    Record<
+      string,
+      {
+        userId: string;
+        progress: number;
+        startTime: string;
+        status: string;
+        logs: any[];
+      }
+    >
+  >({});
+
   //----
   const [files, setFiles] = useState<FileData[]>([]);
   const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
@@ -101,9 +108,6 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
     }
     return userId;
   });
-  const [aiLogs, setAiLogs] = useState<any[]>([]);
-  const [isAiWorking, setIsAiWorking] = useState(false);
-  const [unseenLogsCount, setUnseenLogsCount] = useState(0);
   const [fetchStatus, setFetchStatus] = useState<{ [key: string]: boolean }>(
     {},
   );
@@ -171,38 +175,14 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         updatedItem,
         updatedItems,
         fileName,
-        initial,
       } = JSON.parse(event.data);
       switch (action) {
-        case "aiProgressTotal":
-          setTotalData(data.total);
-          setAnalyzedData(0);
-          break;
-
-        case "aiProgressUpdate":
-          console.log(data);
-          setAnalyzedData(data.processed);
-          break;
-        case "updateLogs":
-          console.log(data);
-
-          setAiLogs(data);
-          if (!initial) {
-            setUnseenLogsCount((prev) => prev + 1);
-          }
-          break;
-        case "aiRequestStarted":
-          setIsAiWorking(true);
-          break;
-        case "aiRequestFinished":
-          setIsAiWorking(false);
-          break;
-
         case "coursesNamesMergingAi":
-          console.log(data);
-
           break;
-
+        case "updateAiWorkers":
+          console.log(data);
+          setAiWorkers(data);
+          break;
         case "setUserId":
           setCurrentUserId(userId);
           break;
@@ -266,12 +246,11 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
         case "fileUpdated": {
           if (updatedItems) {
             const fileNameWithoutExtension = fileName.slice(
-                0,
-                fileName.lastIndexOf("."),
+              0,
+              fileName.lastIndexOf("."),
             );
-            console.log(updatedItems)
-            filesContentRef.current[fileNameWithoutExtension] =
-                updatedItems;
+            console.log(updatedItems);
+            filesContentRef.current[fileNameWithoutExtension] = updatedItems;
           } else {
             const fileNameWithoutExtension = fileName.slice(
               0,
@@ -523,6 +502,18 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
     }
   };
 
+  const updateAiWorkers = (fileName: string, data: any) => {
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      socketRef.current.send(
+        JSON.stringify({
+          action: "updateAiWorkers",
+          fileName,
+          content: data,
+        }),
+      );
+    }
+  };
+
   const coursesNamesMergingAi = async (
     courses: string[],
     item: FetchedCourse,
@@ -585,18 +576,8 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
       serverFilesystemConfig,
       serverFilesystemConfigFilesMap,
       getAndUseFileContent,
-      aiLogs,
-      setAiLogs,
-      isAiWorking,
-      setIsAiWorking,
-      unseenLogsCount,
-      setUnseenLogsCount,
-      aiProgress,
-      setAiProgress,
-      totalData,
-      setTotalData,
-      analyzedData,
-      setAnalyzedData,
+      updateAiWorkers,
+      aiWorkers,
     }),
     [
       files,
@@ -606,14 +587,9 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
       fetchStatus,
       selectedCourse,
       serverFilesystemConfig,
-      aiLogs,
-      isAiWorking,
-      unseenLogsCount,
       serverFilesystemConfigFilesMap,
       filesContentRef.current,
-      aiProgress,
-      totalData,
-      analyzedData,
+      aiWorkers,
     ],
   );
   return (

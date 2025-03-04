@@ -1,11 +1,7 @@
 import WebSocket, { WebSocketServer } from "ws";
 import http from "http";
 import Logger from "./server-logger";
-import {
-  handleReconnection,
-  handleTimeout,
-  validateConnection,
-} from "./websocket-utils";
+import { validateConnection } from "./websocket-utils";
 import {
   batchMergeCoursesByNamesWithAi,
   fetchAndSaveMrozonRatingData,
@@ -38,9 +34,20 @@ interface UserPublicData {
 }
 
 const clients = new Map<string, ExtendedWebSocket>();
+export const aiWorkers: Record<string, { userId: string; progress: number; startTime: string; status: string; logs: any[] }> = {};
 
 let isUpdating = false;
-
+export const broadcastAiWorkers = (wss: WebSocketServer) => {
+  const message = JSON.stringify({
+    action: "updateAiWorkers",
+    data: aiWorkers,
+  });
+  wss.clients.forEach((client: WebSocket) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(message);
+    }
+  });
+};
 const broadcastUsers = (wss: WebSocketServer) => {
   // If already updating, skip this update
 
@@ -60,7 +67,6 @@ const broadcastUsers = (wss: WebSocketServer) => {
       selectedCourse: ws.selectedCourse || null,
     }));
 
-
     // Send update to all clients
     const message = JSON.stringify({ action: "updateUsers", data: userList });
     wss.clients.forEach((client: WebSocket) => {
@@ -72,7 +78,6 @@ const broadcastUsers = (wss: WebSocketServer) => {
     isUpdating = false;
   }
 };
-
 
 export const handleConnection = (
   ws: ExtendedWebSocket,
@@ -90,67 +95,16 @@ export const handleConnection = (
   clients.set(userId, ws);
   Logger.info(`Client connected: ${userId}`);
 
-  // Send initial AI logs
-  try {
-    const aiLogsPath = path.join(__dirname, 'aiLogs.json');
-    let aiLogs = [];
 
-    // Check if file exists and has content
-    if (fs.existsSync(aiLogsPath)) {
-      const fileContent = fs.readFileSync(aiLogsPath, 'utf-8');
-      if (fileContent.trim()) {
-        aiLogs = JSON.parse(fileContent);
-      }
-    } else {
-      // Create file with empty array if it doesn't exist
-      fs.writeFileSync(aiLogsPath, JSON.stringify([], null, 2));
-    }
-
-    ws.send(JSON.stringify({
-      action: 'updateLogs',
-        initial: true,
-      data: aiLogs
-    }));
-  } catch (error) {
-    Logger.error(`Error sending initial AI logs: ${error.message}`);
-    // Send empty array if there's an error
-    ws.send(JSON.stringify({
-      action: 'updateLogs',
-      initial: true,
-      data: []
-    }));
-  }
+  ws.send(JSON.stringify({
+    action: "updateAiWorkers",
+    data: aiWorkers,
+  }));
 
   ws.on("message", (message) => handleMessage(userId, message, wss, ws));
   ws.on("close", () => handleDisconnection(userId, wss));
   ws.on("error", (error) => handleError(userId, error));
 };
-
-const logFilePath = path.join(__dirname, "aiLogs.json");
-
-const broadcastLogs = (wss: WebSocketServer) => {
-  const logs = fs.existsSync(logFilePath)
-    ? JSON.parse(fs.readFileSync(logFilePath, "utf-8"))
-    : [];
-  const message = JSON.stringify({ action: "updateLogs", data: logs });
-  wss.clients.forEach((client: WebSocket) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(message);
-    }
-  });
-};
-const handleInitialConnection = (ws: ExtendedWebSocket) => {
-  try {
-    const aiLogsPath = path.join(__dirname, 'aiLogs.json');
-    const aiLogs = JSON.parse(fs.readFileSync(aiLogsPath, 'utf-8'));
-    ws.send(JSON.stringify({
-      action: 'updateLogs',
-      data: aiLogs
-    }));
-  } catch (error) {
-    Logger.error(`Error sending initial AI logs: ${error.message}`);
-  }
-}
 
 const handleMessage = async (
   userId: string,
@@ -178,13 +132,16 @@ const handleMessage = async (
     } = JSON.parse(message.toString());
     Logger.info(`Received action: ${action}`);
     switch (action) {
-      case "aiProgressTotal":
-        const { total } = JSON.parse(message.toString());
-        ws.send(JSON.stringify({ action: "aiProgressTotal", total }));
-        break;
-      case "aiProgressUpdate":
-        const { processed } = JSON.parse(message.toString());
-        ws.send(JSON.stringify({ action: "aiProgressUpdate", processed }));
+      case "updateAiWorkers":
+        if (fileName && content) {
+          if (aiWorkers[fileName]) {
+            aiWorkers[fileName] = content
+            broadcastAiWorkers(wss);
+            ws.send(JSON.stringify({ action: "success", message: "AI worker updated successfully" }));
+          } else {
+            ws.send(JSON.stringify({ action: "error", message: "AI worker not found" }));
+          }
+        }
         break;
       case "updateItem":
         if (fileName && updatedItem && typeof index === "number" && diffs) {
@@ -253,36 +210,20 @@ const handleMessage = async (
       case "getFiles":
         broadcastFileList(wss, userId);
         break;
-      // case 'getFile':
-      //     if (name) {
-      //         const filePath = path.join(serverFilesystemConfig.DIRECTORY, name);
-      //         if (fs.existsSync(filePath)) {
-      //             const stats = fs.statSync(filePath);
-      //             ws.send(JSON.stringify({
-      //                 action: 'fileContent',
-      //                 data: {
-      //                     name,
-      //                     size: stats.size,
-      //                     lastModified: stats.mtime,
-      //                     id: name.slice(0, name.indexOf("-", name.indexOf("-") + 1))
-      //                 }
-      //             }));
-      //             const user = clients.get(userId);
-      //             if (user) {
-      //                 user.selectedFile = name;
-      //                 broadcastUsers(wss);
-      //             }
-      //         } else {
-      //             ws.send(JSON.stringify({ action: 'error', message: 'File not found' }));
-      //         }
-      //     }
-      //     break;
       case "selectFile":
         if (name) {
           const user = clients.get(userId);
           if (user) {
             user.selectedFile = name;
             broadcastUsers(wss);
+            if (aiWorkers[name]) {
+              ws.send(
+                JSON.stringify({
+                  action: "aiWorkerInfo",
+                  data: aiWorkers[name],
+                }),
+              );
+            }
           }
         }
         break;
@@ -351,17 +292,26 @@ const handleMessage = async (
           await finishKeySimilarityMerging({ filesToMerge, ws, wss, suffix });
         }
         break;
-
       case "batchMergeCoursesByNamesWithAi":
         if (coursesSets && fileName) {
+          const startTime = new Date().toISOString();
+          aiWorkers[fileName] = {
+            userId,
+            progress: 0,
+            startTime,
+            status: "in-progress",
+            logs: [],
+          };
+          broadcastAiWorkers(wss);
           await batchMergeCoursesByNamesWithAi(coursesSets, fileName, wss, ws);
+          aiWorkers[fileName].status = "completed";
+          broadcastAiWorkers(wss);
         }
         break;
-
       case "coursesNamesMergingAi":
         if (content) {
           try {
-            const mergedData = await mergeCoursesByNamesWithAi(content,wss);
+            const mergedData = await mergeCoursesByNamesWithAi(content, wss);
             const filePath = path.join(
               serverFilesystemConfig.DIRECTORY,
               fileName,
@@ -417,7 +367,7 @@ const handleMessage = async (
                 wss.clients.forEach((client: WebSocket) => {
                   if (client.readyState === WebSocket.OPEN) {
                     client.send(message);
-                    broadcastLogs(wss)
+                    broadcastAiWorkers(wss);
                   }
                 });
               } else {

@@ -1,10 +1,9 @@
 import axios from "axios";
 import dotenv from "dotenv";
-import path from "path";
-import fs from "fs";
 import Logger from "./server-logger";
 import { AI_MERGING_RULES } from "./server-actions-config";
 import { WebSocketServer } from "ws";
+import { aiWorkers } from "./websocket-handlers";
 
 dotenv.config();
 
@@ -14,11 +13,10 @@ export type AiResponse = {
   merged: string[];
 };
 
-const logFilePath = path.join(__dirname, "aiLogs.json");
-
 const logRequestResponse = (
   request: string[],
   response: any,
+  fileName: string,
   wss?: WebSocketServer,
 ) => {
   const logEntry = {
@@ -26,30 +24,17 @@ const logRequestResponse = (
     request,
     response,
   };
-  let logs = [];
-  const logFilePath = path.join(__dirname, "aiLogs.json");
-  // Read existing logs
-  if (fs.existsSync(logFilePath)) {
-    const fileContent = fs.readFileSync(logFilePath, "utf-8");
-    if (fileContent) {
-      logs = JSON.parse(fileContent);
-    }
-  }
-  logs.unshift(logEntry); // Add to beginning of array
 
-  fs.writeFileSync(logFilePath, JSON.stringify(logs, null, 2));
-
-  if (wss) {
-    wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(
-          JSON.stringify({
-            action: "updateLogs",
-            data: logs,
-          }),
-        );
-      }
-    });
+  if (aiWorkers[fileName]) {
+    aiWorkers[fileName].logs.unshift(logEntry);
+  } else {
+    aiWorkers[fileName] = {
+      userId: "",
+      progress: 0,
+      startTime: new Date().toISOString(),
+      status: "in-progress",
+      logs: [logEntry],
+    };
   }
 };
 
@@ -99,14 +84,8 @@ Return only the output without reasoning.`;
 const mergeCoursesByNamesWithAi = async (
   courses: string[] | string[][],
   wss?: WebSocketServer,
+  fileName: string
 ): Promise<AiResponse | AiResponse[]> => {
-  if (wss) {
-    wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({ action: "aiRequestStarted" }));
-      }
-    });
-  }
   const isBatch = Array.isArray(courses[0]);
   Logger.info(
     `Processing ${isBatch ? "batch" : "single"} course merge request`,
@@ -144,17 +123,9 @@ const mergeCoursesByNamesWithAi = async (
 
     const aiResponse = JSON.parse(response.data.choices[0].message.content);
 
-    logRequestResponse(courses, aiResponse);
+    logRequestResponse(courses, aiResponse, fileName, wss);
     if (isBatch) {
       Logger.info(`Processed ${(courses as string[][]).length} course sets`);
-    }
-
-    if (wss) {
-      wss.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-          client.send(JSON.stringify({ action: "aiRequestFinished" }));
-        }
-      });
     }
 
     return aiResponse;
