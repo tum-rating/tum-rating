@@ -70,22 +70,7 @@ const MergedCourseCard = ({
 
     const handleMergeWithAi = async () => {
         if (!course?.merged) return;
-        setIsLoading(true);
         await coursesNamesMergingAi([...course.merged.map((x) => x.name)], course);
-        // setAiResponse(response);
-        // setIsLoading(false);
-
-        // if (response?.match) {
-        //   const updatedMerged = internalCourse.merged.map((subCourse) => {
-        //     if (response.merged.includes(subCourse.name)) {
-        //       return { ...subCourse, accepted: true };
-        //     } else {
-        //       return { ...subCourse, accepted: false };
-        //     }
-        //   });
-        //   internalCourse.name = response.name;
-        //   updateInternalCourse("merged", updatedMerged);
-        // }
     };
 
     if (!internalCourse) return <div>No course selected</div>;
@@ -196,16 +181,6 @@ const MergedCourseCard = ({
                             >
                                 {fileAiWorker ? "Merging..." : "Merge with AI 🪄"}
                             </Button>
-                        )}
-                        {aiResponse && (
-                            <div className="mt-2 text-sm">
-                                <strong>AI Response:</strong> {aiResponse.name}
-                                <ul>
-                                    {aiResponse.merged.map((name: string) => (
-                                        <li key={name}>{name}</li>
-                                    ))}
-                                </ul>
-                            </div>
                         )}
                         <div>
                             <Badge

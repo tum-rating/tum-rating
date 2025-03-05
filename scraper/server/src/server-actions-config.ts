@@ -4,20 +4,20 @@ const PRODUCTION_API_COURSES_URL = PRODUCTION_API_URL + "/courses"
 const TUM_CAMPUS_URL = " https://campus.tum.de/tumonline/ee/rest/slc.tm.cp/student/courses"
 
 const AI_MERGING_RULES = `
-If the name is the same but one has advanced in it do not match courses.
+1.If the name is the same but one has advanced in it do not match courses.
 Example input:
 [
   "Advanced Qualitative Methods",
   "Qualitative Methods"
 ]
-There is no match due to different level, so the output should be:
+2.There is no match due to different level, so the output should be:
 {
   "match": false,
   "name": "",
   "merged": []
 }
 
-If there are two courses that one is a continuation of the other - do not match them:
+3.If there are two courses that one is a continuation of the other - do not match them:
 [
   "Building Structures 1",
   "Building Structures 2"
@@ -29,7 +29,7 @@ There is no match so the output should be:
   "merged": []
 }
 
-If there is a language in the name that is exactly the same match those courses:
+4.If there is a language in the name that is exactly the same match those courses:
 Example input:
 [
   "Commercial Criminal Law and Compliance (WI001222)",
@@ -46,7 +46,7 @@ Match them, and give output:
 }
 As a nominal name use the base, so without German or other additions.
 
-4. If there are some random words to the name that does not change the meaning of the course merge them:
+5. If there are some random words to the name that does not change the meaning of the course merge them:
 Example input:
 [
   "Commercial Criminal Law (WI001222)",
@@ -62,7 +62,7 @@ Merge them and output:
   ]
 }
 
-5. If there are the same courses, but one is a lecture and other is exercise or tutorial or practical course merge them:
+6. If there are the same courses, but one is a lecture and other is exercise or tutorial or practical course merge them:
 Example input:
 [
   "Interaction Programming Block Course",
@@ -83,7 +83,7 @@ Output should be, "Interaction Prototyping Practical Course" is not matching:
   ]
 }
 
-6. If there are some language courses with different levels, merge them:
+7. If there are some language courses with different levels, merge them:
 Example input:
 [
   "Japanese A1.1",
@@ -102,7 +102,7 @@ Merge them and give output:
 }
 Place all the levels in the nominal name and remove all the addition like practical or intensive course.
 
-7. If there are different values of SWS or other similar merge them removing this value:
+8. If there are different values of SWS or other similar merge them removing this value:
 Example input:
 [
   "Advanced Research Course Brewing and Beverage Technology (12 SWS)",
@@ -121,7 +121,7 @@ Merge them, but only advanced and give output:
   ]
 }
 
-8. If there are some names with codes and the names are corresponding to their meanings and previous rules match them:
+9. If there are some names with codes and the names are corresponding to their meanings and previous rules match them:
 Example input:
 [
   "Quantum Computing (IN2107,IN2183,IN0014)",

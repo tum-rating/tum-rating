@@ -34,7 +34,16 @@ interface UserPublicData {
 }
 
 const clients = new Map<string, ExtendedWebSocket>();
-export const aiWorkers: Record<string, { userId: string; progress: number; startTime: string; status: string; logs: any[] }> = {};
+export const aiWorkers: Record<
+  string,
+  {
+    userId: string;
+    progress: number;
+    startTime: string;
+    status: string;
+    logs: any[];
+  }
+> = {};
 
 let isUpdating = false;
 export const broadcastAiWorkers = (wss: WebSocketServer) => {
@@ -95,11 +104,12 @@ export const handleConnection = (
   clients.set(userId, ws);
   Logger.info(`Client connected: ${userId}`);
 
-
-  ws.send(JSON.stringify({
-    action: "updateAiWorkers",
-    data: aiWorkers,
-  }));
+  ws.send(
+    JSON.stringify({
+      action: "updateAiWorkers",
+      data: aiWorkers,
+    }),
+  );
 
   ws.on("message", (message) => handleMessage(userId, message, wss, ws));
   ws.on("close", () => handleDisconnection(userId, wss));
@@ -135,11 +145,21 @@ const handleMessage = async (
       case "updateAiWorkers":
         if (fileName && content) {
           if (aiWorkers[fileName]) {
-            aiWorkers[fileName] = content
+            aiWorkers[fileName] = content;
             broadcastAiWorkers(wss);
-            ws.send(JSON.stringify({ action: "success", message: "AI worker updated successfully" }));
+            ws.send(
+              JSON.stringify({
+                action: "success",
+                message: "AI worker updated successfully",
+              }),
+            );
           } else {
-            ws.send(JSON.stringify({ action: "error", message: "AI worker not found" }));
+            ws.send(
+              JSON.stringify({
+                action: "error",
+                message: "AI worker not found",
+              }),
+            );
           }
         }
         break;
@@ -324,7 +344,7 @@ const handleMessage = async (
 
                 let acceptedCount = 0;
                 let rejectedCount = 0;
-                for (let el of item.merged) {
+                for (let el of item.merged || []) {
                   if (mergedData.merged.includes(el.name)) {
                     el.accepted = true;
                     acceptedCount++;

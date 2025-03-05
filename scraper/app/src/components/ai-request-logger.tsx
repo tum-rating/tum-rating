@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import {
   BotIcon as Robot,
@@ -12,6 +10,7 @@ import {
   X,
   XCircle,
 } from "lucide-react";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import useAppData from "@/hooks/useAppData";
 
 type LogEntry = {
@@ -28,7 +27,7 @@ type RequestLog = {
   userId: string;
   progress: number;
   startTime: string;
-  status: "accepted" | "in-progress" | "error";
+  status: "completed" | "in-progress" | "error";
   logs: LogEntry[];
 };
 
@@ -46,12 +45,19 @@ export default function AIRequestLogger() {
   const [isVisible, setIsVisible] = useState(false);
   const [unseenLogsCount, setUnseenLogsCount] = useState(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const logsContainerRef = useRef<HTMLDivElement>(null);
   const { aiWorkers } = useAppData();
+
   useEffect(() => {
     setLogs(aiWorkers);
     setSelectedFile(Object.keys(aiWorkers)[0]);
     setUnseenLogsCount(Object.keys(aiWorkers).length);
-    setIsWorking(aiWorkers && Object.values(aiWorkers).some((worker) => worker.status === "in-progress"));
+    setIsWorking(
+      aiWorkers &&
+        Object.values(aiWorkers).some(
+          (worker) => worker.status === "in-progress",
+        ),
+    );
   }, [aiWorkers]);
 
   const handleButtonClick = () => {
@@ -85,9 +91,16 @@ export default function AIRequestLogger() {
       ),
     ) || [];
 
+  const virtualizer = useVirtualizer({
+    count: filteredLogs.length,
+    getScrollElement: () => logsContainerRef.current,
+    estimateSize: () => 180, // Adjust based on your average log item height
+    overscan: 5,
+  });
+
   const getStatusIcon = (status: RequestLog["status"]) => {
     switch (status) {
-      case "accepted":
+      case "completed":
         return <CheckCircle className="h-5 w-5 text-green-500" />;
       case "in-progress":
         return <Loader2 className="h-5 w-5 text-blue-500 animate-spin" />;
@@ -96,6 +109,54 @@ export default function AIRequestLogger() {
       default:
         return null;
     }
+  };
+
+  const renderLogItem = (log: any, index: number) => {
+    if (!log.merged.length) return null;
+    const baseName = log.merged?.[0] || "";
+    const allCourses = currentLog?.logs[0].request[index] || [];
+    const mergedCourses = new Set(log.merged);
+    const notAddedCourses = allCourses.filter(
+      (course) => !mergedCourses.has(course),
+    );
+
+    return (
+      <div className="rounded-lg border p-4 mb-4 transition-colors duration-200">
+        <div className="flex items-center gap-2 mb-2">
+          {log.match ? (
+            <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+          ) : (
+            <XCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
+          )}
+          <h3 className="text-sm font-semibold text-gray-900">
+            {log.name}
+          </h3>
+        </div>
+        <p className="text-sm text-gray-500 mb-2">
+          base: {baseName}
+        </p>
+        <div className="space-y-2">
+          {log.merged.map((item: string, idx: number) => (
+            <div
+              key={idx}
+              className="flex items-center gap-2 text-sm bg-green-50 p-2 rounded"
+            >
+              <Plus className="h-4 w-4 text-green-500 flex-shrink-0" />
+              <span className="text-green-700">{item}</span>
+            </div>
+          ))}
+          {notAddedCourses.map((item: string, idx: number) => (
+            <div
+              key={idx}
+              className="flex items-center gap-2 text-sm bg-red-50 p-2 rounded"
+            >
+              <Minus className="h-4 w-4 text-red-500 flex-shrink-0" />
+              <span className="text-red-700">{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -178,110 +239,88 @@ export default function AIRequestLogger() {
             ))}
           </div>
 
-          <div className="border-b p-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
-              <input
-                ref={searchInputRef}
-                type="text"
-                placeholder="Search courses..."
-                className="w-full rounded-md border bg-white border-gray-300 py-2 pl-10 pr-4 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-200"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+          <div className={`${isExpanded ? "flex w-[100%]" : ""}`}>
+            <div className={`border-b p-4 ${isExpanded && "w-[50%]"}`}>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder="Search courses..."
+                  className="w-full rounded-md border bg-white border-gray-300 py-2 pl-10 pr-4 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-200"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
 
-          {currentLog && (
-            <div className="p-4 border-b">
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-semibold">Status:</span>
-                <span
-                  className={`capitalize ${
-                    currentLog.status === "accepted"
-                      ? "text-green-600"
-                      : currentLog.status === "in-progress"
-                      ? "text-blue-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {currentLog.status.replace("-", " ")}
-                </span>
-              </div>
-              <div className="flex justify-between items-center mt-2 text-sm">
-                <span className="font-semibold">Progress:</span>
-                <span>{(currentLog.progress).toFixed(2)}%</span>
-              </div>
-              <div className="mt-2">
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div
-                    className={`h-2.5 rounded-full ${
-                      currentLog.status === "error"
-                        ? "bg-red-600"
-                        : "bg-blue-600"
-                    }`}
-                    style={{ width: `${currentLog.progress}%` }}
-                  ></div>
+            {currentLog && (
+             <div className={`border-b p-4 ${isExpanded && "w-[50%]"}`}>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-semibold">Progress:</span>
+                  <span>
+                    <span
+                      className={`capitalize font-bold ${
+                        currentLog.status === "completed"
+                          ? "text-green-600"
+                          : currentLog.status === "in-progress"
+                          ? "text-blue-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {" "}
+                      {currentLog.status}{" "}
+                    </span>
+                    {currentLog.progress.toFixed(2)}%
+                  </span>
+                </div>
+                <div className="mt-2">
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div
+                      className={`h-2.5 rounded-full ${
+                        currentLog.status === "error"
+                          ? "bg-red-600"
+                          : "bg-blue-600"
+                      }`}
+                      style={{ width: `${currentLog.progress}%` }}
+                    ></div>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
+          {/* Virtualized logs container */}
           <div
+            ref={logsContainerRef}
             className={`overflow-auto p-4 ${
-              isExpanded ? "h-[calc(100%-16rem)]" : "max-h-[calc(75vh-16rem)]"
+              isExpanded ? "h-[calc(100%-13rem)]" : "max-h-[calc(75vh-16rem)]"
             }`}
           >
             {filteredLogs.length > 0 ? (
-              <div className="space-y-4">
-                {filteredLogs.map((log, index) => {
-                  const baseName =
-                    currentLog?.logs[0].request[index]?.[0] || "";
-                  const allCourses = currentLog?.logs[0].request[index] || [];
-                  const mergedCourses = new Set(log.merged);
-                  const notAddedCourses = allCourses.filter(
-                    (course) => !mergedCourses.has(course),
-                  );
-
-                  return (
-                    <div
-                      key={index}
-                      className="rounded-lg border p-4 hover:bg-gray-50 transition-colors duration-200"
-                    >
-                      <div className="flex items-center gap-2 mb-2">
-                        {log.match ? (
-                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                        ) : (
-                          <XCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
-                        )}
-                        <h3 className="font-medium text-base text-gray-900">
-                          {log.name}
-                        </h3>
-                      </div>
-                      <p className="text-sm text-gray-500 mb-2">{baseName}</p>
-                      <div className="space-y-2">
-                        {log.merged.map((item, idx) => (
-                          <div
-                            key={idx}
-                            className="flex items-center gap-2 text-sm bg-green-50 p-2 rounded"
-                          >
-                            <Plus className="h-4 w-4 text-green-500 flex-shrink-0" />
-                            <span className="text-green-700">{item}</span>
-                          </div>
-                        ))}
-                        {notAddedCourses.map((item, idx) => (
-                          <div
-                            key={idx}
-                            className="flex items-center gap-2 text-sm bg-red-50 p-2 rounded"
-                          >
-                            <Minus className="h-4 w-4 text-red-500 flex-shrink-0" />
-                            <span className="text-red-700">{item}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
+              <div
+                style={{
+                  height: `${virtualizer.getTotalSize()}px`,
+                  width: '100%',
+                  position: 'relative',
+                }}
+              >
+                {virtualizer.getVirtualItems().map((virtualRow) => (
+                  <div
+                    key={virtualRow.key}
+                    data-index={virtualRow.index}
+                    ref={virtualizer.measureElement}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      transform: `translateY(${virtualRow.start}px)`,
+                    }}
+                  >
+                    {renderLogItem(filteredLogs[virtualRow.index], virtualRow.index)}
+                  </div>
+                ))}
               </div>
             ) : (
               <div className="flex h-32 items-center justify-center text-gray-500">

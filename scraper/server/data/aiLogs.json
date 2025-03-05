@@ -1,0 +1,137 @@
+[
+  {
+    "timestamp": "2025-03-05T15:48:08.685Z",
+    "request": [
+      [
+        "(POL25100) Law of digitisation in public administration (E-Government)",
+        "(POL251001) Crash Course - Law of digitisation in public administration (E-Government)"
+      ]
+    ],
+    "response": [
+      {
+        "match": true,
+        "name": "(POL25100) Law of digitisation in public administration (E-Government)",
+        "merged": [
+          "(POL25100) Law of digitisation in public administration (E-Government)",
+          "(POL251001) Crash Course - Law of digitisation in public administration (E-Government)"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-05T15:48:07.572Z",
+    "request": [
+      [
+        "(POL10200) Methods of Complex Systems - Lecture",
+        "(POL10200) Methods of Empirical Social Research - Exercise"
+      ],
+      [
+        "(POL10300) Introduction to Political Theory",
+        "(POL10400) Political Theory - Advanced",
+        "(POL10400) Political Theory - Advanced (Group A)"
+      ],
+      [
+        "(POL10300) Introduction to Political Theory",
+        "(POL10400 Sem.3) Political Theory - Advanced:"
+      ],
+      [
+        "(POL10500) Comparative Politics 1 (Lecture)",
+        "(POL10800) Policy Analysis - Advanced - Lecture"
+      ],
+      [
+        "(POL10900) International Relations - fundamentals Exercise",
+        "(POL10900) International Relations - fundamentals Lecture"
+      ],
+      [
+        "(POL11000 DE) International Relations - Advanced - Lecture (International Political Economy - German)",
+        "(POL11000 DE) International Relations - Advanced Exercise (International Political Economy - German)",
+        "(POL11000 EN) International Relations - Advanced  Lecture (International Political Economy - English)",
+        "(POL11000 EN) International Relations - Advanced -Exercise (International Political Economy - English)"
+      ],
+      [
+        "(POL15100) Mathematics fpr Political Science",
+        "(POL15100) Mathematics vor Political Science",
+        "(POL20401) Political Data Science - Project"
+      ],
+      [
+        "(POL20100) Programming for Social Scientists",
+        "(POL20200) Computational Social Science",
+        "(POL20800) Introduction in R for Social Scientists"
+      ],
+      [
+        "(POL23100) Politics of Sustainability - Seminar 1",
+        "(POL23100) Politics of Sustainability - Seminar 2"
+      ],
+      [
+        "(POL24410)  Research Design - International Relations (Political Economy)",
+        "(POL24410) Research Design - International Relations"
+      ]
+    ],
+    "response": [
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "International Relations - fundamentals",
+        "merged": [
+          "(POL10900) International Relations - fundamentals Exercise",
+          "(POL10900) International Relations - fundamentals Lecture"
+        ]
+      },
+      {
+        "match": true,
+        "name": "International Relations - Advanced (International Political Economy - German) (International Political Economy - English)",
+        "merged": [
+          "(POL11000 DE) International Relations - Advanced - Lecture (International Political Economy - German)",
+          "(POL11000 DE) International Relations - Advanced Exercise (International Political Economy - German)",
+          "(POL11000 EN) International Relations - Advanced  Lecture (International Political Economy - English)",
+          "(POL11000 EN) International Relations - Advanced -Exercise (International Political Economy - English)"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Mathematics for Political Science",
+        "merged": [
+          "(POL15100) Mathematics fpr Political Science",
+          "(POL15100) Mathematics vor Political Science"
+        ]
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "Research Design - International Relations (Political Economy)",
+        "merged": [
+          "(POL24410)  Research Design - International Relations (Political Economy)",
+          "(POL24410) Research Design - International Relations"
+        ]
+      }
+    ]
+  }
+]

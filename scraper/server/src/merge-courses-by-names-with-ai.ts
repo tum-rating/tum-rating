@@ -4,6 +4,8 @@ import Logger from "./server-logger";
 import { AI_MERGING_RULES } from "./server-actions-config";
 import { WebSocketServer } from "ws";
 import { aiWorkers } from "./websocket-handlers";
+import fs from "fs";
+import path from "path";
 
 dotenv.config();
 
@@ -12,31 +14,38 @@ export type AiResponse = {
   name: string;
   merged: string[];
 };
-
 const logRequestResponse = (
-  request: string[],
-  response: any,
-  fileName: string,
-  wss?: WebSocketServer,
-) => {
-  const logEntry = {
-    timestamp: new Date().toISOString(),
-    request,
-    response,
-  };
-
-  if (aiWorkers[fileName]) {
-    aiWorkers[fileName].logs.unshift(logEntry);
-  } else {
-    aiWorkers[fileName] = {
-      userId: "",
-      progress: 0,
-      startTime: new Date().toISOString(),
-      status: "in-progress",
-      logs: [logEntry],
+    request: string[],
+    response: any,
+    fileName: string,
+    wss?: WebSocketServer,
+  ) => {
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      request,
+      response,
     };
-  }
-};
+
+    if (aiWorkers[fileName]) {
+      aiWorkers[fileName].logs.unshift(logEntry);
+    } else {
+      aiWorkers[fileName] = {
+        userId: "",
+        progress: 0,
+        startTime: new Date().toISOString(),
+        status: "in-progress",
+        logs: [logEntry],
+      };
+    }
+
+    const aiLogsPath = path.join(__dirname, "../data/aiLogs.json");
+    let aiLogs = [];
+    if (fs.existsSync(aiLogsPath)) {
+      aiLogs = JSON.parse(fs.readFileSync(aiLogsPath, "utf-8"));
+    }
+    aiLogs.unshift(logEntry);
+    fs.writeFileSync(aiLogsPath, JSON.stringify(aiLogs, null, 2), "utf-8");
+  };
 
 const getSingleCoursePrompt = (courses: string[]) => `
 You will receive name of university courses in a form of nominal name and following possible matches that might be a course duplicate. The input structure is a following JSON:

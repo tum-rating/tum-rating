@@ -1,0 +1,1958 @@
+[
+  {
+    "merged": [],
+    "id": "6a607649-496b-454f-ad83-8cf512b66967",
+    "courseId": "950629098",
+    "courseNumber": "CVL0001025",
+    "professor": "Ingrid Lughofer",
+    "otherLecturers": [],
+    "name": "\"Am I Faust?\" - Roles. Clichés. Visions. Science and Technology in the View of Literature and Theater",
+    "offeredInSemesters": [
+      "2022 S",
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": []
+  },
+  {
+    "merged": [],
+    "id": "9a74c376-89f1-46f3-8a39-7789d2a64965",
+    "courseId": "950761414",
+    "courseNumber": "CVL0001041",
+    "professor": "Esther Emmerich",
+    "otherLecturers": [],
+    "name": "\"Everyone Is an Artist\" (Introduction to History of Art Using Great Masterpieces from the Pinakothek Museums)",
+    "offeredInSemesters": [
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": []
+  },
+  {
+    "merged": [],
+    "id": "1aed0bca-639a-4b02-bf75-276b6510b7d3",
+    "courseId": "950738466",
+    "courseNumber": "0000004346",
+    "professor": "Sven Liedtke",
+    "otherLecturers": [
+      "Martin Uhl"
+    ],
+    "name": "(Additional for Games Eng.) Grundlagen: Betriebssysteme und Systemsoftware (IN0009 IN0034)",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0009",
+      "IN0034"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "2eb60b57-0992-4aaf-a666-f2cba08a25ba",
+    "courseId": "950637289",
+    "courseNumber": "0000002443",
+    "professor": "Matthias Gaderer",
+    "otherLecturers": [
+      "Yusheng Chen",
+      "Szymon Herdzik",
+      "Bernhard Huber",
+      "Daniel Klüh"
+    ],
+    "name": "(Cooperative) Design Project",
+    "offeredInSemesters": [
+      "2022 S",
+      "2022 W",
+      "2023 S",
+      "2023 W",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": []
+  },
+  {
+    "merged": [],
+    "id": "4e1d7e65-6df3-49a2-8c60-29e053eba2b2",
+    "courseId": "950635400",
+    "courseNumber": "8610170000",
+    "professor": "Elke Langbein",
+    "otherLecturers": [
+      "Daniela Maria Schwarz"
+    ],
+    "name": "(Dis-)ability, Diversity and Inclusion",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": []
+  },
+  {
+    "merged": [],
+    "id": "f6d921b7-a3e9-4d86-a75b-03fb1061ffd2",
+    "courseId": "950632769",
+    "courseNumber": "0000000795",
+    "professor": "Alexander Besner",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107, IN4906_3) Practical Seminar Legal Tech Special",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "IN4906_3"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "f4736112-f0a7-4fce-83c9-b8d51a0471d7",
+    "courseId": "950671588",
+    "courseNumber": "0000004838",
+    "professor": "Sebastian Nagl",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107, IN4906_3) Practical Seminar Legal Tech Special",
+    "offeredInSemesters": [
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "IN4906_3"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "8de06eb3-eccf-48c7-85f3-20ac9251be30",
+    "courseId": "950606027",
+    "courseNumber": "0000004836",
+    "professor": "Dirk Heckmann",
+    "otherLecturers": [
+      "Alexander Besner"
+    ],
+    "name": "(IN0014, IN2107, IN4906_4) Practical Workshop Data Protection for StartUps",
+    "offeredInSemesters": [
+      "2022 S",
+      "2022 W",
+      "2023 S",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "IN4906_4"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "6ddb4a2d-3afa-4d78-9f1d-c045aaae327d",
+    "courseId": "950658511",
+    "courseNumber": "0000000996",
+    "professor": "Alexander Besner",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82518"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "73976b05-8e06-44ac-b266-fe500f2ac4f4",
+    "courseId": "950662502",
+    "courseNumber": "0000002476",
+    "professor": "Pascal Bronner",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82519"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "8b2e6ed0-2449-413e-a37e-c1632c2d9401",
+    "courseId": "950658625",
+    "courseNumber": "0000001119",
+    "professor": "Sarah Rachut",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107,SOT82508) Legal Tech Hackathon",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82508"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "ce3d992c-b4e0-4302-a395-94684e594e7a",
+    "courseId": "950701408",
+    "courseNumber": "0000001118",
+    "professor": "Sarah Rachut",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107,SOT82509) CDR: Digital Future Challenge – Responsible AI",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82509"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "96b354ee-a40e-4358-b07a-a83e3e057910",
+    "courseId": "950658624",
+    "courseNumber": "0000001118",
+    "professor": "Sarah Rachut",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107,SOT82509) Corporate Digital ResponsibilityParticipation in the CDR Challenge by Initiative D21",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82509"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "f9fe6539-2d69-437b-8b7e-f320a43d0701",
+    "courseId": "950630689",
+    "courseNumber": "0000002094",
+    "professor": "Broder Rühmann",
+    "otherLecturers": [],
+    "name": "(Introduction to) Renewables Utilization (Exercise)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": []
+  },
+  {
+    "merged": [],
+    "id": "d4cb683d-5887-4b6f-92ef-94bce47d23ad",
+    "courseId": "950631160",
+    "courseNumber": "0000002093",
+    "professor": "Volker Sieber",
+    "otherLecturers": [
+      "Broder Rühmann",
+      "Volker Sieber"
+    ],
+    "name": "(Introduction to) Renewables Utilization (Lecture)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": []
+  },
+  {
+    "merged": [],
+    "id": "59b8aa5d-06ff-4f20-a771-3e83c754a48f",
+    "courseId": "950604508",
+    "courseNumber": "0000003464",
+    "professor": "Tim Büthe",
+    "otherLecturers": [],
+    "name": "(POL00011) Politics for Rocket Scientists (An Introduction to Political Science for Non-Political Scientists)",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL00011"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "12c34f26-5790-4dd0-bb7d-49d574147736",
+    "courseId": "950606832",
+    "courseNumber": "0000003598",
+    "professor": "Tim Büthe",
+    "otherLecturers": [],
+    "name": "(POL00011) Politics for Rocket Scientists (optional exercise 1 - April)",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL00011"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "c3304eca-ac45-4ad2-a916-f1fd0a4c6545",
+    "courseId": "950739556",
+    "courseNumber": "0000001990",
+    "professor": "Stefan Maukner",
+    "otherLecturers": [],
+    "name": "(POL00012) Introduction to Scientific Research and Writing: Tips and Tricks",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL00012"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "b681d8c6-ef65-47be-b25d-b1e5759ef596",
+    "courseId": "950634509",
+    "courseNumber": "0000003848",
+    "professor": "Katrin Paula",
+    "otherLecturers": [],
+    "name": "(POL10100) Introduction to Empirical Methods for the Social Sciences",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10100"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "d7606148-888c-4d7b-9094-73686dfdee3b",
+    "courseId": "950633154",
+    "courseNumber": "0000003849",
+    "professor": "Timm Betz",
+    "otherLecturers": [
+      "Leonhard Hummel"
+    ],
+    "name": "(POL10100) Introduction to Empirical Methods for the Social Sciences",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10100"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "26002677-32f2-4d0a-8b5e-07a5db812ef4",
+    "courseId": "950699083",
+    "courseNumber": "0000003849",
+    "professor": "Leonhard Hummel",
+    "otherLecturers": [
+      "Fabiola Schwarz"
+    ],
+    "name": "(POL10100) Introduction to Empirical Methods for the Social Sciences",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10100"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "fe8c2750-00c7-492a-bd77-352ba0b7ce1b",
+    "courseId": "950634590",
+    "courseNumber": "0000002652",
+    "professor": "Dirk Heckmann",
+    "otherLecturers": [],
+    "name": "(POL10101) Introduction to the Law of the Digital Society",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10101"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "9bc8f0ab-f37d-4379-9c40-3d0f57bf6fc5",
+    "courseId": "950663060",
+    "courseNumber": "0000003429",
+    "professor": "Alexander Besner",
+    "otherLecturers": [
+      "Sarah Rachut"
+    ],
+    "name": "(POL10101) Introduction to the Law of the Digital Society",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10101"
+    ]
+  },
+  {
+    "id": "edd1ead2-2175-4dde-95bc-6ec1e037e920",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Jürgen Pfeffer",
+    "otherLecturers": [],
+    "name": "(POL10200) Methods of Complex Systems - Lecture",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b287ecd34856d36eb2849b",
+        "courseId": "950606299",
+        "courseNumber": "0000003064",
+        "professor": "Jürgen Pfeffer",
+        "otherLecturers": [],
+        "name": "(POL10200) Methods of Complex Systems - Lecture",
+        "offeredInSemesters": [
+          "2022 S",
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "POL10200"
+        ],
+        "accepted": false
+      },
+      {
+        "id": "66b287ecd34856d36eb28498",
+        "courseId": "950605590",
+        "courseNumber": "0000003065",
+        "professor": "Jürgen Pfeffer",
+        "otherLecturers": [
+          "Angelina Voggenreiter"
+        ],
+        "name": "(POL10200) Methods of Empirical Social Research - Exercise",
+        "offeredInSemesters": [
+          "2022 S",
+          "2023 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 20,
+        "codes": [
+          "POL10200"
+        ],
+        "accepted": false
+      }
+    ],
+    "codes": [
+      "POL10200"
+    ],
+    "acceptedCount": 0,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "740421c8-fe62-4ded-b58a-18cc291c6b79",
+    "courseId": "950732528",
+    "courseNumber": "0000003065",
+    "professor": "Angelina Voggenreiter",
+    "otherLecturers": [],
+    "name": "(POL10200) Methods of Empirical Social Research - Exercise",
+    "offeredInSemesters": [
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10200"
+    ]
+  },
+  {
+    "id": "684f54e5-288d-4620-b7cf-3ce6edaab44f",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Astrid Seville",
+    "otherLecturers": [],
+    "name": "(POL10300) Introduction to Political Theory",
+    "offeredInSemesters": [
+      "2022 W",
+      "2022 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b28a38d34856d36eb2c06a",
+        "courseId": "950633153",
+        "courseNumber": "0000003786",
+        "professor": "Astrid Seville",
+        "otherLecturers": [],
+        "name": "(POL10300) Introduction to Political Theory",
+        "offeredInSemesters": [
+          "2022 W",
+          "2022 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "POL10300",
+          "POL10400"
+        ],
+        "accepted": false
+      },
+      {
+        "id": "66b287ecd34856d36eb2849e",
+        "courseId": "950606291",
+        "courseNumber": "0000000712",
+        "professor": "Astrid Seville",
+        "otherLecturers": [],
+        "name": "(POL10400) Political Theory - Advanced",
+        "offeredInSemesters": [
+          "2022 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 16,
+        "codes": [
+          "POL10400"
+        ],
+        "accepted": false
+      },
+      {
+        "id": "66b28a38d34856d36eb2c06d",
+        "courseId": "950634441",
+        "courseNumber": "0000003871",
+        "professor": "Astrid Seville",
+        "otherLecturers": [],
+        "name": "(POL10400) Political Theory - Advanced (Group A)",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 21,
+        "codes": [
+          "POL10400"
+        ],
+        "accepted": false
+      }
+    ],
+    "codes": [
+      "POL10300",
+      "POL10400"
+    ],
+    "acceptedCount": 0,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "id": "748ea85d-9d8f-4ba4-aa6c-0ad911287e13",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Lena Ulbricht",
+    "otherLecturers": [],
+    "name": "(POL10300) Introduction to Political Theory",
+    "offeredInSemesters": [
+      "2023 W",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b28c52d34856d36eb2f7c1",
+        "courseId": "950699082",
+        "courseNumber": "0000003786",
+        "professor": "Lena Ulbricht",
+        "otherLecturers": [],
+        "name": "(POL10300) Introduction to Political Theory",
+        "offeredInSemesters": [
+          "2023 W",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "POL10300",
+          "POL10400"
+        ],
+        "accepted": false
+      },
+      {
+        "id": "66b28cfed34856d36eb30a24",
+        "courseId": "950769018",
+        "courseNumber": "0000004348",
+        "professor": "Lena Ulbricht",
+        "otherLecturers": [],
+        "name": "(POL10400 Sem.3) Political Theory - Advanced:",
+        "offeredInSemesters": [
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 19,
+        "codes": [
+          "POL10400"
+        ],
+        "accepted": false
+      }
+    ],
+    "codes": [
+      "POL10300",
+      "POL10400"
+    ],
+    "acceptedCount": 0,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "5aab3e04-5b14-4991-b0f5-94dfeef25d55",
+    "courseId": "950699399",
+    "courseNumber": "0000003774",
+    "professor": "Hagen Schölzel",
+    "otherLecturers": [
+      "Lena Ulbricht"
+    ],
+    "name": "(POL10300) Introduction to Political Theory",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10300"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "d7c01b83-fa2b-40b7-8aa1-1fb97a478691",
+    "courseId": "950692311",
+    "courseNumber": "0000003076",
+    "professor": "Tobias Lappy",
+    "otherLecturers": [],
+    "name": "(POL10400 Sem.2) Political Theory - Advanced: The Limits of Democracy",
+    "offeredInSemesters": [
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10400"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "225d04e9-b02b-4bdc-ad2f-fc7bf9264596",
+    "courseId": "950734324",
+    "courseNumber": "0000003076",
+    "professor": "Lena Ulbricht",
+    "otherLecturers": [
+      "Hagen Schölzel"
+    ],
+    "name": "(POL10400 Sem.2) Political Theory - Advanced: The Limits of Democracy",
+    "offeredInSemesters": [
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10400"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "83e38df0-763f-44a9-8390-0c480bf57112",
+    "courseId": "950662910",
+    "courseNumber": "0000003402",
+    "professor": "Ioannis Theocharis",
+    "otherLecturers": [],
+    "name": "(POL10500) Comparative Politics - Fundamentals (for MSc Preparatory Modules / Fundamental requirements)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10500"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "9bd9c2a9-f215-44e6-b8c4-6869651d1dd7",
+    "courseId": "950633375",
+    "courseNumber": "0000003792",
+    "professor": "Dörte Ohlhorst",
+    "otherLecturers": [],
+    "name": "(POL10500) Comparative Politics 1 (Exercise)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10500"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "f01bd04e-04d2-4e85-854c-9089af0d4aff",
+    "courseId": "950634508",
+    "courseNumber": "0000003788",
+    "professor": "Stefan Cetkovic",
+    "otherLecturers": [
+      "Florentine Koppenborg"
+    ],
+    "name": "(POL10500) Comparative Politics 1 (Lecture)",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10500"
+    ]
+  },
+  {
+    "id": "1de5b19d-597f-4f10-a797-810cf91d7f5c",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Miranda Schreurs",
+    "otherLecturers": [],
+    "name": "(POL10500) Comparative Politics 1 (Lecture)",
+    "offeredInSemesters": [
+      "2023 W",
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b28c52d34856d36eb2f7c7",
+        "courseId": "950700383",
+        "courseNumber": "0000003788",
+        "professor": "Miranda Schreurs",
+        "otherLecturers": [],
+        "name": "(POL10500) Comparative Politics 1 (Lecture)",
+        "offeredInSemesters": [
+          "2023 W",
+          "2022 S",
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "POL10500",
+          "POL10800"
+        ],
+        "accepted": false
+      },
+      {
+        "id": "66b287edd34856d36eb284aa",
+        "courseId": "950606086",
+        "courseNumber": "0000000188",
+        "professor": "Miranda Schreurs",
+        "otherLecturers": [],
+        "name": "(POL10800) Policy Analysis - Advanced - Lecture",
+        "offeredInSemesters": [
+          "2022 S",
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 17,
+        "codes": [
+          "POL10800"
+        ],
+        "accepted": false
+      }
+    ],
+    "codes": [
+      "POL10500",
+      "POL10800"
+    ],
+    "acceptedCount": 0,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "440c87aa-afe9-442f-be8c-55de031b930b",
+    "courseId": "950635276",
+    "courseNumber": "0000000344",
+    "professor": "Ahmed Mohamed",
+    "otherLecturers": [],
+    "name": "(POL10600) Comparative Politics 2",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10600"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "f314f7f2-1564-43f7-a781-8a9f30d29a76",
+    "courseId": "950634819",
+    "courseNumber": "0000000328",
+    "professor": "Stefan Wurster",
+    "otherLecturers": [],
+    "name": "(POL10600) Comparative Politics 2",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10600"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "ae241d51-518c-449f-b776-38fc4254c757",
+    "courseId": "950598685",
+    "courseNumber": "0000004241",
+    "professor": "Stefan Cetkovic",
+    "otherLecturers": [
+      "Florentine Koppenborg"
+    ],
+    "name": "(POL10700) Policy Analysis - fundamentals Exercise",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10700"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "be1c5e93-4a3a-4d56-b61d-e55fdd24d6ae",
+    "courseId": "950732650",
+    "courseNumber": "0000004241",
+    "professor": "Thomas Klotz",
+    "otherLecturers": [
+      "Stefan Wurster"
+    ],
+    "name": "(POL10700) Policy Analysis - fundamentals Exercise",
+    "offeredInSemesters": [
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10700"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "8c181ae3-6a22-48c3-a650-064b6ef25d20",
+    "courseId": "950606079",
+    "courseNumber": "0000004240",
+    "professor": "Miranda Schreurs",
+    "otherLecturers": [],
+    "name": "(POL10700) Policy Analysis - fundamentals Lecture",
+    "offeredInSemesters": [
+      "2022 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10700"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "e877ced7-cd08-451f-945b-76dc432c67db",
+    "courseId": "950671261",
+    "courseNumber": "0000004240",
+    "professor": "Stefan Wurster",
+    "otherLecturers": [],
+    "name": "(POL10700) Policy Analysis - fundamentals Lecture",
+    "offeredInSemesters": [
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10700"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "b30466dd-ecd5-411d-922c-78167c854811",
+    "courseId": "950606929",
+    "courseNumber": "0000003052",
+    "professor": "Dörte Ohlhorst",
+    "otherLecturers": [],
+    "name": "(POL10800) Policy Analysis - Advanced",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10800"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "3c2e5750-b15f-4b97-b460-bbe83ce13b40",
+    "courseId": "950604140",
+    "courseNumber": "0000004244",
+    "professor": "Tamara Bertl",
+    "otherLecturers": [
+      "Patrick Mello",
+      "Tony Müller"
+    ],
+    "name": "(POL10900) International Relations - fundamentals Exercise",
+    "offeredInSemesters": [
+      "2022 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10900"
+    ]
+  },
+  {
+    "id": "3881f5c1-3fcc-4186-a762-0e68dce1f156",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Tony Müller",
+    "otherLecturers": [],
+    "name": "International Relations - fundamentals",
+    "offeredInSemesters": [
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b28b8bd34856d36eb2e2a7",
+        "courseId": "950671571",
+        "courseNumber": "0000004244",
+        "professor": "Tony Müller",
+        "otherLecturers": [],
+        "name": "(POL10900) International Relations - fundamentals Exercise",
+        "offeredInSemesters": [
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "POL10900"
+        ],
+        "accepted": true
+      },
+      {
+        "id": "66b28b8bd34856d36eb2e2a4",
+        "courseId": "950671262",
+        "courseNumber": "0000004243",
+        "professor": "Tony Müller",
+        "otherLecturers": [],
+        "name": "(POL10900) International Relations - fundamentals Lecture",
+        "offeredInSemesters": [
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 8,
+        "codes": [
+          "POL10900"
+        ],
+        "accepted": true
+      }
+    ],
+    "codes": [
+      "POL10900"
+    ],
+    "acceptedCount": 2,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "5b1d82c3-3e1d-4115-9842-1276c34f499d",
+    "courseId": "950606354",
+    "courseNumber": "0000004243",
+    "professor": "Patrick Mello",
+    "otherLecturers": [],
+    "name": "(POL10900) International Relations - fundamentals Lecture",
+    "offeredInSemesters": [
+      "2022 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10900"
+    ]
+  },
+  {
+    "id": "bdb190d3-9031-42a2-9f97-bc171e6b0dee",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Tim Büthe",
+    "otherLecturers": [],
+    "name": "International Relations - Advanced (International Political Economy - German) (International Political Economy - English)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b28a39d34856d36eb2c082",
+        "courseId": "950631927",
+        "courseNumber": "0000000801",
+        "professor": "Tim Büthe",
+        "otherLecturers": [],
+        "name": "(POL11000 DE) International Relations - Advanced - Lecture (International Political Economy - German)",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "POL11000 DE",
+          "POL11000 EN"
+        ],
+        "accepted": true
+      },
+      {
+        "id": "66b28a38d34856d36eb2c07f",
+        "courseId": "950634412",
+        "courseNumber": "0000001907",
+        "professor": "Tim Büthe",
+        "otherLecturers": [],
+        "name": "(POL11000 DE) International Relations - Advanced Exercise (International Political Economy - German)",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 8,
+        "codes": [
+          "POL11000 DE"
+        ],
+        "accepted": true
+      },
+      {
+        "id": "66b28a39d34856d36eb2c088",
+        "courseId": "950633554",
+        "courseNumber": "0000003843",
+        "professor": "Tim Büthe",
+        "otherLecturers": [],
+        "name": "(POL11000 EN) International Relations - Advanced  Lecture (International Political Economy - English)",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "POL11000 EN"
+        ],
+        "accepted": true
+      },
+      {
+        "id": "66b28a39d34856d36eb2c085",
+        "courseId": "950635116",
+        "courseNumber": "0000005662",
+        "professor": "Tim Büthe",
+        "otherLecturers": [],
+        "name": "(POL11000 EN) International Relations - Advanced -Exercise (International Political Economy - English)",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 8,
+        "codes": [
+          "POL11000 EN"
+        ],
+        "accepted": true
+      }
+    ],
+    "codes": [
+      "POL11000 DE",
+      "POL11000 EN"
+    ],
+    "acceptedCount": 4,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "id": "96481b7a-fe04-4010-9e06-88c41b860f67",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Simon Hegelich",
+    "otherLecturers": [],
+    "name": "Mathematics for Political Science",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b28a39d34856d36eb2c08e",
+        "courseId": "950634856",
+        "courseNumber": "0000003810",
+        "professor": "Simon Hegelich",
+        "otherLecturers": [],
+        "name": "(POL15100) Mathematics fpr Political Science",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "POL15100",
+          "POL20401"
+        ],
+        "accepted": true
+      },
+      {
+        "id": "66b28a39d34856d36eb2c08b",
+        "courseId": "950633226",
+        "courseNumber": "0000003816",
+        "professor": "Simon Hegelich",
+        "otherLecturers": [],
+        "name": "(POL15100) Mathematics vor Political Science",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 2,
+        "codes": [
+          "POL15100"
+        ],
+        "accepted": true
+      },
+      {
+        "id": "66b28c52d34856d36eb2f7d0",
+        "courseId": "950726719",
+        "courseNumber": "0000001701",
+        "professor": "Simon Hegelich",
+        "otherLecturers": [],
+        "name": "(POL20401) Political Data Science - Project",
+        "offeredInSemesters": [
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 19,
+        "codes": [
+          "POL20401"
+        ],
+        "accepted": false
+      }
+    ],
+    "codes": [
+      "POL15100",
+      "POL20401"
+    ],
+    "acceptedCount": 2,
+    "rejectedCount": 1,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "cb9d4b77-8c4b-44fa-940c-879c7fd081a6",
+    "courseId": "950606828",
+    "courseNumber": "0000004260",
+    "professor": "Simon Hegelich",
+    "otherLecturers": [],
+    "name": "(POL15200) Introduction to statistical learning",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL15200"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "074c341b-21da-489b-82a9-9d2695b43de8",
+    "courseId": "950629721",
+    "courseNumber": "0220074983",
+    "professor": "Friedrich Josef Adler",
+    "otherLecturers": [],
+    "name": "(POL20021) Didactics in Politics and Society - In-Depth Module (Follow-up seminar)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL20021"
+    ]
+  },
+  {
+    "id": "349b8fba-05d6-4311-b36b-bd0553a0a101",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Jürgen Pfeffer",
+    "otherLecturers": [],
+    "name": "(POL20100) Programming for Social Scientists",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S",
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b287edd34856d36eb284b9",
+        "courseId": "950604305",
+        "courseNumber": "0000000644",
+        "professor": "Jürgen Pfeffer",
+        "otherLecturers": [],
+        "name": "(POL20100) Programming for Social Scientists",
+        "offeredInSemesters": [
+          "2022 S",
+          "2023 S",
+          "2024 S",
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "POL20100",
+          "POL20200",
+          "POL20800"
+        ],
+        "accepted": false
+      },
+      {
+        "id": "66b28a39d34856d36eb2c091",
+        "courseId": "950633342",
+        "courseNumber": "0000001825",
+        "professor": "Jürgen Pfeffer",
+        "otherLecturers": [
+          "Anahit Sargsyan"
+        ],
+        "name": "(POL20200) Computational Social Science",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 19,
+        "codes": [
+          "POL20200"
+        ],
+        "accepted": false
+      },
+      {
+        "id": "66b28a39d34856d36eb2c094",
+        "courseId": "950633158",
+        "courseNumber": "0000004847",
+        "professor": "Jürgen Pfeffer",
+        "otherLecturers": [
+          "Angelina Voggenreiter"
+        ],
+        "name": "(POL20800) Introduction in R for Social Scientists",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 13,
+        "codes": [
+          "POL20800"
+        ],
+        "accepted": false
+      }
+    ],
+    "codes": [
+      "POL20100",
+      "POL20200",
+      "POL20800"
+    ],
+    "acceptedCount": 0,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "46e3a561-743f-4dab-8e8a-8b80536924bf",
+    "courseId": "950728653",
+    "courseNumber": "0000002522",
+    "professor": "Mirjam Zadoff",
+    "otherLecturers": [],
+    "name": "(POL20200) Computational Social Science",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL20200"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "c6e7b65b-bda2-418e-bb48-b989ad3516f3",
+    "courseId": "950728651",
+    "courseNumber": "0000002521",
+    "professor": "Daniel Matter",
+    "otherLecturers": [],
+    "name": "(POL20200) Computational Social Science - Exercise",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL20200"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "b0056db2-062b-4d93-b245-e45b968f6b4b",
+    "courseId": "950770220",
+    "courseNumber": "0000004482",
+    "professor": "Simon Hegelich",
+    "otherLecturers": [],
+    "name": "(POL20500) Politics of Big Data",
+    "offeredInSemesters": [
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL20500"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "2ad73136-4677-446f-b2a0-f896f1816022",
+    "courseId": "950605723",
+    "courseNumber": "0000004936",
+    "professor": "Jürgen Pfeffer",
+    "otherLecturers": [
+      "Raji Ghawi"
+    ],
+    "name": "(POL20801) Seminar on Applied Text Analysis",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL20801"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "6fe5e1e1-62a9-43f1-b3ce-3f9e8a1f1886",
+    "courseId": "950691206",
+    "courseNumber": "0000001956",
+    "professor": "Ahmed Mohamed",
+    "otherLecturers": [],
+    "name": "(POL22100) Democratic, and Autocratic",
+    "offeredInSemesters": [
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL22100"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "d163d77f-0a0d-4d03-94d3-216d06d89ead",
+    "courseId": "950693148",
+    "courseNumber": "0000003227",
+    "professor": "Hannah Löffler",
+    "otherLecturers": [],
+    "name": "(POL22500) Comparative Political Economy",
+    "offeredInSemesters": [
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL22500"
+    ]
+  },
+  {
+    "id": "39ac893a-0b5f-4175-a076-450652c81f40",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Julio Zambrano Gutierrez",
+    "otherLecturers": [],
+    "name": "(POL23100) Politics of Sustainability - Seminar 1",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b28a3ad34856d36eb2c09d",
+        "courseId": "950633933",
+        "courseNumber": "0000001707",
+        "professor": "Julio Zambrano Gutierrez",
+        "otherLecturers": [],
+        "name": "(POL23100) Politics of Sustainability - Seminar 1",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "POL23100"
+        ],
+        "accepted": false
+      },
+      {
+        "id": "66b28a3ad34856d36eb2c09a",
+        "courseId": "950633168",
+        "courseNumber": "0000001705",
+        "professor": "Julio Zambrano Gutierrez",
+        "otherLecturers": [],
+        "name": "(POL23100) Politics of Sustainability - Seminar 2",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 1,
+        "codes": [
+          "POL23100"
+        ],
+        "accepted": false
+      }
+    ],
+    "codes": [
+      "POL23100"
+    ],
+    "acceptedCount": 0,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "87986edb-6e95-44e4-92e0-b9604e41d674",
+    "courseId": "950635765",
+    "courseNumber": "0000001822",
+    "professor": "Miranda Schreurs",
+    "otherLecturers": [],
+    "name": "(POL23200) Environmental Politics in International Comparison",
+    "offeredInSemesters": [
+      "2022 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL23200"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "f21bf9c1-75d1-469b-a705-6251e61a2324",
+    "courseId": "950634752",
+    "courseNumber": "0000003441",
+    "professor": "Florentine Koppenborg",
+    "otherLecturers": [],
+    "name": "(POL23300) Climate Politics: International, national and local dimensions (- Seminar 1 + 2)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL23300"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "ca0c48fb-019b-4450-8438-6d972d567e64",
+    "courseId": "950604262",
+    "courseNumber": "0000003689",
+    "professor": "Dörte Ohlhorst",
+    "otherLecturers": [],
+    "name": "(POL23400) Energy Transition in Germany and Europe",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL23400"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "a3f89700-3ad1-4cfb-801b-c6c701a3da74",
+    "courseId": "950633499",
+    "courseNumber": "0000004635",
+    "professor": "Tamara Bertl",
+    "otherLecturers": [],
+    "name": "(POL24100) Specialization Module International Relations (European Integration - International Organisations)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL24100"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "cb5c1e99-4a9d-4f43-bbdc-4752f30aa8b3",
+    "courseId": "950604728",
+    "courseNumber": "0000004359",
+    "professor": "Jürgen Pfeffer",
+    "otherLecturers": [
+      "TUPOL01 <N.N.>(Isabell Zacharias)"
+    ],
+    "name": "(POL24104) Politics in Theory and Practice: Regional Politics",
+    "offeredInSemesters": [
+      "2022 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL24104"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "c759dd72-7df6-457a-9e12-2b13598eb53f",
+    "courseId": "950605474",
+    "courseNumber": "0000005428",
+    "professor": "Tamara Bertl",
+    "otherLecturers": [
+      "Robert Csehi"
+    ],
+    "name": "(POL24300) Specialization Module International Relations 3 (Seminar 1 + 2)",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL24300"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "ec4bc1c8-3b3a-4b66-8702-628333741788",
+    "courseId": "950732395",
+    "courseNumber": "0000005428",
+    "professor": "Patrick Baldes",
+    "otherLecturers": [],
+    "name": "(POL24300) Specialization Module International Relations 3 (Seminar 1 + 2)",
+    "offeredInSemesters": [
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL24300"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "6e518c43-326a-46bf-9c93-ddd0d543092e",
+    "courseId": "950606417",
+    "courseNumber": "0000005664",
+    "professor": "Tim Büthe",
+    "otherLecturers": [],
+    "name": "(POL24313) Security Threats in International Politics (VHB-lecture-online)",
+    "offeredInSemesters": [
+      "2022 S",
+      "2022 W",
+      "2023 S",
+      "2023 W",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL24313"
+    ]
+  },
+  {
+    "id": "de855b66-7b1e-4f4f-a74a-6e3873173963",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Tobias Rommel",
+    "otherLecturers": [],
+    "name": "Research Design - International Relations (Political Economy)",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b287eed34856d36eb284ce",
+        "courseId": "950606982",
+        "courseNumber": "0000003770",
+        "professor": "Tobias Rommel",
+        "otherLecturers": [],
+        "name": "(POL24410)  Research Design - International Relations (Political Economy)",
+        "offeredInSemesters": [
+          "2022 S",
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "POL24410"
+        ],
+        "accepted": true
+      },
+      {
+        "id": "66b29098d34856d36eb33a88",
+        "courseId": "950761345",
+        "courseNumber": "0000003894",
+        "professor": "Tobias Rommel",
+        "otherLecturers": [],
+        "name": "(POL24410) Research Design - International Relations",
+        "offeredInSemesters": [
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 18,
+        "codes": [
+          "POL24410"
+        ],
+        "accepted": true
+      }
+    ],
+    "codes": [
+      "POL24410"
+    ],
+    "acceptedCount": 2,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "f59cb294-7d32-42d0-bc36-f41992abf537",
+    "courseId": "950633865",
+    "courseNumber": "0000002689",
+    "professor": "Alexander Besner",
+    "otherLecturers": [],
+    "name": "(POL250001) Law of digitalisation in public administration (e-government)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL250001"
+    ]
+  },
+  {
+    "id": "54a2e5ef-149b-4510-a34e-a2309bf6df76",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Sarah Rachut",
+    "otherLecturers": [],
+    "name": "(POL25100) Law of digitisation in public administration (E-Government)",
+    "offeredInSemesters": [
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b28b8bd34856d36eb2e2b0",
+        "courseId": "950666270",
+        "courseNumber": "0000002021",
+        "professor": "Sarah Rachut",
+        "otherLecturers": [],
+        "name": "(POL25100) Law of digitisation in public administration (E-Government)",
+        "offeredInSemesters": [
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "POL25100",
+          "POL251001"
+        ],
+        "accepted": true
+      },
+      {
+        "id": "66b29098d34856d36eb33a8b",
+        "courseId": "950732380",
+        "courseNumber": "0000002021",
+        "professor": "Sarah Rachut",
+        "otherLecturers": [],
+        "name": "(POL251001) Crash Course - Law of digitisation in public administration (E-Government)",
+        "offeredInSemesters": [
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 8,
+        "codes": [
+          "POL251001"
+        ],
+        "accepted": true
+      }
+    ],
+    "codes": [
+      "POL25100",
+      "POL251001"
+    ],
+    "acceptedCount": 2,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "f6445ec6-11de-48e9-81f6-185ac3c4b5fc",
+    "courseId": "950605131",
+    "courseNumber": "0000000304",
+    "professor": "Pascal Bronner",
+    "otherLecturers": [
+      "Dirk Heckmann",
+      "Valentin Vogel"
+    ],
+    "name": "(POL25104) Data Protection Law",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL25104"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "13c35de2-57c6-429d-87c6-83ab5cbce041",
+    "courseId": "950604866",
+    "courseNumber": "0000004460",
+    "professor": "Janina Steinert",
+    "otherLecturers": [],
+    "name": "(POL2600) Global Health - Part 1 (Introduction to Global Health)",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL2600"
+    ]
+  }
+]

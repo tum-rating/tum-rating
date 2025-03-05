@@ -25,12 +25,12 @@ const METHODS_SOURCE_MAP = [
     type: "key-similarity",
     label: "Key similarity",
     fileType: ["courses-production", "courses-tum-campus", "merged"],
-  },
-  {
-    type: "key-similarity-ai",
-    label: "Key similarity using ai",
-    fileType: ["courses-production", "courses-tum-campus", "merged"],
-  },
+  }
+  // {
+  //   type: "key-similarity-ai",
+  //   label: "Key similarity using ai",
+  //   fileType: ["courses-production", "courses-tum-campus", "merged"],
+  // },
 ];
 
 const MergeDialog = (props: PropsWithChildren) => {
