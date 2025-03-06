@@ -14,38 +14,41 @@ export type AiResponse = {
   name: string;
   merged: string[];
 };
+
 const logRequestResponse = (
-    request: string[],
-    response: any,
-    fileName: string,
-    wss?: WebSocketServer,
-  ) => {
-    const logEntry = {
-      timestamp: new Date().toISOString(),
-      request,
-      response,
-    };
-
-    if (aiWorkers[fileName]) {
-      aiWorkers[fileName].logs.unshift(logEntry);
-    } else {
-      aiWorkers[fileName] = {
-        userId: "",
-        progress: 0,
-        startTime: new Date().toISOString(),
-        status: "in-progress",
-        logs: [logEntry],
-      };
-    }
-
-    const aiLogsPath = path.join(__dirname, "../data/aiLogs.json");
-    let aiLogs = [];
-    if (fs.existsSync(aiLogsPath)) {
-      aiLogs = JSON.parse(fs.readFileSync(aiLogsPath, "utf-8"));
-    }
-    aiLogs.unshift(logEntry);
-    fs.writeFileSync(aiLogsPath, JSON.stringify(aiLogs, null, 2), "utf-8");
+  request: string[],
+  response: any,
+  fileName: string,
+  wss?: WebSocketServer,
+  error?: string
+) => {
+  const logEntry = {
+    timestamp: new Date().toISOString(),
+    request,
+    response,
+    error,
   };
+
+  if (aiWorkers[fileName]) {
+    aiWorkers[fileName].logs.unshift(logEntry);
+  } else {
+    aiWorkers[fileName] = {
+      userId: "",
+      progress: 0,
+      startTime: new Date().toISOString(),
+      status: "in-progress",
+      logs: [logEntry],
+    };
+  }
+
+  const aiLogsPath = path.join(__dirname, "../data/aiLogs.json");
+  let aiLogs = [];
+  if (fs.existsSync(aiLogsPath)) {
+    aiLogs = JSON.parse(fs.readFileSync(aiLogsPath, "utf-8"));
+  }
+  aiLogs.unshift(logEntry);
+  fs.writeFileSync(aiLogsPath, JSON.stringify(aiLogs, null, 2), "utf-8");
+};
 
 const getSingleCoursePrompt = (courses: string[]) => `
 You will receive name of university courses in a form of nominal name and following possible matches that might be a course duplicate. The input structure is a following JSON:
@@ -78,7 +81,8 @@ Apply the following rules to each set independently:
 
 ${AI_MERGING_RULES}
 
-Return an array of results, one for each input set, in the following format:
+Return an array of objects results, one for each input set, in the following format (Do not wrap the json codes in JSON markers):
+
 [
   {
     "match": boolean,
@@ -89,6 +93,12 @@ Return an array of results, one for each input set, in the following format:
 ]
 
 Return only the output without reasoning.`;
+
+const cleanJsonString = (jsonString: string): string => {
+  const pattern = /^```json\s*(.*?)\s*```$/s;
+  const cleanedString = jsonString.replace(pattern, '$1');
+  return cleanedString.trim();
+};
 
 const mergeCoursesByNamesWithAi = async (
   courses: string[] | string[][],
@@ -108,7 +118,7 @@ const mergeCoursesByNamesWithAi = async (
     const response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
       {
-        model: "gpt-4o-mini",
+        model: "gpt-4o",
         messages: [
           {
             role: "user",
@@ -130,7 +140,8 @@ const mergeCoursesByNamesWithAi = async (
       },
     );
 
-    const aiResponse = JSON.parse(response.data.choices[0].message.content);
+    const cleanedResponse = cleanJsonString(response.data.choices[0].message.content);
+    const aiResponse = JSON.parse(cleanedResponse);
 
     logRequestResponse(courses, aiResponse, fileName, wss);
     if (isBatch) {
@@ -139,8 +150,10 @@ const mergeCoursesByNamesWithAi = async (
 
     return aiResponse;
   } catch (error) {
-    Logger.error(`Error in mergeCoursesByNamesWithAi: ${error.message}`);
-    throw new Error(error.response ? error.response.data : error.message);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    Logger.error(`Error in mergeCoursesByNamesWithAi: ${errorMessage}`);
+    logRequestResponse(courses, null, fileName, wss, errorMessage);
+    throw new Error(errorMessage);
   }
 };
 

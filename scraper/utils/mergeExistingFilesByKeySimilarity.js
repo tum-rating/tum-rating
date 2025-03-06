@@ -108,7 +108,6 @@ const mergeExistingFilesByKeySimilarity = async () => {
             message: 'Do you want to run courses checking app ?',
             initial: false,
         });
-        // If the user chooses to run the checking application, return
 
         if(runCheckingApp){
 

@@ -12,11 +12,12 @@ interface ComputedCoursesListItemProps {
 }
 
 const highlightText = (text: string, searchTerm: string) => {
-    if (!searchTerm) return text;
-    const regex = new RegExp(`(${searchTerm.split(',').map(term => term.trim()).join('|')})`, 'gi');
-    return text.split(regex).map((part, index) =>
-        regex.test(part) ? <span key={index} className="bg-yellow-200">{part}</span> : part
-    );
+  if (!searchTerm) return text;
+  const escapedSearchTerm = searchTerm.split(',').map(term => term.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+  const regex = new RegExp(`(${escapedSearchTerm})`, 'gi');
+  return text.split(regex).map((part, index) =>
+    regex.test(part) ? <span key={index} className="bg-yellow-200">{part}</span> : part
+  );
 };
 
 const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: ComputedCoursesListItemProps) => {

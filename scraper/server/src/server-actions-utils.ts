@@ -156,8 +156,6 @@ function keySimilarityCore(
           {
             ...item,
             similarity: 0,
-            codes: Array.from(currentCodes),
-            offeredInSemesters: Array.from(offeredInSemesters),
           },
           ...similarRecords,
           ...(Array.isArray(item.merged) ? item.merged : []),
@@ -251,7 +249,6 @@ const summarizeFetchedData = async (
 ): Promise<ParsedCourse[]> => {
   return courses.map((course) => {
     const courseId = course.id;
-
     const germanTitle = course.courseTitle.translations.translation.find(
       (el) => el.lang === "de",
     )?.value;

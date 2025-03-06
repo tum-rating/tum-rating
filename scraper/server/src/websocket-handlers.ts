@@ -236,14 +236,15 @@ const handleMessage = async (
           if (user) {
             user.selectedFile = name;
             broadcastUsers(wss);
-            if (aiWorkers[name]) {
-              ws.send(
-                JSON.stringify({
-                  action: "aiWorkerInfo",
-                  data: aiWorkers[name],
-                }),
-              );
-            }
+            // mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm fajne fajne
+            // if (aiWorkers[name]) {
+            //   ws.send(
+            //     JSON.stringify({
+            //       action: "aiWorkerInfo",
+            //       data: aiWorkers[name],
+            //     }),
+            //   );
+            // }
           }
         }
         break;

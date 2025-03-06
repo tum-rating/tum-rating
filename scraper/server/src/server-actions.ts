@@ -127,7 +127,16 @@ const finishKeySimilarityMerging = async ({
       delete item[key];
     }
     if (item.merged?.length) {
-      item.merged = item.merged.filter((mergedItem) => {
+      item.merged = item.merged.filter((mergedItem,index) => {
+        if(index === 0) {
+          delete mergedItem.accepted;
+          mergedItem.rejectedId = mergedItem.rejectedId || [];
+          mergedItem.rejectedId.push(item.id);
+          item.rejectedId = item.rejectedId || [];
+          item.rejectedId.push(mergedItem.id);
+          finalizedData.push(mergedItem);
+          return false;
+        }
         if (mergedItem.accepted) {
           return true;
         } else {
@@ -140,8 +149,15 @@ const finishKeySimilarityMerging = async ({
           return false;
         }
       });
+      if(!item.merged.length){
+
+      }else{
+        finalizedData.push(item);
+      }
+    }else{
+
+      finalizedData.push(item);
     }
-    finalizedData.push(item);
   }
 
   fs.writeFileSync(filePath, JSON.stringify(finalizedData, null, 2), "utf-8");
@@ -414,7 +430,7 @@ const batchMergeCoursesByNamesWithAi = async (
       const item = fileContent[originalIndex];
       if (item) {
         let acceptedCount = 0;
-        let rejectedCount = data.merged.length;
+        let rejectedCount = item.merged.length;
         for (let el of item.merged) {
           el.accepted = false;
         }

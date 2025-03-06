@@ -245,6 +245,7 @@ const AppDataProvider = ({ children }: AppDataContextProps) => {
           break;
         case "fileUpdated": {
           if (updatedItems) {
+            console.log(updatedItems)
             const fileNameWithoutExtension = fileName.slice(
               0,
               fileName.lastIndexOf("."),

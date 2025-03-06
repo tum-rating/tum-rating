@@ -173,15 +173,15 @@ const MergedCourseCard = ({
                 </div>
                 <div className="sticky right-[30px] bottom-[50px] controls">
                     <div className="flex flex-col mt-3 items-end justify-end px-2 mr-2">
-                        {course?.merged && (
-                            <Button
-                                variant={"ghost"}
-                                onClick={handleMergeWithAi}
-                                disabled={!!fileAiWorker}
-                            >
-                                {fileAiWorker ? "Merging..." : "Merge with AI 🪄"}
-                            </Button>
-                        )}
+                        {/*{course?.merged && (*/}
+                        {/*    <Button*/}
+                        {/*        variant={"ghost"}*/}
+                        {/*        onClick={handleMergeWithAi}*/}
+                        {/*        disabled={!!fileAiWorker?.status === "in-progress"}*/}
+                        {/*    >*/}
+                        {/*        {fileAiWorker?.status === "in-progress" ? "Merging..." : "Merge with AI 🪄"}*/}
+                        {/*    </Button>*/}
+                        {/*)}*/}
                         <div>
                             <Badge
                                 variant={
@@ -208,19 +208,19 @@ const MergedCourseCard = ({
                             <Button
                                 variant="outline"
                                 tooltip="Previous"
-                                loading={!!fileAiWorker}
+                                loading={!!fileAiWorker?.status === "in-progress"}
                             >
                                 <ArrowLeft/>
                             </Button>
                             <Button
                                 variant="outline"
                                 tooltip="Next"
-                                loading={!!fileAiWorker}
+                                loading={!!fileAiWorker?.status === "in-progress"}
                             >
                                 <ArrowRight/>
                             </Button>
                             <Button
-                                loading={!!fileAiWorker}
+                                loading={!!fileAiWorker?.status === "in-progress"}
                                 onClick={handleSave}
                             >
                                 Save
