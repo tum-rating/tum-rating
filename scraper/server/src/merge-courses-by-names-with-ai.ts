@@ -95,10 +95,33 @@ Return an array of objects results, one for each input set, in the following for
 Return only the output without reasoning.`;
 
 const cleanJsonString = (jsonString: string): string => {
-  const pattern = /^```json\s*(.*?)\s*```$/s;
-  const cleanedString = jsonString.replace(pattern, '$1');
-  return cleanedString.trim();
+  Logger.debug(`Cleaning JSON string: ${jsonString}`);
+
+  // Remove any backticks and surrounding ```json markers
+  const pattern = /```json\s*([\s\S]*?)\s*```/g;
+  let cleanedString = jsonString.replace(pattern, '$1').trim();
+
+  // Attempt to find the start and end of the JSON content
+  const jsonStart = cleanedString.indexOf('[');
+  const jsonEnd = cleanedString.lastIndexOf(']') + 1;
+
+  if (jsonStart === -1 || jsonEnd === -1) {
+    throw new Error("Invalid JSON format");
+  }
+
+  cleanedString = cleanedString.substring(jsonStart, jsonEnd);
+
+  // Ensure the cleaned string is valid JSON
+  try {
+    JSON.parse(cleanedString);
+  } catch (error) {
+    throw new Error("Invalid JSON format");
+  }
+
+  return cleanedString;
 };
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const mergeCoursesByNamesWithAi = async (
   courses: string[] | string[][],
@@ -110,50 +133,64 @@ const mergeCoursesByNamesWithAi = async (
     `Processing ${isBatch ? "batch" : "single"} course merge request`,
   );
 
-  try {
-    const prompt = isBatch
-      ? getBatchPrompt()
-      : getSingleCoursePrompt(courses as string[]);
+  let errorCount = 0;
 
-    const response = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        model: "gpt-4o",
-        messages: [
-          {
-            role: "user",
-            content:
-              prompt +
-              (isBatch
-                ? `\nData to merge:\n${JSON.stringify(courses, null, 2)}`
-                : ""),
-          },
-        ],
-        max_tokens: 1000,
-        temperature: 0.2,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+  while (true) {
+    try {
+      const prompt = isBatch
+        ? getBatchPrompt()
+        : getSingleCoursePrompt(courses as string[]);
+
+      const response = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: "gpt-4o",
+          messages: [
+            {
+              role: "user",
+              content:
+                prompt +
+                (isBatch
+                  ? `\nData to merge:\n${JSON.stringify(courses, null, 2)}`
+                  : ""),
+            },
+          ],
+          max_tokens: 1000,
+          temperature: 0.2,
         },
-      },
-    );
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          },
+        },
+      );
 
-    const cleanedResponse = cleanJsonString(response.data.choices[0].message.content);
-    const aiResponse = JSON.parse(cleanedResponse);
+      const cleanedResponse = cleanJsonString(response.data.choices[0].message.content);
+      const aiResponse = JSON.parse(cleanedResponse);
 
-    logRequestResponse(courses, aiResponse, fileName, wss);
-    if (isBatch) {
-      Logger.info(`Processed ${(courses as string[][]).length} course sets`);
+      logRequestResponse(courses, aiResponse, fileName, wss);
+      if (isBatch) {
+        Logger.info(`Processed ${(courses as string[][]).length} course sets`);
+      }
+
+      return aiResponse;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.log("error: " +  error)
+      Logger.error(`Error in mergeCoursesByNamesWithAi: ${errorMessage}`);
+      Logger.error(`Problematic request: ${JSON.stringify(courses, null, 2)}`);
+      logRequestResponse(courses, null, fileName, wss, errorMessage);
+
+      errorCount++;
+      if (errorCount >= 5) {
+        Logger.error(`Skipping request after 5 consecutive errors: ${JSON.stringify(courses, null, 2)}`);
+        logRequestResponse(courses, null, fileName, wss, `Skipped after 5 errors: ${errorMessage}`);
+        break;
+      }
+
+      await delay(5000); // Delay for 5 seconds before retrying
     }
-
-    return aiResponse;
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    Logger.error(`Error in mergeCoursesByNamesWithAi: ${errorMessage}`);
-    logRequestResponse(courses, null, fileName, wss, errorMessage);
-    throw new Error(errorMessage);
   }
 };
 

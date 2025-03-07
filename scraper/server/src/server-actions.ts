@@ -309,7 +309,7 @@ const batchMergeCoursesByNamesWithAi = async (
   wss: WebSocketServer,
   ws: WebSocket,
 ) => {
-  const batchSize = 10; // Adjust batch size as needed
+  const batchSize = 5; // Adjust batch size as needed
 
   // Filter out empty sets while keeping track of original indices
   const coursesSetWithoutEmptyIdx: number[] = [];
