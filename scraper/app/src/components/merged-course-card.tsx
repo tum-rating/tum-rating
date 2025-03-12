@@ -44,13 +44,13 @@ const MergedCourseCard = ({
 
         if (key === "merged" && Array.isArray(value)) {
             const acceptedCount =
-                value?.filter((item: FetchedCourse) => item.accepted === true).length ??
+                value?.filter((item: FetchedCourse) => item.accepted === true && !item.locked).length ??
                 0;
             const rejectedCount =
-                value?.filter((item: FetchedCourse) => item.accepted === false)
+                value?.filter((item: FetchedCourse) => item.accepted === false && !item.locked)
                     .length ?? 0;
             const notResolvedCount =
-                (value?.length ?? 0) - acceptedCount - rejectedCount;
+                (value?.filter((item: FetchedCourse) => !item.locked).length ?? 0) - acceptedCount - rejectedCount;
 
             updatedCourse.acceptedCount = acceptedCount;
             updatedCourse.rejectedCount = rejectedCount;
@@ -68,14 +68,18 @@ const MergedCourseCard = ({
         }
     };
 
-    const handleMergeWithAi = async () => {
-        if (!course?.merged) return;
-        await coursesNamesMergingAi([...course.merged.map((x) => x.name)], course);
-    };
+    // This is unused and can be commented out or removed
+    // const handleMergeWithAi = async () => {
+    //     if (!course?.merged) return;
+    //     await coursesNamesMergingAi([...course.merged.map((x) => x.name)], course);
+    // };
 
     if (!internalCourse) return <div>No course selected</div>;
 
-    const fileAiWorker = aiWorkers[selectedFile.name];
+    const fileAiWorker = aiWorkers[selectedFile?.name];
+    const nonLockedItemsCount = internalCourse.merged?.filter(item => !item.locked).length ?? 0;
+    const resolvedCount = (internalCourse.acceptedCount ?? 0) + (internalCourse.rejectedCount ?? 0);
+
     return (
         <div className="relative z-10 w-full h-full flex justify-center items-center gap-4">
             <ScrollArea className="w-full h-screen">
@@ -88,7 +92,7 @@ const MergedCourseCard = ({
                                 selectCourse(null);
                             }}
                         >
-                            ← {selectedFile?.name}
+                            ← {selectedFile?.name || "Untitled"}
                         </a>
                     </div>
 
@@ -177,7 +181,7 @@ const MergedCourseCard = ({
                         {/*    <Button*/}
                         {/*        variant={"ghost"}*/}
                         {/*        onClick={handleMergeWithAi}*/}
-                        {/*        disabled={!!fileAiWorker?.status === "in-progress"}*/}
+                        {/*        disabled={fileAiWorker?.status === "in-progress"}*/}
                         {/*    >*/}
                         {/*        {fileAiWorker?.status === "in-progress" ? "Merging..." : "Merge with AI 🪄"}*/}
                         {/*    </Button>*/}
@@ -185,42 +189,37 @@ const MergedCourseCard = ({
                         <div>
                             <Badge
                                 variant={
-                                    (internalCourse.acceptedCount ?? 0) +
-                                    (internalCourse.rejectedCount ?? 0) ===
-                                    (internalCourse.merged?.length ?? 0)
+                                    resolvedCount === nonLockedItemsCount
                                         ? "blue"
                                         : "subtle"
                                 }
                                 className="mb-2"
                             >
                                 Resolved{" "}
-                                {(internalCourse.acceptedCount ?? 0) +
-                                    (internalCourse.rejectedCount ?? 0)}{" "}
-                                / {internalCourse.merged?.length ?? 0}
-                                {(internalCourse.acceptedCount ?? 0) +
-                                    (internalCourse.rejectedCount ?? 0) ===
-                                    (internalCourse.merged?.length ?? 0) && (
-                                        <CheckIcon className="inline-block w-5 h-4 ml-[3px]"/>
-                                    )}
+                                {resolvedCount}{" "}
+                                / {nonLockedItemsCount}
+                                {resolvedCount === nonLockedItemsCount && (
+                                    <CheckIcon className="inline-block w-5 h-4 ml-[3px]"/>
+                                )}
                             </Badge>
                         </div>
                         <div className="flex gap-2">
                             <Button
                                 variant="outline"
                                 tooltip="Previous"
-                                loading={!!fileAiWorker?.status === "in-progress"}
+                                loading={fileAiWorker?.status === "in-progress"}
                             >
                                 <ArrowLeft/>
                             </Button>
                             <Button
                                 variant="outline"
                                 tooltip="Next"
-                                loading={!!fileAiWorker?.status === "in-progress"}
+                                loading={fileAiWorker?.status === "in-progress"}
                             >
                                 <ArrowRight/>
                             </Button>
                             <Button
-                                loading={!!fileAiWorker?.status === "in-progress"}
+                                loading={fileAiWorker?.status === "in-progress"}
                                 onClick={handleSave}
                             >
                                 Save

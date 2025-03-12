@@ -31,6 +31,7 @@ type FetchedCourse = {
     acceptedCount?: number;
     rejectedCount?: number;
     notResolvedCount?: number;
+    locked?: boolean;
 }
 
 type FetchedData = {

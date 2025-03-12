@@ -50,10 +50,9 @@
         "votesNumber": 0,
         "similarity": 0,
         "rejectedId": [
-          "2a7ad582-a81b-4a0b-92e6-5fb42f2a7e82",
-          "66b28900d34856d36eb2a090"
+          "2a7ad582-a81b-4a0b-92e6-5fb42f2a7e82"
         ],
-        "locked": true
+        "accepted": true
       },
       {
         "id": "66b28b90d34856d36eb2e330",
@@ -73,38 +72,43 @@
         "howInterestingRatingAverage": 0,
         "howEasyRatingAverage": 0,
         "votesNumber": 0,
+        "similarity": 12,
         "codes": [],
         "rejectedId": [
           "2a7ad582-a81b-4a0b-92e6-5fb42f2a7e82"
         ],
-        "locked": true
+        "accepted": true
+      },
+      {
+        "id": "66b28900d34856d36eb2a090",
+        "courseId": "950634188",
+        "courseNumber": "0000002502",
+        "professor": "Matthias Gaderer",
+        "otherLecturers": [
+          "Yusheng Chen",
+          "Szymon Herdzik",
+          "Bernhard Huber",
+          "Daniel Klüh"
+        ],
+        "name": "Process Design Project (Practical and Exercise)",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 15,
+        "codes": [],
+        "rejectedId": [
+          "2a7ad582-a81b-4a0b-92e6-5fb42f2a7e82"
+        ],
+        "accepted": false
       }
     ],
-    "codes": []
-  },
-  {
-    "id": "66b28900d34856d36eb2a090",
-    "courseId": "950634188",
-    "courseNumber": "0000002502",
-    "professor": "Matthias Gaderer",
-    "otherLecturers": [
-      "Yusheng Chen",
-      "Szymon Herdzik",
-      "Bernhard Huber",
-      "Daniel Klüh"
-    ],
-    "name": "Process Design Project (Practical and Exercise)",
-    "offeredInSemesters": [
-      "2022 W",
-      "2023 W"
-    ],
-    "howInterestingRatingAverage": 0,
-    "howEasyRatingAverage": 0,
-    "votesNumber": 0,
     "codes": [],
-    "rejectedId": [
-      "2a7ad582-a81b-4a0b-92e6-5fb42f2a7e82",
-      "66b286b1d34856d36eb263d6"
-    ]
+    "acceptedCount": 2,
+    "rejectedCount": 1,
+    "notResolvedCount": 0
   }
 ]

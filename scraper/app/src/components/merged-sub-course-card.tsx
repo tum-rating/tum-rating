@@ -17,7 +17,13 @@ const MergedSubCourseCard = ({subCourse, setSubCourse}: MergedSubCourseCardProps
     return (
         <Card
             className={`relative flex flex-col gap-2 p-2 max-w-[250px] ${subCourse.accepted ? 'bg-green-50' : subCourse.accepted === false ? 'bg-red-50' : 'bg-gray-50'}`}>
-            <SimilarityLabel similarity={subCourse.similarity}/>
+            {subCourse.locked ?
+                <div className=' text-gray-500  text-xs font-bold'>
+                    🔒
+                    Accepted and Locked</div> :
+                <SimilarityLabel similarity={subCourse.similarity}/>
+            }
+
             <div className={`flex flex-col gap-1`}>
                 <Tooltip>
                     <TooltipTrigger asChild>
@@ -57,6 +63,7 @@ const MergedSubCourseCard = ({subCourse, setSubCourse}: MergedSubCourseCardProps
                              }}
                 >
                     <ToggleGroupItem variant='outline'
+                                     disabled={subCourse.locked}
                                      className='w-full data-[state=on]:bg-green-600 data-[state=on]:text-white data-[state=on]:font-bold'
 
                                      value="accept">
@@ -64,6 +71,7 @@ const MergedSubCourseCard = ({subCourse, setSubCourse}: MergedSubCourseCardProps
                         Accept
                     </ToggleGroupItem>
                     <ToggleGroupItem variant='outline'
+                                     disabled={subCourse.locked}
                                      className='w-full data-[state=on]:bg-red-600 data-[state=on]:text-white data-[state=on]:font-bold'
                                      value="decline">
                         <X/>

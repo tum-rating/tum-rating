@@ -28,15 +28,27 @@ const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: Co
     });
 
     useEffect(() => {
-        let acceptedCount = data.acceptedCount || data?.merged?.filter(x=>x.accepted).length || 0;
-        let rejectedCount = data.rejectedCount || data?.merged?.filter(x=>x.accepted === false).length || 0;
-        let notResolvedCount = data.merged ? data.merged.length - acceptedCount - rejectedCount : 0;
+        // Filter out locked items before counting
+        let acceptedCount = data.acceptedCount ||
+            data?.merged?.filter(x => x.accepted && !x.locked).length || 0;
+        let rejectedCount = data.rejectedCount ||
+            data?.merged?.filter(x => x.accepted === false && !x.locked).length || 0;
+
+        // Only consider non-locked items when calculating notResolvedCount
+        const nonLockedItems = data?.merged?.filter(x => !x.locked) || [];
+        let notResolvedCount = nonLockedItems.length - acceptedCount - rejectedCount;
+
         setStatus({
             accepted: acceptedCount,
             rejected: rejectedCount,
             notResolved: notResolvedCount
         });
     }, [data]);
+
+    // Calculate if all non-locked items are resolved
+    const allNonLockedResolved = status.notResolved === 0 &&
+        (status.accepted > 0 || status.rejected > 0 ||
+        (data?.merged?.filter(x => !x.locked).length || 0) === 0);
 
     return (
         <div
@@ -50,10 +62,10 @@ const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: Co
             )}
         >
 
-            <div className={`min-w-[8px] h-auto mr-4  ${status.notResolved === 0 ? 'bg-blue-500' : 'bg-gray-300'}`}/>
+            <div className={`min-w-[8px] h-auto mr-4  ${allNonLockedResolved ? 'bg-blue-500' : 'bg-gray-300'}`}/>
             <div className="py-4 w-full">
                 <span className="text-sm font-bold leading-relaxed ">
-                    {status.notResolved === 0 && (
+                    {allNonLockedResolved && (
                         <CircleCheck className="inline-block w-5 h-5 mr-1 fill-blue-500 stroke-white"/>
                     )}
                     {highlightText(data.name, searchTerm)}
