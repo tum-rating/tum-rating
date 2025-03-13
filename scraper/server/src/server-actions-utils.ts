@@ -125,7 +125,7 @@ function keySimilarityCore(
         redundantWordsExtractor(record[key]);
       const similarity = levenshteinDistance(itemTitle, recordTitle);
 
-      if (record.rejectedId && record.rejectedId.includes(item["id"])) {
+      if ((record.rejectedId && record.rejectedId.includes(item["id"]))) {
         continue;
       }
 
@@ -148,15 +148,19 @@ function keySimilarityCore(
       }
     }
 
+
+    console.log(mergedArray)
+    console.log(item)
+    console.log(similarRecords)
     if (similarRecords.length > 0) {
       mergedArray.push({
         ...item,
-        name: item[key],
+        name: item.name || item[key],
         merged: [
-          {
+            ...(Array.isArray(item.merged) ? item.merged.some(x=>x.name === item.name) || {
             ...item,
             similarity: 0,
-          },
+          } : []),
           ...similarRecords,
           ...(Array.isArray(item.merged) ? item.merged : []),
         ],
@@ -169,7 +173,7 @@ function keySimilarityCore(
       });
     } else {
       mergedArray.push({
-        merged: [],
+        merged: item.merged || [],
         ...item,
         codes: Array.from(currentCodes),
       });

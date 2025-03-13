@@ -171,7 +171,7 @@ const finishKeySimilarityMerging = async ({
                 console.log("MERGED ARRAY", mergedCourses);
                 const remainingCourses = mergedCourses.slice(1);
                 console.log("ITEMS TO REMOVE", remainingCourses);
-                const newCourse = { ...baseCourse };
+                const newCourse = {...baseCourse};
                 remainingCourses.forEach(mergedCourse => delete mergedCourse.locked);
                 finalizedData.push(newCourse, ...remainingCourses);
             }
@@ -364,7 +364,6 @@ const batchMergeCoursesByNamesWithAi = async (
     ws: WebSocket,
 ) => {
     const batchSize = 5; // Adjust batch size as needed
-
     // Filter out empty sets while keeping track of original indices
     const coursesSetWithoutEmptyIdx: number[] = [];
     const coursesSetWithoutEmpty = coursesSets.reduce((acc, set, index) => {
@@ -386,16 +385,12 @@ const batchMergeCoursesByNamesWithAi = async (
     const totalBatches = Math.ceil(coursesSetWithoutEmpty.length / batchSize);
     // Send total items to process
     // Initialize aiWorker with logs
-
     // Process in batches
     const allMergedData: AiResponse[] = [];
     let processedCount = 0;
-
     for (let i = 0; i < coursesSetWithoutEmpty.length; i += batchSize) {
         const batch = coursesSetWithoutEmpty.slice(i, i + batchSize);
         Logger.info(`Processing batch ${i / batchSize + 1} of ${totalBatches}`);
-
-
         try {
             const batchResults = await mergeCoursesByNamesWithAi(batch, wss, fileName);
             allMergedData.push(...(batchResults as AiResponse[]));
@@ -445,10 +440,8 @@ const batchMergeCoursesByNamesWithAi = async (
         ws.send(JSON.stringify({action: "error", message: "File not found"}));
         return;
     }
-
     const fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"));
 
-    // Apply all merged data results
     for (let i = 0; i < allMergedData.length; i++) {
         const data = allMergedData[i];
         const originalIndex = coursesSetWithoutEmptyIdx[i];
@@ -461,11 +454,15 @@ const batchMergeCoursesByNamesWithAi = async (
 
                 for (let el of item.merged) {
                     if (data.merged.includes(el.name)) {
-                        el.accepted = true;
-                        acceptedCount++;
+                        if (!el.locked) {
+                            el.accepted = true;
+                            acceptedCount++;
+                        }
                     } else {
-                        el.accepted = false;
-                        rejectedCount++;
+                        if (!el.locked) {
+                            el.accepted = false;
+                            rejectedCount++;
+                        }
                     }
                 }
 
@@ -486,7 +483,9 @@ const batchMergeCoursesByNamesWithAi = async (
                 let acceptedCount = 0;
                 let rejectedCount = item.merged.length;
                 for (let el of item.merged) {
-                    el.accepted = false;
+                    if (!el.locked) {
+                        el.accepted = false;
+                    }
                 }
                 item.acceptedCount = acceptedCount;
                 item.rejectedCount = rejectedCount;

@@ -1,0 +1,317 @@
+[
+  {
+    "merged": [],
+    "id": "882ae3ef-3e7b-4c5e-971a-43a94ac6a4ae",
+    "courseId": "950637289",
+    "courseNumber": "0000002443",
+    "professor": "Matthias Gaderer",
+    "otherLecturers": [
+      "Yusheng Chen",
+      "Szymon Herdzik",
+      "Bernhard Huber",
+      "Daniel Klüh"
+    ],
+    "name": "(Cooperative) Design Project",
+    "offeredInSemesters": [
+      "2022 S",
+      "2022 W",
+      "2023 S",
+      "2023 W",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "similarity": 0,
+    "locked": true,
+    "rejectedId": [
+      "66b28b90d34856d36eb2e330",
+      "66b28900d34856d36eb2a090"
+    ],
+    "codes": []
+  },
+  {
+    "id": "8ea8125a-be61-4f7b-8844-032073699149",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Matthias Gaderer",
+    "otherLecturers": [
+      "Szymon Herdzik",
+      "Bernhard Huber",
+      "Daniel Klüh",
+      "Gabriel Naumann"
+    ],
+    "name": "Practical course Process Design Project I",
+    "offeredInSemesters": [
+      "2023 S",
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "rejectedId": [
+      "66b286b1d34856d36eb263d6"
+    ],
+    "merged": [
+      {
+        "id": "66b28900d34856d36eb2a090",
+        "courseId": "950634188",
+        "courseNumber": "0000002502",
+        "professor": "Matthias Gaderer",
+        "otherLecturers": [
+          "Yusheng Chen",
+          "Szymon Herdzik",
+          "Bernhard Huber",
+          "Daniel Klüh"
+        ],
+        "name": "Process Design Project (Practical and Exercise)",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "codes": [],
+        "rejectedId": [
+          "66b286b1d34856d36eb263d6"
+        ],
+        "similarity": 4,
+        "accepted": false
+      }
+    ],
+    "acceptedCount": 0,
+    "rejectedCount": 1,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [
+      {
+        "id": "66b289d3d34856d36eb2b653",
+        "courseId": "950658511",
+        "courseNumber": "0000000996",
+        "professor": "Alexander Besner",
+        "otherLecturers": [],
+        "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "locked": true
+      },
+      {
+        "id": "66b28865d34856d36eb290d0",
+        "courseId": "950629108",
+        "courseNumber": "0000001708",
+        "professor": "Alexander Besner",
+        "otherLecturers": [],
+        "name": "(SOT82504) The Right of Data Use in Germany and Europe",
+        "offeredInSemesters": [
+          "2022 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "codes": [
+          "SOT82504"
+        ],
+        "locked": true
+      },
+      {
+        "id": "66b28bafd34856d36eb2e675",
+        "courseId": "950691985",
+        "courseNumber": "0000002849",
+        "professor": "Alexander Besner",
+        "otherLecturers": [],
+        "name": "(SOT82518) The Right of Data Use in Germany and Europe",
+        "offeredInSemesters": [
+          "2023 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "codes": [
+          "SOT82518"
+        ],
+        "locked": true
+      }
+    ],
+    "id": "05d4bb7c-eae7-49e1-8c84-e4ffdc2aeb0d",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Alexander Besner",
+    "otherLecturers": [],
+    "name": "The Right of Data Use in Germany and Europe (IN0014, SOT82504, SOT82518)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W",
+      "2022 S",
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82504",
+      "SOT82518"
+    ],
+    "acceptedCount": 0,
+    "rejectedCount": 0,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "e8b77d4a-f5d4-4ff1-abf4-ed420dc71d50",
+    "courseId": "950662502",
+    "courseNumber": "0000002476",
+    "professor": "Pascal Bronner",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "similarity": 0,
+    "locked": true,
+    "rejectedId": [
+      "66b28865d34856d36eb290c4",
+      "66b28bafd34856d36eb2e678",
+      "66b28c75d34856d36eb2fb8b"
+    ],
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82519"
+    ]
+  },
+  {
+    "id": "743c5d47-b2cc-4065-baba-aac73ee983a8",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Pascal Bronner",
+    "otherLecturers": [],
+    "name": "(SOT82500) Legal issues of the use of artificial intelligence",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "SOT82500",
+      "SOT82519",
+      "SOT82531"
+    ],
+    "rejectedId": [
+      "66b289d3d34856d36eb2b656"
+    ],
+    "merged": [
+      {
+        "id": "66b28bafd34856d36eb2e678",
+        "courseId": "950691986",
+        "courseNumber": "0000002868",
+        "professor": "Pascal Bronner",
+        "otherLecturers": [],
+        "name": "(SOT82519) Legal issues of the use of artificial intelligence",
+        "offeredInSemesters": [
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "codes": [
+          "SOT82519"
+        ],
+        "rejectedId": [
+          "66b289d3d34856d36eb2b656"
+        ],
+        "similarity": 0,
+        "accepted": false
+      },
+      {
+        "id": "66b28c75d34856d36eb2fb8b",
+        "courseId": "950728427",
+        "courseNumber": "0000002279",
+        "professor": "Pascal Bronner",
+        "otherLecturers": [],
+        "name": "(SOT82531) Legal Principles of Artificial Intelligence",
+        "offeredInSemesters": [
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "codes": [
+          "SOT82531"
+        ],
+        "rejectedId": [
+          "66b289d3d34856d36eb2b656"
+        ],
+        "similarity": 17,
+        "accepted": false
+      }
+    ],
+    "acceptedCount": 0,
+    "rejectedCount": 2,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "0c321896-4988-43cb-ade9-149b93feec4c",
+    "courseId": "950630689",
+    "courseNumber": "0000002094",
+    "professor": "Broder Rühmann",
+    "otherLecturers": [],
+    "name": "(Introduction to) Renewables Utilization (Exercise)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "similarity": 0,
+    "locked": true,
+    "rejectedId": [
+      "66b2874ad34856d36eb2738a"
+    ],
+    "codes": []
+  },
+  {
+    "merged": [],
+    "id": "5ca91957-df7d-43ee-bf91-b30ee521112a",
+    "courseId": "950604842",
+    "courseNumber": "0000002823",
+    "professor": "Broder Rühmann",
+    "otherLecturers": [
+      "Broder Rühmann"
+    ],
+    "name": "Basics Renewables Utilization (Tutorial)",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "rejectedId": [
+      "66b28955d34856d36eb2a966"
+    ]
+  }
+]
