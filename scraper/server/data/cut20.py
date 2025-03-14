@@ -1,7 +1,7 @@
 import json
 
 
-def fast():
+def cut20():
     with open("1-ks-merged.json", "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -13,4 +13,4 @@ def fast():
 
 
 if __name__ == "__main__":
-    fast()
+    cut20()

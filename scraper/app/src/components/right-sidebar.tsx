@@ -49,12 +49,13 @@ const RightSidebar = () => {
             if (searchTerm) {
                 const phrases = searchTerm.toLowerCase().split(',').map(phrase => phrase.trim());
                 data = data.filter(course => {
-                        console.log(course)
+
                         return phrases.every(phrase =>
                             course.name.toLowerCase().includes(phrase) ||
                             course.professor.toLowerCase().includes(phrase) ||
                             course.codes?.some(code => code.toLowerCase().includes(phrase)) ||
-                            course.offeredInSemesters?.some(semester => semester.toLowerCase().includes(phrase))
+                            course.offeredInSemesters?.some(semester => semester.toLowerCase().includes(phrase)) ||
+                            course.merged?.some(merged => merged.name.toLowerCase().includes(phrase))
                         )
                     }
                 );
@@ -101,7 +102,7 @@ const RightSidebar = () => {
     console.log(filteredCourses)
     return (
         <>
-            <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredCourses.length}
+            <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredCourses.length} mergedCoursesLength={filteredCourses.reduce((acc, course) => acc + (course.merged?.length || 0), 0)}
                            sortOptions={sortOptions}/>
             {showSkeleton ? (
                 <div

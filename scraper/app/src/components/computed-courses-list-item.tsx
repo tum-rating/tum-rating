@@ -22,22 +22,19 @@ const highlightText = (text: string, searchTerm: string) => {
 
 const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: ComputedCoursesListItemProps) => {
     const [status, setStatus] = useState({
-        accepted: data.acceptedCount || 0,
-        rejected: data.rejectedCount || 0,
-        notResolved: data.notResolvedCount || 0
+        accepted:  0,
+        rejected:  0,
+        notResolved:  0
     });
 
     useEffect(() => {
-        // Filter out locked items before counting
-        let acceptedCount = data.acceptedCount ||
-            data?.merged?.filter(x => x.accepted && !x.locked).length || 0;
-        let rejectedCount = data.rejectedCount ||
-            data?.merged?.filter(x => x.accepted === false && !x.locked).length || 0;
 
-        // Only consider non-locked items when calculating notResolvedCount
         const nonLockedItems = data?.merged?.filter(x => !x.locked) || [];
-        let notResolvedCount = nonLockedItems.length - acceptedCount - rejectedCount;
-
+        const acceptedCount = data.acceptedCount||
+           nonLockedItems?.filter(x => x.accepted).length || 0;
+        const rejectedCount = data.rejectedCount||
+            nonLockedItems?.filter(x => x.accepted === false).length || 0;
+        const notResolvedCount = nonLockedItems.length - acceptedCount - rejectedCount;
         setStatus({
             accepted: acceptedCount,
             rejected: rejectedCount,
@@ -45,7 +42,6 @@ const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: Co
         });
     }, [data]);
 
-    // Calculate if all non-locked items are resolved
     const allNonLockedResolved = status.notResolved === 0 &&
         (status.accepted > 0 || status.rejected > 0 ||
         (data?.merged?.filter(x => !x.locked).length || 0) === 0);

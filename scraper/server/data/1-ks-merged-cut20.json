@@ -1,1 +1,665 @@
-[{"merged": [], "id": "2dc94f7e-3389-4a25-800d-24f2f93f8484", "courseId": "950629098", "courseNumber": "CVL0001025", "professor": "Ingrid Lughofer", "otherLecturers": [], "name": "\"Am I Faust?\" - Roles. Clich\u00e9s. Visions. Science and Technology in the View of Literature and Theater", "offeredInSemesters": ["2022 S", "2022 W", "2023 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": []}, {"merged": [], "id": "d54c5976-95a9-42ab-a057-b6fbb1b3f45d", "courseId": "950761414", "courseNumber": "CVL0001041", "professor": "Esther Emmerich", "otherLecturers": [], "name": "\"Everyone Is an Artist\" (Introduction to History of Art Using Great Masterpieces from the Pinakothek Museums)", "offeredInSemesters": ["2024 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": []}, {"merged": [], "id": "fd1fc1c4-7e8c-4ecc-b2e2-1fc0fac739a4", "courseId": "950738466", "courseNumber": "0000004346", "professor": "Sven Liedtke", "otherLecturers": ["Martin Uhl"], "name": "(Additional for Games Eng.) Grundlagen: Betriebssysteme und Systemsoftware (IN0009 IN0034)", "offeredInSemesters": ["2023 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": ["IN0009", "IN0034"]}, {"id": "927b558c-9e80-4da9-83a4-89a187cdd567", "courseId": "", "courseNumber": "", "professor": "Matthias Gaderer", "otherLecturers": ["Yusheng Chen", "Szymon Herdzik", "Bernhard Huber", "Daniel Kl\u00fch"], "name": "(Cooperative) Design Project", "offeredInSemesters": ["2022 S", "2022 W", "2023 S", "2023 W", "2024 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "merged": [{"id": "66b286b1d34856d36eb263d6", "courseId": "950637289", "courseNumber": "0000002443", "professor": "Matthias Gaderer", "otherLecturers": ["Yusheng Chen", "Szymon Herdzik", "Bernhard Huber", "Daniel Kl\u00fch"], "name": "(Cooperative) Design Project", "offeredInSemesters": ["2022 S", "2022 W", "2023 S", "2023 W", "2024 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "similarity": 0}, {"id": "66b28b90d34856d36eb2e330", "courseId": "950672060", "courseNumber": "0000005501", "professor": "Matthias Gaderer", "otherLecturers": ["Szymon Herdzik", "Bernhard Huber", "Daniel Kl\u00fch", "Gabriel Naumann"], "name": "Practical course Process Design Project I", "offeredInSemesters": ["2023 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "similarity": 12, "codes": []}, {"id": "66b28900d34856d36eb2a090", "courseId": "950634188", "courseNumber": "0000002502", "professor": "Matthias Gaderer", "otherLecturers": ["Yusheng Chen", "Szymon Herdzik", "Bernhard Huber", "Daniel Kl\u00fch"], "name": "Process Design Project (Practical and Exercise)", "offeredInSemesters": ["2022 W", "2023 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "similarity": 15, "codes": []}], "codes": []}, {"merged": [], "id": "8c138d36-f0c2-421e-b540-640d93c323af", "courseId": "950635400", "courseNumber": "8610170000", "professor": "Elke Langbein", "otherLecturers": ["Daniela Maria Schwarz"], "name": "(Dis-)ability, Diversity and Inclusion", "offeredInSemesters": ["2022 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": []}, {"merged": [], "id": "a1be0b65-3f13-48e7-9f9d-3afa010ee188", "courseId": "950632769", "courseNumber": "0000000795", "professor": "Alexander Besner", "otherLecturers": [], "name": "(IN0014, IN2107, IN4906_3) Practical Seminar Legal Tech Special", "offeredInSemesters": ["2022 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": ["IN0014", "IN2107", "IN4906_3"]}, {"merged": [], "id": "57d8e495-abb3-4c7d-89d2-4bc40019614d", "courseId": "950671588", "courseNumber": "0000004838", "professor": "Sebastian Nagl", "otherLecturers": [], "name": "(IN0014, IN2107, IN4906_3) Practical Seminar Legal Tech Special", "offeredInSemesters": ["2023 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": ["IN0014", "IN2107", "IN4906_3"]}, {"merged": [], "id": "005f5eb3-f0ad-4363-b6a6-f1108378c019", "courseId": "950606027", "courseNumber": "0000004836", "professor": "Dirk Heckmann", "otherLecturers": ["Alexander Besner"], "name": "(IN0014, IN2107, IN4906_4) Practical Workshop Data Protection for StartUps", "offeredInSemesters": ["2022 S", "2022 W", "2023 S", "2023 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": ["IN0014", "IN2107", "IN4906_4"]}, {"id": "7de53bd7-023f-4495-81ec-5d63f3b6b49e", "courseId": "", "courseNumber": "", "professor": "Alexander Besner", "otherLecturers": [], "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe", "offeredInSemesters": ["2022 W", "2023 W", "2022 S", "2023 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "merged": [{"id": "66b289d3d34856d36eb2b653", "courseId": "950658511", "courseNumber": "0000000996", "professor": "Alexander Besner", "otherLecturers": [], "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe", "offeredInSemesters": ["2022 W", "2023 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "similarity": 0}, {"id": "66b28865d34856d36eb290d0", "courseId": "950629108", "courseNumber": "0000001708", "professor": "Alexander Besner", "otherLecturers": [], "name": "(SOT82504) The Right of Data Use in Germany and Europe", "offeredInSemesters": ["2022 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "similarity": 0, "codes": ["SOT82504"]}, {"id": "66b28bafd34856d36eb2e675", "courseId": "950691985", "courseNumber": "0000002849", "professor": "Alexander Besner", "otherLecturers": [], "name": "(SOT82518) The Right of Data Use in Germany and Europe", "offeredInSemesters": ["2023 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "similarity": 0, "codes": ["SOT82518"]}], "codes": ["IN0014", "IN2107", "SOT82518", "SOT82504"]}, {"id": "c94e8b78-58b1-495f-a963-a0cc23adcc31", "courseId": "", "courseNumber": "", "professor": "Pascal Bronner", "otherLecturers": [], "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence", "offeredInSemesters": ["2022 W", "2022 S", "2023 S", "2024 S", "2023 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "merged": [{"id": "66b289d3d34856d36eb2b656", "courseId": "950662502", "courseNumber": "0000002476", "professor": "Pascal Bronner", "otherLecturers": [], "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence", "offeredInSemesters": ["2022 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "similarity": 0}, {"id": "66b28865d34856d36eb290c4", "courseId": "950629104", "courseNumber": "0000001701", "professor": "Pascal Bronner", "otherLecturers": [], "name": "(SOT82500) Legal issues of the use of artificial intelligence", "offeredInSemesters": ["2022 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "similarity": 0, "codes": ["SOT82500"]}, {"id": "66b28bafd34856d36eb2e678", "courseId": "950691986", "courseNumber": "0000002868", "professor": "Pascal Bronner", "otherLecturers": [], "name": "(SOT82519) Legal issues of the use of artificial intelligence", "offeredInSemesters": ["2023 S", "2024 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "similarity": 0, "codes": ["SOT82519"]}, {"id": "66b28c75d34856d36eb2fb8b", "courseId": "950728427", "courseNumber": "0000002279", "professor": "Pascal Bronner", "otherLecturers": [], "name": "(SOT82531) Legal Principles of Artificial Intelligence", "offeredInSemesters": ["2023 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "similarity": 17, "codes": ["SOT82531"]}], "codes": ["IN0014", "IN2107", "SOT82519", "SOT82500", "SOT82531"]}, {"merged": [], "id": "abbd8452-e304-4d69-aa15-ae18cf445f7d", "courseId": "950658625", "courseNumber": "0000001119", "professor": "Sarah Rachut", "otherLecturers": [], "name": "(IN0014, IN2107,SOT82508) Legal Tech Hackathon", "offeredInSemesters": ["2022 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": ["IN0014", "IN2107", "SOT82508"]}, {"merged": [], "id": "74e75208-e961-4f4f-8ebf-ab007e12eb94", "courseId": "950701408", "courseNumber": "0000001118", "professor": "Sarah Rachut", "otherLecturers": [], "name": "(IN0014, IN2107,SOT82509) CDR: Digital Future Challenge \u2013 Responsible AI", "offeredInSemesters": ["2023 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": ["IN0014", "IN2107", "SOT82509"]}, {"merged": [], "id": "d4b13afb-5705-4b74-9c52-ad76703420ee", "courseId": "950658624", "courseNumber": "0000001118", "professor": "Sarah Rachut", "otherLecturers": [], "name": "(IN0014, IN2107,SOT82509) Corporate Digital ResponsibilityParticipation in the CDR Challenge by Initiative D21", "offeredInSemesters": ["2022 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": ["IN0014", "IN2107", "SOT82509"]}, {"id": "6a628326-f581-4190-b11e-38d08076ed8a", "courseId": "", "courseNumber": "", "professor": "Broder R\u00fchmann", "otherLecturers": [], "name": "(Introduction to) Renewables Utilization (Exercise)", "offeredInSemesters": ["2022 W", "2023 W", "2022 S", "2023 S", "2024 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "merged": [{"id": "66b28955d34856d36eb2a966", "courseId": "950630689", "courseNumber": "0000002094", "professor": "Broder R\u00fchmann", "otherLecturers": [], "name": "(Introduction to) Renewables Utilization (Exercise)", "offeredInSemesters": ["2022 W", "2023 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "similarity": 0}, {"id": "66b2874ad34856d36eb2738a", "courseId": "950604842", "courseNumber": "0000002823", "professor": "Broder R\u00fchmann", "otherLecturers": ["Broder R\u00fchmann"], "name": "Basics Renewables Utilization (Tutorial)", "offeredInSemesters": ["2022 S", "2023 S", "2024 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "similarity": 23, "codes": []}], "codes": []}, {"merged": [], "id": "89099c1b-add2-4997-97eb-5a59d5653205", "courseId": "950631160", "courseNumber": "0000002093", "professor": "Volker Sieber", "otherLecturers": ["Broder R\u00fchmann", "Volker Sieber"], "name": "(Introduction to) Renewables Utilization (Lecture)", "offeredInSemesters": ["2022 W", "2023 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": []}, {"merged": [], "id": "10b88e27-4a5a-46c9-8283-437c904b8386", "courseId": "950604508", "courseNumber": "0000003464", "professor": "Tim B\u00fcthe", "otherLecturers": [], "name": "(POL00011) Politics for Rocket Scientists (An Introduction to Political Science for Non-Political Scientists)", "offeredInSemesters": ["2022 S", "2023 S", "2024 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": ["POL00011"]}, {"merged": [], "id": "76d73b4e-ebb7-476c-895e-9ca3b2634f81", "courseId": "950606832", "courseNumber": "0000003598", "professor": "Tim B\u00fcthe", "otherLecturers": [], "name": "(POL00011) Politics for Rocket Scientists (optional exercise 1 - April)", "offeredInSemesters": ["2022 S", "2023 S", "2024 S"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": ["POL00011"]}, {"merged": [], "id": "1bb62e0e-cddf-4e11-85f6-ff841f46204b", "courseId": "950739556", "courseNumber": "0000001990", "professor": "Stefan Maukner", "otherLecturers": [], "name": "(POL00012) Introduction to Scientific Research and Writing: Tips and Tricks", "offeredInSemesters": ["2023 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": ["POL00012"]}, {"merged": [], "id": "e7ac2df5-f8fe-47b7-88f6-6a4483ace6ff", "courseId": "950634509", "courseNumber": "0000003848", "professor": "Katrin Paula", "otherLecturers": [], "name": "(POL10100) Introduction to Empirical Methods for the Social Sciences", "offeredInSemesters": ["2022 W", "2023 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": ["POL10100"]}, {"merged": [], "id": "7d738782-a80a-4610-ab7b-02c16e9a669c", "courseId": "950633154", "courseNumber": "0000003849", "professor": "Timm Betz", "otherLecturers": ["Leonhard Hummel"], "name": "(POL10100) Introduction to Empirical Methods for the Social Sciences", "offeredInSemesters": ["2022 W"], "howInterestingRatingAverage": 0, "howEasyRatingAverage": 0, "votesNumber": 0, "codes": ["POL10100"]}]
+[
+  {
+    "merged": [],
+    "id": "ac1c1734-a8b9-4249-9398-2f2438ad670a",
+    "courseId": "950629098",
+    "courseNumber": "CVL0001025",
+    "professor": "Ingrid Lughofer",
+    "otherLecturers": [],
+    "name": "\"Am I Faust?\" - Roles. Clichés. Visions. Science and Technology in the View of Literature and Theater",
+    "offeredInSemesters": [
+      "2022 S",
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": []
+  },
+  {
+    "merged": [],
+    "id": "d611af2c-1ef0-4c10-b501-21ffafd4e593",
+    "courseId": "950761414",
+    "courseNumber": "CVL0001041",
+    "professor": "Esther Emmerich",
+    "otherLecturers": [],
+    "name": "\"Everyone Is an Artist\" (Introduction to History of Art Using Great Masterpieces from the Pinakothek Museums)",
+    "offeredInSemesters": [
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": []
+  },
+  {
+    "merged": [],
+    "id": "1285374d-f3e1-4d09-be73-845c65664532",
+    "courseId": "950738466",
+    "courseNumber": "0000004346",
+    "professor": "Sven Liedtke",
+    "otherLecturers": [
+      "Martin Uhl"
+    ],
+    "name": "(Additional for Games Eng.) Grundlagen: Betriebssysteme und Systemsoftware (IN0009 IN0034)",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0009",
+      "IN0034"
+    ]
+  },
+  {
+    "id": "1465df2b-5585-4f79-829c-99c2efc6eb41",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Matthias Gaderer",
+    "otherLecturers": [
+      "Yusheng Chen",
+      "Szymon Herdzik",
+      "Bernhard Huber",
+      "Daniel Klüh"
+    ],
+    "name": "(Cooperative) Design Project",
+    "offeredInSemesters": [
+      "2022 S",
+      "2022 W",
+      "2023 S",
+      "2023 W",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b286b1d34856d36eb263d6",
+        "courseId": "950637289",
+        "courseNumber": "0000002443",
+        "professor": "Matthias Gaderer",
+        "otherLecturers": [
+          "Yusheng Chen",
+          "Szymon Herdzik",
+          "Bernhard Huber",
+          "Daniel Klüh"
+        ],
+        "name": "(Cooperative) Design Project",
+        "offeredInSemesters": [
+          "2022 S",
+          "2022 W",
+          "2023 S",
+          "2023 W",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "locked": true,
+        "similarity": 0
+      },
+      {
+        "id": "66b28b90d34856d36eb2e330",
+        "courseId": "950672060",
+        "courseNumber": "0000005501",
+        "professor": "Matthias Gaderer",
+        "otherLecturers": [
+          "Szymon Herdzik",
+          "Bernhard Huber",
+          "Daniel Klüh",
+          "Gabriel Naumann"
+        ],
+        "name": "Practical course Process Design Project I",
+        "offeredInSemesters": [
+          "2023 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 12,
+        "codes": [],
+        "accepted": false
+      },
+      {
+        "id": "66b28900d34856d36eb2a090",
+        "courseId": "950634188",
+        "courseNumber": "0000002502",
+        "professor": "Matthias Gaderer",
+        "otherLecturers": [
+          "Yusheng Chen",
+          "Szymon Herdzik",
+          "Bernhard Huber",
+          "Daniel Klüh"
+        ],
+        "name": "Process Design Project (Practical and Exercise)",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 15,
+        "codes": [],
+        "accepted": false
+      }
+    ],
+    "codes": [],
+    "acceptedCount": 0,
+    "rejectedCount": 3,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "61f1e958-4567-48e5-b532-64e1da75dee4",
+    "courseId": "950635400",
+    "courseNumber": "8610170000",
+    "professor": "Elke Langbein",
+    "otherLecturers": [
+      "Daniela Maria Schwarz"
+    ],
+    "name": "(Dis-)ability, Diversity and Inclusion",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": []
+  },
+  {
+    "merged": [],
+    "id": "000c660e-6320-42bc-b181-abfbc6d38505",
+    "courseId": "950632769",
+    "courseNumber": "0000000795",
+    "professor": "Alexander Besner",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107, IN4906_3) Practical Seminar Legal Tech Special",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "IN4906_3"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "5e0f819a-a945-458e-bcbe-c8c1ea427c17",
+    "courseId": "950671588",
+    "courseNumber": "0000004838",
+    "professor": "Sebastian Nagl",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107, IN4906_3) Practical Seminar Legal Tech Special",
+    "offeredInSemesters": [
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "IN4906_3"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "f68e19f6-158f-4fe4-be78-e959170b4c2e",
+    "courseId": "950606027",
+    "courseNumber": "0000004836",
+    "professor": "Dirk Heckmann",
+    "otherLecturers": [
+      "Alexander Besner"
+    ],
+    "name": "(IN0014, IN2107, IN4906_4) Practical Workshop Data Protection for StartUps",
+    "offeredInSemesters": [
+      "2022 S",
+      "2022 W",
+      "2023 S",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "IN4906_4"
+    ]
+  },
+  {
+    "id": "ca698573-79cc-4400-848b-e103bfff3f6c",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Alexander Besner",
+    "otherLecturers": [],
+    "name": "The Right of Data Use in Germany and Europe (IN0014, IN2107, SOT82504, SOT82518)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W",
+      "2022 S",
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b289d3d34856d36eb2b653",
+        "courseId": "950658511",
+        "courseNumber": "0000000996",
+        "professor": "Alexander Besner",
+        "otherLecturers": [],
+        "name": "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "locked": true,
+        "similarity": 0
+      },
+      {
+        "id": "66b28865d34856d36eb290d0",
+        "courseId": "950629108",
+        "courseNumber": "0000001708",
+        "professor": "Alexander Besner",
+        "otherLecturers": [],
+        "name": "(SOT82504) The Right of Data Use in Germany and Europe",
+        "offeredInSemesters": [
+          "2022 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "SOT82504"
+        ],
+        "accepted": true
+      },
+      {
+        "id": "66b28bafd34856d36eb2e675",
+        "courseId": "950691985",
+        "courseNumber": "0000002849",
+        "professor": "Alexander Besner",
+        "otherLecturers": [],
+        "name": "(SOT82518) The Right of Data Use in Germany and Europe",
+        "offeredInSemesters": [
+          "2023 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "SOT82518"
+        ],
+        "accepted": true
+      }
+    ],
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82518",
+      "SOT82504"
+    ],
+    "acceptedCount": 2,
+    "rejectedCount": 0,
+    "notResolvedCount": 1
+  },
+  {
+    "id": "6410d587-6c13-44f5-95db-a7f55354ddee",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Pascal Bronner",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+    "offeredInSemesters": [
+      "2022 W",
+      "2022 S",
+      "2023 S",
+      "2024 S",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b289d3d34856d36eb2b656",
+        "courseId": "950662502",
+        "courseNumber": "0000002476",
+        "professor": "Pascal Bronner",
+        "otherLecturers": [],
+        "name": "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "locked": true,
+        "similarity": 0
+      },
+      {
+        "id": "66b28865d34856d36eb290c4",
+        "courseId": "950629104",
+        "courseNumber": "0000001701",
+        "professor": "Pascal Bronner",
+        "otherLecturers": [],
+        "name": "(SOT82500) Legal issues of the use of artificial intelligence",
+        "offeredInSemesters": [
+          "2022 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "SOT82500"
+        ],
+        "accepted": false
+      },
+      {
+        "id": "66b28bafd34856d36eb2e678",
+        "courseId": "950691986",
+        "courseNumber": "0000002868",
+        "professor": "Pascal Bronner",
+        "otherLecturers": [],
+        "name": "(SOT82519) Legal issues of the use of artificial intelligence",
+        "offeredInSemesters": [
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 0,
+        "codes": [
+          "SOT82519"
+        ],
+        "accepted": false
+      },
+      {
+        "id": "66b28c75d34856d36eb2fb8b",
+        "courseId": "950728427",
+        "courseNumber": "0000002279",
+        "professor": "Pascal Bronner",
+        "otherLecturers": [],
+        "name": "(SOT82531) Legal Principles of Artificial Intelligence",
+        "offeredInSemesters": [
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 17,
+        "codes": [
+          "SOT82531"
+        ],
+        "accepted": false
+      }
+    ],
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82519",
+      "SOT82500",
+      "SOT82531"
+    ],
+    "acceptedCount": 0,
+    "rejectedCount": 4,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "0f238f05-8429-4293-bcf0-cc0293f4d4be",
+    "courseId": "950658625",
+    "courseNumber": "0000001119",
+    "professor": "Sarah Rachut",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107,SOT82508) Legal Tech Hackathon",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82508"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "60f866c2-5fb7-4040-bea2-b07c2fc2f296",
+    "courseId": "950701408",
+    "courseNumber": "0000001118",
+    "professor": "Sarah Rachut",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107,SOT82509) CDR: Digital Future Challenge – Responsible AI",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82509"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "c59bc156-856a-4499-8276-7e974bb29224",
+    "courseId": "950658624",
+    "courseNumber": "0000001118",
+    "professor": "Sarah Rachut",
+    "otherLecturers": [],
+    "name": "(IN0014, IN2107,SOT82509) Corporate Digital ResponsibilityParticipation in the CDR Challenge by Initiative D21",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "IN0014",
+      "IN2107",
+      "SOT82509"
+    ]
+  },
+  {
+    "id": "a236a107-af32-4c29-b2fc-523bdcda43f2",
+    "courseId": "",
+    "courseNumber": "",
+    "professor": "Broder Rühmann",
+    "otherLecturers": [],
+    "name": "(Introduction to) Renewables Utilization (Exercise)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W",
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "id": "66b28955d34856d36eb2a966",
+        "courseId": "950630689",
+        "courseNumber": "0000002094",
+        "professor": "Broder Rühmann",
+        "otherLecturers": [],
+        "name": "(Introduction to) Renewables Utilization (Exercise)",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "locked": true,
+        "similarity": 0
+      },
+      {
+        "id": "66b2874ad34856d36eb2738a",
+        "courseId": "950604842",
+        "courseNumber": "0000002823",
+        "professor": "Broder Rühmann",
+        "otherLecturers": [
+          "Broder Rühmann"
+        ],
+        "name": "Basics Renewables Utilization (Tutorial)",
+        "offeredInSemesters": [
+          "2022 S",
+          "2023 S",
+          "2024 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "similarity": 23,
+        "codes": [],
+        "accepted": false
+      }
+    ],
+    "codes": [],
+    "acceptedCount": 0,
+    "rejectedCount": 2,
+    "notResolvedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "35e44ebe-fba3-4b8a-8c94-11a10b6f243c",
+    "courseId": "950631160",
+    "courseNumber": "0000002093",
+    "professor": "Volker Sieber",
+    "otherLecturers": [
+      "Broder Rühmann",
+      "Volker Sieber"
+    ],
+    "name": "(Introduction to) Renewables Utilization (Lecture)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": []
+  },
+  {
+    "merged": [],
+    "id": "e7518a7e-fc25-4253-833f-adb7111f8f3c",
+    "courseId": "950604508",
+    "courseNumber": "0000003464",
+    "professor": "Tim Büthe",
+    "otherLecturers": [],
+    "name": "(POL00011) Politics for Rocket Scientists (An Introduction to Political Science for Non-Political Scientists)",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL00011"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "3d1450be-f681-4f25-b81a-2ad3da502088",
+    "courseId": "950606832",
+    "courseNumber": "0000003598",
+    "professor": "Tim Büthe",
+    "otherLecturers": [],
+    "name": "(POL00011) Politics for Rocket Scientists (optional exercise 1 - April)",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL00011"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "da0501c1-f144-4951-9a92-88e53e0159c0",
+    "courseId": "950739556",
+    "courseNumber": "0000001990",
+    "professor": "Stefan Maukner",
+    "otherLecturers": [],
+    "name": "(POL00012) Introduction to Scientific Research and Writing: Tips and Tricks",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL00012"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "4bc9bdf5-e3cf-4968-8063-e4002e3bf205",
+    "courseId": "950634509",
+    "courseNumber": "0000003848",
+    "professor": "Katrin Paula",
+    "otherLecturers": [],
+    "name": "(POL10100) Introduction to Empirical Methods for the Social Sciences",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10100"
+    ]
+  },
+  {
+    "merged": [],
+    "id": "a1d61343-493d-4732-abc1-83d50f709d0e",
+    "courseId": "950633154",
+    "courseNumber": "0000003849",
+    "professor": "Timm Betz",
+    "otherLecturers": [
+      "Leonhard Hummel"
+    ],
+    "name": "(POL10100) Introduction to Empirical Methods for the Social Sciences",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL10100"
+    ]
+  }
+]

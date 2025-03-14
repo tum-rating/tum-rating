@@ -113,7 +113,6 @@ const finishKeySimilarityMerging = async ({
     const finalizedData = [];
 
     for (const course of allCourses) {
-        // Remove unwanted keys from the course object.
         for (const key of keysToRemove) {
             delete course[key];
         }
@@ -122,23 +121,19 @@ const finishKeySimilarityMerging = async ({
             const mergedCourses = course.merged;
             const baseCourse = mergedCourses[0];
 
-            // Set up the base course.
             delete baseCourse.accepted;
             baseCourse.locked = true;
 
-            // Process additional merged courses.
             for (let i = 1; i < mergedCourses.length; i++) {
                 const mergedCourse = mergedCourses[i];
                 delete mergedCourse.similarity;
 
-                // Store the accepted status before deleting the property.
                 const isAccepted = mergedCourse.accepted;
                 delete mergedCourse.accepted;
 
                 if (isAccepted) {
                     mergedCourse.locked = true;
                 } else {
-                    // Update rejection IDs for both courses.
                     baseCourse.rejectedId = baseCourse.rejectedId
                         ? [...baseCourse.rejectedId, mergedCourse.id]
                         : [mergedCourse.id];
@@ -149,7 +144,6 @@ const finishKeySimilarityMerging = async ({
                 }
             }
 
-            // Separate locked and unlocked courses (excluding the base course).
             const lockedCourses = [];
             const unlockedCourses = [];
             for (let i = 1; i < mergedCourses.length; i++) {
@@ -163,18 +157,16 @@ const finishKeySimilarityMerging = async ({
             }
 
             if (lockedCourses.length > 0) {
-                // If there are additional locked courses, update the merged array.
                 course.merged = [baseCourse, ...lockedCourses];
                 finalizedData.push(course, ...unlockedCourses);
             } else {
-                // When no additional locked courses are found.
-                console.log("MERGED ARRAY", mergedCourses);
                 const remainingCourses = mergedCourses.slice(1);
-                console.log("ITEMS TO REMOVE", remainingCourses);
                 const newCourse = {...baseCourse};
                 remainingCourses.forEach(mergedCourse => delete mergedCourse.locked);
                 finalizedData.push(newCourse, ...remainingCourses);
             }
+        } else {
+            finalizedData.push(course);
         }
     }
 
@@ -452,24 +444,24 @@ const batchMergeCoursesByNamesWithAi = async (
                 let acceptedCount = 0;
                 let rejectedCount = 0;
 
+
+                console.log(item)
+
                 for (let el of item.merged) {
+                    if (el.locked) continue;
                     if (data.merged.includes(el.name)) {
-                        if (!el.locked) {
-                            el.accepted = true;
-                            acceptedCount++;
-                        }
+                        el.accepted = true;
+                        acceptedCount++;
                     } else {
-                        if (!el.locked) {
-                            el.accepted = false;
-                            rejectedCount++;
-                        }
+                        el.accepted = false;
+                        rejectedCount++;
                     }
                 }
 
                 item.name = data.name;
                 item.acceptedCount = acceptedCount;
                 item.rejectedCount = rejectedCount;
-                item.notResolvedCount = 0;
+                item.notResolvedCount = item.merged.length - acceptedCount - rejectedCount;
 
                 const diffs = compare(fileContent[originalIndex], item);
                 fileContent[originalIndex] = applyPatch(

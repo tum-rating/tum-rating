@@ -6,19 +6,19 @@ interface SidebarSearchProps {
     onSortChange: (options: DatasetOptions) => void;
     onSearch: (searchTerm: string) => void;
     listLength: number;
+    mergedCoursesLength?: number;
     sortOptions: DatasetOptions;
 }
 
-const SidebarSearch = ({onSortChange, onSearch, listLength, sortOptions}: SidebarSearchProps) => {
+const SidebarSearch = ({onSortChange, onSearch, listLength, sortOptions, mergedCoursesLength}: SidebarSearchProps) => {
     return (
         <div className="flex items-center shadow-2xl border-b border-1 border-b-border my-[1px] pr-2 w-full">
             <SearchInput
                 className={"w-full rounded-none border-none "}
-                placeholder={"Search by course name, professor, or code"}
                 onChange={(e) => onSearch(e.target.value)}
                 rightSection={
                     <div className='flex items-center gap-1'>
-                        <p className="text-xs text-gray-500">{listLength}</p>
+                        <p className="text-xs text-gray-500">{listLength} {mergedCoursesLength ? `+ ${mergedCoursesLength}` : ``}</p>
                     </div>
                 }
 
