@@ -130,7 +130,7 @@ function keySimilarityCore(
             }
 
             if (
-                similarity < 25 &&
+                similarity < 17 &&
                 record.professor === item.professor &&
                 checkIfCoursesHaveAtLeastOneCommonWord(itemTitle, recordTitle)
             ) {

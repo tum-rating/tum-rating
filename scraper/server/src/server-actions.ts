@@ -71,6 +71,9 @@ const keySimilarityMerging = async ({
 
     for (let i = 0; i < summarizedData.length; i++) {
         summarizedData[i].id = uuidv4();
+        summarizedData[i].notResolvedCount = (summarizedData[i].merged || []).filter(x=>!x.locked).length;
+        summarizedData[i].rejectedCount = 0;
+        summarizedData[i].acceptedCount = 0;
     }
 
     fs.writeFileSync(filePath, JSON.stringify(summarizedData, null, 2), "utf-8");
@@ -348,14 +351,14 @@ const fetchAndSaveTUMCourses = async ({
     );
     broadcastNewFile(wss, `${fileConfig.id}-${suffix}${fileConfig.extension}`);
 };
-// In `server-actions.ts`
 const batchMergeCoursesByNamesWithAi = async (
     coursesSets: string[][],
     fileName: string,
     wss: WebSocketServer,
     ws: WebSocket,
 ) => {
-    const batchSize = 5; // Adjust batch size as needed
+    const MAX_COURSES_PER_BATCH = 17; // Maximum courses per batch
+
     // Filter out empty sets while keeping track of original indices
     const coursesSetWithoutEmptyIdx: number[] = [];
     const coursesSetWithoutEmpty = coursesSets.reduce((acc, set, index) => {
@@ -374,26 +377,51 @@ const batchMergeCoursesByNamesWithAi = async (
         return;
     }
 
-    const totalBatches = Math.ceil(coursesSetWithoutEmpty.length / batchSize);
-    // Send total items to process
-    // Initialize aiWorker with logs
-    // Process in batches
+    // Create batches based on course count
+    const batches: string[][][] = [];
+    let currentBatch: string[][] = [];
+    let currentBatchSize = 0;
+
+    for (const courseSet of coursesSetWithoutEmpty) {
+        // If adding this course set would exceed the limit, start a new batch
+        if (currentBatchSize + courseSet.length > MAX_COURSES_PER_BATCH && currentBatchSize > 0) {
+            batches.push(currentBatch);
+            currentBatch = [];
+            currentBatchSize = 0;
+        }
+
+        currentBatch.push(courseSet);
+        currentBatchSize += courseSet.length;
+    }
+
+    // Add the last batch if not empty
+    if (currentBatch.length > 0) {
+        batches.push(currentBatch);
+    }
+
+    const totalBatches = batches.length;
+    Logger.info(`Created ${totalBatches} batches based on course count`);
+
+    // Process each batch
     const allMergedData: AiResponse[] = [];
     let processedCount = 0;
-    for (let i = 0; i < coursesSetWithoutEmpty.length; i += batchSize) {
-        const batch = coursesSetWithoutEmpty.slice(i, i + batchSize);
-        Logger.info(`Processing batch ${i / batchSize + 1} of ${totalBatches}`);
+    let processedSets = 0;
+
+    for (let i = 0; i < batches.length; i++) {
+        const batch = batches[i];
+        Logger.info(`Processing batch ${i + 1} of ${totalBatches} with ${batch.reduce((sum, set) => sum + set.length, 0)} courses`);
+
         try {
             const batchResults = await mergeCoursesByNamesWithAi(batch, wss, fileName);
             allMergedData.push(...(batchResults as AiResponse[]));
 
             // Update processed count and send progress
-            processedCount += batch.length;
-            aiWorkers[fileName].progress =
-                (processedCount / coursesSetWithoutEmpty.length) * 100;
+            processedSets += batch.length;
+            processedCount += batch.reduce((sum, set) => sum + set.length, 0);
+            aiWorkers[fileName].progress = (processedSets / coursesSetWithoutEmpty.length) * 100;
             broadcastAiWorkers(wss);
         } catch (error) {
-            Logger.error(`Error processing batch: ${error.message}`);
+            Logger.error(`Error processing batch: ${error instanceof Error ? error.message : String(error)}`);
             aiWorkers[fileName].status = "error";
             broadcastAiWorkers(wss);
             ws.send(
@@ -444,9 +472,6 @@ const batchMergeCoursesByNamesWithAi = async (
                 let acceptedCount = 0;
                 let rejectedCount = 0;
 
-
-                console.log(item)
-
                 for (let el of item.merged) {
                     if (el.locked) continue;
                     if (data.merged.includes(el.name)) {
@@ -461,7 +486,7 @@ const batchMergeCoursesByNamesWithAi = async (
                 item.name = data.name;
                 item.acceptedCount = acceptedCount;
                 item.rejectedCount = rejectedCount;
-                item.notResolvedCount = item.merged.length - acceptedCount - rejectedCount;
+                item.notResolvedCount = 0;
 
                 const diffs = compare(fileContent[originalIndex], item);
                 fileContent[originalIndex] = applyPatch(
@@ -473,7 +498,7 @@ const batchMergeCoursesByNamesWithAi = async (
             const item = fileContent[originalIndex];
             if (item) {
                 let acceptedCount = 0;
-                let rejectedCount = item.merged.length;
+                let rejectedCount = item.merged.filter(x=>!x.locked).length;
                 for (let el of item.merged) {
                     if (!el.locked) {
                         el.accepted = false;

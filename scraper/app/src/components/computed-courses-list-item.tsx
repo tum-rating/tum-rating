@@ -12,39 +12,45 @@ interface ComputedCoursesListItemProps {
 }
 
 const highlightText = (text: string, searchTerm: string) => {
-  if (!searchTerm) return text;
-  const escapedSearchTerm = searchTerm.split(',').map(term => term.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
-  const regex = new RegExp(`(${escapedSearchTerm})`, 'gi');
-  return text.split(regex).map((part, index) =>
-    regex.test(part) ? <span key={index} className="bg-yellow-200">{part}</span> : part
-  );
+    if (!searchTerm) return text;
+    const escapedSearchTerm = searchTerm.split(',').map(term => term.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+    const regex = new RegExp(`(${escapedSearchTerm})`, 'gi');
+    return text.split(regex).map((part, index) =>
+        regex.test(part) ? <span key={index} className="bg-yellow-200">{part}</span> : part
+    );
 };
 
 const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: ComputedCoursesListItemProps) => {
     const [status, setStatus] = useState({
-        accepted:  0,
-        rejected:  0,
-        notResolved:  0
+        accepted: 0,
+        rejected: 0,
+        notResolved: 0,
+        locked: 0  // Add locked state
     });
 
     useEffect(() => {
+        const allMergedItems = data?.merged || [];
+        const nonLockedItems = allMergedItems.filter(x => !x.locked) || [];
+        const lockedItems = allMergedItems.filter(x => x.locked) || [];
 
-        const nonLockedItems = data?.merged?.filter(x => !x.locked) || [];
-        const acceptedCount = data.acceptedCount||
-           nonLockedItems?.filter(x => x.accepted).length || 0;
-        const rejectedCount = data.rejectedCount||
+        const acceptedCount = data.acceptedCount ||
+            nonLockedItems?.filter(x => x.accepted).length || 0;
+        const rejectedCount = data.rejectedCount ||
             nonLockedItems?.filter(x => x.accepted === false).length || 0;
         const notResolvedCount = nonLockedItems.length - acceptedCount - rejectedCount;
+
         setStatus({
             accepted: acceptedCount,
             rejected: rejectedCount,
-            notResolved: notResolvedCount
+            notResolved: notResolvedCount,
+            locked: lockedItems.length  // Track locked items count
         });
     }, [data]);
 
+
     const allNonLockedResolved = status.notResolved === 0 &&
         (status.accepted > 0 || status.rejected > 0 ||
-        (data?.merged?.filter(x => !x.locked).length || 0) === 0);
+            (data?.merged?.filter(x => !x.locked).length || 0) === 0);
 
     return (
         <div
@@ -75,6 +81,9 @@ const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: Co
                         <Badge tooltip="accepted" variant="success">{status.accepted}</Badge>
                         <Badge tooltip="rejected" variant="destructive">{status.rejected}</Badge>
                         <Badge tooltip="unresolved">{status.notResolved}</Badge>
+                        {status.locked > 0 && <Badge className={'relative'} tooltip="locked" variant="gold">
+                            {status.locked}
+                        </Badge>}
                     </div>
                     {
                         usersRenderer && (

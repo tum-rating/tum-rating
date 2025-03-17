@@ -15,6 +15,7 @@ const badgeVariants = cva(
                 blue: "border-transparent bg-blue-500 text-white shadow hover:bg-blue/80",
                 outline: "text-foreground",
                 subtle: "border-transparent bg-muted text-muted-foreground shadow hover:bg-muted/80",
+                gold: "border-transparent bg-gold text-gold-foreground shadow hover:bg-gold/80",
             },
         },
         defaultVariants: {

@@ -1,5 +1,185 @@
 [
   {
+    "timestamp": "2025-03-17T11:20:12.509Z",
+    "request": [
+      [
+        "(Cooperative) Design Project",
+        "Practical course Process Design Project I",
+        "Process Design Project (Practical and Exercise)"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence"
+      ]
+    ],
+    "response": [
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "The Right of Data Use in Germany and Europe (IN0014, IN2107, SOT82518, SOT82504)",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Legal issues of the use of artificial intelligence (IN0014, IN2107, SOT82519, SOT82500)",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-17T11:18:03.309Z",
+    "request": [
+      [
+        "(Cooperative) Design Project",
+        "Practical course Process Design Project I",
+        "Process Design Project (Practical and Exercise)"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence"
+      ]
+    ],
+    "response": [
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "The Right of Data Use in Germany and Europe (IN0014, IN2107, SOT82518, SOT82504)",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Legal issues of the use of artificial intelligence (IN0014, IN2107, SOT82519, SOT82500)",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-17T11:14:18.404Z",
+    "request": [
+      [
+        "(Cooperative) Design Project",
+        "Practical course Process Design Project I",
+        "Process Design Project (Practical and Exercise)"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence"
+      ]
+    ],
+    "response": [
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "The Right of Data Use in Germany and Europe (IN0014, IN2107, SOT82518, SOT82504)",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "Legal issues of the use of artificial intelligence (IN0014, IN2107, SOT82519, SOT82500)",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-03-17T11:11:40.406Z",
+    "request": [
+      [
+        "(Cooperative) Design Project",
+        "Practical course Process Design Project I",
+        "Process Design Project (Practical and Exercise)"
+      ],
+      [
+        "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+        "(SOT82504) The Right of Data Use in Germany and Europe",
+        "(SOT82518) The Right of Data Use in Germany and Europe"
+      ],
+      [
+        "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+        "(SOT82500) Legal issues of the use of artificial intelligence",
+        "(SOT82519) Legal issues of the use of artificial intelligence"
+      ]
+    ],
+    "response": [
+      {
+        "match": false,
+        "name": "",
+        "merged": []
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82504, SOT82518) The Right of Data Use in Germany and Europe",
+        "merged": [
+          "(IN0014, IN2107, SOT82518) The Right of Data Use in Germany and Europe",
+          "(SOT82504) The Right of Data Use in Germany and Europe",
+          "(SOT82518) The Right of Data Use in Germany and Europe"
+        ]
+      },
+      {
+        "match": true,
+        "name": "(IN0014, IN2107, SOT82500, SOT82519) Legal issues of the use of artificial intelligence",
+        "merged": [
+          "(IN0014, IN2107, SOT82519) Legal issues of the use of artificial intelligence",
+          "(SOT82500) Legal issues of the use of artificial intelligence",
+          "(SOT82519) Legal issues of the use of artificial intelligence"
+        ]
+      }
+    ]
+  },
+  {
     "timestamp": "2025-03-14T13:49:50.981Z",
     "request": [
       [

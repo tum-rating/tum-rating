@@ -10,6 +10,7 @@ type FetchedComputedCourse = {
     acceptedCount?: number;
     rejectedCount?: number;
     notResolvedCount?: number;
+    lockedCount?: number;
 }
 
 
@@ -31,6 +32,7 @@ type FetchedCourse = {
     acceptedCount?: number;
     rejectedCount?: number;
     notResolvedCount?: number;
+    lockedCount?: number;
     locked?: boolean;
 }
 

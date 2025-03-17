@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useMemo, useState} from "react";
 import VirtualList from "@/components/ui/virtual-list";
 import {FetchedComputedCourse, FetchedCourse} from "@/types/fetchedData";
 import ComputedCoursesListItem from "@/components/computed-courses-list-item";
@@ -26,26 +26,35 @@ const RightSidebar = () => {
         acceptedCount: {enabled: false, ascending: true, label: 'Accepted Count', type: "number"},
         rejectedCount: {enabled: false, ascending: true, label: 'Rejected Count', type: "number"},
         notResolvedCount: {enabled: false, ascending: true, label: 'Not Resolved Count', type: "number"},
+        lockedCount: {enabled: false, ascending: true, label: 'Locked Items', type: "number"}, // Add locked count option
     });
-    const [searchTerm, setSearchTerm] = useState<string>("");
 
+    const [searchTerm, setSearchTerm] = useState<string>("");
     useEffect(() => {
         if (selectedFile) {
             const fileNameWithoutExtension = selectedFile.name.split('.').slice(0, -1).join('.');
             if (isCoursesFile(fileNameWithoutExtension)) {
                 if (filesContent[fileNameWithoutExtension]) {
-                    setComputedCourses([...filesContent[fileNameWithoutExtension]]);
+                    // Add lockedCount to each course
+                    const coursesWithLockedCount = filesContent[fileNameWithoutExtension].map(course => {
+                        const lockedCount = (course.merged || []).filter(item => item.locked).length;
+                        return {
+                            ...course,
+                            lockedCount
+                        };
+                    });
+                    setComputedCourses([...coursesWithLockedCount]);
                     setShowSkeleton(false);
                 }
             }
         }
     }, [filesContent, selectedFile]);
 
+
     useEffect(() => {
         const filterAndSortData = () => {
             let data = [...computedCourses];
 
-            // Apply search filter
             if (searchTerm) {
                 const phrases = searchTerm.toLowerCase().split(',').map(phrase => phrase.trim());
                 data = data.filter(course => {
@@ -66,7 +75,7 @@ const RightSidebar = () => {
                         let aValue = a[key as keyof FetchedComputedCourse];
                         let bValue = b[key as keyof FetchedComputedCourse];
 
-                        if (['acceptedCount', 'rejectedCount', 'notResolvedCount'].includes(key)) {
+                        if (['acceptedCount', 'rejectedCount', 'notResolvedCount', 'lockedCount'].includes(key)) {
                             aValue = aValue ?? 0;
                             bValue = bValue ?? 0;
                         }
@@ -88,6 +97,7 @@ const RightSidebar = () => {
 
         filterAndSortData();
     }, [computedCourses, sortOptions, searchTerm]);
+
     const handleSearch = (searchTerm: string) => {
         setSearchTerm(searchTerm);
     };
@@ -99,11 +109,49 @@ const RightSidebar = () => {
 
     const getRandomWidth = () => `${Math.floor(Math.random() * (75 - 50 + 1) + 50)}%`;
 
-    console.log(filteredCourses)
+
+    const filteredCoursesMergedStatusesCount = useMemo(() => {
+        const counts = {
+            merged: 0,
+            mergedRejected: 0,
+            mergedLocked: 0,
+            mergedNotResolved: 0,
+            mergedAccepted: 0
+        };
+
+        if (!filteredCourses) return counts;
+
+        filteredCourses.forEach(course => {
+            if (course.merged) {
+                counts.merged += course.merged.length;
+                course.merged.forEach(mergedCourse => {
+                    if (mergedCourse.locked) {
+                        counts.mergedLocked++;
+                    } else if (mergedCourse.accepted) {
+                        counts.mergedAccepted++;
+                    } else if (mergedCourse.accepted === false) {
+                        counts.mergedRejected++;
+                    } else {
+                        counts.mergedNotResolved++;
+                    }
+                });
+            }
+        });
+
+        return counts;
+    }, [filteredCourses]);
+
+
+
     return (
         <>
-            <SidebarSearch onSortChange={setSortOptions} onSearch={handleSearch} listLength={filteredCourses.length} mergedCoursesLength={filteredCourses.reduce((acc, course) => acc + (course.merged?.length || 0), 0)}
-                           sortOptions={sortOptions}/>
+            <SidebarSearch
+                onSortChange={setSortOptions}
+                onSearch={handleSearch}
+                listLength={filteredCourses.length}
+                filteredCoursesMergedStatusesCount={filteredCoursesMergedStatusesCount}
+                sortOptions={sortOptions}
+            />
             {showSkeleton ? (
                 <div
                     style={{

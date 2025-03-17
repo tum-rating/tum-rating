@@ -97,11 +97,9 @@ Return only the output without reasoning.`;
 const cleanJsonString = (jsonString: string): string => {
   Logger.debug(`Cleaning JSON string: ${jsonString}`);
 
-  // Remove any backticks and surrounding ```json markers
   const pattern = /```json\s*([\s\S]*?)\s*```/g;
   let cleanedString = jsonString.replace(pattern, '$1').trim();
 
-  // Attempt to find the start and end of the JSON content
   const jsonStart = cleanedString.indexOf('[');
   const jsonEnd = cleanedString.lastIndexOf(']') + 1;
 
@@ -111,7 +109,6 @@ const cleanJsonString = (jsonString: string): string => {
 
   cleanedString = cleanedString.substring(jsonStart, jsonEnd);
 
-  // Ensure the cleaned string is valid JSON
   try {
     JSON.parse(cleanedString);
   } catch (error) {
@@ -144,7 +141,7 @@ const mergeCoursesByNamesWithAi = async (
       const response = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
-          model: "gpt-4o-mini",
+          model: "gpt-4o",
           messages: [
             {
               role: "user",
