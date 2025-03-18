@@ -129,13 +129,10 @@ const finishKeySimilarityMerging = async ({
 
             for (let i = 1; i < mergedCourses.length; i++) {
                 const mergedCourse = mergedCourses[i];
-                delete mergedCourse.similarity;
-
-                const isAccepted = mergedCourse.accepted;
-                delete mergedCourse.accepted;
-
+                const isAccepted = mergedCourse.accepted || mergedCourse.locked;
                 if (isAccepted) {
                     mergedCourse.locked = true;
+                    delete mergedCourse.merged
                 } else {
                     baseCourse.rejectedId = baseCourse.rejectedId
                         ? [...baseCourse.rejectedId, mergedCourse.id]
@@ -145,10 +142,13 @@ const finishKeySimilarityMerging = async ({
                         : [baseCourse.id];
                     mergedCourse.locked = false;
                 }
+                delete mergedCourse.similarity;
+                delete mergedCourse.accepted;
             }
 
             const lockedCourses = [];
             const unlockedCourses = [];
+
             for (let i = 1; i < mergedCourses.length; i++) {
                 const mergedCourse = mergedCourses[i];
                 if (mergedCourse.locked) {
@@ -160,15 +160,18 @@ const finishKeySimilarityMerging = async ({
             }
 
             if (lockedCourses.length > 0) {
+                delete baseCourse.merged
                 course.merged = [baseCourse, ...lockedCourses];
                 finalizedData.push(course, ...unlockedCourses);
             } else {
                 const remainingCourses = mergedCourses.slice(1);
                 const newCourse = {...baseCourse};
+                delete newCourse.locked;
                 remainingCourses.forEach(mergedCourse => delete mergedCourse.locked);
                 finalizedData.push(newCourse, ...remainingCourses);
             }
         } else {
+            delete course.merged
             finalizedData.push(course);
         }
     }

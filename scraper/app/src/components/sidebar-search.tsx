@@ -1,7 +1,7 @@
 import SearchInput from "@/components/ui/search-input.tsx";
 import SidebarSearchSortingDropdown from "@/components/sidebar-search-sorting-dropdown.tsx";
 import {DatasetOptions} from "@/types/dataset-options.ts";
-import {Tooltip, TooltipTrigger} from "@/components/ui/tooltip.tsx";
+import {Tooltip, TooltipTrigger, TooltipContent} from "@/components/ui/tooltip.tsx";
 
 interface SidebarSearchProps {
     onSortChange: (options: DatasetOptions) => void;
@@ -28,6 +28,10 @@ const SidebarSearch = ({
     const mergedRejected = filteredCoursesMergedStatusesCount?.mergedRejected || 0;
     const mergedNotResolved = filteredCoursesMergedStatusesCount?.mergedNotResolved || 0;
     const mergedLocked = filteredCoursesMergedStatusesCount?.mergedLocked || 0;
+    const merged = filteredCoursesMergedStatusesCount?.merged || 0;
+
+    console.log(mergedAccepted, mergedRejected, mergedNotResolved, mergedLocked);
+    console.log((mergedAccepted > 0 || mergedRejected > 0 || mergedNotResolved > 0 || mergedLocked > 0), "<--")
 
     return (
         <div className="flex items-center shadow-2xl border-b border-1 border-b-border my-[1px] pr-2 w-full">
@@ -39,8 +43,9 @@ const SidebarSearch = ({
                         <TooltipTrigger asChild>
                             <div className='flex items-center gap-1'>
                                 <p className="text-xs text-gray-500">
-                                    {listLength}
-                                    {mergedAccepted || mergedRejected || mergedNotResolved || mergedLocked && <>
+                                    {listLength} {merged ? `(/${merged})` : ''}:
+                                    {(mergedAccepted > 0 || mergedRejected > 0 || mergedNotResolved > 0 || mergedLocked > 0) && <>
+                                        :
                                         <span className="text-success">{mergedAccepted}</span>:
                                         <span className="text-destructive">{mergedRejected}</span>:
                                         <span>{mergedNotResolved}</span>:
@@ -52,8 +57,9 @@ const SidebarSearch = ({
                         </TooltipTrigger>
                         <TooltipContent>
                             <div className="flex flex-col gap-1">
-                                <p className="text-xs font-bold text-gray-500">Total: {listLength}</p>
-                                {mergedAccepted || mergedRejected || mergedNotResolved || mergedLocked && <>
+                                {/*<p className="text-xs font-bold text-gray-500">Total: {listLength}</p>*/}
+
+                                {(mergedAccepted > 0 || mergedRejected > 0 || mergedNotResolved > 0 || mergedLocked > 0) && <>
                                     <p className="text-xs font-bold text-success">Accepted: {mergedAccepted}</p>
                                     <p className="text-xs font-bold text-destructive">Rejected: {mergedRejected}</p>
                                     <p className="text-xs font-bold">Not Resolved: {mergedNotResolved}</p>
@@ -66,8 +72,7 @@ const SidebarSearch = ({
             />
             <SidebarSearchSortingDropdown sortOptionsObject={sortOptions} onSortChange={onSortChange}/>
         </div>
-    )
-        ;
+    );
 };
 
 export default SidebarSearch;

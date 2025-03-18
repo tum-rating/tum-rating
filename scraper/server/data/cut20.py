@@ -2,7 +2,7 @@ import json
 
 
 def cut20():
-    with open("1-prod-ks-merged.json", "r", encoding="utf-8") as f:
+    with open("1-ks-production-production-merged.json", "r", encoding="utf-8") as f:
         data = json.load(f)
 
         number_of_items_to_be_cut = 20

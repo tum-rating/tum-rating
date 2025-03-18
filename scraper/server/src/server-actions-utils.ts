@@ -150,28 +150,39 @@ function keySimilarityCore(
 
 
         if (similarRecords.length > 0) {
+
+
+            const mergedArr = []
+            if (item.merged && Array.isArray(item.merged)) {
+                if (item.merged.some(x => x.name !== item.name)) {
+                    mergedArr.push({
+                        similarity: 0,
+                        locked: true,
+                        ...item,
+                    })
+                }
+            } else {
+                mergedArr.push({
+                    similarity: 0,
+                    locked: true,
+                    ...item,
+                })
+            }
+
             mergedArray.push({
-                ...item,
+
+                courseId: "",
+                courseNumber: "",
+                id: uuidv4(),
                 name: item.name || item[key],
+                ...item,
                 merged: [
-                    (Array.isArray(item.merged) ? item.merged.some(x => x.name === item.name) || {
-                        ...item,
-                        locked: true,
-                        similarity: 0,
-                    } : {
-                        ...item,
-                        locked: true,
-                        similarity: 0,
-                    }),
+                    ...mergedArr,
                     ...similarRecords,
-                    ...(Array.isArray(item.merged) ? item.merged : []),
                 ],
                 codes: Array.from(currentCodes),
                 offeredInSemesters: Array.from(offeredInSemesters),
                 professor: item.professor,
-                courseId: "",
-                courseNumber: "",
-                id: uuidv4(),
             });
         } else {
             mergedArray.push({
