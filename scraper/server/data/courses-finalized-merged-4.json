@@ -1,0 +1,142 @@
+[
+  {
+    "courseId": "950634126",
+    "courseNumber": "0000002904",
+    "id": "7c78d4b6-8711-4d53-b097-aad88c96f3fb",
+    "name": "Analysis 1 [MA0001, MA0006] Analysis 2 [MA0002]",
+    "professor": "Gero Friesecke",
+    "otherLecturers": [
+      "Hans-Peter Kruse"
+    ],
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "merged": [
+      {
+        "similarity": 0,
+        "locked": true,
+        "id": "66b28afdd34856d36eb2d4ae",
+        "courseId": "950634126",
+        "courseNumber": "0000002904",
+        "professor": "Gero Friesecke",
+        "otherLecturers": [
+          "Hans-Peter Kruse"
+        ],
+        "name": "Analysis 1 (Central Exercise Session) [MA0001]",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0
+      },
+      {
+        "id": "66b28acdd34856d36eb2cff6",
+        "courseId": "950633038",
+        "courseNumber": "0000005324",
+        "professor": "Gero Friesecke",
+        "otherLecturers": [
+          "Hans-Peter Kruse"
+        ],
+        "name": "Analysis 1 (Exercise Session) [MA0001]",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "codes": [
+          "MA0001"
+        ],
+        "locked": true
+      },
+      {
+        "id": "66b28993d34856d36eb2afc9",
+        "courseId": "950633842",
+        "courseNumber": "0000005325",
+        "professor": "Gero Friesecke",
+        "otherLecturers": [],
+        "name": "Analysis 1 (Question Time) [MA0006]",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "codes": [
+          "MA0006"
+        ],
+        "locked": true
+      },
+      {
+        "id": "66b28bd8d34856d36eb2ead1",
+        "courseId": "950669482",
+        "courseNumber": "0000003252",
+        "professor": "Gero Friesecke",
+        "otherLecturers": [
+          "Hans-Peter Kruse"
+        ],
+        "name": "Analysis 2 (Central Exercise Session) [MA0002]",
+        "offeredInSemesters": [
+          "2023 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "codes": [
+          "MA0002"
+        ],
+        "locked": true
+      },
+      {
+        "id": "66b28bcad34856d36eb2e94b",
+        "courseId": "950669481",
+        "courseNumber": "0000005590",
+        "professor": "Gero Friesecke",
+        "otherLecturers": [
+          "Hans-Peter Kruse"
+        ],
+        "name": "Analysis 2 (Exercise Session)  [MA0002]",
+        "offeredInSemesters": [
+          "2023 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "codes": [
+          "MA0002"
+        ],
+        "locked": true
+      },
+      {
+        "id": "66b28b4cd34856d36eb2dc91",
+        "courseId": "950669480",
+        "courseNumber": "0000005502",
+        "professor": "Gero Friesecke",
+        "otherLecturers": [
+          "Hans-Peter Kruse"
+        ],
+        "name": "Analysis 2 (Questtion Time) [MA0002]",
+        "offeredInSemesters": [
+          "2023 S"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "codes": [
+          "MA0002"
+        ],
+        "locked": true
+      }
+    ],
+    "codes": [
+      "MA0001",
+      "MA0006",
+      "MA0002"
+    ]
+  }
+]

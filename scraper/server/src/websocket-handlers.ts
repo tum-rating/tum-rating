@@ -3,7 +3,7 @@ import http from "http";
 import Logger from "./server-logger";
 import { validateConnection } from "./websocket-utils";
 import {
-  batchMergeCoursesByNamesWithAi,
+  batchMergeCoursesByNamesWithAi, checkCorrectnessBatchedCoursesByNamesWithAi,
   fetchAndSaveMrozonRatingData,
   fetchAndSaveProductionCourses,
   fetchAndSaveTUMCourses,
@@ -308,9 +308,29 @@ const handleMessage = async (
           await keySimilarityMerging({ filesToMerge, ws, wss, suffix });
         }
         break;
+
       case "finishKeySimilarityMerging":
         if (filesToMerge) {
           await finishKeySimilarityMerging({ filesToMerge, ws, wss, suffix });
+        }
+        break;
+
+      case "checkCorrectnessBatchedCourses":
+         if (coursesSets && fileName) {
+           console.log("joo")
+          const startTime = new Date().toISOString();
+          aiWorkers[fileName] = {
+            userId,
+            progress: 0,
+            startTime,
+            status: "in-progress",
+            logs: [],
+          };
+          broadcastAiWorkers(wss);
+           console.log(1)
+          await checkCorrectnessBatchedCoursesByNamesWithAi(coursesSets, fileName, wss, ws);
+          aiWorkers[fileName].status = "completed";
+          broadcastAiWorkers(wss);
         }
         break;
       case "batchMergeCoursesByNamesWithAi":

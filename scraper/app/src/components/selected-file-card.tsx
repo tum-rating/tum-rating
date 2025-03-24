@@ -11,6 +11,7 @@ const SelectedFileCard = () => {
     filesContent,
     finishKeySimilarityMerging,
     coursesNamesMergingAiForWholeFile,
+      checkCorrectnessBatchedCourses,
     aiWorkers,
   } = useContext(AppDataContext)!;
 
@@ -109,6 +110,14 @@ const SelectedFileCard = () => {
                   Auto accept/decline merged sub-courses
                 </Button>
               )}
+              {isMergingFile && (
+                  <Button
+                      onClick={()=> checkCorrectnessBatchedCourses()}
+                        loading={fileAiWorker?.status === "in-progress"}
+                  >
+                    Check
+                  </Button>
+              )}
             </div>
             {fileAiWorker && (
               <div className="mt-4">
@@ -118,6 +127,7 @@ const SelectedFileCard = () => {
                 )}
               </div>
             )}
+
           </div>
         </div>
       </ScrollArea>

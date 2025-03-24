@@ -1,6 +1,6 @@
 import WebSocket, {WebSocketServer} from "ws";
 import axios from "axios";
-import mergeCoursesByNamesWithAi, {AiResponse,} from "./merge-courses-by-names-with-ai";
+import mergeCoursesByNamesWithAi, {AiResponse, checkCoursesByNamesWithAi,} from "./merge-courses-by-names-with-ai";
 import Logger from "./server-logger";
 import {PRODUCTION_API_COURSES_URL, TUM_ONLINE_SEMESTERS_URL,} from "./server-actions-config";
 import {serverFilesystemConfig, serverFilesystemConfigFilesMap,} from "./server-filesystem-config";
@@ -71,7 +71,7 @@ const keySimilarityMerging = async ({
 
     for (let i = 0; i < summarizedData.length; i++) {
         summarizedData[i].id = uuidv4();
-        summarizedData[i].notResolvedCount = (summarizedData[i].merged || []).filter(x=>!x.locked).length;
+        summarizedData[i].notResolvedCount = (summarizedData[i].merged || []).filter(x => !x.locked).length;
         summarizedData[i].rejectedCount = 0;
         summarizedData[i].acceptedCount = 0;
     }
@@ -354,6 +354,45 @@ const fetchAndSaveTUMCourses = async ({
     );
     broadcastNewFile(wss, `${fileConfig.id}-${suffix}${fileConfig.extension}`);
 };
+
+const checkCorrectnessBatchedCoursesByNamesWithAi = async (
+    coursesSets: string[][],
+    fileName: string,
+    wss: WebSocketServer,
+    ws: WebSocket,
+) => {
+    console.log(2)
+    const MAX_COURSES_PER_BATCH = 17;
+
+    const allMergedData: AiResponse[] = [];
+    const checkedCoursesSetsIndexes = []
+
+    aiWorkers[fileName].status = "completed";
+    broadcastAiWorkers(wss);
+    ws.send(
+        JSON.stringify({
+            action: "success",
+            message: "Courses merged successfully",
+        }),
+    );
+
+
+    console.log(coursesSets)
+    for (let i = 0, len = coursesSets.length; i < len; i++) {
+        const courseSet = coursesSets[i];
+        if (courseSet.subCoursesNames.length) {
+            checkedCoursesSetsIndexes.push(i);
+            console.log(courseSet)
+            let checked = checkCoursesByNamesWithAi(courseSet, wss, fileName)
+
+        }
+
+
+    }
+
+
+}
+
 const batchMergeCoursesByNamesWithAi = async (
     coursesSets: string[][],
     fileName: string,
@@ -501,7 +540,7 @@ const batchMergeCoursesByNamesWithAi = async (
             const item = fileContent[originalIndex];
             if (item) {
                 let acceptedCount = 0;
-                let rejectedCount = item.merged.filter(x=>!x.locked).length;
+                let rejectedCount = item.merged.filter(x => !x.locked).length;
                 for (let el of item.merged) {
                     if (!el.locked) {
                         el.accepted = false;
@@ -544,4 +583,5 @@ export {
     keySimilarityMerging,
     finishKeySimilarityMerging,
     batchMergeCoursesByNamesWithAi,
+    checkCorrectnessBatchedCoursesByNamesWithAi
 };
