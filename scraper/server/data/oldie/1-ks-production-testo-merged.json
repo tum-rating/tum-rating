@@ -1,0 +1,1191 @@
+[
+  {
+    "courseId": "950634126",
+    "courseNumber": "0000002904",
+    "id": "4dc1b354-b200-4e4d-9d95-2109d5b8d753",
+    "name": "Analysis 1 (Central Exercise Session) [MA0001]",
+    "professor": "Gero Friesecke",
+    "otherLecturers": [
+      "Hans-Peter Kruse"
+    ],
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "merged": [
+      {
+        "similarity": 0,
+        "locked": true,
+        "id": "66b28afdd34856d36eb2d4ae",
+        "courseId": "950634126",
+        "courseNumber": "0000002904",
+        "professor": "Gero Friesecke",
+        "otherLecturers": [
+          "Hans-Peter Kruse"
+        ],
+        "name": "Analysis 1 (Central Exercise Session) [MA0001]",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0
+      },
+      {
+        "id": "66b28acdd34856d36eb2cff6",
+        "courseId": "950633038",
+        "courseNumber": "0000005324",
+        "professor": "Gero Friesecke",
+        "otherLecturers": [
+          "Hans-Peter Kruse"
+        ],
+        "name": "Analysis 1 (Exercise Session) [MA0001]",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 8,
+        "codes": [
+          "MA0001"
+        ]
+      },
+      {
+        "id": "66b28993d34856d36eb2afc9",
+        "courseId": "950633842",
+        "courseNumber": "0000005325",
+        "professor": "Gero Friesecke",
+        "otherLecturers": [],
+        "name": "Analysis 1 (Question Time) [MA0006]",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 13,
+        "codes": [
+          "MA0006"
+        ]
+      }
+    ],
+    "codes": [
+      "MA0001",
+      "MA0006"
+    ],
+    "notResolvedCount": 2,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "courseId": "950700008",
+    "courseNumber": "0000002904",
+    "id": "5889ee8f-e0a0-460a-8af9-50bbf43ed005",
+    "name": "Analysis 1 (Central Exercise Session) [MA0001]",
+    "professor": "Christian Kühn",
+    "otherLecturers": [
+      "Frank Hofmaier"
+    ],
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "merged": [
+      {
+        "similarity": 0,
+        "locked": true,
+        "id": "66b28c99d34856d36eb2ff5a",
+        "courseId": "950700008",
+        "courseNumber": "0000002904",
+        "professor": "Christian Kühn",
+        "otherLecturers": [
+          "Frank Hofmaier"
+        ],
+        "name": "Analysis 1 (Central Exercise Session) [MA0001]",
+        "offeredInSemesters": [
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0
+      },
+      {
+        "id": "66b28c8bd34856d36eb2fdda",
+        "courseId": "950698987",
+        "courseNumber": "0000005324",
+        "professor": "Christian Kühn",
+        "otherLecturers": [
+          "Frank Hofmaier"
+        ],
+        "name": "Analysis 1 (Exercise Session) [MA0001]",
+        "offeredInSemesters": [
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 8,
+        "codes": [
+          "MA0001"
+        ]
+      },
+      {
+        "id": "66b28c17d34856d36eb2f185",
+        "courseId": "950699744",
+        "courseNumber": "0000005325",
+        "professor": "Christian Kühn",
+        "otherLecturers": [
+          "Frank Hofmaier"
+        ],
+        "name": "Analysis 1 (Question Time) [MA0006]",
+        "offeredInSemesters": [
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 13,
+        "codes": [
+          "MA0006"
+        ]
+      }
+    ],
+    "codes": [
+      "MA0001",
+      "MA0006"
+    ],
+    "notResolvedCount": 2,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "courseId": "950634390",
+    "courseNumber": "0000000903",
+    "id": "a5a1f71d-bc0d-405e-bc24-230601f76a85",
+    "name": "Analysis 1 (EI) (Central Exercise Session) [MA9411]",
+    "professor": "Boris Vexler",
+    "otherLecturers": [
+      "Dominik Meidner"
+    ],
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "merged": [
+      {
+        "similarity": 0,
+        "locked": true,
+        "id": "66b28afbd34856d36eb2d47b",
+        "courseId": "950634390",
+        "courseNumber": "0000000903",
+        "professor": "Boris Vexler",
+        "otherLecturers": [
+          "Dominik Meidner"
+        ],
+        "name": "Analysis 1 (EI) (Central Exercise Session) [MA9411]",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0
+      },
+      {
+        "id": "66b28acdd34856d36eb2cfed",
+        "courseId": "950631498",
+        "courseNumber": "0000002478",
+        "professor": "Boris Vexler",
+        "otherLecturers": [
+          "Dominik Meidner"
+        ],
+        "name": "Analysis 1 (EI) (Exercise Session) [MA9411]",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 8,
+        "codes": [
+          "MA9411"
+        ]
+      },
+      {
+        "id": "66b28a03d34856d36eb2bb36",
+        "courseId": "950633282",
+        "courseNumber": "0000000692",
+        "professor": "Boris Vexler",
+        "otherLecturers": [
+          "Dominik Meidner"
+        ],
+        "name": "Analysis 1 (EI) (Mentoring Classes) [MA9411]",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 11,
+        "codes": [
+          "MA9411"
+        ]
+      }
+    ],
+    "codes": [
+      "MA9411"
+    ],
+    "notResolvedCount": 2,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "a3a86988-7531-453f-86b7-bae45de6a3e1",
+    "courseId": "950634389",
+    "courseNumber": "0000000888",
+    "professor": "Boris Vexler",
+    "otherLecturers": [
+      "Dominik Meidner"
+    ],
+    "name": "Analysis 1 (EI) [MA9411]",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "MA9411"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "courseId": "950630583",
+    "courseNumber": "0240995388",
+    "id": "8971c554-4c26-4542-a91d-f41d22cc7c60",
+    "name": "Analysis 1 (LB) (Additional Topics) [MA9911]",
+    "professor": "Kathrin Ruf",
+    "otherLecturers": [],
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "merged": [
+      {
+        "similarity": 0,
+        "locked": true,
+        "id": "66b28967d34856d36eb2ab43",
+        "courseId": "950630583",
+        "courseNumber": "0240995388",
+        "professor": "Kathrin Ruf",
+        "otherLecturers": [],
+        "name": "Analysis 1 (LB) (Additional Topics) [MA9911]",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0
+      },
+      {
+        "id": "66b28acdd34856d36eb2cff0",
+        "courseId": "950630610",
+        "courseNumber": "0240939092",
+        "professor": "Kathrin Ruf",
+        "otherLecturers": [],
+        "name": "Analysis 1 (LB) (Exercise Session) [MA9911]",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 14,
+        "codes": [
+          "MA9911"
+        ]
+      }
+    ],
+    "codes": [
+      "MA9911"
+    ],
+    "notResolvedCount": 1,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "3e3194b4-3cbf-4046-ac29-dd4886580651",
+    "courseId": "950630385",
+    "courseNumber": "0240969900",
+    "professor": "Kathrin Ruf",
+    "otherLecturers": [],
+    "name": "Analysis 1 (LB) [MA9911]",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "MA9911"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "courseId": "950632504",
+    "courseNumber": "0000003970",
+    "id": "3300a773-8233-47cf-a31f-edbca8367149",
+    "name": "Analysis 1 LG [MA1005]",
+    "professor": "Frank Hofmaier",
+    "otherLecturers": [],
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "merged": [
+      {
+        "similarity": 0,
+        "locked": true,
+        "id": "66b288fbd34856d36eb2a000",
+        "courseId": "950632504",
+        "courseNumber": "0000003970",
+        "professor": "Frank Hofmaier",
+        "otherLecturers": [],
+        "name": "Analysis 1 LG [MA1005]",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0
+      },
+      {
+        "id": "66b28acdd34856d36eb2cff3",
+        "courseId": "950633520",
+        "courseNumber": "0000005303",
+        "professor": "Frank Hofmaier",
+        "otherLecturers": [],
+        "name": "Übungen zu Analysis 1 LG [MA1100]",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 11,
+        "codes": [
+          "MA1100"
+        ]
+      }
+    ],
+    "codes": [
+      "MA1005",
+      "MA1100"
+    ],
+    "notResolvedCount": 1,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "courseId": "950698560",
+    "courseNumber": "0000003970",
+    "id": "2b2ae68b-f4d5-40be-aa4a-f272253cc89a",
+    "name": "Analysis 1 LG [MA1005]",
+    "professor": "Oliver Deiser",
+    "otherLecturers": [],
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "merged": [
+      {
+        "similarity": 0,
+        "locked": true,
+        "id": "66b28be4d34856d36eb2ec1b",
+        "courseId": "950698560",
+        "courseNumber": "0000003970",
+        "professor": "Oliver Deiser",
+        "otherLecturers": [],
+        "name": "Analysis 1 LG [MA1005]",
+        "offeredInSemesters": [
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0
+      },
+      {
+        "id": "66b28c8bd34856d36eb2fdd7",
+        "courseId": "950699422",
+        "courseNumber": "0000005303",
+        "professor": "Oliver Deiser",
+        "otherLecturers": [],
+        "name": "Übungen zu Analysis 1 LG [MA1100]",
+        "offeredInSemesters": [
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 11,
+        "codes": [
+          "MA1100"
+        ]
+      }
+    ],
+    "codes": [
+      "MA1005",
+      "MA1100"
+    ],
+    "notResolvedCount": 1,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "8ceb134d-cf12-4138-a0a6-f609db5dcd39",
+    "courseId": "950632478",
+    "courseNumber": "0000003251",
+    "professor": "Gero Friesecke",
+    "otherLecturers": [
+      "Hans-Peter Kruse"
+    ],
+    "name": "Analysis 1 [MA0001]",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "MA0001"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "e86e6374-8556-4256-b417-ced868b064e1",
+    "courseId": "950698539",
+    "courseNumber": "0000003251",
+    "professor": "Christian Kühn",
+    "otherLecturers": [
+      "Frank Hofmaier"
+    ],
+    "name": "Analysis 1 [MA0001]",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "MA0001"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "courseId": "950630594",
+    "courseNumber": "0000000840",
+    "id": "86d8fe62-82c6-4f08-96bd-9a0020b39d88",
+    "name": "Chemo technical Analysis 1",
+    "professor": "Gerold Reil",
+    "otherLecturers": [],
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "merged": [
+      {
+        "similarity": 0,
+        "locked": true,
+        "id": "66b2892dd34856d36eb2a52e",
+        "courseId": "950630594",
+        "courseNumber": "0000000840",
+        "professor": "Gerold Reil",
+        "otherLecturers": [],
+        "name": "Chemo technical Analysis 1",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0
+      },
+      {
+        "id": "66b2892dd34856d36eb2a531",
+        "courseId": "950630796",
+        "courseNumber": "0000000837",
+        "professor": "Gerold Reil",
+        "otherLecturers": [],
+        "name": "Chemo technical Analysis 1 (Course A)",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 3,
+        "codes": []
+      },
+      {
+        "id": "66b2892dd34856d36eb2a534",
+        "courseId": "950630797",
+        "courseNumber": "0000000838",
+        "professor": "Gerold Reil",
+        "otherLecturers": [],
+        "name": "Chemo technical Analysis 1 (Course B)",
+        "offeredInSemesters": [
+          "2022 W",
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 3,
+        "codes": []
+      },
+      {
+        "id": "66b2892dd34856d36eb2a537",
+        "courseId": "950630794",
+        "courseNumber": "0000000839",
+        "professor": "Gerold Reil",
+        "otherLecturers": [],
+        "name": "Chemo technical Analysis 1 (Course C)",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 3,
+        "codes": []
+      },
+      {
+        "id": "66b2892dd34856d36eb2a53a",
+        "courseId": "950630795",
+        "courseNumber": "0000001292",
+        "professor": "Gerold Reil",
+        "otherLecturers": [],
+        "name": "Chemo technical Analysis 1 (Course D)",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 3,
+        "codes": []
+      }
+    ],
+    "codes": [],
+    "notResolvedCount": 4,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "e9e985cd-f1e9-4b2a-93b1-9c52094b8f3b",
+    "courseId": "950692168",
+    "courseNumber": "0000004179",
+    "professor": "Petra Purkott-Harz",
+    "otherLecturers": [
+      "Mia Runge"
+    ],
+    "name": "Ferienkurs Analysis 1 im Bachelor EI",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "0cd5e3e2-06df-4d38-9985-512ab68b7313",
+    "courseId": "950761500",
+    "courseNumber": "0000004179",
+    "professor": "Michaela Heinrich",
+    "otherLecturers": [
+      "Mia Runge"
+    ],
+    "name": "Ferienkurs Analysis 1 im Bachelor EI",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "a5a066e1-2f5b-42fe-9047-4b925b444f2f",
+    "courseId": "950633843",
+    "courseNumber": "0000005343",
+    "professor": "Jürgen Richter-Gebert",
+    "otherLecturers": [
+      "Vanessa Landgraf",
+      "Frank Hofmaier"
+    ],
+    "name": "Freiwillige Hausaufgabengruppe zur Analysis 1  LG und  Linearen Algebra 1 LG [MA1100]",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "MA1100"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "438abcc1-91ea-422a-adae-7a6236750220",
+    "courseId": "950699745",
+    "courseNumber": "0000005343",
+    "professor": "Oliver Deiser",
+    "otherLecturers": [
+      "Vanessa Landgraf"
+    ],
+    "name": "Freiwillige Hausaufgabengruppe zur Analysis 1  LG und  Linearen Algebra 1 LG [MA1100]",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "MA1100"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "323740ac-7050-43b3-aea3-a369b1997bf7",
+    "courseId": "950634719",
+    "courseNumber": "0000005291",
+    "professor": "Gero Friesecke",
+    "otherLecturers": [
+      "Hans-Peter Kruse"
+    ],
+    "name": "Hausaufgabenhilfe Analysis 1 [MA0006]",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "MA0006"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "61b43810-4953-49e3-a629-dfca981745ef",
+    "courseId": "950700586",
+    "courseNumber": "0000005291",
+    "professor": "Christian Kühn",
+    "otherLecturers": [
+      "Frank Hofmaier"
+    ],
+    "name": "Hausaufgabenhilfe Analysis 1 [MA0006]",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "MA0006"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "courseId": "950630597",
+    "courseNumber": "0240003958",
+    "id": "041f2022-bf7b-4846-a7bd-c1e364ad52c8",
+    "name": "Mathematics for Physicists 2 (Analysis 1)",
+    "professor": "Simone Warzel",
+    "otherLecturers": [
+      "Carl-Friedrich Kreiner"
+    ],
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "merged": [
+      {
+        "similarity": 0,
+        "locked": true,
+        "id": "66b289fed34856d36eb2babb",
+        "courseId": "950630597",
+        "courseNumber": "0240003958",
+        "professor": "Simone Warzel",
+        "otherLecturers": [
+          "Carl-Friedrich Kreiner"
+        ],
+        "name": "Mathematics for Physicists 2 (Analysis 1)",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0
+      },
+      {
+        "id": "66b28ad2d34856d36eb2d078",
+        "courseId": "950630420",
+        "courseNumber": "0240060390",
+        "professor": "Simone Warzel",
+        "otherLecturers": [
+          "Carl-Friedrich Kreiner"
+        ],
+        "name": "Mathematics for Physicists 2 (Analysis 1) (Exercise Session)",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 9,
+        "codes": []
+      }
+    ],
+    "codes": [],
+    "notResolvedCount": 1,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "courseId": "950696834",
+    "courseNumber": "0240003958",
+    "id": "e78a4ccc-4569-4de8-b59e-0522d75f3be1",
+    "name": "Mathematics for Physicists 2 (Analysis 1)",
+    "professor": "Robert König",
+    "otherLecturers": [
+      "Michael Prähofer"
+    ],
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "merged": [
+      {
+        "similarity": 0,
+        "locked": true,
+        "id": "66b28c40d34856d36eb2f5d7",
+        "courseId": "950696834",
+        "courseNumber": "0240003958",
+        "professor": "Robert König",
+        "otherLecturers": [
+          "Michael Prähofer"
+        ],
+        "name": "Mathematics for Physicists 2 (Analysis 1)",
+        "offeredInSemesters": [
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0
+      },
+      {
+        "id": "66b28c8dd34856d36eb2fe13",
+        "courseId": "950696672",
+        "courseNumber": "0240060390",
+        "professor": "Robert König",
+        "otherLecturers": [
+          "Michael Prähofer"
+        ],
+        "name": "Mathematics for Physicists 2 (Analysis 1) (Exercise Session)",
+        "offeredInSemesters": [
+          "2023 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 9,
+        "codes": []
+      }
+    ],
+    "codes": [],
+    "notResolvedCount": 1,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "courseId": "950629786",
+    "courseNumber": "0240038583",
+    "id": "042eb31c-1c0b-4d0a-8b19-56ab5908baf6",
+    "name": "Mathematics for Physicists 2 (Analysis 1) (Central Exercise Session)",
+    "professor": "Simone Warzel",
+    "otherLecturers": [
+      "Carl-Friedrich Kreiner"
+    ],
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "merged": [
+      {
+        "similarity": 0,
+        "locked": true,
+        "id": "66b28afcd34856d36eb2d49c",
+        "courseId": "950629786",
+        "courseNumber": "0240038583",
+        "professor": "Simone Warzel",
+        "otherLecturers": [
+          "Carl-Friedrich Kreiner"
+        ],
+        "name": "Mathematics for Physicists 2 (Analysis 1) (Central Exercise Session)",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0
+      },
+      {
+        "id": "66b28aa0d34856d36eb2cb67",
+        "courseId": "950689828",
+        "courseNumber": "0000003412",
+        "professor": "Simone Warzel",
+        "otherLecturers": [
+          "Carl-Friedrich Kreiner"
+        ],
+        "name": "Mathematics for Physicists 2 (Analysis 1) - Homework Advice [MA9202]",
+        "offeredInSemesters": [
+          "2022 W"
+        ],
+        "howInterestingRatingAverage": 0,
+        "howEasyRatingAverage": 0,
+        "votesNumber": 0,
+        "lockedCount": 0,
+        "similarity": 15,
+        "codes": [
+          "MA9202"
+        ]
+      }
+    ],
+    "codes": [
+      "MA9202"
+    ],
+    "notResolvedCount": 1,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "f2ce134d-94f4-4774-ae70-f3c5cf551be7",
+    "courseId": "950696068",
+    "courseNumber": "0240038583",
+    "professor": "Robert König",
+    "otherLecturers": [
+      "Michael Prähofer"
+    ],
+    "name": "Mathematics for Physicists 2 (Analysis 1) (Central Exercise Session)",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "4198d351-3bd3-42d9-826f-1a016eb79cb8",
+    "courseId": "950632606",
+    "courseNumber": "0000003370",
+    "professor": "Michael Krautblatter",
+    "otherLecturers": [
+      "Benjamin Jacobs",
+      "Sibylle Knapp",
+      "Georg Maximilian Stockinger"
+    ],
+    "name": "Numeric Analysis 1 (Fundamentals)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "50da7a84-23a8-47ae-9703-0317b02908ae",
+    "courseId": "950630307",
+    "courseNumber": "0000000013",
+    "professor": "Thomas Maier",
+    "otherLecturers": [
+      "TUS3DP1 <N.N.>(wiss. Mitarbeiter(innen))"
+    ],
+    "name": "Repetitorium Mathematics for Physicists 2 (Analysis 1)",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "c87be092-39b4-4353-a7f4-01dd41969e9e",
+    "courseId": "950634904",
+    "courseNumber": "0000002756",
+    "professor": "Vanessa Landgraf",
+    "otherLecturers": [
+      "Alina Kadluba",
+      "Frank Hofmaier"
+    ],
+    "name": "Vorträge zu prüfungsrelevanten Themen der Analysis 1 LG und  Linearen Algebra 1 LG  [MA1100]",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "MA1100"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "0040e430-5cc8-400c-931e-fc6a777f28f4",
+    "courseId": "950605368",
+    "courseNumber": "0000005446",
+    "professor": "Michael Prähofer",
+    "otherLecturers": [
+      "Vera Pazukhina"
+    ],
+    "name": "Übungen zu Analysis 1 & 2 und zu Linearer Algebra 1 & 2 - Ana 1/2 LG [MA1100]",
+    "offeredInSemesters": [
+      "2022 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "MA1100"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "dac3563f-5f0c-4235-876f-72c4eabd7805",
+    "courseId": "950670127",
+    "courseNumber": "0000005446",
+    "professor": "Frank Hofmaier",
+    "otherLecturers": [],
+    "name": "Übungen zu Analysis 1 & 2 und zu Linearer Algebra 1 & 2 - Ana 1/2 LG [MA1100]",
+    "offeredInSemesters": [
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "MA1100"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "7a5cb7f0-56d2-42f1-8bed-895a230f0ecf",
+    "courseId": "950732291",
+    "courseNumber": "0000005446",
+    "professor": "Oliver Deiser",
+    "otherLecturers": [],
+    "name": "Übungen zu Analysis 1 & 2 und zu Linearer Algebra 1 & 2 - Ana 1/2 LG [MA1100]",
+    "offeredInSemesters": [
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "MA1100"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "0560184b-7184-47dc-86fc-3b39c577659d",
+    "courseId": "950605369",
+    "courseNumber": "0000005535",
+    "professor": "Jürgen Richter-Gebert",
+    "otherLecturers": [
+      "Vanessa Landgraf"
+    ],
+    "name": "Übungen zu Analysis 1 & 2 und zu Linearer Algebra 1 & 2 - LA1/2 LG [MA1100]",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "LA1",
+      "MA1100"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  },
+  {
+    "merged": [],
+    "id": "3d7f2211-7420-4c4c-944e-7b229e68071a",
+    "courseId": "950732292",
+    "courseNumber": "0000005535",
+    "professor": "Vanessa Landgraf",
+    "otherLecturers": [],
+    "name": "Übungen zu Analysis 1 & 2 und zu Linearer Algebra 1 & 2 - LA1/2 LG [MA1100]",
+    "offeredInSemesters": [
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "lockedCount": 0,
+    "codes": [
+      "LA1",
+      "MA1100"
+    ],
+    "notResolvedCount": 0,
+    "rejectedCount": 0,
+    "acceptedCount": 0
+  }
+]

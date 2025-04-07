@@ -11,6 +11,7 @@ type FetchedComputedCourse = {
     rejectedCount?: number;
     notResolvedCount?: number;
     lockedCount?: number;
+    badMerge?: boolean;
 }
 
 
@@ -34,6 +35,7 @@ type FetchedCourse = {
     notResolvedCount?: number;
     lockedCount?: number;
     locked?: boolean;
+    badMerge?: boolean;
 }
 
 type FetchedData = {

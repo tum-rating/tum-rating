@@ -34,7 +34,7 @@
     "@tanstack/react-virtual": "^3.13.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "cmdk": "^1.0.0",
+    "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "fast-json-patch": "^3.1.1",
     "lucide-react": "^0.454.0",

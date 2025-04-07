@@ -331,7 +331,11 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
         if (originalCourseIndex === -1) return;
 
         const originalCourse = selectedFileContent[originalCourseIndex];
+        if(originalCourse?.badMerge){
+            delete originalCourse.badMerge
+        }
         const diffs = fastJsonPatch.compare(originalCourse, updatedCourse);
+
 
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
             socketRef.current.send(
@@ -493,24 +497,18 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
         }
     };
     const checkCorrectnessBatchedCourses = async () => {
-        console.log(3)
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-            console.log(6)
             const fileNameWithoutExtension = selectedFile.name.replace(/\.json$/, "");
-            const coursesSets = filesContentRef.current[fileNameWithoutExtension].map((course) => {
-                    return {
-                        baseName: course.name,
-                        subCoursesNames: course.merged.map(x=>x.name)
-                    }
-                }
+            const coursesSets = filesContentRef.current[fileNameWithoutExtension].map(
+                (course) => course.merged.map((subCourse) => subCourse.name),
             );
-            console.log(coursesSets)
             socketRef.current.send(
                 JSON.stringify({
                     action: "checkCorrectnessBatchedCourses",
                     coursesSets,
                     fileName: selectedFile.name,
-                }))
+                }),
+            );
         }
     }
 

@@ -6,7 +6,7 @@ type DatasetOptions = Partial<Record<FetchedComputedDataObjectKeys, {
     enabled: boolean;
     ascending: boolean;
     label: string;
-    type: "string" | "number"
+    type: "string" | "number" | "boolean"
 }>>;
 
 export type {DatasetOptions, FetchedComputedDataObjectKeys};

@@ -1,7 +1,7 @@
 import {FetchedComputedCourse} from "@/types/fetchedData.ts";
 import {Badge} from "@/components/ui/badge.tsx";
 import {cn} from "@/lib/utils";
-import {CircleCheck} from "lucide-react";
+import {AlertTriangle, CircleCheck} from "lucide-react";
 import {useEffect, useState} from "react";
 
 interface ComputedCoursesListItemProps {
@@ -20,12 +20,14 @@ const highlightText = (text: string, searchTerm: string) => {
     );
 };
 
+
 const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: ComputedCoursesListItemProps) => {
     const [status, setStatus] = useState({
         accepted: 0,
         rejected: 0,
         notResolved: 0,
-        locked: 0  // Add locked state
+        locked: 0,
+        badMerge: false
     });
 
     useEffect(() => {
@@ -43,10 +45,10 @@ const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: Co
             accepted: acceptedCount,
             rejected: rejectedCount,
             notResolved: notResolvedCount,
-            locked: lockedItems.length  // Track locked items count
+            locked: lockedItems.length,
+            badMerge: data.badMerge || false
         });
     }, [data]);
-
 
     const allNonLockedResolved = status.notResolved === 0 &&
         (status.accepted > 0 || status.rejected > 0 ||
@@ -60,15 +62,17 @@ const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: Co
                 'bg-gray-100 hover:bg-gray-200 cursor-pointer pr-4  transition-all duration-100',
                 'border-b-[1px] border-b-border',
                 'flex',
-                selected ? 'bg-gray-300 hover:bg-gray-300' : ''
+                data?.badMerge? 'bg-red-200' : selected ? 'bg-gray-300 hover:bg-gray-300' : ''
             )}
         >
-
             <div className={`min-w-[8px] h-auto mr-4  ${allNonLockedResolved ? 'bg-blue-500' : 'bg-gray-300'}`}/>
             <div className="py-4 w-full">
                 <span className="text-sm font-bold leading-relaxed ">
                     {allNonLockedResolved && (
                         <CircleCheck className="inline-block w-5 h-5 mr-1 fill-blue-500 stroke-white"/>
+                    )}
+                    {status.badMerge && (
+                        <AlertTriangle className="inline-block w-5 h-5 mr-1 fill-red-500 stroke-white"/>
                     )}
                     {highlightText(data.name, searchTerm)}
                     <span className="text-xs text-gray-500 block">

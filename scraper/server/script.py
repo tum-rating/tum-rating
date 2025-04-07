@@ -2,7 +2,7 @@ import json
 from collections import defaultdict
 from datetime import datetime
 
-def load_json(filepath):
+def load_json(filepath):``
     """Load JSON data from a file."""
     try:
         with open(filepath, 'r', encoding="utf-8") as f:

@@ -170,7 +170,6 @@ function keySimilarityCore(
             }
 
             mergedArray.push({
-
                 courseId: "",
                 courseNumber: "",
                 id: uuidv4(),

@@ -5,7 +5,7 @@ import {Label} from "@radix-ui/react-label";
 import {Input} from "./ui/input";
 import {InputTags} from "./ui/input-tags";
 import {Button} from "@/components/ui/button.tsx";
-import {ArrowLeft, ArrowRight, CheckIcon} from "lucide-react";
+import {ArrowLeft, ArrowRight, CheckIcon, PlusIcon} from "lucide-react";
 import {ScrollArea} from "@/components/ui/scroll-area.tsx";
 import MergedSubCourseCard from "@/components/merged-sub-course-card.tsx";
 import Masonry from "@/components/masonry.tsx";
@@ -171,6 +171,24 @@ const MergedCourseCard = ({
                                         ))
                                         : null}
                                 </Masonry>
+                                <button onClick={handleAddCourse} className="mt-2">
+                                    <PlusIcon className="w-6 h-6 text-blue-500" />
+                                </button>
+                                {isComboBoxOpen && (
+                                    <Combobox value={selectedCourse} onChange={handleSelectCourse}>
+                                        <Combobox.Input
+                                            onChange={(event) => setSearchTerm(event.target.value)}
+                                            placeholder="Search courses..."
+                                        />
+                                        <Combobox.Options>
+                                            {filteredCourses.map((course) => (
+                                                <Combobox.Option key={course.id} value={course}>
+                                                    {course.name}
+                                                </Combobox.Option>
+                                            ))}
+                                        </Combobox.Options>
+                                    </Combobox>
+                                )}
                             </div>
                         </div>
                     </div>

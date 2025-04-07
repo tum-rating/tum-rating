@@ -1,6 +1,6 @@
 import WebSocket, {WebSocketServer} from "ws";
 import axios from "axios";
-import mergeCoursesByNamesWithAi, {AiResponse, checkCoursesByNamesWithAi,} from "./merge-courses-by-names-with-ai";
+import mergeCoursesByNamesWithAi, {AiResponse, checkCorrectnessOfMergedCourses} from "./merge-courses-by-names-with-ai";
 import Logger from "./server-logger";
 import {PRODUCTION_API_COURSES_URL, TUM_ONLINE_SEMESTERS_URL,} from "./server-actions-config";
 import {serverFilesystemConfig, serverFilesystemConfigFilesMap,} from "./server-filesystem-config";
@@ -70,7 +70,6 @@ const keySimilarityMerging = async ({
     const summarizedData = keySimilarityCore(allCourses, "name", "courseId");
 
     for (let i = 0; i < summarizedData.length; i++) {
-        summarizedData[i].id = uuidv4();
         summarizedData[i].notResolvedCount = (summarizedData[i].merged || []).filter(x => !x.locked).length;
         summarizedData[i].rejectedCount = 0;
         summarizedData[i].acceptedCount = 0;
@@ -361,11 +360,83 @@ const checkCorrectnessBatchedCoursesByNamesWithAi = async (
     wss: WebSocketServer,
     ws: WebSocket,
 ) => {
-    console.log(2)
-    const MAX_COURSES_PER_BATCH = 17;
+    const MAX_COURSES_PER_BATCH = 10; // Maximum courses per batch
 
+    // Filter out empty sets while keeping track of original indices
+
+    const coursesSetWithoutEmptyIdx: number[] = [];
+    const coursesSetWithoutEmpty = coursesSets.reduce((acc, set, index) => {
+        if (set.length) {
+            coursesSetWithoutEmptyIdx.push(index);
+            acc.push(set);
+        }
+        return acc;
+    }, [] as string[][]);
+
+    if (coursesSetWithoutEmpty.length === 0) {
+        Logger.info("No non-empty course sets to process");
+        ws.send(
+            JSON.stringify({action: "success", message: "No courses to merge"}),
+        );
+        return;
+    }
+
+    // Create batches based on course count
+    const batches: string[][][] = [];
+    let currentBatch: string[][] = [];
+    let currentBatchSize = 0;
+
+    for (const courseSet of coursesSetWithoutEmpty) {
+        // If adding this course set would exceed the limit, start a new batch
+        if (currentBatchSize + courseSet.length > MAX_COURSES_PER_BATCH && currentBatchSize > 0) {
+            batches.push(currentBatch);
+            currentBatch = [];
+            currentBatchSize = 0;
+        }
+
+        currentBatch.push(courseSet);
+        currentBatchSize += courseSet.length;
+    }
+
+    // Add the last batch if not empty
+    if (currentBatch.length > 0) {
+        batches.push(currentBatch);
+    }
+
+    const totalBatches = batches.length;
+    Logger.info(`Created ${totalBatches} batches based on course count`);
+
+    // Process each batch
     const allMergedData: AiResponse[] = [];
-    const checkedCoursesSetsIndexes = []
+    let processedCount = 0;
+    let processedSets = 0;
+
+    for (let i = 0; i < batches.length; i++) {
+        const batch = batches[i];
+        Logger.info(`Processing batch ${i + 1} of ${totalBatches} with ${batch.reduce((sum, set) => sum + set.length, 0)} courses`);
+
+        try {
+            const batchResults = await checkCorrectnessOfMergedCourses(batch, wss, fileName);
+            allMergedData.push(...(batchResults as AiResponse[]));
+
+            // Update processed count and send progress
+            processedSets += batch.length;
+            processedCount += batch.reduce((sum, set) => sum + set.length, 0);
+            aiWorkers[fileName].progress = (processedSets / coursesSetWithoutEmpty.length) * 100;
+            broadcastAiWorkers(wss);
+        } catch (error) {
+            Logger.error(`Error processing batch: ${error instanceof Error ? error.message : String(error)}`);
+            aiWorkers[fileName].status = "error";
+            broadcastAiWorkers(wss);
+            ws.send(
+                JSON.stringify({
+                    action: "error",
+                    message: "An error occurred while merging courses",
+                }),
+            );
+            return;
+        }
+    }
 
     aiWorkers[fileName].status = "completed";
     broadcastAiWorkers(wss);
@@ -376,22 +447,103 @@ const checkCorrectnessBatchedCoursesByNamesWithAi = async (
         }),
     );
 
+    if (allMergedData.length === 0) {
+        Logger.warn("No results returned from AI service");
+        ws.send(
+            JSON.stringify({
+                action: "error",
+                message: "No results returned from AI service",
+            }),
+        );
+        return;
+    }
 
-    console.log(coursesSets)
-    for (let i = 0, len = coursesSets.length; i < len; i++) {
-        const courseSet = coursesSets[i];
-        if (courseSet.subCoursesNames.length) {
-            checkedCoursesSetsIndexes.push(i);
-            console.log(courseSet)
-            let checked = checkCoursesByNamesWithAi(courseSet, wss, fileName)
+    const filePath = path.join(serverFilesystemConfig.DIRECTORY, fileName);
+    if (!fs.existsSync(filePath)) {
+        Logger.warn(`File not found: ${filePath}`);
+        ws.send(JSON.stringify({action: "error", message: "File not found"}));
+        return;
+    }
+    const fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    console.log(allMergedData)
 
+    console.log(allMergedData)
+    for (let i = 0; i < allMergedData.length; i++) {
+        const data = allMergedData[i];
+        const originalIndex = coursesSetWithoutEmptyIdx[i];
+
+        if (data.badMerge) {
+            const item = fileContent[originalIndex];
+            if (item) {
+                item["badMerge"] = true;
+
+                // let acceptedCount = 0;
+                // let rejectedCount = 0;
+                //
+                for (let i = 0; i < item.merged.length; i++) {
+                    const el = item.merged[i];
+                    if(i === 0){
+
+                    }else{
+                        el.locked = false
+                    }
+                }
+                //
+                // item.name = data.name;
+                // item.acceptedCount = acceptedCount;
+                // item.rejectedCount = rejectedCount;
+                // item.notResolvedCount = 0;
+                //
+                const diffs = compare(fileContent[originalIndex], item);
+                fileContent[originalIndex] = applyPatch(
+                    fileContent[originalIndex],
+                    diffs,
+                ).newDocument;
+            }
+        } else {
+            // const item = fileContent[originalIndex];
+            // if (item) {
+            //     let acceptedCount = 0;
+            //     let rejectedCount = item.merged.filter(x => !x.locked).length;
+            //     for (let el of item.merged) {
+            //         if (!el.locked) {
+            //             el.accepted = false;
+            //         }
+            //     }
+            //     item.acceptedCount = acceptedCount;
+            //     item.rejectedCount = rejectedCount;
+            //     item.notResolvedCount = 0;
+            //     fileContent[originalIndex] = item;
+            }
         }
 
+    fs.writeFileSync(filePath, JSON.stringify(fileContent, null, 2), "utf-8");
 
-    }
+    ws.send(
+        JSON.stringify({
+            action: "success",
+            message: "Courses merged successfully",
+        }),
+    );
+
+    const message = JSON.stringify({
+        action: "fileUpdated",
+        fileName,
+        updatedItems: fileContent,
+    });
+
+    wss.clients.forEach((client: WebSocket) => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(message);
+        }
+    });
 
 
 }
+
+
+
+
 
 const batchMergeCoursesByNamesWithAi = async (
     coursesSets: string[][],
@@ -503,6 +655,14 @@ const batchMergeCoursesByNamesWithAi = async (
         return;
     }
     const fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    fileContent.forEach((item: any) => {
+        if(item.merged){
+            item.merged.forEach((mergedItem: any) => {
+                delete mergedItem.accepted;
+                delete mergedItem.locked;
+            });
+        }
+    });
 
     for (let i = 0; i < allMergedData.length; i++) {
         const data = allMergedData[i];
