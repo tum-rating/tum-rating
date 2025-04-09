@@ -198,7 +198,8 @@
           "66b28a6ed34856d36eb2c61f"
         ],
         "codes": [],
-        "accepted": false
+        "accepted": false,
+        "removed": true
       },
       {
         "id": "66b286b9d34856d36eb26490",
@@ -229,7 +230,8 @@
     ],
     "notResolvedCount": 0,
     "rejectedCount": 4,
-    "acceptedCount": 0
+    "acceptedCount": 0,
+    "lockedCount": 0
   },
   {
     "merged": [],
@@ -379,7 +381,8 @@
         "codes": [
           "SOT82518"
         ],
-        "accepted": true
+        "accepted": true,
+        "removed": true
       }
     ],
     "courseId": "950658511",
@@ -405,7 +408,8 @@
     ],
     "notResolvedCount": 0,
     "rejectedCount": 0,
-    "acceptedCount": 3
+    "acceptedCount": 3,
+    "lockedCount": 0
   },
   {
     "merged": [
@@ -1674,26 +1678,6 @@
         "howEasyRatingAverage": 0,
         "votesNumber": 0,
         "accepted": true
-      },
-      {
-        "id": "66b287edd34856d36eb284b3",
-        "courseId": "950636666",
-        "courseNumber": "0000002190",
-        "professor": "Simon Hegelich",
-        "otherLecturers": [],
-        "name": "Introduction to statistical learning - (POL15200) Exercise",
-        "offeredInSemesters": [
-          "2022 S",
-          "2023 S",
-          "2024 S"
-        ],
-        "howInterestingRatingAverage": 0,
-        "howEasyRatingAverage": 0,
-        "votesNumber": 0,
-        "codes": [
-          "POL15200"
-        ],
-        "accepted": true
       }
     ],
     "courseId": "950606828",
@@ -1715,7 +1699,8 @@
     ],
     "notResolvedCount": 0,
     "rejectedCount": 0,
-    "acceptedCount": 2
+    "acceptedCount": 2,
+    "lockedCount": 0
   },
   {
     "merged": [],
@@ -2575,24 +2560,6 @@
         "howEasyRatingAverage": 0,
         "votesNumber": 0,
         "accepted": true
-      },
-      {
-        "id": "66b28c52d34856d36eb2f7d6",
-        "courseId": "950728699",
-        "courseNumber": "0000002539",
-        "professor": "Tim Büthe",
-        "otherLecturers": [],
-        "name": "(POL40100) Introduction to Politics and Technology - Exercise",
-        "offeredInSemesters": [
-          "2023 W"
-        ],
-        "howInterestingRatingAverage": 0,
-        "howEasyRatingAverage": 0,
-        "votesNumber": 0,
-        "codes": [
-          "POL40100"
-        ],
-        "accepted": true
       }
     ],
     "courseId": "950728698",
@@ -2610,7 +2577,8 @@
     "codes": [],
     "notResolvedCount": 0,
     "rejectedCount": 0,
-    "acceptedCount": 2
+    "acceptedCount": 1,
+    "lockedCount": 0
   },
   {
     "merged": [],
@@ -4725,25 +4693,6 @@
           "66b287f2d34856d36eb2852b"
         ],
         "accepted": true
-      },
-      {
-        "id": "66b28868d34856d36eb29112",
-        "courseId": "950601767",
-        "courseNumber": "0000001781",
-        "professor": "Deniz Anan",
-        "otherLecturers": [],
-        "name": "(POL70018, POL70015) Master Course in Political System",
-        "offeredInSemesters": [
-          "2022 S"
-        ],
-        "howInterestingRatingAverage": 0,
-        "howEasyRatingAverage": 0,
-        "votesNumber": 0,
-        "codes": [
-          "POL70018",
-          "POL70015"
-        ],
-        "accepted": true
       }
     ],
     "courseId": "950629516",
@@ -4768,7 +4717,8 @@
     ],
     "notResolvedCount": 0,
     "rejectedCount": 0,
-    "acceptedCount": 2
+    "acceptedCount": 1,
+    "lockedCount": 0
   },
   {
     "merged": [],
@@ -12252,32 +12202,13 @@
         ],
         "codes": [],
         "accepted": false
-      },
-      {
-        "id": "66b28c32d34856d36eb2f45a",
-        "courseId": "950704148",
-        "courseNumber": "0000004362",
-        "professor": "Alexander Kolb",
-        "otherLecturers": [
-          "Alexander Kolb",
-          "Markus Spinnler"
-        ],
-        "name": "Air Conditioning, Refrigeration and Heat Pumps",
-        "offeredInSemesters": [
-          "2023 W"
-        ],
-        "howInterestingRatingAverage": 0,
-        "howEasyRatingAverage": 0,
-        "votesNumber": 0,
-        "codes": [],
-        "similarity": 12,
-        "accepted": false
       }
     ],
     "codes": [],
     "notResolvedCount": 0,
-    "rejectedCount": 2,
-    "acceptedCount": 0
+    "rejectedCount": 1,
+    "acceptedCount": 0,
+    "lockedCount": 0
   },
   {
     "merged": [],
@@ -16397,7 +16328,8 @@
           "66b288cdd34856d36eb29b5e"
         ],
         "similarity": 15,
-        "accepted": false
+        "accepted": false,
+        "removed": true
       },
       {
         "id": "66b2885cd34856d36eb28fef",
@@ -16429,7 +16361,8 @@
     ],
     "notResolvedCount": 0,
     "rejectedCount": 1,
-    "acceptedCount": 3
+    "acceptedCount": 3,
+    "lockedCount": 0
   },
   {
     "courseId": "950602906",
@@ -17064,7 +16997,7 @@
           "66b2864cd34856d36eb2594d"
         ],
         "similarity": 0,
-        "accepted": true
+        "accepted": false
       },
       {
         "id": "66b287cbd34856d36eb28135",
@@ -17087,12 +17020,14 @@
           "66b2864cd34856d36eb2594d"
         ],
         "similarity": 12,
-        "accepted": false
+        "accepted": false,
+        "removed": true
       }
     ],
     "notResolvedCount": 0,
-    "rejectedCount": 1,
-    "acceptedCount": 2
+    "rejectedCount": 2,
+    "acceptedCount": 1,
+    "lockedCount": 0
   },
   {
     "merged": [],
@@ -42602,37 +42537,12 @@
         ],
         "similarity": 10,
         "accepted": false
-      },
-      {
-        "id": "66b288cfd34856d36eb29b97",
-        "courseId": "950575657",
-        "courseNumber": "0000000030",
-        "professor": "Klaus Drechsler",
-        "otherLecturers": [
-          "Anastasiia Khudiakova",
-          "Thomas Wettemann",
-          "Swen Zaremba"
-        ],
-        "name": "Aerospace Materials Science and Processing (2) - Lecture",
-        "offeredInSemesters": [
-          "2022 S",
-          "2023 S",
-          "2024 S"
-        ],
-        "howInterestingRatingAverage": 0,
-        "howEasyRatingAverage": 0,
-        "votesNumber": 0,
-        "codes": [],
-        "rejectedId": [
-          "66b28aedd34856d36eb2d310"
-        ],
-        "similarity": 1,
-        "accepted": false
       }
     ],
     "notResolvedCount": 0,
-    "rejectedCount": 3,
-    "acceptedCount": 0
+    "rejectedCount": 2,
+    "acceptedCount": 0,
+    "lockedCount": 0
   },
   {
     "merged": [],
@@ -81722,29 +81632,12 @@
           "66b28b17d34856d36eb2d74b"
         ],
         "accepted": false
-      },
-      {
-        "id": "66b28912d34856d36eb2a25b",
-        "courseId": "950630941",
-        "courseNumber": "0000001160",
-        "professor": "Andreas Hild",
-        "otherLecturers": [],
-        "name": "Building Redevelopement BA and MA",
-        "offeredInSemesters": [
-          "2022 W",
-          "2023 W"
-        ],
-        "howInterestingRatingAverage": 0,
-        "howEasyRatingAverage": 0,
-        "votesNumber": 0,
-        "codes": [],
-        "similarity": 10,
-        "accepted": false
       }
     ],
     "notResolvedCount": 0,
-    "rejectedCount": 2,
-    "acceptedCount": 0
+    "rejectedCount": 1,
+    "acceptedCount": 0,
+    "lockedCount": 0
   },
   {
     "merged": [],
@@ -116346,28 +116239,12 @@
         ],
         "similarity": 3,
         "accepted": false
-      },
-      {
-        "id": "66b286b6d34856d36eb2645d",
-        "courseId": "950602562",
-        "courseNumber": "0000001484",
-        "professor": "Karl Dressler",
-        "otherLecturers": [],
-        "name": "Demo Experiments for Experimental Physics for electrical engineering",
-        "offeredInSemesters": [
-          "2022 S"
-        ],
-        "howInterestingRatingAverage": 0,
-        "howEasyRatingAverage": 0,
-        "votesNumber": 0,
-        "codes": [],
-        "similarity": 12,
-        "accepted": false
       }
     ],
     "notResolvedCount": 0,
     "rejectedCount": 4,
-    "acceptedCount": 0
+    "acceptedCount": 0,
+    "lockedCount": 0
   },
   {
     "merged": [],
@@ -268472,31 +268349,12 @@
           "66b287a7d34856d36eb27d5f"
         ],
         "accepted": false
-      },
-      {
-        "id": "66b289fdd34856d36eb2baaf",
-        "courseId": "950663165",
-        "courseNumber": "0000003963",
-        "professor": "Christian Karpfinger",
-        "otherLecturers": [],
-        "name": "Mathematik, Elementarkurs Integrationsprogramm",
-        "offeredInSemesters": [
-          "2022 W"
-        ],
-        "howInterestingRatingAverage": 0,
-        "howEasyRatingAverage": 0,
-        "votesNumber": 0,
-        "codes": [],
-        "rejectedId": [
-          "66b287a7d34856d36eb27d5f"
-        ],
-        "similarity": 12,
-        "accepted": false
       }
     ],
     "notResolvedCount": 0,
-    "rejectedCount": 2,
-    "acceptedCount": 0
+    "rejectedCount": 1,
+    "acceptedCount": 0,
+    "lockedCount": 0
   },
   {
     "merged": [],
@@ -327058,37 +326916,12 @@
           "66b28a68d34856d36eb2c571"
         ],
         "accepted": false
-      },
-      {
-        "id": "66b288dcd34856d36eb29cee",
-        "courseId": "950606154",
-        "courseNumber": "0000001257",
-        "professor": "Kurosch Thuro",
-        "otherLecturers": [
-          "Catharina Drexl",
-          "Saskia Eppinger",
-          "Katja Lokau"
-        ],
-        "name": "WP 63.1 Engineering Geology 2",
-        "offeredInSemesters": [
-          "2022 S",
-          "2023 S",
-          "2024 S"
-        ],
-        "howInterestingRatingAverage": 0,
-        "howEasyRatingAverage": 0,
-        "votesNumber": 0,
-        "codes": [],
-        "rejectedId": [
-          "66b28a68d34856d36eb2c571"
-        ],
-        "similarity": 3,
-        "accepted": false
       }
     ],
     "notResolvedCount": 0,
-    "rejectedCount": 2,
-    "acceptedCount": 0
+    "rejectedCount": 1,
+    "acceptedCount": 0,
+    "lockedCount": 0
   },
   {
     "merged": [],
@@ -397867,5 +397700,191 @@
     "notResolvedCount": 0,
     "rejectedCount": 0,
     "acceptedCount": 0
+  },
+  {
+    "id": "66b28bafd34856d36eb2e675",
+    "courseId": "950691985",
+    "courseNumber": "0000002849",
+    "professor": "Alexander Besner",
+    "otherLecturers": [],
+    "name": "(SOT82518) The Right of Data Use in Germany and Europe",
+    "offeredInSemesters": [
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "SOT82518"
+    ]
+  },
+  {
+    "id": "66b28bafd34856d36eb2e675",
+    "courseId": "950691985",
+    "courseNumber": "0000002849",
+    "professor": "Alexander Besner",
+    "otherLecturers": [],
+    "name": "(SOT82518) The Right of Data Use in Germany and Europe",
+    "offeredInSemesters": [
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "SOT82518"
+    ]
+  },
+  {
+    "id": "66b28bafd34856d36eb2e675",
+    "courseId": "950691985",
+    "courseNumber": "0000002849",
+    "professor": "Alexander Besner",
+    "otherLecturers": [],
+    "name": "(SOT82518) The Right of Data Use in Germany and Europe",
+    "offeredInSemesters": [
+      "2023 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "SOT82518"
+    ]
+  },
+  {
+    "id": "66b28c32d34856d36eb2f45a",
+    "courseId": "950704148",
+    "courseNumber": "0000004362",
+    "professor": "Alexander Kolb",
+    "otherLecturers": [
+      "Alexander Kolb",
+      "Markus Spinnler"
+    ],
+    "name": "Air Conditioning, Refrigeration and Heat Pumps",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": []
+  },
+  {
+    "id": "66b28912d34856d36eb2a25b",
+    "courseId": "950630941",
+    "courseNumber": "0000001160",
+    "professor": "Andreas Hild",
+    "otherLecturers": [],
+    "name": "Building Redevelopement BA and MA",
+    "offeredInSemesters": [
+      "2022 W",
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": []
+  },
+  {
+    "id": "66b288dcd34856d36eb29cee",
+    "courseId": "950606154",
+    "courseNumber": "0000001257",
+    "professor": "Kurosch Thuro",
+    "otherLecturers": [
+      "Catharina Drexl",
+      "Saskia Eppinger",
+      "Katja Lokau"
+    ],
+    "name": "WP 63.1 Engineering Geology 2",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "rejectedId": [
+      "66b28a68d34856d36eb2c571"
+    ]
+  },
+  {
+    "id": "66b289fdd34856d36eb2baaf",
+    "courseId": "950663165",
+    "courseNumber": "0000003963",
+    "professor": "Christian Karpfinger",
+    "otherLecturers": [],
+    "name": "Mathematik, Elementarkurs Integrationsprogramm",
+    "offeredInSemesters": [
+      "2022 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "rejectedId": [
+      "66b287a7d34856d36eb27d5f"
+    ]
+  },
+  {
+    "id": "66b28c52d34856d36eb2f7d6",
+    "courseId": "950728699",
+    "courseNumber": "0000002539",
+    "professor": "Tim Büthe",
+    "otherLecturers": [],
+    "name": "(POL40100) Introduction to Politics and Technology - Exercise",
+    "offeredInSemesters": [
+      "2023 W"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL40100"
+    ]
+  },
+  {
+    "id": "66b28868d34856d36eb29112",
+    "courseId": "950601767",
+    "courseNumber": "0000001781",
+    "professor": "Deniz Anan",
+    "otherLecturers": [],
+    "name": "(POL70018, POL70015) Master Course in Political System",
+    "offeredInSemesters": [
+      "2022 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [
+      "POL70018",
+      "POL70015"
+    ]
+  },
+  {
+    "id": "66b288cfd34856d36eb29b97",
+    "courseId": "950575657",
+    "courseNumber": "0000000030",
+    "professor": "Klaus Drechsler",
+    "otherLecturers": [
+      "Anastasiia Khudiakova",
+      "Thomas Wettemann",
+      "Swen Zaremba"
+    ],
+    "name": "Aerospace Materials Science and Processing (2) - Lecture",
+    "offeredInSemesters": [
+      "2022 S",
+      "2023 S",
+      "2024 S"
+    ],
+    "howInterestingRatingAverage": 0,
+    "howEasyRatingAverage": 0,
+    "votesNumber": 0,
+    "codes": [],
+    "rejectedId": [
+      "66b28aedd34856d36eb2d310"
+    ]
   }
 ]
