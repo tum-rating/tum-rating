@@ -14,7 +14,7 @@ interface LeftSidebarProps {
 }
 
 const LeftSidebar = ({isOpen}: LeftSidebarProps) => {
-    const {files, setSelectedFile , currentUserId, users, fetchStatus} = useContext(AppDataContext)!;
+    const {files, setSelectedFile , currentUserId, users, fetchStatus, selectedFile} = useContext(AppDataContext)!;
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [sortOptions, setSortOptions] = useState<DatasetOptions>({
         name: {enabled: false, ascending: true, label: 'Name', type: "string"},

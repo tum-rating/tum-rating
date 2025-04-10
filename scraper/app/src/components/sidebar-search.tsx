@@ -30,9 +30,6 @@ const SidebarSearch = ({
     const mergedLocked = filteredCoursesMergedStatusesCount?.mergedLocked || 0;
     const merged = filteredCoursesMergedStatusesCount?.merged || 0;
 
-    console.log(mergedAccepted, mergedRejected, mergedNotResolved, mergedLocked);
-    console.log((mergedAccepted > 0 || mergedRejected > 0 || mergedNotResolved > 0 || mergedLocked > 0), "<--")
-
     return (
         <div className="flex items-center shadow-2xl border-b border-1 border-b-border my-[1px] pr-2 w-full">
             <SearchInput

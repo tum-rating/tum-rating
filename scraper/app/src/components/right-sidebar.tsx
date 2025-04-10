@@ -22,7 +22,7 @@ const RightSidebar = () => {
     const [filteredCourses, setFilteredCourses] = useState<FetchedComputedCourse[]>([]);
     const [showSkeleton, setShowSkeleton] = useState(true);
     const [sortOptions, setSortOptions] = useState<DatasetOptions>({
-        name: {enabled: false, ascending: true, label: 'Name', type: "string"},
+        name: {enabled: false, ascending: true, label: 'name', type: "string"},
         acceptedCount: {enabled: false, ascending: true, label: 'Accepted Count', type: "number"},
         rejectedCount: {enabled: false, ascending: true, label: 'Rejected Count', type: "number"},
         notResolvedCount: {enabled: false, ascending: true, label: 'Not Resolved Count', type: "number"},
@@ -52,53 +52,53 @@ const RightSidebar = () => {
     }, [filesContent, selectedFile]);
 
 
-useEffect(() => {
-    const filterAndSortData = () => {
-        let data = [...computedCourses];
+    useEffect(() => {
+        const filterAndSortData = () => {
+            let data = [...computedCourses];
 
-        if (searchTerm) {
-            const phrases = searchTerm.toLowerCase().split(',').map(phrase => phrase.trim());
-            data = data.filter(course => {
-                return phrases.every(phrase =>
-                    course.name.toLowerCase().includes(phrase) ||
-                    course.professor.toLowerCase().includes(phrase) ||
-                    course.codes?.some(code => code.toLowerCase().includes(phrase)) ||
-                    course.offeredInSemesters?.some(semester => semester.toLowerCase().includes(phrase)) ||
-                    course.merged?.some(merged => merged.name.toLowerCase().includes(phrase))
-                );
-            });
-        }
-
-        Object.entries(sortOptions).forEach(([key, value]) => {
-            if (value?.enabled) {
-                data.sort((a, b) => {
-                    let aValue = a[key as keyof FetchedComputedCourse];
-                    let bValue = b[key as keyof FetchedComputedCourse];
-
-                    if (['acceptedCount', 'rejectedCount', 'notResolvedCount', 'lockedCount'].includes(key)) {
-                        aValue = aValue ?? 0;
-                        bValue = bValue ?? 0;
-                    }
-
-                    if (aValue !== undefined && bValue !== undefined) {
-                        if (typeof aValue === 'string' && typeof bValue === 'string') {
-                            return value.ascending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-                        } else if (typeof aValue === 'number' && typeof bValue === 'number') {
-                            return value.ascending ? aValue - bValue : bValue - aValue;
-                        } else if (typeof aValue === 'boolean' && typeof bValue === 'boolean') {
-                            return value.ascending ? Number(aValue) - Number(bValue) : Number(bValue) - Number(aValue);
-                        }
-                    }
-                    return 0;
+            if (searchTerm) {
+                const phrases = searchTerm.toLowerCase().split(',').map(phrase => phrase.trim());
+                data = data.filter(course => {
+                    return phrases.every(phrase =>
+                        course.name.toLowerCase().includes(phrase) ||
+                        course.professor.toLowerCase().includes(phrase) ||
+                        course.codes?.some(code => code.toLowerCase().includes(phrase)) ||
+                        course.offeredInSemesters?.some(semester => semester.toLowerCase().includes(phrase)) ||
+                        course.merged?.some(merged => merged.name.toLowerCase().includes(phrase))
+                    );
                 });
             }
-        });
 
-        setFilteredCourses(data);
-    };
+            Object.entries(sortOptions).forEach(([key, value]) => {
+                if (value?.enabled) {
+                    data.sort((a, b) => {
+                        let aValue = a[key as keyof FetchedComputedCourse];
+                        let bValue = b[key as keyof FetchedComputedCourse];
 
-    filterAndSortData();
-}, [computedCourses, sortOptions, searchTerm]);
+                        if (['acceptedCount', 'rejectedCount', 'notResolvedCount', 'lockedCount'].includes(key)) {
+                            aValue = aValue ?? 0;
+                            bValue = bValue ?? 0;
+                        }
+
+                        if (aValue !== undefined && bValue !== undefined) {
+                            if (typeof aValue === 'string' && typeof bValue === 'string') {
+                                return value.ascending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+                            } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+                                return value.ascending ? aValue - bValue : bValue - aValue;
+                            } else if (typeof aValue === 'boolean' && typeof bValue === 'boolean') {
+                                return value.ascending ? Number(aValue) - Number(bValue) : Number(bValue) - Number(aValue);
+                            }
+                        }
+                        return 0;
+                    });
+                }
+            });
+
+            setFilteredCourses(data);
+        };
+
+        filterAndSortData();
+    }, [computedCourses, sortOptions, searchTerm]);
 
     const handleSearch = (searchTerm: string) => {
         setSearchTerm(searchTerm);
@@ -142,9 +142,26 @@ useEffect(() => {
 
         return counts;
     }, [filteredCourses]);
+    if (selectedFile) {
+        const fileNameWithoutExtension = selectedFile.name.split('.').slice(0, -1).join('.');
+        if (isCoursesFile(fileNameWithoutExtension)) {
+            if (filesContent[fileNameWithoutExtension]) {
+                if (filesContent[fileNameWithoutExtension].length !== computedCourses.length) {
+                    const coursesWithLockedCount = filesContent[fileNameWithoutExtension].map(course => {
+                        const lockedCount = (course.merged || []).filter(item => item.locked).length;
+                        return {
+                            ...course,
+                            lockedCount
+                        };
+                    });
+                    setComputedCourses([...coursesWithLockedCount]);
+                    setShowSkeleton(false);
+                }
+            }
+        }
+    }
 
 
-    console.log(filteredCourses)
     return (
         <>
             <SidebarSearch

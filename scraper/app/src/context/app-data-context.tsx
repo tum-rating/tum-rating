@@ -107,6 +107,7 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
     const [serverFilesystemConfigFilesMap, setServerFilesystemConfigFilesMap] =
         useState<Record<string, unknown> | null>(null);
     const socketRef = useRef<WebSocket | null>(null);
+    const [filesContent,setFilesContent] = useState()
     const filesContentRef = useRef<{ [key: string]: FetchedCourse[] }>({});
 
     useEffect(() => {
@@ -242,6 +243,7 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
                         console.log(updatedItems);
                         filesContentRef.current[fileNameWithoutExtension] = updatedItems;
                     } else {
+                        console.log(updatedItem)
                         const fileNameWithoutExtension = fileName.slice(
                             0,
                             fileName.lastIndexOf("."),
@@ -253,6 +255,14 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
                         updatedFileContent[updatedItem.index] = updatedItem.updatedItem;
                         filesContentRef.current[fileNameWithoutExtension] =
                             updatedFileContent;
+                        // update file
+                        console.log(selectedFile)
+                        console.log(selectedFileExists)
+                        console.log(filesContentRef.current)
+
+                        handleProgramicallySelectFile(fileName)
+
+                        selectCourse(updatedItem.updatedItem);
                     }
                     break;
                 }
@@ -279,6 +289,24 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
         };
     }, []);
 
+
+    const handleProgramicallySelectFile = async (fileName: string) => {
+        console.log(files)
+        console.log(fileName)
+
+        const data = await getFileContent(fileName);
+        console.log(data)
+        const fileNameWithoutExtension = fileName.replace(/\.json$/, "");
+        filesContentRef.current[fileNameWithoutExtension] = data;
+        setFilesContent(filesContentRef.current)
+
+        // setSelectedFile(file);
+        // if (!file.name.includes("courses-production")) {
+        //     setSelectedCourse(null);
+        // }
+
+    };
+
     const fetchFiles = () => {
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
             socketRef.current.send(JSON.stringify({action: "getFiles"}));
@@ -287,6 +315,7 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
 
     const handleSetSelectedFile = async (file: FileData | null) => {
         if (file) {
+            console.log(file)
             const data = await getFileContent(file.name);
             const fileNameWithoutExtension = file.name.replace(/\.json$/, "");
             filesContentRef.current[fileNameWithoutExtension] = data;
@@ -331,12 +360,34 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
         if (originalCourseIndex === -1) return;
 
         const originalCourse = selectedFileContent[originalCourseIndex];
-        if(originalCourse?.badMerge){
-            delete originalCourse.badMerge
+        if (originalCourse?.badMerge) {
+            delete originalCourse.badMerge;
         }
+
         const diffs = fastJsonPatch.compare(originalCourse, updatedCourse);
 
+        // Detect if "removed" key is added in diffs
+        const removedDiff = diffs.find(
+            (diff) => diff.op === "add" && diff.path.includes("/removed") && diff.value === true
+        );
+        console.log(removedDiff)
+        if (removedDiff) {
+            // Extract the index of the removed object
+            const match = removedDiff.path.match(/\/merged\/(\d+)\//);
+            if (match) {
+                const removedIndex = parseInt(match[1], 10);
+                const removedObject = originalCourse.merged[removedIndex];
 
+                // Add a new operation to remove the object from the merged array
+                diffs.push({
+                    op: "remove",
+                    path: `/merged/${removedIndex}`,
+                });
+
+            }
+        }
+
+        console.log(diffs)
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
             socketRef.current.send(
                 JSON.stringify({
@@ -349,6 +400,7 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
             );
         }
     };
+
 
     const deleteFile = (name: string) => {
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {

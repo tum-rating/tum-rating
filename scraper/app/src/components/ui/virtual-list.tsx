@@ -7,9 +7,10 @@ interface VirtualListProps {
     renderer: (row: FetchedComputedCourse, searchTerm: string) => JSX.Element;
     height: string | number;
     searchTerm: string;
+    width?: string | number;
 }
 
-const VirtualList = ({ data, renderer, height, searchTerm }: VirtualListProps) => {
+const VirtualList = ({ data, renderer, height, searchTerm,width }: VirtualListProps) => {
     const parentRef = useRef<HTMLDivElement>(null);
 
     const count = data.length;
@@ -28,7 +29,7 @@ const VirtualList = ({ data, renderer, height, searchTerm }: VirtualListProps) =
                 ref={parentRef}
                 className="List"
                 style={{
-                    width: 400,
+                    width: width || 400,
                     height: height,
                     overflowY: 'auto',
                     contain: 'strict',

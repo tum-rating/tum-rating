@@ -71,7 +71,6 @@ export default function AIRequestLogger() {
 
     const currentLog = selectedFile && logs ? logs[selectedFile] : null;
 
-    console.log(currentLog)
     const filteredLogs =
         currentLog?.logs.flatMap((log) =>
             log.response
@@ -88,7 +87,6 @@ export default function AIRequestLogger() {
         ) || [];
 
 
-    console.log(filteredLogs)
 
     const virtualizer = useVirtualizer({
         count: filteredLogs.length,
@@ -305,8 +303,6 @@ export default function AIRequestLogger() {
                                 }}
                             >
                                 {virtualizer.getVirtualItems().map((virtualRow) => {
-                                        console.log(virtualRow)
-                                        console.log(filteredLogs)
                                         return (
                                             <div
                                                 key={virtualRow.key}
