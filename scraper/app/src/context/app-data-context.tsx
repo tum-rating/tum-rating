@@ -107,7 +107,7 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
     const [serverFilesystemConfigFilesMap, setServerFilesystemConfigFilesMap] =
         useState<Record<string, unknown> | null>(null);
     const socketRef = useRef<WebSocket | null>(null);
-    const [filesContent,setFilesContent] = useState()
+    const [filesContent, setFilesContent] = useState()
     const filesContentRef = useRef<{ [key: string]: FetchedCourse[] }>({});
 
     useEffect(() => {
@@ -360,17 +360,21 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
         if (originalCourseIndex === -1) return;
 
         const originalCourse = selectedFileContent[originalCourseIndex];
+        console.log(originalCourse)
         if (originalCourse?.badMerge) {
-            delete originalCourse.badMerge;
+            console.log("yes")
+            originalCourse.badMerge = false;
         }
 
         const diffs = fastJsonPatch.compare(originalCourse, updatedCourse);
 
+        console.log(diffs)
         // Detect if "removed" key is added in diffs
         const removedDiff = diffs.find(
             (diff) => diff.op === "add" && diff.path.includes("/removed") && diff.value === true
         );
-        console.log(removedDiff)
+
+
         if (removedDiff) {
             // Extract the index of the removed object
             const match = removedDiff.path.match(/\/merged\/(\d+)\//);
@@ -551,9 +555,12 @@ const AppDataProvider = ({children}: AppDataContextProps) => {
     const checkCorrectnessBatchedCourses = async () => {
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
             const fileNameWithoutExtension = selectedFile.name.replace(/\.json$/, "");
+            console.log()
             const coursesSets = filesContentRef.current[fileNameWithoutExtension].map(
-                (course) => course.merged.map((subCourse) => subCourse.name),
-            );
+                (course) => {
+                    console.log(course)
+                    return course.merged ? course.merged.map((subCourse) => subCourse.name) : [];
+                })
             socketRef.current.send(
                 JSON.stringify({
                     action: "checkCorrectnessBatchedCourses",

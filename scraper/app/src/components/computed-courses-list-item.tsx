@@ -20,7 +20,6 @@ const highlightText = (text: string, searchTerm: string) => {
     );
 };
 
-
 const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: ComputedCoursesListItemProps) => {
     const [status, setStatus] = useState({
         accepted: 0,
@@ -29,18 +28,15 @@ const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: Co
         locked: 0,
         badMerge: false
     });
-
     useEffect(() => {
         const allMergedItems = data?.merged || [];
         const nonLockedItems = allMergedItems.filter(x => !x.locked) || [];
         const lockedItems = allMergedItems.filter(x => x.locked) || [];
-
         const acceptedCount = data.acceptedCount ||
             nonLockedItems?.filter(x => x.accepted).length || 0;
         const rejectedCount = data.rejectedCount ||
             nonLockedItems?.filter(x => x.accepted === false).length || 0;
         const notResolvedCount = nonLockedItems.length - acceptedCount - rejectedCount;
-
         setStatus({
             accepted: acceptedCount,
             rejected: rejectedCount,
@@ -49,11 +45,9 @@ const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: Co
             badMerge: data.badMerge || false
         });
     }, [data]);
-
     const allNonLockedResolved = status.notResolved === 0 &&
         (status.accepted > 0 || status.rejected > 0 ||
             (data?.merged?.filter(x => !x.locked).length || 0) === 0);
-
     return (
         <div
             tabIndex={0}
@@ -79,7 +73,6 @@ const ComputedCoursesListItem = ({data, selected, searchTerm, usersRenderer}: Co
                         {highlightText(data.professor, searchTerm)}
                     </span>
                 </span>
-
                 <div className="flex justify-between">
                     <div className="flex gap-1 mt-1">
                         <Badge tooltip="accepted" variant="success">{status.accepted}</Badge>

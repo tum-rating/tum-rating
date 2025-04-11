@@ -1,9 +1,9 @@
 import axios from "axios";
 import dotenv from "dotenv";
 import Logger from "./server-logger";
-import {AI_MERGING_RULES} from "./server-actions-config";
-import {WebSocketServer} from "ws";
-import {aiWorkers} from "./websocket-handlers";
+import { AI_MERGING_RULES } from "./server-actions-config";
+import { WebSocketServer } from "ws";
+import { aiWorkers } from "./websocket-handlers";
 import fs from "fs";
 import path from "path";
 
@@ -119,18 +119,16 @@ Return an array of objects results, one for each input set, in the following for
 ]
 
 Return only the output without reasoning and REMEMBER ONLY FOLLOW THE RULES, DO NOT LIE or make up your own rules.
+`;
 
-`
 const cleanJsonString = (jsonString: string): string => {
     Logger.debug(`Cleaning JSON string: ${jsonString}`);
 
-    // Remove any backticks and surrounding ```json markers
     const pattern = /```json\s*([\s\S]*?)\s*```/g;
-    let cleanedString = jsonString.replace(pattern, '$1').trim();
+    let cleanedString = jsonString.replace(pattern, "$1").trim();
 
-    // Attempt to find the start and end of the JSON content
-    const jsonStart = cleanedString.indexOf('[');
-    const jsonEnd = cleanedString.lastIndexOf(']') + 1;
+    const jsonStart = cleanedString.indexOf("[");
+    const jsonEnd = cleanedString.lastIndexOf("]") + 1;
 
     if (jsonStart === -1 || jsonEnd === -1) {
         throw new Error("Invalid JSON format");
@@ -138,7 +136,6 @@ const cleanJsonString = (jsonString: string): string => {
 
     cleanedString = cleanedString.substring(jsonStart, jsonEnd);
 
-    // Ensure the cleaned string is valid JSON
     try {
         JSON.parse(cleanedString);
     } catch (error) {
@@ -148,7 +145,7 @@ const cleanJsonString = (jsonString: string): string => {
     return cleanedString;
 };
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const mergeCoursesByNamesWithAi = async (
     courses: string[] | string[][],
@@ -204,7 +201,6 @@ const mergeCoursesByNamesWithAi = async (
             return aiResponse;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error);
-            console.log("error: " + error)
             Logger.error(`Error in mergeCoursesByNamesWithAi: ${errorMessage}`);
             Logger.error(`Problematic request: ${JSON.stringify(courses, null, 2)}`);
             logRequestResponse(courses, null, fileName, wss, errorMessage);
@@ -228,14 +224,14 @@ export const checkCorrectnessOfMergedCourses = async (
 ): Promise<AiResponse | AiResponse[]> => {
     const isBatch = Array.isArray(courses[0]);
     Logger.info(
-        `Processing ${isBatch ? "batch" : "single"} course merge request`,
+        `Processing ${isBatch ? "batch" : "single"} course correctness check`,
     );
 
     let errorCount = 0;
 
     while (true) {
         try {
-            const prompt = getCheckingPrompt()
+            const prompt = getCheckingPrompt();
 
             const response = await axios.post(
                 "https://api.openai.com/v1/chat/completions",
@@ -273,8 +269,7 @@ export const checkCorrectnessOfMergedCourses = async (
             return aiResponse;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error);
-            console.log("error: " + error)
-            Logger.error(`Error in mergeCoursesByNamesWithAi: ${errorMessage}`);
+            Logger.error(`Error in checkCorrectnessOfMergedCourses: ${errorMessage}`);
             Logger.error(`Problematic request: ${JSON.stringify(courses, null, 2)}`);
             logRequestResponse(courses, null, fileName, wss, errorMessage);
 
@@ -289,7 +284,5 @@ export const checkCorrectnessOfMergedCourses = async (
         }
     }
 };
-
-
 
 export default mergeCoursesByNamesWithAi;

@@ -98,11 +98,10 @@ const MergedCourseCard = ({
 
     const handleAddClick = () => {
         if (!internalCourse) return;
-
         const newMergedCourses = selectedItems.map((item) => ({
             ...item,
-            mergedWith: internalCourse.id, // Add mergedWith key
-            added: true, // Add added key
+            mergedWith: internalCourse.id,
+            added: true,
         }));
 
         // Update the internalCourse's merged array
@@ -142,23 +141,17 @@ const MergedCourseCard = ({
         setHasUnsavedChanges(false);
     };
 
-    const handleAddCourse = () => {
-        if (selectedCourse && internalCourse) {
-            const updatedMerged = [...(internalCourse.merged || []), selectedCourse];
-            updateInternalCourse("merged", updatedMerged);
-            setSelectedCourse(null);
-        }
-    };
+
 
     const markAsRemoved = (courseId: string) => {
         if (!internalCourse) return;
 
         const updatedMerged = internalCourse.merged.map((subCourse) =>
-            subCourse.id === courseId ? { ...subCourse, removed: true } : subCourse
+            subCourse.id === courseId ? {...subCourse, removed: true} : subCourse
         );
-        if(!updatedMerged.removedCount){
+        if (!updatedMerged.removedCount) {
             updatedMerged.removedCount = 1;
-        }else{
+        } else {
             updatedMerged.removedCount++;
         }
         updateInternalCourse("merged", updatedMerged);
@@ -168,11 +161,11 @@ const MergedCourseCard = ({
         if (!internalCourse) return;
 
         const updatedMerged = internalCourse.merged.map((subCourse) =>
-            subCourse.id === courseId ? { ...subCourse, removed: false } : subCourse
+            subCourse.id === courseId ? {...subCourse, removed: false} : subCourse
         );
 
         updatedMerged.removedCount--
-        if(updatedMerged.removedCount <= 0){
+        if (updatedMerged.removedCount <= 0) {
             delete updatedMerged.removedCount
         }
 
@@ -335,7 +328,7 @@ const MergedCourseCard = ({
                                                             <div
                                                                 onClick={() => {
                                                                     if (course.merged && course.merged.length) return;
-                                                                    const isChecked = selectedItems.find(x=>x.id === course.id);
+                                                                    const isChecked = selectedItems.find(x => x.id === course.id);
                                                                     handleCheckboxChange(course, !isChecked);
                                                                 }}
                                                             >
@@ -350,9 +343,9 @@ const MergedCourseCard = ({
                                                                             </div>
                                                                         </div>
                                                                         <Checkbox
-                                                                            checked={!!selectedItems.find(x=>x.id === course.id)}
+                                                                            checked={!!selectedItems.find(x => x.id === course.id)}
                                                                             onCheckedChange={(isChecked) =>
-                                                                                handleCheckboxChange(course ,isChecked as boolean)
+                                                                                handleCheckboxChange(course, isChecked as boolean)
                                                                             }
                                                                             disabled={course.merged && course.merged.length}
                                                                             onClick={(e) => e.stopPropagation()} // Prevents triggering the parent onClick
@@ -373,7 +366,8 @@ const MergedCourseCard = ({
                                                                             key={mergedItem.id}
                                                                             className="ml-4"
                                                                             onClick={() => {
-                                                                                const isChecked = selectedItems.find(x=>x.id === mergedItem.id);
+                                                                                if(course.id === mergedItem.id) return;
+                                                                                const isChecked = selectedItems.find(x => x.id === mergedItem.id);
                                                                                 handleCheckboxChange(mergedItem, !isChecked);
                                                                             }}
                                                                         >
@@ -381,16 +375,17 @@ const MergedCourseCard = ({
                                                                                 <div
                                                                                     className="flex items-center justify-between w-full">
                                                                                     <div>
-                    <span className="font-bold">
-                      {highlightText(mergedItem.name, searchTerm)}
-                    </span>
+                                                                            <span className="font-bold">
+                                                                              {highlightText(mergedItem.name, searchTerm)}
+                                                                            </span>
                                                                                         <div
                                                                                             className="text-sm text-gray-500">
                                                                                             {highlightText(mergedItem.professor, searchTerm)}
                                                                                         </div>
                                                                                     </div>
                                                                                     <Checkbox
-                                                                                        checked={!!selectedItems.find(x=>x.id === mergedItem.id)}
+                                                                                        disabled={course.id === mergedItem.id}
+                                                                                        checked={!!selectedItems.find(x => x.id === mergedItem.id)}
                                                                                         onCheckedChange={(isChecked) =>
                                                                                             handleCheckboxChange(mergedItem, isChecked as boolean)
                                                                                         }

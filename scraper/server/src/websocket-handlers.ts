@@ -170,42 +170,40 @@ const handleMessage = async (
                     if (fs.existsSync(filePath)) {
                         const fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"));
 
-                        // Process all remove/replace operations in diffs
-                        const removedItems = [];
-                        diffs.forEach((diff) => {
-                            console.log(diff)
-                            if ((diff.op === "remove") && diff.path.startsWith("/merged/") ) {
-                                const match = diff.path.match(/\/merged\/(\d+)/);
-                                console.log(diff,match)
-                                if (match) {
-                                    const removedIndex = parseInt(match[1], 10);
-                                    const removedObject = fileContent[index].merged[removedIndex];
-                                    removedItems.push(removedObject);
-
-                                    console.log(removedObject)
-                                    // Create a new course and add it to fileContent
-                                    const newCourse = {...removedObject};
-                                    delete newCourse.removed;
-                                    delete newCourse.accepted;
-                                    delete newCourse.similarity;
-
-                                    fileContent.push(newCourse);
+                        // Process "remove" operations first
+                        const removeDiffs = diffs.filter((diff) => diff.op === "remove");
+                        removeDiffs.forEach((diff) => {
+                            if (diff.path.startsWith("/merged/")) {
+                                const pathParts = diff.path.split("/");
+                                const removeIndex = parseInt(pathParts[pathParts.length - 1], 10);
+                                if (!isNaN(removeIndex) && fileContent[index]?.merged?.[removeIndex]) {
+                                    fileContent[index].merged.splice(removeIndex, 1);
                                 }
                             }
                         });
 
-                        // Update counters based on removed items
-                        if (removedItems.length > 0) {
-                            removedItems.forEach((removedItem) => {
-                                if (removedItem.accepted === true) {
-                                    fileContent[index].acceptedCount = Math.max(0, fileContent[index].acceptedCount - 1);
-                                } else if (removedItem.accepted === false) {
-                                    fileContent[index].rejectedCount = Math.max(0, fileContent[index].rejectedCount - 1);
-                                } else {
-                                    fileContent[index].notResolvedCount = Math.max(0, fileContent[index].notResolvedCount - 1);
+                        // Process "replace" operations
+                        const replaceDiffs = diffs.filter((diff) => diff.op === "replace");
+                        replaceDiffs.forEach((diff) => {
+                            const pathParts = diff.path.split("/");
+                            const key = pathParts[pathParts.length - 1];
+                            if (key && fileContent[index]) {
+                                fileContent[index][key] = diff.value;
+                            }
+                        });
+
+                        // Process other operations (e.g., "add")
+                        const otherDiffs = diffs.filter((diff) => diff.op !== "remove" && diff.op !== "replace");
+                        otherDiffs.forEach((diff) => {
+                            if (diff.op === "add" && diff.path.startsWith("/merged/")) {
+                                const pathParts = diff.path.split("/");
+                                const addIndex = parseInt(pathParts[2], 10);
+                                if (!isNaN(addIndex) && fileContent[index]?.merged?.[addIndex]) {
+                                    const property = pathParts.slice(3).join("/");
+                                    fileContent[index].merged[addIndex][property] = diff.value;
                                 }
-                            });
-                        }
+                            }
+                        });
 
                         // Apply remaining diffs to update the item
                         if (index >= 0 && index < fileContent.length) {
@@ -243,12 +241,14 @@ const handleMessage = async (
                         }
                     } else {
                         ws.send(
-                            JSON.stringify({action: "error", message: "File not found"}),
+                            JSON.stringify({ action: "error", message: "File not found" }),
                         );
                     }
                 }
                 break;
-                ;
+
+
+
 
             case "setUserDetails":
                 if (nickname && avatar) {

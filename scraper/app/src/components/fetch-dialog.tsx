@@ -36,152 +36,148 @@ interface FetchingConfigurationFormProps {
 }
 
 const FetchingConfigurationForm = ({
-  config,
-  onChange,
-}: FetchingConfigurationFormProps) => {
+                                     config,
+                                     onChange,
+                                   }: FetchingConfigurationFormProps) => {
   const { serverFilesystemConfig, files, getAndUseFileContent } =
-    useContext(AppDataContext)!;
+      useContext(AppDataContext)!;
   const [fileSelection, setFileSelection] = useState<string | null>(null);
   const [internalFilesContent, setInternalFilesContent] = useState<
-    FetchedCourse[]
-  >([]);
+      Record<string, string>
+  >({});
   const renderDependentFileSelection = () => {
     const selectedFileDependency = (
-      serverFilesystemConfig?.files as {
-        id: string | null;
-        dependencies: string[];
-      }[]
+        serverFilesystemConfig?.files as {
+          id: string | null;
+          dependencies: string[];
+        }[]
     ).find((x) => x.id === fileSelection)?.dependencies;
     if (
-      fileSelection &&
-      selectedFileDependency &&
-      selectedFileDependency.length > 0
+        fileSelection &&
+        selectedFileDependency &&
+        selectedFileDependency.length > 0
     ) {
       const matchingExistingFiles =
-        files.filter((x) => x.id.includes(selectedFileDependency[0])) || [];
+          files.filter((x) => x.id.includes(selectedFileDependency[0])) || [];
       return (
-        <>
-          <div className="grid w-full items-center gap-1.5">
-            <Label className="text-xs" htmlFor="type-of-data">
-              Dependent file
-            </Label>
-            <Select
-              disabled={!matchingExistingFiles}
-              value={config.dependentFile}
-              onValueChange={async (value) => {
-                const data: FetchedCourse[] = (await getAndUseFileContent({
-                  name: value,
-                  id: selectedFileDependency[0],
-                  size: 0,
-                  lastModified: new Date(),
-                })) as FetchedCourse[];
+          <>
+            <div className="grid w-full items-center gap-1.5">
+              <Label className="text-xs" htmlFor="type-of-data">
+                Dependent file
+              </Label>
+              <Select
+                  disabled={!matchingExistingFiles}
+                  value={config.dependentFile}
+                  onValueChange={async (value) => {
+                    const data: Record<string, string> = (await getAndUseFileContent({
+                      name: value,
+                      id: selectedFileDependency[0],
+                      size: 0,
+                      lastModified: new Date(),
+                    })) as Record<string, string>;
 
-                setInternalFilesContent(data);
-                onChange({ ...config, dependentFile: value });
-              }}
-            >
-              <SelectTrigger id={"type-of-data"} className="w-[180px]">
-                <SelectValue placeholder="Select dependent file" />
-              </SelectTrigger>
-              <SelectContent>
-                {matchingExistingFiles.map((file: { name: string }) => (
-                  <SelectItem key={file.name} value={file.name}>
-                    {file.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {matchingExistingFiles.length === 0 && (
-              <span className="text-red-500 text-xs">
+                    setInternalFilesContent(data);
+                    onChange({ ...config, dependentFile: value });
+                  }}
+              >
+                <SelectTrigger id={"type-of-data"} className="w-[180px]">
+                  <SelectValue placeholder="Select dependent file" />
+                </SelectTrigger>
+                <SelectContent>
+                  {matchingExistingFiles.map((file: { name: string }) => (
+                      <SelectItem key={file.name} value={file.name}>
+                        {file.name}
+                      </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {matchingExistingFiles.length === 0 && (
+                  <span className="text-red-500 text-xs">
                 no {selectedFileDependency[0]} files found
               </span>
-            )}
-          </div>
-          {config.dependentFile?.includes("tum-semesters") ? (
-            <div className="grid w-auto max-w-sm items-center gap-1.5">
-              <Label className="text-xs" htmlFor="type-of-semesters">
-                Semesters
-              </Label>
-              <MultiSelect
-                options={internalFilesContent
-                  .map((course) => {
-                    return {
-                      value: course.id,
-                      label: course.name,
-                    };
-                  })
-                  .reverse()}
-                onValueChange={(value) => {
-                  config.dependentFileData = value.reduce(
-                    (acc, curr) => {
-                      const course = internalFilesContent.find(
-                        (course) => course.id === curr,
-                      );
-                      if (course) {
-                        acc[curr] = course.name;
-                      }
-                      return acc;
-                    },
-                    {} as Record<string, string>,
-                  );
-                }}
-                defaultValue={[]}
-                placeholder="Select semesters"
-                variant="inverted"
-                maxCount={4}
-              />
+              )}
             </div>
-          ) : null}
-        </>
+            {config.dependentFile?.includes("tum-semesters") ? (
+                <div className="grid w-auto max-w-sm items-center gap-1.5">
+                  <Label className="text-xs" htmlFor="type-of-semesters">
+                    Semesters
+                  </Label>
+                  <MultiSelect
+                      options={Object.entries(internalFilesContent).map(
+                          ([key, value]) => ({
+                            value: key,
+                            label: value,
+                          }),
+                      )}
+                      onValueChange={(value) => {
+                        config.dependentFileData = value.reduce(
+                            (acc, curr) => {
+                              const courseName = internalFilesContent[curr];
+                              if (courseName) {
+                                acc[curr] = courseName;
+                              }
+                              return acc;
+                            },
+                            {} as Record<string, string>,
+                        );
+                      }}
+                      defaultValue={[]}
+                      placeholder="Select semesters"
+                      variant="inverted"
+                      maxCount={4}
+                  />
+                </div>
+            ) : null}
+          </>
       );
     }
     return null;
   };
   return (
-    <div className="flex flex-col gap-2">
-      <div className={"flex gap-3"}>
-        <div className="grid w-auto max-w-sm items-center gap-1.5">
-          <Label className="text-xs" htmlFor="type-of-data">
-            Type of data
-          </Label>
-          <Select
-            value={config.typeOfData}
-            onValueChange={(value) => {
-              onChange({ ...config, typeOfData: value });
-              setFileSelection(value);
-            }}
-          >
-            <SelectTrigger id={"type-of-data"} className="w-[180px]">
-              <SelectValue placeholder="Select file" />
-            </SelectTrigger>
-            <SelectContent>
-              {(
-                serverFilesystemConfig?.files as { id: string; name: string }[]
-              ).map((file) => (
-                <SelectItem key={file.id} value={file.id}>
-                  {file.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      <div className="flex flex-col gap-2">
+        <div className={"flex gap-3"}>
+          <div className="grid w-auto max-w-sm items-center gap-1.5">
+            <Label className="text-xs" htmlFor="type-of-data">
+              Type of data
+            </Label>
+            <Select
+                value={config.typeOfData}
+                onValueChange={(value) => {
+                  onChange({ ...config, typeOfData: value });
+                  setFileSelection(value);
+                }}
+            >
+              <SelectTrigger id={"type-of-data"} className="w-[180px]">
+                <SelectValue placeholder="Select file" />
+              </SelectTrigger>
+              <SelectContent>
+                {(
+                    serverFilesystemConfig?.files as { id: string; name: string }[]
+                ).map((file) => (
+                    <SelectItem key={file.id} value={file.id}>
+                      {file.name}
+                    </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label className="text-xs" htmlFor="data-custom-suffix">
-            Custom suffix
-          </Label>
-          <Input
-            placeholder={"Your custom suffix"}
-            value={config.customSuffix}
-            onChange={(e) =>
-              onChange({ ...config, customSuffix: e.target.value })
-            }
-            id={"data-custom-suffix"}
-          />
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label className="text-xs" htmlFor="data-custom-suffix">
+              Custom suffix
+            </Label>
+            <Input
+                placeholder={"Your custom suffix"}
+                value={config.customSuffix}
+                onChange={(e) =>
+                    onChange({ ...config, customSuffix: e.target.value })
+                }
+                id={"data-custom-suffix"}
+            />
+          </div>
         </div>
+        {renderDependentFileSelection()}
       </div>
-      {renderDependentFileSelection()}
-    </div>
   );
 };
 
@@ -193,7 +189,7 @@ const FetchDialog = (props: PropsWithChildren) => {
     startFetchingMrozonRatingData,
   } = useContext(AppDataContext)!;
   const [configurations, setConfigurations] = useState<FetchingConfiguration[]>(
-    [{ typeOfData: "", customSuffix: "" }],
+      [{ typeOfData: "", customSuffix: "" }],
   );
   const [errors, setErrors] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
@@ -216,8 +212,8 @@ const FetchDialog = (props: PropsWithChildren) => {
   const removeConfiguration = () => {
     if (configurations.length > 1) {
       const newConfigurations = configurations.slice(
-        0,
-        configurations.length - 1,
+          0,
+          configurations.length - 1,
       );
       setConfigurations(newConfigurations);
       setErrors(errors.slice(0, errors.length - 1));
@@ -225,11 +221,11 @@ const FetchDialog = (props: PropsWithChildren) => {
   };
 
   const updateConfiguration = (
-    index: number,
-    updatedConfig: FetchingConfiguration,
+      index: number,
+      updatedConfig: FetchingConfiguration,
   ) => {
     const newConfigurations = configurations.map((config, i) =>
-      i === index ? updatedConfig : config,
+        i === index ? updatedConfig : config,
     );
     setConfigurations(newConfigurations);
   };
@@ -265,8 +261,8 @@ const FetchDialog = (props: PropsWithChildren) => {
           startFetchingTUMSemesters(config.customSuffix);
         } else if (config.typeOfData === "courses-tum-campus") {
           startFetchingTUMCourses(
-            config.customSuffix,
-            config.dependentFileData || {},
+              config.customSuffix,
+              config.dependentFileData || {},
           );
         } else {
           startFetchingMrozonRatingData(config.customSuffix);
@@ -277,51 +273,51 @@ const FetchDialog = (props: PropsWithChildren) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{props.children}</DialogTrigger>
-      <DialogContent className={"max-w-[700px]"}>
-        <DialogHeader>
-          <DialogTitle>Fetching interface</DialogTitle>
-          <DialogDescription>
-            Add fetching configuration for data that you want to fetch.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex flex-col gap-2">
-          {configurations.map((config, index) => (
-            <div
-              className={
-                "bg-gray-100/60 px-3 py-2 rounded-md flex justify-between items-center gap-4"
-              }
-              key={index}
-            >
-              <FetchingConfigurationForm
-                config={config}
-                onChange={(updatedConfig) =>
-                  updateConfiguration(index, updatedConfig)
-                }
-              />
-              <div className={"flex gap-1 w-[70px]"}>
-                {index === configurations.length - 1 && (
-                  <Button size={"icon"} onClick={addConfiguration}>
-                    <Plus className={"w-6 h-6"} />
-                  </Button>
-                )}
-                {index >= 0 && configurations.length > 0 && (
-                  <Button size={"icon"} onClick={removeConfiguration}>
-                    <Minus className={"w-6 h-6"} />
-                  </Button>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-        <DialogFooter>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>{props.children}</DialogTrigger>
+        <DialogContent className={"max-w-[700px]"}>
+          <DialogHeader>
+            <DialogTitle>Fetching interface</DialogTitle>
+            <DialogDescription>
+              Add fetching configuration for data that you want to fetch.
+            </DialogDescription>
+          </DialogHeader>
           <div className="flex flex-col gap-2">
-            <Button onClick={startFetching}>Start fetching</Button>
+            {configurations.map((config, index) => (
+                <div
+                    className={
+                      "bg-gray-100/60 px-3 py-2 rounded-md flex justify-between items-center gap-4"
+                    }
+                    key={index}
+                >
+                  <FetchingConfigurationForm
+                      config={config}
+                      onChange={(updatedConfig) =>
+                          updateConfiguration(index, updatedConfig)
+                      }
+                  />
+                  <div className={"flex gap-1 w-[70px]"}>
+                    {index === configurations.length - 1 && (
+                        <Button size={"icon"} onClick={addConfiguration}>
+                          <Plus className={"w-6 h-6"} />
+                        </Button>
+                    )}
+                    {index >= 0 && configurations.length > 0 && (
+                        <Button size={"icon"} onClick={removeConfiguration}>
+                          <Minus className={"w-6 h-6"} />
+                        </Button>
+                    )}
+                  </div>
+                </div>
+            ))}
           </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          <DialogFooter>
+            <div className="flex flex-col gap-2">
+              <Button onClick={startFetching}>Start fetching</Button>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
   );
 };
 

@@ -24,7 +24,7 @@ const METHODS_SOURCE_MAP = [
   {
     type: "key-similarity",
     label: "Key similarity",
-    fileType: ["courses-production", "courses-tum-campus", "merged"],
+    fileType: ["courses-production", "courses-tum-campus", "merged", "finalized-merge"],
   }
   // {
   //   type: "key-similarity-ai",

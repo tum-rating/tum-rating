@@ -134,39 +134,41 @@ function keySimilarityCore(
                 record.professor === item.professor &&
                 checkIfCoursesHaveAtLeastOneCommonWord(itemTitle, recordTitle)
             ) {
-                similarRecords.push({
-                    ...record,
-                    similarity: similarity,
-                    codes: Array.from(recordCodes),
-                    offeredInSemesters: record.offeredInSemesters,
-                });
-                recordCodes.forEach((code) => currentCodes.add(code));
-                record.offeredInSemesters.forEach((semester) =>
-                    offeredInSemesters.add(semester),
-                );
-                mergedRecords.set(i, true);
+                if (similarRecords.length < 15){
+                    similarRecords.push({
+                        ...record,
+                        similarity: similarity,
+                        codes: Array.from(recordCodes),
+                        offeredInSemesters: record.offeredInSemesters,
+                    });
+                    recordCodes.forEach((code) => currentCodes.add(code));
+                    record.offeredInSemesters.forEach((semester) =>
+                        offeredInSemesters.add(semester),
+                    );
+                    mergedRecords.set(i, true);
+                } else {
+                    // Remove similarity key for items beyond the limit
+                    delete record.similarity;
+                }
             }
         }
 
-
         if (similarRecords.length > 0) {
-
-
-            const mergedArr = []
+            const mergedArr = [];
             if (item.merged && Array.isArray(item.merged)) {
-                if (item.merged.some(x => x.name !== item.name)) {
+                if (item.merged.some((x) => x.name !== item.name)) {
                     mergedArr.push({
                         similarity: 0,
                         locked: true,
                         ...item,
-                    })
+                    });
                 }
             } else {
                 mergedArr.push({
                     similarity: 0,
                     locked: true,
                     ...item,
-                })
+                });
             }
 
             mergedArray.push({
@@ -175,10 +177,7 @@ function keySimilarityCore(
                 id: uuidv4(),
                 name: item.name || item[key],
                 ...item,
-                merged: [
-                    ...mergedArr,
-                    ...similarRecords,
-                ],
+                merged: [...mergedArr, ...similarRecords],
                 codes: Array.from(currentCodes),
                 offeredInSemesters: Array.from(offeredInSemesters),
                 professor: item.professor,
@@ -195,6 +194,7 @@ function keySimilarityCore(
 
     return mergedArray;
 }
+
 
 const fetchPage = async (
     page: number,

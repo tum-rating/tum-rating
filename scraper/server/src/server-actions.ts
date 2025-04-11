@@ -6,7 +6,6 @@ import {PRODUCTION_API_COURSES_URL, TUM_ONLINE_SEMESTERS_URL,} from "./server-ac
 import {serverFilesystemConfig, serverFilesystemConfigFilesMap,} from "./server-filesystem-config";
 import fs from "fs";
 import path from "path";
-import {v4 as uuidv4} from "uuid";
 
 import {fetchAllPages, keySimilarityCore, summarizeFetchedData,} from "./server-actions-utils";
 import {applyPatch, compare} from "fast-json-patch";
@@ -93,16 +92,19 @@ const finishKeySimilarityMerging = async ({
                                               suffix,
                                           }: FetchParams) => {
     const keysToRemove = ["acceptedCount", "rejectedCount", "notResolvedCount"];
-    suffix = suffix || `merged${Date.now()}`;
+    let currentDate = new Date();
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+    const seconds = currentDate.getSeconds()
     const fileConfig = serverFilesystemConfigFilesMap["mrozon-rating-data"];
+    const fileName = `finalized-merge-${hours}-${minutes}-${seconds}${fileConfig.extension}`;
     const filePath = path.join(
         serverFilesystemConfig.DIRECTORY,
-        `${suffix}-finalized-merge${fileConfig.extension}`,
+        `${fileName}`,
     );
 
-    broadcastFetchStatus(wss, `merged-${suffix}`, true);
-    broadcastFetchStatus(wss, filePath, true);
-
+    broadcastFetchStatus(wss, fileName, true);
+    // broadcastFetchStatus(wss, filePath, true);
     const allCourses = filesToMerge.flatMap((file) => {
         const content = fs.readFileSync(
             path.join(serverFilesystemConfig.DIRECTORY, file),
@@ -211,17 +213,19 @@ const finishKeySimilarityMerging = async ({
     //   }
     // }
 
+    console.log(3)
     fs.writeFileSync(filePath, JSON.stringify(finalizedData, null, 2), "utf-8");
 
-    broadcastFetchStatus(wss, `merged-${suffix}`, false);
-    broadcastFetchStatus(wss, filePath, false);
+    console.log(2)
+    // broadcastFetchStatus(wss, `merged-${suffix}`, false);
+    broadcastFetchStatus(wss, fileName, false);
     ws.send(
         JSON.stringify({
             action: "newFile",
-            name: `${suffix}-finalized-merge${fileConfig.extension}`,
+            name:  `${fileName}`,
         }),
     );
-    broadcastNewFile(wss, `merged-${suffix}${fileConfig.extension}`);
+    broadcastNewFile(wss, fileName);
 };
 
 const fetchAndSaveMrozonRatingData = async ({
@@ -335,11 +339,12 @@ const fetchAndSaveTUMCourses = async ({
     const allCourses = [];
 
     broadcastFetchStatus(wss, `${fileConfig.id}-${suffix}`, true);
-    for (const termId of semesters) {
+    for (const termId of Object.keys(semesters)) {
         const options = {pageSize: 100, termId};
         const courses = await fetchAllPages(options);
         allCourses.push(...courses);
     }
+
 
     const summarizedData = await summarizeFetchedData(allCourses);
 
@@ -360,7 +365,7 @@ const checkCorrectnessBatchedCoursesByNamesWithAi = async (
     wss: WebSocketServer,
     ws: WebSocket,
 ) => {
-    const MAX_COURSES_PER_BATCH = 10; // Maximum courses per batch
+    const MAX_COURSES_PER_BATCH = 11; // Maximum courses per batch
 
     // Filter out empty sets while keeping track of original indices
 
@@ -482,9 +487,9 @@ const checkCorrectnessBatchedCoursesByNamesWithAi = async (
                 //
                 for (let i = 0; i < item.merged.length; i++) {
                     const el = item.merged[i];
-                    if(i === 0){
+                    if (i === 0) {
 
-                    }else{
+                    } else {
                         el.locked = false
                     }
                 }
@@ -514,8 +519,8 @@ const checkCorrectnessBatchedCoursesByNamesWithAi = async (
             //     item.rejectedCount = rejectedCount;
             //     item.notResolvedCount = 0;
             //     fileContent[originalIndex] = item;
-            }
         }
+    }
 
     fs.writeFileSync(filePath, JSON.stringify(fileContent, null, 2), "utf-8");
 
@@ -542,16 +547,13 @@ const checkCorrectnessBatchedCoursesByNamesWithAi = async (
 }
 
 
-
-
-
 const batchMergeCoursesByNamesWithAi = async (
     coursesSets: string[][],
     fileName: string,
     wss: WebSocketServer,
     ws: WebSocket,
 ) => {
-    const MAX_COURSES_PER_BATCH = 17; // Maximum courses per batch
+    const MAX_COURSES_PER_BATCH = 10 // Maximum courses per batch
 
     // Filter out empty sets while keeping track of original indices
     const coursesSetWithoutEmptyIdx: number[] = [];
@@ -656,10 +658,10 @@ const batchMergeCoursesByNamesWithAi = async (
     }
     const fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     fileContent.forEach((item: any) => {
-        if(item.merged){
+        if (item.merged) {
             item.merged.forEach((mergedItem: any) => {
                 delete mergedItem.accepted;
-                delete mergedItem.locked;
+                // delete mergedItem.locked;
             });
         }
     });
