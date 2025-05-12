@@ -11,6 +11,7 @@ const fetchPage = async (page, options) => {
     const skip = (page - 1) * pageSize;
     const xmlUrl = `${baseUrl}?${queryParams}&$skip=${skip}&$top=${pageSize}`;
 
+    console.log(xmlUrl)
     try {
         const response = await axios.get(xmlUrl);
         return response.data.resource;

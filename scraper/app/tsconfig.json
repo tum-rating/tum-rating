@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "es2020",
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "moduleResolution": "Node",
+    "jsx": "react-jsx",
+    "strict": true,
+    "sourceMap": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "allowImportingTsExtensions": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "outDir": "dist",
+    "declaration": true,
+    "declarationDir": "types",
+    "types": [
+      "vite/client",
+    ],
+    "composite": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+    }
+  },
+  "include": [
+    "./src/**/*.tsx",
+    "./src/**/*.ts",
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}
