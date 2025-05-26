@@ -5,7 +5,7 @@ import { Review } from './review';
 import { ExamStats, ExamStatsSchema } from './examStats';
 
 @Schema({
-    autoCreate: true, 
+    autoCreate: true,
     autoIndex: true
 })
 export class Course {

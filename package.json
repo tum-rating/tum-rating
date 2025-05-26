@@ -12,7 +12,8 @@
   },
   "workspaces": [
     "frontend",
-    "backend"
+    "backend",
+    "scripts"
   ],
   "author": "",
   "license": "ISC",
