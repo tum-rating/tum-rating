@@ -1,41 +1,65 @@
 const summarizeFetchedData = async (courses) => {
     return courses.map((course) => {
-        const courseId = course.content.cpCourseDto.id;
+        // New API structure: data is directly on course object, not nested in content.cpCourseDto
+        // Try new structure first, fall back to old for backwards compatibility
+        const courseData = course.content?.cpCourseDto || course;
+        
+        const courseId = courseData.id;
 
+        // Handle courseTitle - new structure has translations.translation array
+        let courseTitle;
+        if (courseData.courseTitle?.translations?.translation) {
+            const translations = courseData.courseTitle.translations.translation;
+            const englishTitle = translations.find(el => el.lang === 'en')?.value;
+            const germanTitle = translations.find(el => el.lang === 'de')?.value;
+            courseTitle = englishTitle || germanTitle || courseData.courseTitle?.value || '-';
+        } else {
+            courseTitle = courseData.courseTitle?.value || '-';
+        }
 
-        const germanTitle = course.content.cpCourseDto.courseTitle.translations.translation.find(el => el.lang === 'de').value;
-        const englishTitle = course.content.cpCourseDto.courseTitle.translations.translation.find(el => el.lang === 'en').value;
-        const courseTitle = englishTitle || germanTitle;
-
-
-        const semester = [course.content.cpCourseDto.semesterDto.shortName.value];
-        const semesterId = course.content.cpCourseDto.id;
+        // Handle semester
+        const semester = courseData.semesterDto?.shortName?.value 
+            ? [courseData.semesterDto.shortName.value] 
+            : (courseData.semesterDto?.shortName?.coType === 'model-core.lib.model.langdata'
+                ? [courseData.semesterDto.shortName.value]
+                : []);
+        const semesterId = courseData.semesterDto?.id || courseId;
+        
         const mainLecturers = [];
         const otherLecturers = [];
 
-        course.content.cpCourseDto.lectureships.forEach((lecturer, index) => {
-            const firstName = lecturer.identityLibDto.firstName;
-            const lastName = lecturer.identityLibDto.lastName;
-            const lecturerName = `${firstName} ${lastName}`;
-            const lecturerInfo = {
-                name: lecturerName,
-                businessCardLink: lecturer.identityLibDto.businessCardLink
-                    ? lecturer.identityLibDto.businessCardLink.href
-                    : null,
-            };
-            if (
-                lecturer.teachingFunction.key === "L" ||
-                (index === 0 && mainLecturers.length === 0)
-            ) {
-                mainLecturers.push(lecturerInfo);
-            } else {
-                otherLecturers.push(lecturerInfo);
-            }
-        });
+        // Handle lectureships
+        if (courseData.lectureships && Array.isArray(courseData.lectureships)) {
+            courseData.lectureships.forEach((lecturer, index) => {
+                const identityLib = lecturer.identityLibDto || lecturer;
+                const firstName = identityLib.firstName;
+                const lastName = identityLib.lastName;
+                const lecturerName = `${firstName} ${lastName}`;
+                const lecturerInfo = {
+                    name: lecturerName,
+                    businessCardLink: identityLib.businessCardLink
+                        ? (identityLib.businessCardLink.href || identityLib.businessCardLink)
+                        : null,
+                };
+                if (
+                    lecturer.teachingFunction?.key === "L" ||
+                    (index === 0 && mainLecturers.length === 0)
+                ) {
+                    mainLecturers.push(lecturerInfo);
+                } else {
+                    otherLecturers.push(lecturerInfo);
+                }
+            });
+        }
+
+        // Handle courseNumber - new structure has databaseValue
+        const courseNumber = courseData.courseNumber?.databaseValue 
+            || courseData.courseNumber?.courseNumber 
+            || courseData.courseNumber;
 
         return {
             courseId,
-            courseNumber: course.content.cpCourseDto.courseNumber,
+            courseNumber,
             courseTitle,
             mainLecturers,
             otherLecturers,
