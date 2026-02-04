@@ -38,30 +38,50 @@ const fullAuthProcess = async (page: Page, authFile: string) => {
     await signOut({page, mobile: false});
 };
 
-const getActivationTokenFromMail = async (email: string) => {
-    const response = await fetch(`http://localhost:1080/email`);
-    const data = await response.json();
-    let activationToken = null;
-    let userMail = data.filter((x) => x.to[0].address === email && x.subject === 'Activate your account');
-    const pattern = /token=([\w-]+\.[\w-]+\.[\w-]+)/;
-    const match = userMail[0].html.match(pattern);
-    if (match) {
-        activationToken = match[1];
+const getActivationTokenFromMail = async (email: string, maxRetries = 10, retryDelay = 1000) => {
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+        const response = await fetch(`http://localhost:1080/email`);
+        const data = await response.json();
+        const userMail = data.filter((x) => x.to?.[0]?.address === email && x.subject === 'Activate your account');
+        
+        if (userMail.length > 0 && userMail[0]?.html) {
+            const pattern = /token=([\w-]+\.[\w-]+\.[\w-]+)/;
+            const match = userMail[0].html.match(pattern);
+            if (match) {
+                return match[1];
+            }
+        }
+        
+        // Wait before retrying
+        if (attempt < maxRetries - 1) {
+            await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
     }
-    return activationToken;
+    
+    throw new Error(`Activation token not found for email: ${email} after ${maxRetries} attempts`);
 };
 
-const getRecoveryTokenFromMail = async (email: string) => {
-    const response = await fetch(`http://localhost:1080/email`);
-    const data = await response.json();
-    let recoveryToken = null;
-    let userMail = data.filter((x) => x.to[0].address === email && x.subject === 'Password recovery');
-    const pattern = /token=([\w-]+\.[\w-]+\.[\w-]+)/;
-    const match = userMail[0].html.match(pattern);
-    if (match) {
-        recoveryToken = match[1];
+const getRecoveryTokenFromMail = async (email: string, maxRetries = 10, retryDelay = 1000) => {
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+        const response = await fetch(`http://localhost:1080/email`);
+        const data = await response.json();
+        const userMail = data.filter((x) => x.to?.[0]?.address === email && x.subject === 'Password recovery');
+        
+        if (userMail.length > 0 && userMail[0]?.html) {
+            const pattern = /token=([\w-]+\.[\w-]+\.[\w-]+)/;
+            const match = userMail[0].html.match(pattern);
+            if (match) {
+                return match[1];
+            }
+        }
+        
+        // Wait before retrying
+        if (attempt < maxRetries - 1) {
+            await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
     }
-    return recoveryToken;
+    
+    throw new Error(`Recovery token not found for email: ${email} after ${maxRetries} attempts`);
 };
 
 const signUp = async (props: AuthAction) => {

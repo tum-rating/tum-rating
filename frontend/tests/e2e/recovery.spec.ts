@@ -18,6 +18,8 @@ test('should set new password in recovery process and sign in with new credentia
     await expect(page.getByTestId('email')).toBeVisible();
     await page.getByTestId('email').fill(email[0]);
     await page.getByTestId('submit').click();
+    // Wait for confirmation message before fetching email
+    await expect(page.getByText('Check Your Email')).toBeVisible({timeout: 10000});
     const token = await getRecoveryTokenFromMail(email[0]);
     await page.goto(`/auth/recovery?token=${token}`, {waitUntil: 'domcontentloaded'});
     await page.getByTestId('password').fill(newPassword);

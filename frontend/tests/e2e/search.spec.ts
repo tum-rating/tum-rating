@@ -1,4 +1,4 @@
-import {test} from '@playwright/test';
+import {expect, test} from '@playwright/test';
 
 import {checkCourseRender} from 'tests/e2e/utils/courses.ts';
 
@@ -9,11 +9,20 @@ test(`should find courses by name "${query} "and navigate to course page by clic
     await page.goto('/', {waitUntil: 'domcontentloaded'});
     await page.getByRole('textbox', {name: 'Search...'}).fill(query);
 
+    // Wait for options to appear and stabilize
     const option = page.getByRole('option', {name: createQueryRegex(query)}).first();
+    await expect(option).toBeVisible({timeout: 10000});
+    
+    // Get the course name before clicking to avoid detached element
     const optionCourseName = option.locator('p').first();
+    await expect(optionCourseName).toBeVisible();
     const optionDetails = await optionCourseName.allInnerTexts();
-    await option.click({force: true});
-    await checkCourseRender({page, name: optionDetails[0]});
+    const courseName = optionDetails[0];
+    
+    // Wait a bit for the combobox to stabilize, then click
+    await page.waitForTimeout(500);
+    await option.click();
+    await checkCourseRender({page, name: courseName});
 });
 
 test(`[mobile] should find courses by name "${query}" and navigate to course page by clicking course item in search combo box`, async ({page}) => {
@@ -21,9 +30,19 @@ test(`[mobile] should find courses by name "${query}" and navigate to course pag
     await page.goto('/', {waitUntil: 'domcontentloaded'});
     await page.getByTestId('search-trigger-mobile').click();
     await page.getByRole('textbox', {name: 'Search...'}).fill(query);
+    
+    // Wait for options to appear and stabilize
     const option = page.getByRole('option', {name: createQueryRegex(query)}).first();
+    await expect(option).toBeVisible({timeout: 10000});
+    
+    // Get the course name before clicking to avoid detached element
     const optionCourseName = option.locator('p').first();
+    await expect(optionCourseName).toBeVisible();
     const optionDetails = await optionCourseName.allInnerTexts();
-    await option.click({force: true});
-    await checkCourseRender({page, name: optionDetails[0]});
+    const courseName = optionDetails[0];
+    
+    // Wait a bit for the combobox to stabilize, then click
+    await page.waitForTimeout(500);
+    await option.click();
+    await checkCourseRender({page, name: courseName});
 });
