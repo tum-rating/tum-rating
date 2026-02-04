@@ -1,5 +1,5 @@
 import {faker} from '@faker-js/faker';
-import {expect, Page} from '@playwright/test';
+import {expect, type Page} from '@playwright/test';
 
 import {openMobileDrawer} from 'tests/e2e/utils/layout.ts';
 
