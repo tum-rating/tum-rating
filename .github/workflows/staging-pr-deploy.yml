@@ -1,6 +1,8 @@
 name: Deploy to DigitalOcean staging
+
 permissions:
   contents: write
+
 on:
   pull_request:
     branches:
@@ -13,52 +15,64 @@ jobs:
     environment: staging
 
     steps:
+      # 1️⃣ Checkout the repository
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 2️⃣ Get package version from package.json
       - name: Get package version
         id: package-version
         run: |
           echo "Reading package.json from ./package.json"
-          PACKAGE_VERSION=$(cat ./package.json | jq '.version' | tr -d '"')
+          PACKAGE_VERSION=$(jq -r '.version' ./package.json)
           echo "Current version: ${PACKAGE_VERSION}"
           echo "current-version=${PACKAGE_VERSION}" >> $GITHUB_OUTPUT
 
+      # 3️⃣ Docker login, build, tag, and push image
       - name: Docker login, build, tag, and push image to DigitalOcean
         id: build-image
         env:
-            DO_REPOSITORY: ${{ vars.DO_REPOSITORY }} 
-            DO_IMAGE_NAME: ${{ vars.DO_IMAGE_NAME }} 
-            IMAGE_TAG: ${{ steps.package-version.outputs.current-version }}
+          DO_REPOSITORY: ${{ vars.DO_REPOSITORY }} 
+          DO_IMAGE_NAME: ${{ vars.DO_IMAGE_NAME }} 
+          IMAGE_TAG: ${{ steps.package-version.outputs.current-version }}
+          DO_TOKEN: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
         run: |
-          # Login
-          docker login $DO_REPOSITORY --username ${{ secrets.DIGITAL_OCEAN_TOKEN }} --password ${{ secrets.DIGITAL_OCEAN_TOKEN }}
-          # Build a docker container and
+          # Login to DigitalOcean Container Registry
+          echo "$DO_TOKEN" | docker login $DO_REPOSITORY --username do --password-stdin
+
+          # Build the Docker image
           docker build -f ./backend/Dockerfile -t $DO_REPOSITORY/$DO_IMAGE_NAME:$IMAGE_TAG .
+
+          # Push the Docker image
           docker push $DO_REPOSITORY/$DO_IMAGE_NAME:$IMAGE_TAG
+
+          # Export image info for later steps
           echo "image=$DO_REPOSITORY/$DO_IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
+      # 4️⃣ Deploy to DigitalOcean App Platform
       - name: DigitalOcean App Platform deployment
-        uses: digitalocean/app_action@v1.1.6 # replace this with current version from https://github.com/digitalocean/app_action/releases
+        uses: digitalocean/app_action@v1.1.6
         env:
-            DO_REPOSITORY: ${{ vars.DO_REPOSITORY }} 
-            DO_IMAGE_NAME: ${{ vars.DO_IMAGE_NAME }} 
-            IMAGE_TAG: ${{ steps.package-version.outputs.current-version }}
+          DO_REPOSITORY: ${{ vars.DO_REPOSITORY }} 
+          DO_IMAGE_NAME: ${{ vars.DO_IMAGE_NAME }} 
+          IMAGE_TAG: ${{ steps.package-version.outputs.current-version }}
         with:
           app_name: tum-rating-staging
           token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
-          images: '[{
-                  "name": "tum-rating",
-                  "repository": "${{env.DO_REPOSITORY}}/${{env.DO_IMAGE_NAME}}",
-                  "tag": "${{env.IMAGE_TAG}}"
-                }
-              ]'
+          images: |
+            [
+              {
+                "name": "tum-rating",
+                "repository": "${{ env.DO_REPOSITORY }}/${{ env.DO_IMAGE_NAME }}",
+                "tag": "${{ env.IMAGE_TAG }}"
+              }
+            ]
 
+      # 5️⃣ Push git tag for version tracking
       - name: Push git tag
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
           git tag -a "${{ steps.package-version.outputs.current-version }}" -m "${{ steps.package-version.outputs.current-version }}: PR #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}"
-          git push origin "${{ steps.package-version.outputs.current-version }}" 
-
+          git push origin "${{ steps.package-version.outputs.current-version }}"
